@@ -81,16 +81,13 @@ settings:
     step: 0.001
 
 
-
-  - Section title # Headings can be used to break up the settings into collapsible sections
-  - property: example_state_property # Refers to a property in the template's state object
-    name: Example number setting # Display name for the settings panel
-    description: A setting for changing a number # Optional description for the settings panel
-    type: number # See available types above
-
   # imported modules
   - property: layout
     import: "@flourish/layout"
+
+  - Colours
+  - property: colors
+    import: "@flourish/colors"
 
 
 data:

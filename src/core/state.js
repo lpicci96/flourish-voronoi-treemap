@@ -1,6 +1,6 @@
 export default {
-    example_state_property: 25,
 
+    // Voronoi chart specific settings
     voronoi_settings: {
 
         fill: "#ccc",
@@ -16,4 +16,5 @@ export default {
 
 
     layout: {}, // layout module state properties
+    color: {}, // color module state properties
 }

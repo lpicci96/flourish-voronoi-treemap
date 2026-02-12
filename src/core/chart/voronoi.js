@@ -1,3 +1,7 @@
+// TODO: Additional advanced settings - handling small values
+
+
+
 import * as d3 from "d3";
 import { voronoiTreemap } from "d3-voronoi-treemap";
 // import {rectangularClip, circularClip} from "./clip";

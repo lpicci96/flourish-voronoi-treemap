@@ -13,6 +13,7 @@
     "less": "lessc --plugin=less-plugin-clean-css --source-map less/style.less static/style.css"
   },
   "dependencies": {
+    "@flourish/colors": "^8.0.0",
     "@flourish/layout": "^8.7.3",
     "d3": "^7.9.0",
     "d3-voronoi-treemap": "^1.1.2",

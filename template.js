@@ -1,34 +1,34 @@
 var template = (function (exports) {
   'use strict';
 
-  function define(constructor, factory, prototype) {
+  function define$1(constructor, factory, prototype) {
     constructor.prototype = factory.prototype = prototype;
     prototype.constructor = constructor;
   }
 
-  function extend(parent, definition) {
+  function extend$1(parent, definition) {
     var prototype = Object.create(parent.prototype);
     for (var key in definition) prototype[key] = definition[key];
     return prototype;
   }
 
-  function Color() {}
+  function Color$1() {}
 
-  var darker = 0.7;
-  var brighter = 1 / darker;
+  var darker$1 = 0.7;
+  var brighter$1 = 1 / darker$1;
 
-  var reI = "\\s*([+-]?\\d+)\\s*",
-      reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-      reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-      reHex = /^#([0-9a-f]{3,8})$/,
-      reRgbInteger = new RegExp(`^rgb\\(${reI},${reI},${reI}\\)$`),
-      reRgbPercent = new RegExp(`^rgb\\(${reP},${reP},${reP}\\)$`),
-      reRgbaInteger = new RegExp(`^rgba\\(${reI},${reI},${reI},${reN}\\)$`),
-      reRgbaPercent = new RegExp(`^rgba\\(${reP},${reP},${reP},${reN}\\)$`),
-      reHslPercent = new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`),
-      reHslaPercent = new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
+  var reI$1 = "\\s*([+-]?\\d+)\\s*",
+      reN$1 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+      reP$1 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+      reHex$1 = /^#([0-9a-f]{3,8})$/,
+      reRgbInteger$1 = new RegExp(`^rgb\\(${reI$1},${reI$1},${reI$1}\\)$`),
+      reRgbPercent$1 = new RegExp(`^rgb\\(${reP$1},${reP$1},${reP$1}\\)$`),
+      reRgbaInteger$1 = new RegExp(`^rgba\\(${reI$1},${reI$1},${reI$1},${reN$1}\\)$`),
+      reRgbaPercent$1 = new RegExp(`^rgba\\(${reP$1},${reP$1},${reP$1},${reN$1}\\)$`),
+      reHslPercent$1 = new RegExp(`^hsl\\(${reN$1},${reP$1},${reP$1}\\)$`),
+      reHslaPercent$1 = new RegExp(`^hsla\\(${reN$1},${reP$1},${reP$1},${reN$1}\\)$`);
 
-  var named = {
+  var named$1 = {
     aliceblue: 0xf0f8ff,
     antiquewhite: 0xfaebd7,
     aqua: 0x00ffff,
@@ -179,22 +179,22 @@ var template = (function (exports) {
     yellowgreen: 0x9acd32
   };
 
-  define(Color, color, {
+  define$1(Color$1, color$1, {
     copy(channels) {
       return Object.assign(new this.constructor, this, channels);
     },
     displayable() {
       return this.rgb().displayable();
     },
-    hex: color_formatHex, // Deprecated! Use color.formatHex.
-    formatHex: color_formatHex,
+    hex: color_formatHex$1, // Deprecated! Use color.formatHex.
+    formatHex: color_formatHex$1,
     formatHex8: color_formatHex8,
-    formatHsl: color_formatHsl,
-    formatRgb: color_formatRgb,
-    toString: color_formatRgb
+    formatHsl: color_formatHsl$1,
+    formatRgb: color_formatRgb$1,
+    toString: color_formatRgb$1
   });
 
-  function color_formatHex() {
+  function color_formatHex$1() {
     return this.rgb().formatHex();
   }
 
@@ -202,74 +202,74 @@ var template = (function (exports) {
     return this.rgb().formatHex8();
   }
 
-  function color_formatHsl() {
-    return hslConvert(this).formatHsl();
+  function color_formatHsl$1() {
+    return hslConvert$1(this).formatHsl();
   }
 
-  function color_formatRgb() {
+  function color_formatRgb$1() {
     return this.rgb().formatRgb();
   }
 
-  function color(format) {
+  function color$1(format) {
     var m, l;
     format = (format + "").trim().toLowerCase();
-    return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
-        : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-        : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-        : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+    return (m = reHex$1.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$1(m) // #ff0000
+        : l === 3 ? new Rgb$1((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+        : l === 8 ? rgba$1(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+        : l === 4 ? rgba$1((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
         : null) // invalid hex
-        : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-        : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-        : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-        : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-        : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-        : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-        : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
-        : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
+        : (m = reRgbInteger$1.exec(format)) ? new Rgb$1(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+        : (m = reRgbPercent$1.exec(format)) ? new Rgb$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+        : (m = reRgbaInteger$1.exec(format)) ? rgba$1(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+        : (m = reRgbaPercent$1.exec(format)) ? rgba$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+        : (m = reHslPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+        : (m = reHslaPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+        : named$1.hasOwnProperty(format) ? rgbn$1(named$1[format]) // eslint-disable-line no-prototype-builtins
+        : format === "transparent" ? new Rgb$1(NaN, NaN, NaN, 0)
         : null;
   }
 
-  function rgbn(n) {
-    return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+  function rgbn$1(n) {
+    return new Rgb$1(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
   }
 
-  function rgba(r, g, b, a) {
+  function rgba$1(r, g, b, a) {
     if (a <= 0) r = g = b = NaN;
-    return new Rgb(r, g, b, a);
+    return new Rgb$1(r, g, b, a);
   }
 
-  function rgbConvert(o) {
-    if (!(o instanceof Color)) o = color(o);
-    if (!o) return new Rgb;
+  function rgbConvert$1(o) {
+    if (!(o instanceof Color$1)) o = color$1(o);
+    if (!o) return new Rgb$1;
     o = o.rgb();
-    return new Rgb(o.r, o.g, o.b, o.opacity);
+    return new Rgb$1(o.r, o.g, o.b, o.opacity);
   }
 
-  function rgb(r, g, b, opacity) {
-    return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
+  function rgb$1(r, g, b, opacity) {
+    return arguments.length === 1 ? rgbConvert$1(r) : new Rgb$1(r, g, b, opacity == null ? 1 : opacity);
   }
 
-  function Rgb(r, g, b, opacity) {
+  function Rgb$1(r, g, b, opacity) {
     this.r = +r;
     this.g = +g;
     this.b = +b;
     this.opacity = +opacity;
   }
 
-  define(Rgb, rgb, extend(Color, {
+  define$1(Rgb$1, rgb$1, extend$1(Color$1, {
     brighter(k) {
-      k = k == null ? brighter : Math.pow(brighter, k);
-      return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+      k = k == null ? brighter$1 : Math.pow(brighter$1, k);
+      return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     darker(k) {
-      k = k == null ? darker : Math.pow(darker, k);
-      return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+      k = k == null ? darker$1 : Math.pow(darker$1, k);
+      return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     rgb() {
       return this;
     },
     clamp() {
-      return new Rgb(clampi(this.r), clampi(this.g), clampi(this.b), clampa(this.opacity));
+      return new Rgb$1(clampi(this.r), clampi(this.g), clampi(this.b), clampa(this.opacity));
     },
     displayable() {
       return (-0.5 <= this.r && this.r < 255.5)
@@ -277,22 +277,22 @@ var template = (function (exports) {
           && (-0.5 <= this.b && this.b < 255.5)
           && (0 <= this.opacity && this.opacity <= 1);
     },
-    hex: rgb_formatHex, // Deprecated! Use color.formatHex.
-    formatHex: rgb_formatHex,
+    hex: rgb_formatHex$1, // Deprecated! Use color.formatHex.
+    formatHex: rgb_formatHex$1,
     formatHex8: rgb_formatHex8,
-    formatRgb: rgb_formatRgb,
-    toString: rgb_formatRgb
+    formatRgb: rgb_formatRgb$1,
+    toString: rgb_formatRgb$1
   }));
 
-  function rgb_formatHex() {
-    return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}`;
+  function rgb_formatHex$1() {
+    return `#${hex$1(this.r)}${hex$1(this.g)}${hex$1(this.b)}`;
   }
 
   function rgb_formatHex8() {
-    return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}${hex((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
+    return `#${hex$1(this.r)}${hex$1(this.g)}${hex$1(this.b)}${hex$1((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
   }
 
-  function rgb_formatRgb() {
+  function rgb_formatRgb$1() {
     const a = clampa(this.opacity);
     return `${a === 1 ? "rgb(" : "rgba("}${clampi(this.r)}, ${clampi(this.g)}, ${clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
   }
@@ -305,23 +305,23 @@ var template = (function (exports) {
     return Math.max(0, Math.min(255, Math.round(value) || 0));
   }
 
-  function hex(value) {
+  function hex$1(value) {
     value = clampi(value);
     return (value < 16 ? "0" : "") + value.toString(16);
   }
 
-  function hsla(h, s, l, a) {
+  function hsla$1(h, s, l, a) {
     if (a <= 0) h = s = l = NaN;
     else if (l <= 0 || l >= 1) h = s = NaN;
     else if (s <= 0) h = NaN;
-    return new Hsl(h, s, l, a);
+    return new Hsl$1(h, s, l, a);
   }
 
-  function hslConvert(o) {
-    if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof Color)) o = color(o);
-    if (!o) return new Hsl;
-    if (o instanceof Hsl) return o;
+  function hslConvert$1(o) {
+    if (o instanceof Hsl$1) return new Hsl$1(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color$1)) o = color$1(o);
+    if (!o) return new Hsl$1;
+    if (o instanceof Hsl$1) return o;
     o = o.rgb();
     var r = o.r / 255,
         g = o.g / 255,
@@ -340,28 +340,28 @@ var template = (function (exports) {
     } else {
       s = l > 0 && l < 1 ? 0 : h;
     }
-    return new Hsl(h, s, l, o.opacity);
+    return new Hsl$1(h, s, l, o.opacity);
   }
 
-  function hsl(h, s, l, opacity) {
-    return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+  function hsl$2(h, s, l, opacity) {
+    return arguments.length === 1 ? hslConvert$1(h) : new Hsl$1(h, s, l, opacity == null ? 1 : opacity);
   }
 
-  function Hsl(h, s, l, opacity) {
+  function Hsl$1(h, s, l, opacity) {
     this.h = +h;
     this.s = +s;
     this.l = +l;
     this.opacity = +opacity;
   }
 
-  define(Hsl, hsl, extend(Color, {
+  define$1(Hsl$1, hsl$2, extend$1(Color$1, {
     brighter(k) {
-      k = k == null ? brighter : Math.pow(brighter, k);
-      return new Hsl(this.h, this.s, this.l * k, this.opacity);
+      k = k == null ? brighter$1 : Math.pow(brighter$1, k);
+      return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
     },
     darker(k) {
-      k = k == null ? darker : Math.pow(darker, k);
-      return new Hsl(this.h, this.s, this.l * k, this.opacity);
+      k = k == null ? darker$1 : Math.pow(darker$1, k);
+      return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
     },
     rgb() {
       var h = this.h % 360 + (this.h < 0) * 360,
@@ -369,15 +369,15 @@ var template = (function (exports) {
           l = this.l,
           m2 = l + (l < 0.5 ? l : 1 - l) * s,
           m1 = 2 * l - m2;
-      return new Rgb(
-        hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
-        hsl2rgb(h, m1, m2),
-        hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
+      return new Rgb$1(
+        hsl2rgb$1(h >= 240 ? h - 240 : h + 120, m1, m2),
+        hsl2rgb$1(h, m1, m2),
+        hsl2rgb$1(h < 120 ? h + 240 : h - 120, m1, m2),
         this.opacity
       );
     },
     clamp() {
-      return new Hsl(clamph(this.h), clampt(this.s), clampt(this.l), clampa(this.opacity));
+      return new Hsl$1(clamph(this.h), clampt(this.s), clampt(this.l), clampa(this.opacity));
     },
     displayable() {
       return (0 <= this.s && this.s <= 1 || isNaN(this.s))
@@ -400,18 +400,133 @@ var template = (function (exports) {
   }
 
   /* From FvD 13.37, CSS Color Module Level 3 */
-  function hsl2rgb(h, m1, m2) {
+  function hsl2rgb$1(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60
         : h < 180 ? m2
         : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
         : m1) * 255;
   }
 
+  const radians = Math.PI / 180;
+  const degrees$1 = 180 / Math.PI;
+
+  // https://observablehq.com/@mbostock/lab-and-rgb
+  const K$1 = 18,
+      Xn$1 = 0.96422,
+      Yn$1 = 1,
+      Zn$1 = 0.82521,
+      t0$3 = 4 / 29,
+      t1$3 = 6 / 29,
+      t2$1 = 3 * t1$3 * t1$3,
+      t3$1 = t1$3 * t1$3 * t1$3;
+
+  function labConvert$1(o) {
+    if (o instanceof Lab$1) return new Lab$1(o.l, o.a, o.b, o.opacity);
+    if (o instanceof Hcl$1) return hcl2lab$1(o);
+    if (!(o instanceof Rgb$1)) o = rgbConvert$1(o);
+    var r = rgb2lrgb$1(o.r),
+        g = rgb2lrgb$1(o.g),
+        b = rgb2lrgb$1(o.b),
+        y = xyz2lab$1((0.2225045 * r + 0.7168786 * g + 0.0606169 * b) / Yn$1), x, z;
+    if (r === g && g === b) x = z = y; else {
+      x = xyz2lab$1((0.4360747 * r + 0.3850649 * g + 0.1430804 * b) / Xn$1);
+      z = xyz2lab$1((0.0139322 * r + 0.0971045 * g + 0.7141733 * b) / Zn$1);
+    }
+    return new Lab$1(116 * y - 16, 500 * (x - y), 200 * (y - z), o.opacity);
+  }
+
+  function lab$2(l, a, b, opacity) {
+    return arguments.length === 1 ? labConvert$1(l) : new Lab$1(l, a, b, opacity == null ? 1 : opacity);
+  }
+
+  function Lab$1(l, a, b, opacity) {
+    this.l = +l;
+    this.a = +a;
+    this.b = +b;
+    this.opacity = +opacity;
+  }
+
+  define$1(Lab$1, lab$2, extend$1(Color$1, {
+    brighter(k) {
+      return new Lab$1(this.l + K$1 * (k == null ? 1 : k), this.a, this.b, this.opacity);
+    },
+    darker(k) {
+      return new Lab$1(this.l - K$1 * (k == null ? 1 : k), this.a, this.b, this.opacity);
+    },
+    rgb() {
+      var y = (this.l + 16) / 116,
+          x = isNaN(this.a) ? y : y + this.a / 500,
+          z = isNaN(this.b) ? y : y - this.b / 200;
+      x = Xn$1 * lab2xyz$1(x);
+      y = Yn$1 * lab2xyz$1(y);
+      z = Zn$1 * lab2xyz$1(z);
+      return new Rgb$1(
+        lrgb2rgb$1( 3.1338561 * x - 1.6168667 * y - 0.4906146 * z),
+        lrgb2rgb$1(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z),
+        lrgb2rgb$1( 0.0719453 * x - 0.2289914 * y + 1.4052427 * z),
+        this.opacity
+      );
+    }
+  }));
+
+  function xyz2lab$1(t) {
+    return t > t3$1 ? Math.pow(t, 1 / 3) : t / t2$1 + t0$3;
+  }
+
+  function lab2xyz$1(t) {
+    return t > t1$3 ? t * t * t : t2$1 * (t - t0$3);
+  }
+
+  function lrgb2rgb$1(x) {
+    return 255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
+  }
+
+  function rgb2lrgb$1(x) {
+    return (x /= 255) <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+  }
+
+  function hclConvert$1(o) {
+    if (o instanceof Hcl$1) return new Hcl$1(o.h, o.c, o.l, o.opacity);
+    if (!(o instanceof Lab$1)) o = labConvert$1(o);
+    if (o.a === 0 && o.b === 0) return new Hcl$1(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
+    var h = Math.atan2(o.b, o.a) * degrees$1;
+    return new Hcl$1(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
+  }
+
+  function hcl$2(h, c, l, opacity) {
+    return arguments.length === 1 ? hclConvert$1(h) : new Hcl$1(h, c, l, opacity == null ? 1 : opacity);
+  }
+
+  function Hcl$1(h, c, l, opacity) {
+    this.h = +h;
+    this.c = +c;
+    this.l = +l;
+    this.opacity = +opacity;
+  }
+
+  function hcl2lab$1(o) {
+    if (isNaN(o.h)) return new Lab$1(o.l, 0, 0, o.opacity);
+    var h = o.h * radians;
+    return new Lab$1(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
+  }
+
+  define$1(Hcl$1, hcl$2, extend$1(Color$1, {
+    brighter(k) {
+      return new Hcl$1(this.h, this.c, this.l + K$1 * (k == null ? 1 : k), this.opacity);
+    },
+    darker(k) {
+      return new Hcl$1(this.h, this.c, this.l - K$1 * (k == null ? 1 : k), this.opacity);
+    },
+    rgb() {
+      return hcl2lab$1(this).rgb();
+    }
+  }));
+
   var prefix = "$";
 
   function Map$1() {}
 
-  Map$1.prototype = map$1.prototype = {
+  Map$1.prototype = map$2.prototype = {
     constructor: Map$1,
     has: function(key) {
       return (prefix + key) in this;
@@ -459,7 +574,7 @@ var template = (function (exports) {
     }
   };
 
-  function map$1(object, f) {
+  function map$2(object, f) {
     var map = new Map$1;
 
     // Copy constructor.
@@ -483,9 +598,9 @@ var template = (function (exports) {
 
   function Set() {}
 
-  var proto = map$1.prototype;
+  var proto = map$2.prototype;
 
-  Set.prototype = {
+  Set.prototype = set$3.prototype = {
     constructor: Set,
     has: proto.has,
     add: function(value) {
@@ -500,6 +615,22 @@ var template = (function (exports) {
     empty: proto.empty,
     each: proto.each
   };
+
+  function set$3(object, f) {
+    var set = new Set;
+
+    // Copy constructor.
+    if (object instanceof Set) object.each(function(value) { set.add(value); });
+
+    // Otherwise, assume it’s an array.
+    else if (object) {
+      var i = -1, n = object.length;
+      if (f == null) while (++i < n) set.add(object[i]);
+      else while (++i < n) set.add(f(object[i], i, object));
+    }
+
+    return set;
+  }
 
   function createScreenshotSVG(target, id) {
   	if (typeof target == "string") target = document.querySelector(target);
@@ -1179,7 +1310,7 @@ var template = (function (exports) {
   	}
   }
 
-  function init$3() {
+  function init$4() {
   	header_el = document.createElement("header");
   	header_el.className = "flourish-header";
 
@@ -1515,7 +1646,7 @@ var template = (function (exports) {
 
   function hexToColor(hex_string, opacity) {
   	if (typeof hex_string != "string") return false;
-  	var c = color(hex_string);
+  	var c = color$1(hex_string);
   	c.opacity = 1;
 
   	return c;
@@ -1542,7 +1673,7 @@ var template = (function (exports) {
   	return white_contrast < black_contrast ? true : false;
   }
 
-  const t0$1 = new Date, t1$1 = new Date;
+  const t0$2 = new Date, t1$2 = new Date;
 
   function timeInterval(floori, offseti, count, field) {
 
@@ -1594,9 +1725,9 @@ var template = (function (exports) {
 
     if (count) {
       interval.count = (start, end) => {
-        t0$1.setTime(+start), t1$1.setTime(+end);
-        floori(t0$1), floori(t1$1);
-        return Math.floor(count(t0$1, t1$1));
+        t0$2.setTime(+start), t1$2.setTime(+end);
+        floori(t0$2), floori(t1$2);
+        return Math.floor(count(t0$2, t1$2));
       };
 
       interval.every = (step) => {
@@ -2438,10 +2569,10 @@ var template = (function (exports) {
     return Math.floor(+d / 1000);
   }
 
-  var locale$1;
+  var locale$2;
   var timeFormat;
 
-  defaultLocale$1({
+  defaultLocale$2({
     dateTime: "%x, %X",
     date: "%-m/%-d/%Y",
     time: "%-I:%M:%S %p",
@@ -2452,13 +2583,13 @@ var template = (function (exports) {
     shortMonths: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
   });
 
-  function defaultLocale$1(definition) {
-    locale$1 = formatLocale$2(definition);
-    timeFormat = locale$1.format;
-    locale$1.parse;
-    locale$1.utcFormat;
-    locale$1.utcParse;
-    return locale$1;
+  function defaultLocale$2(definition) {
+    locale$2 = formatLocale$2(definition);
+    timeFormat = locale$2.format;
+    locale$2.parse;
+    locale$2.utcFormat;
+    locale$2.utcParse;
+    return locale$2;
   }
 
   function parseTimeStamp(timestamp, format) {
@@ -3212,8 +3343,8 @@ var template = (function (exports) {
       return out;
   }
 
-  var t0 = new Date,
-      t1 = new Date;
+  var t0$1 = new Date,
+      t1$1 = new Date;
 
   function newInterval(floori, offseti, count, field) {
 
@@ -3265,9 +3396,9 @@ var template = (function (exports) {
 
     if (count) {
       interval.count = function(start, end) {
-        t0.setTime(+start), t1.setTime(+end);
-        floori(t0), floori(t1);
-        return Math.floor(count(t0, t1));
+        t0$1.setTime(+start), t1$1.setTime(+end);
+        floori(t0$1), floori(t1$1);
+        return Math.floor(count(t0$1, t1$1));
       };
 
       interval.every = function(step) {
@@ -4096,11 +4227,11 @@ var template = (function (exports) {
     return Math.floor(+d / 1000);
   }
 
-  var locale;
+  var locale$1;
   var utcFormat;
   var utcParse;
 
-  defaultLocale({
+  defaultLocale$1({
     dateTime: "%x, %X",
     date: "%-m/%-d/%Y",
     time: "%-I:%M:%S %p",
@@ -4111,13 +4242,13 @@ var template = (function (exports) {
     shortMonths: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
   });
 
-  function defaultLocale(definition) {
-    locale = formatLocale$1(definition);
-    locale.format;
-    locale.parse;
-    utcFormat = locale.utcFormat;
-    utcParse = locale.utcParse;
-    return locale;
+  function defaultLocale$1(definition) {
+    locale$1 = formatLocale$1(definition);
+    locale$1.format;
+    locale$1.parse;
+    utcFormat = locale$1.utcFormat;
+    utcParse = locale$1.utcParse;
+    return locale$1;
   }
 
   function notAStringError(not_a_str) {
@@ -4679,19 +4810,19 @@ var template = (function (exports) {
     "x": function(x) { return Math.round(x).toString(16); }
   };
 
-  function identity$1(x) {
+  function identity$2(x) {
     return x;
   }
 
-  var map = Array.prototype.map,
+  var map$1 = Array.prototype.map,
       prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
 
   function formatLocale(locale) {
-    var group = locale.grouping === undefined || locale.thousands === undefined ? identity$1 : formatGroup(map.call(locale.grouping, Number), locale.thousands + ""),
+    var group = locale.grouping === undefined || locale.thousands === undefined ? identity$2 : formatGroup(map$1.call(locale.grouping, Number), locale.thousands + ""),
         currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
         currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
         decimal = locale.decimal === undefined ? "." : locale.decimal + "",
-        numerals = locale.numerals === undefined ? identity$1 : formatNumerals(map.call(locale.numerals, String)),
+        numerals = locale.numerals === undefined ? identity$2 : formatNumerals(map$1.call(locale.numerals, String)),
         percent = locale.percent === undefined ? "%" : locale.percent + "",
         minus = locale.minus === undefined ? "-" : locale.minus + "",
         nan = locale.nan === undefined ? "NaN" : locale.nan + "";
@@ -4821,6 +4952,38 @@ var template = (function (exports) {
       format: newFormat,
       formatPrefix: formatPrefix
     };
+  }
+
+  var locale;
+  var format;
+  var formatPrefix;
+
+  defaultLocale({
+    decimal: ".",
+    thousands: ",",
+    grouping: [3],
+    currency: ["$", ""],
+    minus: "-"
+  });
+
+  function defaultLocale(definition) {
+    locale = formatLocale(definition);
+    format = locale.format;
+    formatPrefix = locale.formatPrefix;
+    return locale;
+  }
+
+  function precisionFixed(step) {
+    return Math.max(0, -exponent(Math.abs(step)));
+  }
+
+  function precisionPrefix(step, value) {
+    return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3 - exponent(Math.abs(step)));
+  }
+
+  function precisionRound(step, max) {
+    step = Math.abs(step), max = Math.abs(max) - step;
+    return Math.max(0, exponent(max) - exponent(step)) + 1;
   }
 
   function getFormatFunction(interp) {
@@ -5609,7 +5772,7 @@ var template = (function (exports) {
   	}
   }
 
-  function init$2() {
+  function init$3() {
   	appendStyles();
 
   	footer_el = document.createElement("footer");
@@ -6029,7 +6192,7 @@ var template = (function (exports) {
   	document.body.style.backgroundPosition = state$1.background_image_position;
   }
 
-  var DEFAULTS = Object.freeze({
+  var DEFAULTS$1 = Object.freeze({
   	body_font: {
   		name: "Canva Sans Variable",
   		url: "https://public.flourish.studio/resources/fonts/canva-sans.css",
@@ -6586,10 +6749,10 @@ var template = (function (exports) {
   }
 
   // Main init function ----------------------------------------
-  function init$1(state_) {
+  function init$2(state_) {
   	state$1 = state_;
-  	for (var key in DEFAULTS) {
-  		if (state$1[key] === undefined) state$1[key] = DEFAULTS[key];
+  	for (var key in DEFAULTS$1) {
+  		if (state$1[key] === undefined) state$1[key] = DEFAULTS$1[key];
   	}
 
   	initFontStyles();
@@ -6597,8 +6760,8 @@ var template = (function (exports) {
   	SECTIONS.forEach(function (section, i) {
   		elements[section] = addElement(section, i);
   	});
-  	getSection("header").appendChild(init$3());
-  	getSection("footer").appendChild(init$2());
+  	getSection("header").appendChild(init$4());
+  	getSection("footer").appendChild(init$3());
   	elements.primary.outer.style.overflow = "hidden";
   	createOverlay();
 
@@ -6625,9 +6788,3301 @@ var template = (function (exports) {
   	};
   }
 
-  var state = {
-      example_state_property: 25,
+  var DEFAULTS = Object.freeze({
+  	categorical_type: "palette",
+  	categorical_palette: [
+  		"#135ae1",
+  		"#2197ff",
+  		"#9852d9",
+  		"#f54e8b",
+  		"#fa6502",
+  		"#f2b90f",
+  		"#058896",
+  		"#09aa64",
+  		"#de2c35",
+  		"#a7abaf",
+  		"#808080",
+  	],
+  	categorical_extend: true,
+  	categorical_custom_palette: "",
 
+  	numeric_type: "sequential",
+
+  	sequential_palette: "FlourishBlues",
+  	sequential_custom_min: "#F5F7FF",
+  	sequential_custom_max: "#002196",
+  	sequential_color_space: "rgb",
+  	sequential_reverse: false,
+  	sequential_custom_domain: false,
+  	sequential_domain_min: 0,
+  	sequential_domain_max: 1,
+
+  	diverging_palette: "RdBu",
+  	diverging_custom_min: "#1AA7EE",
+  	diverging_custom_mid: "#F7F7F7",
+  	diverging_custom_max: "#FF6283",
+  	diverging_color_space: "rgb",
+  	diverging_reverse: false,
+  	diverging_custom_domain: false,
+  	diverging_domain_min: 0,
+  	diverging_domain_mid: 0.5,
+  	diverging_domain_max: 1,
+
+  	binning: false,
+  	bin_count: 4,
+  	bin_mode: "fixed",
+  	bin_thresholds: "",
+  });
+
+  var DEFAULT_FALLBACK_VALUE = null;
+
+  var GOLDEN_RATIO = (1 + Math.sqrt(5)) / 2;
+  var DEFAULT_ANGLE = 360 / GOLDEN_RATIO;
+  var DEFAULT_COLOR = "#FF0000";
+
+  function hueRotationGenerator(colorSpace, second_channel_name, third_channel_name) {
+  	return function (init_colors, angle) {
+  		if (!Array.isArray(init_colors)) init_colors = init_colors ? [ init_colors ] : [ DEFAULT_COLOR ];
+  		angle = angle !== undefined ? angle : DEFAULT_ANGLE;
+
+  		// Convert colors to colorspace of choice
+  		var palette = init_colors.map(function(col) { return colorSpace(col); })
+  			.filter(function(col) { return !isNaN(col[second_channel_name]) && !isNaN(col[third_channel_name]); });
+
+  		if (!palette.length) palette = [colorSpace(DEFAULT_COLOR)];
+  		var n = palette.length;
+
+  		// Get average values of second and third channels
+  		var second_channel = palette.reduce(function(a, col) { return (a + col[second_channel_name]); }, 0) / n;
+  		var third_channel = palette.reduce(function(a, col) { return a + col[third_channel_name]; }, 0) / n;
+
+  		var counter = n;
+  		var h_init;
+  		do h_init = palette[--counter].h; // Try to base initial hue on last color that isn't grey
+  		while (isNaN(h_init) && counter > 0); // Grey hue is NaN
+
+  		var i = 0;
+
+  		return function nextColor() {
+  			var rotation = ++i * angle;
+  			var h = (h_init + rotation) % 360;
+  			return color$1(colorSpace(h, second_channel, third_channel)).hex();
+  		};
+  	};
+  }
+
+  var hclGenerator = hueRotationGenerator(hcl$2, "c", "l");
+
+  var hslGenerator = hueRotationGenerator(hsl$2, "s", "l");
+
+  var color_generators = {
+  	hcl: hclGenerator,
+  	hsl: hslGenerator,
+  };
+
+  function getCategoricalFunction(state, domain) {
+  	var lookup = {};
+
+  	var unique_domain = set$3(domain).values();
+  	var palette = state.categorical_palette;
+  	var n = palette.length;
+
+  	if (state.categorical_extend) {
+  		var angle = DEFAULTS.rotation_angle;
+  		var generator_name = "hcl";
+  		var colorGenerator = color_generators[generator_name](palette, angle);
+  		unique_domain.forEach(function (label, i) {
+  			if (i < n) lookup[label] = palette[i];
+  			else lookup[label] = colorGenerator();
+  		});
+  	} else {
+  		unique_domain.forEach(function (label, i) {
+  			lookup[label] = palette[i % n];
+  		});
+  	}
+
+  	state.categorical_custom_palette
+  		.split("\n")
+  		.filter(Boolean) // remove empty lines
+  		.forEach(function (str) {
+  			var index = str.lastIndexOf(":");
+  			if (index === -1) return;
+  			var label = str.slice(0, index).trim();
+  			var col = str.slice(index + 1).trim();
+  			if (label && col) lookup[label] = col;
+  		});
+
+  	var colorScale = function (value) {
+  		return lookup[value];
+  	};
+
+  	colorScale.domain = unique_domain.slice();
+  	colorScale.colors = unique_domain.map(function (d) {
+  		return lookup[d];
+  	});
+  	colorScale.items = unique_domain.map(function (d) {
+  		return { label: d, color: lookup[d] };
+  	});
+
+  	return colorScale;
+  }
+
+  function ascending$1(a, b) {
+    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+  }
+
+  function bisector(compare) {
+    if (compare.length === 1) compare = ascendingComparator(compare);
+    return {
+      left: function(a, x, lo, hi) {
+        if (lo == null) lo = 0;
+        if (hi == null) hi = a.length;
+        while (lo < hi) {
+          var mid = lo + hi >>> 1;
+          if (compare(a[mid], x) < 0) lo = mid + 1;
+          else hi = mid;
+        }
+        return lo;
+      },
+      right: function(a, x, lo, hi) {
+        if (lo == null) lo = 0;
+        if (hi == null) hi = a.length;
+        while (lo < hi) {
+          var mid = lo + hi >>> 1;
+          if (compare(a[mid], x) > 0) hi = mid;
+          else lo = mid + 1;
+        }
+        return lo;
+      }
+    };
+  }
+
+  function ascendingComparator(f) {
+    return function(d, x) {
+      return ascending$1(f(d), x);
+    };
+  }
+
+  var ascendingBisect = bisector(ascending$1);
+  var bisectRight = ascendingBisect.right;
+
+  function number$1(x) {
+    return x === null ? NaN : +x;
+  }
+
+  function extent(values, valueof) {
+    var n = values.length,
+        i = -1,
+        value,
+        min,
+        max;
+
+    {
+      while (++i < n) { // Find the first comparable value.
+        if ((value = values[i]) != null && value >= value) {
+          min = max = value;
+          while (++i < n) { // Compare the remaining values.
+            if ((value = values[i]) != null) {
+              if (min > value) min = value;
+              if (max < value) max = value;
+            }
+          }
+        }
+      }
+    }
+
+    return [min, max];
+  }
+
+  function range(start, stop, step) {
+    start = +start, stop = +stop, step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +step;
+
+    var i = -1,
+        n = Math.max(0, Math.ceil((stop - start) / step)) | 0,
+        range = new Array(n);
+
+    while (++i < n) {
+      range[i] = start + i * step;
+    }
+
+    return range;
+  }
+
+  var e10 = Math.sqrt(50),
+      e5 = Math.sqrt(10),
+      e2 = Math.sqrt(2);
+
+  function ticks(start, stop, count) {
+    var reverse,
+        i = -1,
+        n,
+        ticks,
+        step;
+
+    stop = +stop, start = +start, count = +count;
+    if (start === stop && count > 0) return [start];
+    if (reverse = stop < start) n = start, start = stop, stop = n;
+    if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
+
+    if (step > 0) {
+      start = Math.ceil(start / step);
+      stop = Math.floor(stop / step);
+      ticks = new Array(n = Math.ceil(stop - start + 1));
+      while (++i < n) ticks[i] = (start + i) * step;
+    } else {
+      start = Math.floor(start * step);
+      stop = Math.ceil(stop * step);
+      ticks = new Array(n = Math.ceil(start - stop + 1));
+      while (++i < n) ticks[i] = (start - i) / step;
+    }
+
+    if (reverse) ticks.reverse();
+
+    return ticks;
+  }
+
+  function tickIncrement(start, stop, count) {
+    var step = (stop - start) / Math.max(0, count),
+        power = Math.floor(Math.log(step) / Math.LN10),
+        error = step / Math.pow(10, power);
+    return power >= 0
+        ? (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1) * Math.pow(10, power)
+        : -Math.pow(10, -power) / (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1);
+  }
+
+  function tickStep(start, stop, count) {
+    var step0 = Math.abs(stop - start) / Math.max(0, count),
+        step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)),
+        error = step0 / step1;
+    if (error >= e10) step1 *= 10;
+    else if (error >= e5) step1 *= 5;
+    else if (error >= e2) step1 *= 2;
+    return stop < start ? -step1 : step1;
+  }
+
+  function threshold$1(values, p, valueof) {
+    if (valueof == null) valueof = number$1;
+    if (!(n = values.length)) return;
+    if ((p = +p) <= 0 || n < 2) return +valueof(values[0], 0, values);
+    if (p >= 1) return +valueof(values[n - 1], n - 1, values);
+    var n,
+        i = (n - 1) * p,
+        i0 = Math.floor(i),
+        value0 = +valueof(values[i0], i0, values),
+        value1 = +valueof(values[i0 + 1], i0 + 1, values);
+    return value0 + (value1 - value0) * (i - i0);
+  }
+
+  function initRange(domain, range) {
+    switch (arguments.length) {
+      case 0: break;
+      case 1: this.range(domain); break;
+      default: this.range(range).domain(domain); break;
+    }
+    return this;
+  }
+
+  function initInterpolator(domain, interpolator) {
+    switch (arguments.length) {
+      case 0: break;
+      case 1: this.interpolator(domain); break;
+      default: this.interpolator(interpolator).domain(domain); break;
+    }
+    return this;
+  }
+
+  var array$1 = Array.prototype;
+
+  var map = array$1.map;
+  var slice = array$1.slice;
+
+  function define(constructor, factory, prototype) {
+    constructor.prototype = factory.prototype = prototype;
+    prototype.constructor = constructor;
+  }
+
+  function extend(parent, definition) {
+    var prototype = Object.create(parent.prototype);
+    for (var key in definition) prototype[key] = definition[key];
+    return prototype;
+  }
+
+  function Color() {}
+
+  var darker = 0.7;
+  var brighter = 1 / darker;
+
+  var reI = "\\s*([+-]?\\d+)\\s*",
+      reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+      reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+      reHex = /^#([0-9a-f]{3,8})$/,
+      reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
+      reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
+      reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
+      reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
+      reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
+      reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
+
+  var named = {
+    aliceblue: 0xf0f8ff,
+    antiquewhite: 0xfaebd7,
+    aqua: 0x00ffff,
+    aquamarine: 0x7fffd4,
+    azure: 0xf0ffff,
+    beige: 0xf5f5dc,
+    bisque: 0xffe4c4,
+    black: 0x000000,
+    blanchedalmond: 0xffebcd,
+    blue: 0x0000ff,
+    blueviolet: 0x8a2be2,
+    brown: 0xa52a2a,
+    burlywood: 0xdeb887,
+    cadetblue: 0x5f9ea0,
+    chartreuse: 0x7fff00,
+    chocolate: 0xd2691e,
+    coral: 0xff7f50,
+    cornflowerblue: 0x6495ed,
+    cornsilk: 0xfff8dc,
+    crimson: 0xdc143c,
+    cyan: 0x00ffff,
+    darkblue: 0x00008b,
+    darkcyan: 0x008b8b,
+    darkgoldenrod: 0xb8860b,
+    darkgray: 0xa9a9a9,
+    darkgreen: 0x006400,
+    darkgrey: 0xa9a9a9,
+    darkkhaki: 0xbdb76b,
+    darkmagenta: 0x8b008b,
+    darkolivegreen: 0x556b2f,
+    darkorange: 0xff8c00,
+    darkorchid: 0x9932cc,
+    darkred: 0x8b0000,
+    darksalmon: 0xe9967a,
+    darkseagreen: 0x8fbc8f,
+    darkslateblue: 0x483d8b,
+    darkslategray: 0x2f4f4f,
+    darkslategrey: 0x2f4f4f,
+    darkturquoise: 0x00ced1,
+    darkviolet: 0x9400d3,
+    deeppink: 0xff1493,
+    deepskyblue: 0x00bfff,
+    dimgray: 0x696969,
+    dimgrey: 0x696969,
+    dodgerblue: 0x1e90ff,
+    firebrick: 0xb22222,
+    floralwhite: 0xfffaf0,
+    forestgreen: 0x228b22,
+    fuchsia: 0xff00ff,
+    gainsboro: 0xdcdcdc,
+    ghostwhite: 0xf8f8ff,
+    gold: 0xffd700,
+    goldenrod: 0xdaa520,
+    gray: 0x808080,
+    green: 0x008000,
+    greenyellow: 0xadff2f,
+    grey: 0x808080,
+    honeydew: 0xf0fff0,
+    hotpink: 0xff69b4,
+    indianred: 0xcd5c5c,
+    indigo: 0x4b0082,
+    ivory: 0xfffff0,
+    khaki: 0xf0e68c,
+    lavender: 0xe6e6fa,
+    lavenderblush: 0xfff0f5,
+    lawngreen: 0x7cfc00,
+    lemonchiffon: 0xfffacd,
+    lightblue: 0xadd8e6,
+    lightcoral: 0xf08080,
+    lightcyan: 0xe0ffff,
+    lightgoldenrodyellow: 0xfafad2,
+    lightgray: 0xd3d3d3,
+    lightgreen: 0x90ee90,
+    lightgrey: 0xd3d3d3,
+    lightpink: 0xffb6c1,
+    lightsalmon: 0xffa07a,
+    lightseagreen: 0x20b2aa,
+    lightskyblue: 0x87cefa,
+    lightslategray: 0x778899,
+    lightslategrey: 0x778899,
+    lightsteelblue: 0xb0c4de,
+    lightyellow: 0xffffe0,
+    lime: 0x00ff00,
+    limegreen: 0x32cd32,
+    linen: 0xfaf0e6,
+    magenta: 0xff00ff,
+    maroon: 0x800000,
+    mediumaquamarine: 0x66cdaa,
+    mediumblue: 0x0000cd,
+    mediumorchid: 0xba55d3,
+    mediumpurple: 0x9370db,
+    mediumseagreen: 0x3cb371,
+    mediumslateblue: 0x7b68ee,
+    mediumspringgreen: 0x00fa9a,
+    mediumturquoise: 0x48d1cc,
+    mediumvioletred: 0xc71585,
+    midnightblue: 0x191970,
+    mintcream: 0xf5fffa,
+    mistyrose: 0xffe4e1,
+    moccasin: 0xffe4b5,
+    navajowhite: 0xffdead,
+    navy: 0x000080,
+    oldlace: 0xfdf5e6,
+    olive: 0x808000,
+    olivedrab: 0x6b8e23,
+    orange: 0xffa500,
+    orangered: 0xff4500,
+    orchid: 0xda70d6,
+    palegoldenrod: 0xeee8aa,
+    palegreen: 0x98fb98,
+    paleturquoise: 0xafeeee,
+    palevioletred: 0xdb7093,
+    papayawhip: 0xffefd5,
+    peachpuff: 0xffdab9,
+    peru: 0xcd853f,
+    pink: 0xffc0cb,
+    plum: 0xdda0dd,
+    powderblue: 0xb0e0e6,
+    purple: 0x800080,
+    rebeccapurple: 0x663399,
+    red: 0xff0000,
+    rosybrown: 0xbc8f8f,
+    royalblue: 0x4169e1,
+    saddlebrown: 0x8b4513,
+    salmon: 0xfa8072,
+    sandybrown: 0xf4a460,
+    seagreen: 0x2e8b57,
+    seashell: 0xfff5ee,
+    sienna: 0xa0522d,
+    silver: 0xc0c0c0,
+    skyblue: 0x87ceeb,
+    slateblue: 0x6a5acd,
+    slategray: 0x708090,
+    slategrey: 0x708090,
+    snow: 0xfffafa,
+    springgreen: 0x00ff7f,
+    steelblue: 0x4682b4,
+    tan: 0xd2b48c,
+    teal: 0x008080,
+    thistle: 0xd8bfd8,
+    tomato: 0xff6347,
+    turquoise: 0x40e0d0,
+    violet: 0xee82ee,
+    wheat: 0xf5deb3,
+    white: 0xffffff,
+    whitesmoke: 0xf5f5f5,
+    yellow: 0xffff00,
+    yellowgreen: 0x9acd32
+  };
+
+  define(Color, color, {
+    copy: function(channels) {
+      return Object.assign(new this.constructor, this, channels);
+    },
+    displayable: function() {
+      return this.rgb().displayable();
+    },
+    hex: color_formatHex, // Deprecated! Use color.formatHex.
+    formatHex: color_formatHex,
+    formatHsl: color_formatHsl,
+    formatRgb: color_formatRgb,
+    toString: color_formatRgb
+  });
+
+  function color_formatHex() {
+    return this.rgb().formatHex();
+  }
+
+  function color_formatHsl() {
+    return hslConvert(this).formatHsl();
+  }
+
+  function color_formatRgb() {
+    return this.rgb().formatRgb();
+  }
+
+  function color(format) {
+    var m, l;
+    format = (format + "").trim().toLowerCase();
+    return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
+        : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+        : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+        : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+        : null) // invalid hex
+        : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+        : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+        : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+        : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+        : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+        : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+        : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
+        : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
+        : null;
+  }
+
+  function rgbn(n) {
+    return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+  }
+
+  function rgba(r, g, b, a) {
+    if (a <= 0) r = g = b = NaN;
+    return new Rgb(r, g, b, a);
+  }
+
+  function rgbConvert(o) {
+    if (!(o instanceof Color)) o = color(o);
+    if (!o) return new Rgb;
+    o = o.rgb();
+    return new Rgb(o.r, o.g, o.b, o.opacity);
+  }
+
+  function rgb(r, g, b, opacity) {
+    return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
+  }
+
+  function Rgb(r, g, b, opacity) {
+    this.r = +r;
+    this.g = +g;
+    this.b = +b;
+    this.opacity = +opacity;
+  }
+
+  define(Rgb, rgb, extend(Color, {
+    brighter: function(k) {
+      k = k == null ? brighter : Math.pow(brighter, k);
+      return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    darker: function(k) {
+      k = k == null ? darker : Math.pow(darker, k);
+      return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    rgb: function() {
+      return this;
+    },
+    displayable: function() {
+      return (-0.5 <= this.r && this.r < 255.5)
+          && (-0.5 <= this.g && this.g < 255.5)
+          && (-0.5 <= this.b && this.b < 255.5)
+          && (0 <= this.opacity && this.opacity <= 1);
+    },
+    hex: rgb_formatHex, // Deprecated! Use color.formatHex.
+    formatHex: rgb_formatHex,
+    formatRgb: rgb_formatRgb,
+    toString: rgb_formatRgb
+  }));
+
+  function rgb_formatHex() {
+    return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+  }
+
+  function rgb_formatRgb() {
+    var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+    return (a === 1 ? "rgb(" : "rgba(")
+        + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
+        + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
+        + Math.max(0, Math.min(255, Math.round(this.b) || 0))
+        + (a === 1 ? ")" : ", " + a + ")");
+  }
+
+  function hex(value) {
+    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    return (value < 16 ? "0" : "") + value.toString(16);
+  }
+
+  function hsla(h, s, l, a) {
+    if (a <= 0) h = s = l = NaN;
+    else if (l <= 0 || l >= 1) h = s = NaN;
+    else if (s <= 0) h = NaN;
+    return new Hsl(h, s, l, a);
+  }
+
+  function hslConvert(o) {
+    if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color)) o = color(o);
+    if (!o) return new Hsl;
+    if (o instanceof Hsl) return o;
+    o = o.rgb();
+    var r = o.r / 255,
+        g = o.g / 255,
+        b = o.b / 255,
+        min = Math.min(r, g, b),
+        max = Math.max(r, g, b),
+        h = NaN,
+        s = max - min,
+        l = (max + min) / 2;
+    if (s) {
+      if (r === max) h = (g - b) / s + (g < b) * 6;
+      else if (g === max) h = (b - r) / s + 2;
+      else h = (r - g) / s + 4;
+      s /= l < 0.5 ? max + min : 2 - max - min;
+      h *= 60;
+    } else {
+      s = l > 0 && l < 1 ? 0 : h;
+    }
+    return new Hsl(h, s, l, o.opacity);
+  }
+
+  function hsl$1(h, s, l, opacity) {
+    return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+  }
+
+  function Hsl(h, s, l, opacity) {
+    this.h = +h;
+    this.s = +s;
+    this.l = +l;
+    this.opacity = +opacity;
+  }
+
+  define(Hsl, hsl$1, extend(Color, {
+    brighter: function(k) {
+      k = k == null ? brighter : Math.pow(brighter, k);
+      return new Hsl(this.h, this.s, this.l * k, this.opacity);
+    },
+    darker: function(k) {
+      k = k == null ? darker : Math.pow(darker, k);
+      return new Hsl(this.h, this.s, this.l * k, this.opacity);
+    },
+    rgb: function() {
+      var h = this.h % 360 + (this.h < 0) * 360,
+          s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
+          l = this.l,
+          m2 = l + (l < 0.5 ? l : 1 - l) * s,
+          m1 = 2 * l - m2;
+      return new Rgb(
+        hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
+        hsl2rgb(h, m1, m2),
+        hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
+        this.opacity
+      );
+    },
+    displayable: function() {
+      return (0 <= this.s && this.s <= 1 || isNaN(this.s))
+          && (0 <= this.l && this.l <= 1)
+          && (0 <= this.opacity && this.opacity <= 1);
+    },
+    formatHsl: function() {
+      var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+      return (a === 1 ? "hsl(" : "hsla(")
+          + (this.h || 0) + ", "
+          + (this.s || 0) * 100 + "%, "
+          + (this.l || 0) * 100 + "%"
+          + (a === 1 ? ")" : ", " + a + ")");
+    }
+  }));
+
+  /* From FvD 13.37, CSS Color Module Level 3 */
+  function hsl2rgb(h, m1, m2) {
+    return (h < 60 ? m1 + (m2 - m1) * h / 60
+        : h < 180 ? m2
+        : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
+        : m1) * 255;
+  }
+
+  var deg2rad = Math.PI / 180;
+  var rad2deg = 180 / Math.PI;
+
+  // https://observablehq.com/@mbostock/lab-and-rgb
+  var K = 18,
+      Xn = 0.96422,
+      Yn = 1,
+      Zn = 0.82521,
+      t0 = 4 / 29,
+      t1 = 6 / 29,
+      t2 = 3 * t1 * t1,
+      t3 = t1 * t1 * t1;
+
+  function labConvert(o) {
+    if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
+    if (o instanceof Hcl) return hcl2lab(o);
+    if (!(o instanceof Rgb)) o = rgbConvert(o);
+    var r = rgb2lrgb(o.r),
+        g = rgb2lrgb(o.g),
+        b = rgb2lrgb(o.b),
+        y = xyz2lab((0.2225045 * r + 0.7168786 * g + 0.0606169 * b) / Yn), x, z;
+    if (r === g && g === b) x = z = y; else {
+      x = xyz2lab((0.4360747 * r + 0.3850649 * g + 0.1430804 * b) / Xn);
+      z = xyz2lab((0.0139322 * r + 0.0971045 * g + 0.7141733 * b) / Zn);
+    }
+    return new Lab(116 * y - 16, 500 * (x - y), 200 * (y - z), o.opacity);
+  }
+
+  function lab$1(l, a, b, opacity) {
+    return arguments.length === 1 ? labConvert(l) : new Lab(l, a, b, opacity == null ? 1 : opacity);
+  }
+
+  function Lab(l, a, b, opacity) {
+    this.l = +l;
+    this.a = +a;
+    this.b = +b;
+    this.opacity = +opacity;
+  }
+
+  define(Lab, lab$1, extend(Color, {
+    brighter: function(k) {
+      return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
+    },
+    darker: function(k) {
+      return new Lab(this.l - K * (k == null ? 1 : k), this.a, this.b, this.opacity);
+    },
+    rgb: function() {
+      var y = (this.l + 16) / 116,
+          x = isNaN(this.a) ? y : y + this.a / 500,
+          z = isNaN(this.b) ? y : y - this.b / 200;
+      x = Xn * lab2xyz(x);
+      y = Yn * lab2xyz(y);
+      z = Zn * lab2xyz(z);
+      return new Rgb(
+        lrgb2rgb( 3.1338561 * x - 1.6168667 * y - 0.4906146 * z),
+        lrgb2rgb(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z),
+        lrgb2rgb( 0.0719453 * x - 0.2289914 * y + 1.4052427 * z),
+        this.opacity
+      );
+    }
+  }));
+
+  function xyz2lab(t) {
+    return t > t3 ? Math.pow(t, 1 / 3) : t / t2 + t0;
+  }
+
+  function lab2xyz(t) {
+    return t > t1 ? t * t * t : t2 * (t - t0);
+  }
+
+  function lrgb2rgb(x) {
+    return 255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
+  }
+
+  function rgb2lrgb(x) {
+    return (x /= 255) <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+  }
+
+  function hclConvert(o) {
+    if (o instanceof Hcl) return new Hcl(o.h, o.c, o.l, o.opacity);
+    if (!(o instanceof Lab)) o = labConvert(o);
+    if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
+    var h = Math.atan2(o.b, o.a) * rad2deg;
+    return new Hcl(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
+  }
+
+  function hcl$1(h, c, l, opacity) {
+    return arguments.length === 1 ? hclConvert(h) : new Hcl(h, c, l, opacity == null ? 1 : opacity);
+  }
+
+  function Hcl(h, c, l, opacity) {
+    this.h = +h;
+    this.c = +c;
+    this.l = +l;
+    this.opacity = +opacity;
+  }
+
+  function hcl2lab(o) {
+    if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
+    var h = o.h * deg2rad;
+    return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
+  }
+
+  define(Hcl, hcl$1, extend(Color, {
+    brighter: function(k) {
+      return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
+    },
+    darker: function(k) {
+      return new Hcl(this.h, this.c, this.l - K * (k == null ? 1 : k), this.opacity);
+    },
+    rgb: function() {
+      return hcl2lab(this).rgb();
+    }
+  }));
+
+  var A = -0.14861,
+      B = 1.78277,
+      C = -0.29227,
+      D = -0.90649,
+      E = 1.97294,
+      ED = E * D,
+      EB = E * B,
+      BC_DA = B * C - D * A;
+
+  function cubehelixConvert(o) {
+    if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Rgb)) o = rgbConvert(o);
+    var r = o.r / 255,
+        g = o.g / 255,
+        b = o.b / 255,
+        l = (BC_DA * b + ED * r - EB * g) / (BC_DA + ED - EB),
+        bl = b - l,
+        k = (E * (g - l) - C * bl) / D,
+        s = Math.sqrt(k * k + bl * bl) / (E * l * (1 - l)), // NaN if l=0 or l=1
+        h = s ? Math.atan2(k, bl) * rad2deg - 120 : NaN;
+    return new Cubehelix(h < 0 ? h + 360 : h, s, l, o.opacity);
+  }
+
+  function cubehelix$1(h, s, l, opacity) {
+    return arguments.length === 1 ? cubehelixConvert(h) : new Cubehelix(h, s, l, opacity == null ? 1 : opacity);
+  }
+
+  function Cubehelix(h, s, l, opacity) {
+    this.h = +h;
+    this.s = +s;
+    this.l = +l;
+    this.opacity = +opacity;
+  }
+
+  define(Cubehelix, cubehelix$1, extend(Color, {
+    brighter: function(k) {
+      k = k == null ? brighter : Math.pow(brighter, k);
+      return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
+    },
+    darker: function(k) {
+      k = k == null ? darker : Math.pow(darker, k);
+      return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
+    },
+    rgb: function() {
+      var h = isNaN(this.h) ? 0 : (this.h + 120) * deg2rad,
+          l = +this.l,
+          a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
+          cosh = Math.cos(h),
+          sinh = Math.sin(h);
+      return new Rgb(
+        255 * (l + a * (A * cosh + B * sinh)),
+        255 * (l + a * (C * cosh + D * sinh)),
+        255 * (l + a * (E * cosh)),
+        this.opacity
+      );
+    }
+  }));
+
+  function basis(t1, v0, v1, v2, v3) {
+    var t2 = t1 * t1, t3 = t2 * t1;
+    return ((1 - 3 * t1 + 3 * t2 - t3) * v0
+        + (4 - 6 * t2 + 3 * t3) * v1
+        + (1 + 3 * t1 + 3 * t2 - 3 * t3) * v2
+        + t3 * v3) / 6;
+  }
+
+  function basis$1(values) {
+    var n = values.length - 1;
+    return function(t) {
+      var i = t <= 0 ? (t = 0) : t >= 1 ? (t = 1, n - 1) : Math.floor(t * n),
+          v1 = values[i],
+          v2 = values[i + 1],
+          v0 = i > 0 ? values[i - 1] : 2 * v1 - v2,
+          v3 = i < n - 1 ? values[i + 2] : 2 * v2 - v1;
+      return basis((t - i / n) * n, v0, v1, v2, v3);
+    };
+  }
+
+  function constant$3(x) {
+    return function() {
+      return x;
+    };
+  }
+
+  function linear$2(a, d) {
+    return function(t) {
+      return a + t * d;
+    };
+  }
+
+  function exponential$1(a, b, y) {
+    return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
+      return Math.pow(a + t * b, y);
+    };
+  }
+
+  function hue(a, b) {
+    var d = b - a;
+    return d ? linear$2(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant$3(isNaN(a) ? b : a);
+  }
+
+  function gamma$1(y) {
+    return (y = +y) === 1 ? nogamma$1 : function(a, b) {
+      return b - a ? exponential$1(a, b, y) : constant$3(isNaN(a) ? b : a);
+    };
+  }
+
+  function nogamma$1(a, b) {
+    var d = b - a;
+    return d ? linear$2(a, d) : constant$3(isNaN(a) ? b : a);
+  }
+
+  var interpolateRgb$1 = (function rgbGamma(y) {
+    var color = gamma$1(y);
+
+    function rgb$1(start, end) {
+      var r = color((start = rgb(start)).r, (end = rgb(end)).r),
+          g = color(start.g, end.g),
+          b = color(start.b, end.b),
+          opacity = nogamma$1(start.opacity, end.opacity);
+      return function(t) {
+        start.r = r(t);
+        start.g = g(t);
+        start.b = b(t);
+        start.opacity = opacity(t);
+        return start + "";
+      };
+    }
+
+    rgb$1.gamma = rgbGamma;
+
+    return rgb$1;
+  })(1);
+
+  function rgbSpline(spline) {
+    return function(colors) {
+      var n = colors.length,
+          r = new Array(n),
+          g = new Array(n),
+          b = new Array(n),
+          i, color;
+      for (i = 0; i < n; ++i) {
+        color = rgb(colors[i]);
+        r[i] = color.r || 0;
+        g[i] = color.g || 0;
+        b[i] = color.b || 0;
+      }
+      r = spline(r);
+      g = spline(g);
+      b = spline(b);
+      color.opacity = 1;
+      return function(t) {
+        color.r = r(t);
+        color.g = g(t);
+        color.b = b(t);
+        return color + "";
+      };
+    };
+  }
+
+  var rgbBasis = rgbSpline(basis$1);
+
+  function numberArray(a, b) {
+    if (!b) b = [];
+    var n = a ? Math.min(b.length, a.length) : 0,
+        c = b.slice(),
+        i;
+    return function(t) {
+      for (i = 0; i < n; ++i) c[i] = a[i] * (1 - t) + b[i] * t;
+      return c;
+    };
+  }
+
+  function isNumberArray(x) {
+    return ArrayBuffer.isView(x) && !(x instanceof DataView);
+  }
+
+  function genericArray(a, b) {
+    var nb = b ? b.length : 0,
+        na = a ? Math.min(nb, a.length) : 0,
+        x = new Array(na),
+        c = new Array(nb),
+        i;
+
+    for (i = 0; i < na; ++i) x[i] = interpolateValue(a[i], b[i]);
+    for (; i < nb; ++i) c[i] = b[i];
+
+    return function(t) {
+      for (i = 0; i < na; ++i) c[i] = x[i](t);
+      return c;
+    };
+  }
+
+  function date(a, b) {
+    var d = new Date;
+    return a = +a, b = +b, function(t) {
+      return d.setTime(a * (1 - t) + b * t), d;
+    };
+  }
+
+  function interpolateNumber$1(a, b) {
+    return a = +a, b = +b, function(t) {
+      return a * (1 - t) + b * t;
+    };
+  }
+
+  function object(a, b) {
+    var i = {},
+        c = {},
+        k;
+
+    if (a === null || typeof a !== "object") a = {};
+    if (b === null || typeof b !== "object") b = {};
+
+    for (k in b) {
+      if (k in a) {
+        i[k] = interpolateValue(a[k], b[k]);
+      } else {
+        c[k] = b[k];
+      }
+    }
+
+    return function(t) {
+      for (k in i) c[k] = i[k](t);
+      return c;
+    };
+  }
+
+  var reA$1 = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
+      reB$1 = new RegExp(reA$1.source, "g");
+
+  function zero$1(b) {
+    return function() {
+      return b;
+    };
+  }
+
+  function one$1(b) {
+    return function(t) {
+      return b(t) + "";
+    };
+  }
+
+  function string(a, b) {
+    var bi = reA$1.lastIndex = reB$1.lastIndex = 0, // scan index for next number in b
+        am, // current match in a
+        bm, // current match in b
+        bs, // string preceding current number in b, if any
+        i = -1, // index in s
+        s = [], // string constants and placeholders
+        q = []; // number interpolators
+
+    // Coerce inputs to strings.
+    a = a + "", b = b + "";
+
+    // Interpolate pairs of numbers in a & b.
+    while ((am = reA$1.exec(a))
+        && (bm = reB$1.exec(b))) {
+      if ((bs = bm.index) > bi) { // a string precedes the next number in b
+        bs = b.slice(bi, bs);
+        if (s[i]) s[i] += bs; // coalesce with previous string
+        else s[++i] = bs;
+      }
+      if ((am = am[0]) === (bm = bm[0])) { // numbers in a & b match
+        if (s[i]) s[i] += bm; // coalesce with previous string
+        else s[++i] = bm;
+      } else { // interpolate non-matching numbers
+        s[++i] = null;
+        q.push({i: i, x: interpolateNumber$1(am, bm)});
+      }
+      bi = reB$1.lastIndex;
+    }
+
+    // Add remains of b.
+    if (bi < b.length) {
+      bs = b.slice(bi);
+      if (s[i]) s[i] += bs; // coalesce with previous string
+      else s[++i] = bs;
+    }
+
+    // Special optimization for only a single match.
+    // Otherwise, interpolate each of the numbers and rejoin the string.
+    return s.length < 2 ? (q[0]
+        ? one$1(q[0].x)
+        : zero$1(b))
+        : (b = q.length, function(t) {
+            for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
+            return s.join("");
+          });
+  }
+
+  function interpolateValue(a, b) {
+    var t = typeof b, c;
+    return b == null || t === "boolean" ? constant$3(b)
+        : (t === "number" ? interpolateNumber$1
+        : t === "string" ? ((c = color(b)) ? (b = c, interpolateRgb$1) : string)
+        : b instanceof color ? interpolateRgb$1
+        : b instanceof Date ? date
+        : isNumberArray(b) ? numberArray
+        : Array.isArray(b) ? genericArray
+        : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
+        : interpolateNumber$1)(a, b);
+  }
+
+  function interpolateRound(a, b) {
+    return a = +a, b = +b, function(t) {
+      return Math.round(a * (1 - t) + b * t);
+    };
+  }
+
+  function hsl(hue) {
+    return function(start, end) {
+      var h = hue((start = hsl$1(start)).h, (end = hsl$1(end)).h),
+          s = nogamma$1(start.s, end.s),
+          l = nogamma$1(start.l, end.l),
+          opacity = nogamma$1(start.opacity, end.opacity);
+      return function(t) {
+        start.h = h(t);
+        start.s = s(t);
+        start.l = l(t);
+        start.opacity = opacity(t);
+        return start + "";
+      };
+    }
+  }
+
+  var interpolateHsl = hsl(hue);
+
+  function lab(start, end) {
+    var l = nogamma$1((start = lab$1(start)).l, (end = lab$1(end)).l),
+        a = nogamma$1(start.a, end.a),
+        b = nogamma$1(start.b, end.b),
+        opacity = nogamma$1(start.opacity, end.opacity);
+    return function(t) {
+      start.l = l(t);
+      start.a = a(t);
+      start.b = b(t);
+      start.opacity = opacity(t);
+      return start + "";
+    };
+  }
+
+  function hcl(hue) {
+    return function(start, end) {
+      var h = hue((start = hcl$1(start)).h, (end = hcl$1(end)).h),
+          c = nogamma$1(start.c, end.c),
+          l = nogamma$1(start.l, end.l),
+          opacity = nogamma$1(start.opacity, end.opacity);
+      return function(t) {
+        start.h = h(t);
+        start.c = c(t);
+        start.l = l(t);
+        start.opacity = opacity(t);
+        return start + "";
+      };
+    }
+  }
+
+  var interpolateHcl = hcl(hue);
+
+  function cubehelix(hue) {
+    return (function cubehelixGamma(y) {
+      y = +y;
+
+      function cubehelix(start, end) {
+        var h = hue((start = cubehelix$1(start)).h, (end = cubehelix$1(end)).h),
+            s = nogamma$1(start.s, end.s),
+            l = nogamma$1(start.l, end.l),
+            opacity = nogamma$1(start.opacity, end.opacity);
+        return function(t) {
+          start.h = h(t);
+          start.s = s(t);
+          start.l = l(Math.pow(t, y));
+          start.opacity = opacity(t);
+          return start + "";
+        };
+      }
+
+      cubehelix.gamma = cubehelixGamma;
+
+      return cubehelix;
+    })(1);
+  }
+
+  cubehelix(hue);
+  var cubehelixLong = cubehelix(nogamma$1);
+
+  function piecewise(interpolate, values) {
+    var i = 0, n = values.length - 1, v = values[0], I = new Array(n < 0 ? 0 : n);
+    while (i < n) I[i] = interpolate(v, v = values[++i]);
+    return function(t) {
+      var i = Math.max(0, Math.min(n - 1, Math.floor(t *= n)));
+      return I[i](t - i);
+    };
+  }
+
+  function constant$2(x) {
+    return function() {
+      return x;
+    };
+  }
+
+  function number(x) {
+    return +x;
+  }
+
+  var unit = [0, 1];
+
+  function identity$1(x) {
+    return x;
+  }
+
+  function normalize(a, b) {
+    return (b -= (a = +a))
+        ? function(x) { return (x - a) / b; }
+        : constant$2(isNaN(b) ? NaN : 0.5);
+  }
+
+  function clamper(domain) {
+    var a = domain[0], b = domain[domain.length - 1], t;
+    if (a > b) t = a, a = b, b = t;
+    return function(x) { return Math.max(a, Math.min(b, x)); };
+  }
+
+  // normalize(a, b)(x) takes a domain value x in [a,b] and returns the corresponding parameter t in [0,1].
+  // interpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding range value x in [a,b].
+  function bimap(domain, range, interpolate) {
+    var d0 = domain[0], d1 = domain[1], r0 = range[0], r1 = range[1];
+    if (d1 < d0) d0 = normalize(d1, d0), r0 = interpolate(r1, r0);
+    else d0 = normalize(d0, d1), r0 = interpolate(r0, r1);
+    return function(x) { return r0(d0(x)); };
+  }
+
+  function polymap(domain, range, interpolate) {
+    var j = Math.min(domain.length, range.length) - 1,
+        d = new Array(j),
+        r = new Array(j),
+        i = -1;
+
+    // Reverse descending domains.
+    if (domain[j] < domain[0]) {
+      domain = domain.slice().reverse();
+      range = range.slice().reverse();
+    }
+
+    while (++i < j) {
+      d[i] = normalize(domain[i], domain[i + 1]);
+      r[i] = interpolate(range[i], range[i + 1]);
+    }
+
+    return function(x) {
+      var i = bisectRight(domain, x, 1, j) - 1;
+      return r[i](d[i](x));
+    };
+  }
+
+  function copy$1(source, target) {
+    return target
+        .domain(source.domain())
+        .range(source.range())
+        .interpolate(source.interpolate())
+        .clamp(source.clamp())
+        .unknown(source.unknown());
+  }
+
+  function transformer$2() {
+    var domain = unit,
+        range = unit,
+        interpolate = interpolateValue,
+        transform,
+        untransform,
+        unknown,
+        clamp = identity$1,
+        piecewise,
+        output,
+        input;
+
+    function rescale() {
+      piecewise = Math.min(domain.length, range.length) > 2 ? polymap : bimap;
+      output = input = null;
+      return scale;
+    }
+
+    function scale(x) {
+      return isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate)))(transform(clamp(x)));
+    }
+
+    scale.invert = function(y) {
+      return clamp(untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber$1)))(y)));
+    };
+
+    scale.domain = function(_) {
+      return arguments.length ? (domain = map.call(_, number), clamp === identity$1 || (clamp = clamper(domain)), rescale()) : domain.slice();
+    };
+
+    scale.range = function(_) {
+      return arguments.length ? (range = slice.call(_), rescale()) : range.slice();
+    };
+
+    scale.rangeRound = function(_) {
+      return range = slice.call(_), interpolate = interpolateRound, rescale();
+    };
+
+    scale.clamp = function(_) {
+      return arguments.length ? (clamp = _ ? clamper(domain) : identity$1, scale) : clamp !== identity$1;
+    };
+
+    scale.interpolate = function(_) {
+      return arguments.length ? (interpolate = _, rescale()) : interpolate;
+    };
+
+    scale.unknown = function(_) {
+      return arguments.length ? (unknown = _, scale) : unknown;
+    };
+
+    return function(t, u) {
+      transform = t, untransform = u;
+      return rescale();
+    };
+  }
+
+  function continuous(transform, untransform) {
+    return transformer$2()(transform, untransform);
+  }
+
+  function tickFormat(start, stop, count, specifier) {
+    var step = tickStep(start, stop, count),
+        precision;
+    specifier = formatSpecifier(specifier == null ? ",f" : specifier);
+    switch (specifier.type) {
+      case "s": {
+        var value = Math.max(Math.abs(start), Math.abs(stop));
+        if (specifier.precision == null && !isNaN(precision = precisionPrefix(step, value))) specifier.precision = precision;
+        return formatPrefix(specifier, value);
+      }
+      case "":
+      case "e":
+      case "g":
+      case "p":
+      case "r": {
+        if (specifier.precision == null && !isNaN(precision = precisionRound(step, Math.max(Math.abs(start), Math.abs(stop))))) specifier.precision = precision - (specifier.type === "e");
+        break;
+      }
+      case "f":
+      case "%": {
+        if (specifier.precision == null && !isNaN(precision = precisionFixed(step))) specifier.precision = precision - (specifier.type === "%") * 2;
+        break;
+      }
+    }
+    return format(specifier);
+  }
+
+  function linearish(scale) {
+    var domain = scale.domain;
+
+    scale.ticks = function(count) {
+      var d = domain();
+      return ticks(d[0], d[d.length - 1], count == null ? 10 : count);
+    };
+
+    scale.tickFormat = function(count, specifier) {
+      var d = domain();
+      return tickFormat(d[0], d[d.length - 1], count == null ? 10 : count, specifier);
+    };
+
+    scale.nice = function(count) {
+      if (count == null) count = 10;
+
+      var d = domain(),
+          i0 = 0,
+          i1 = d.length - 1,
+          start = d[i0],
+          stop = d[i1],
+          step;
+
+      if (stop < start) {
+        step = start, start = stop, stop = step;
+        step = i0, i0 = i1, i1 = step;
+      }
+
+      step = tickIncrement(start, stop, count);
+
+      if (step > 0) {
+        start = Math.floor(start / step) * step;
+        stop = Math.ceil(stop / step) * step;
+        step = tickIncrement(start, stop, count);
+      } else if (step < 0) {
+        start = Math.ceil(start * step) / step;
+        stop = Math.floor(stop * step) / step;
+        step = tickIncrement(start, stop, count);
+      }
+
+      if (step > 0) {
+        d[i0] = Math.floor(start / step) * step;
+        d[i1] = Math.ceil(stop / step) * step;
+        domain(d);
+      } else if (step < 0) {
+        d[i0] = Math.ceil(start * step) / step;
+        d[i1] = Math.floor(stop * step) / step;
+        domain(d);
+      }
+
+      return scale;
+    };
+
+    return scale;
+  }
+
+  function linear$1() {
+    var scale = continuous(identity$1, identity$1);
+
+    scale.copy = function() {
+      return copy$1(scale, linear$1());
+    };
+
+    initRange.apply(scale, arguments);
+
+    return linearish(scale);
+  }
+
+  function quantile() {
+    var domain = [],
+        range = [],
+        thresholds = [],
+        unknown;
+
+    function rescale() {
+      var i = 0, n = Math.max(1, range.length);
+      thresholds = new Array(n - 1);
+      while (++i < n) thresholds[i - 1] = threshold$1(domain, i / n);
+      return scale;
+    }
+
+    function scale(x) {
+      return isNaN(x = +x) ? unknown : range[bisectRight(thresholds, x)];
+    }
+
+    scale.invertExtent = function(y) {
+      var i = range.indexOf(y);
+      return i < 0 ? [NaN, NaN] : [
+        i > 0 ? thresholds[i - 1] : domain[0],
+        i < thresholds.length ? thresholds[i] : domain[domain.length - 1]
+      ];
+    };
+
+    scale.domain = function(_) {
+      if (!arguments.length) return domain.slice();
+      domain = [];
+      for (var i = 0, n = _.length, d; i < n; ++i) if (d = _[i], d != null && !isNaN(d = +d)) domain.push(d);
+      domain.sort(ascending$1);
+      return rescale();
+    };
+
+    scale.range = function(_) {
+      return arguments.length ? (range = slice.call(_), rescale()) : range.slice();
+    };
+
+    scale.unknown = function(_) {
+      return arguments.length ? (unknown = _, scale) : unknown;
+    };
+
+    scale.quantiles = function() {
+      return thresholds.slice();
+    };
+
+    scale.copy = function() {
+      return quantile()
+          .domain(domain)
+          .range(range)
+          .unknown(unknown);
+    };
+
+    return initRange.apply(scale, arguments);
+  }
+
+  function quantize() {
+    var x0 = 0,
+        x1 = 1,
+        n = 1,
+        domain = [0.5],
+        range = [0, 1],
+        unknown;
+
+    function scale(x) {
+      return x <= x ? range[bisectRight(domain, x, 0, n)] : unknown;
+    }
+
+    function rescale() {
+      var i = -1;
+      domain = new Array(n);
+      while (++i < n) domain[i] = ((i + 1) * x1 - (i - n) * x0) / (n + 1);
+      return scale;
+    }
+
+    scale.domain = function(_) {
+      return arguments.length ? (x0 = +_[0], x1 = +_[1], rescale()) : [x0, x1];
+    };
+
+    scale.range = function(_) {
+      return arguments.length ? (n = (range = slice.call(_)).length - 1, rescale()) : range.slice();
+    };
+
+    scale.invertExtent = function(y) {
+      var i = range.indexOf(y);
+      return i < 0 ? [NaN, NaN]
+          : i < 1 ? [x0, domain[0]]
+          : i >= n ? [domain[n - 1], x1]
+          : [domain[i - 1], domain[i]];
+    };
+
+    scale.unknown = function(_) {
+      return arguments.length ? (unknown = _, scale) : scale;
+    };
+
+    scale.thresholds = function() {
+      return domain.slice();
+    };
+
+    scale.copy = function() {
+      return quantize()
+          .domain([x0, x1])
+          .range(range)
+          .unknown(unknown);
+    };
+
+    return initRange.apply(linearish(scale), arguments);
+  }
+
+  function threshold() {
+    var domain = [0.5],
+        range = [0, 1],
+        unknown,
+        n = 1;
+
+    function scale(x) {
+      return x <= x ? range[bisectRight(domain, x, 0, n)] : unknown;
+    }
+
+    scale.domain = function(_) {
+      return arguments.length ? (domain = slice.call(_), n = Math.min(domain.length, range.length - 1), scale) : domain.slice();
+    };
+
+    scale.range = function(_) {
+      return arguments.length ? (range = slice.call(_), n = Math.min(domain.length, range.length - 1), scale) : range.slice();
+    };
+
+    scale.invertExtent = function(y) {
+      var i = range.indexOf(y);
+      return [domain[i - 1], domain[i]];
+    };
+
+    scale.unknown = function(_) {
+      return arguments.length ? (unknown = _, scale) : unknown;
+    };
+
+    scale.copy = function() {
+      return threshold()
+          .domain(domain)
+          .range(range)
+          .unknown(unknown);
+    };
+
+    return initRange.apply(scale, arguments);
+  }
+
+  function transformer$1() {
+    var x0 = 0,
+        x1 = 1,
+        t0,
+        t1,
+        k10,
+        transform,
+        interpolator = identity$1,
+        clamp = false,
+        unknown;
+
+    function scale(x) {
+      return isNaN(x = +x) ? unknown : interpolator(k10 === 0 ? 0.5 : (x = (transform(x) - t0) * k10, clamp ? Math.max(0, Math.min(1, x)) : x));
+    }
+
+    scale.domain = function(_) {
+      return arguments.length ? (t0 = transform(x0 = +_[0]), t1 = transform(x1 = +_[1]), k10 = t0 === t1 ? 0 : 1 / (t1 - t0), scale) : [x0, x1];
+    };
+
+    scale.clamp = function(_) {
+      return arguments.length ? (clamp = !!_, scale) : clamp;
+    };
+
+    scale.interpolator = function(_) {
+      return arguments.length ? (interpolator = _, scale) : interpolator;
+    };
+
+    scale.unknown = function(_) {
+      return arguments.length ? (unknown = _, scale) : unknown;
+    };
+
+    return function(t) {
+      transform = t, t0 = t(x0), t1 = t(x1), k10 = t0 === t1 ? 0 : 1 / (t1 - t0);
+      return scale;
+    };
+  }
+
+  function copy(source, target) {
+    return target
+        .domain(source.domain())
+        .interpolator(source.interpolator())
+        .clamp(source.clamp())
+        .unknown(source.unknown());
+  }
+
+  function sequential() {
+    var scale = linearish(transformer$1()(identity$1));
+
+    scale.copy = function() {
+      return copy(scale, sequential());
+    };
+
+    return initInterpolator.apply(scale, arguments);
+  }
+
+  function transformer() {
+    var x0 = 0,
+        x1 = 0.5,
+        x2 = 1,
+        t0,
+        t1,
+        t2,
+        k10,
+        k21,
+        interpolator = identity$1,
+        transform,
+        clamp = false,
+        unknown;
+
+    function scale(x) {
+      return isNaN(x = +x) ? unknown : (x = 0.5 + ((x = +transform(x)) - t1) * (x < t1 ? k10 : k21), interpolator(clamp ? Math.max(0, Math.min(1, x)) : x));
+    }
+
+    scale.domain = function(_) {
+      return arguments.length ? (t0 = transform(x0 = +_[0]), t1 = transform(x1 = +_[1]), t2 = transform(x2 = +_[2]), k10 = t0 === t1 ? 0 : 0.5 / (t1 - t0), k21 = t1 === t2 ? 0 : 0.5 / (t2 - t1), scale) : [x0, x1, x2];
+    };
+
+    scale.clamp = function(_) {
+      return arguments.length ? (clamp = !!_, scale) : clamp;
+    };
+
+    scale.interpolator = function(_) {
+      return arguments.length ? (interpolator = _, scale) : interpolator;
+    };
+
+    scale.unknown = function(_) {
+      return arguments.length ? (unknown = _, scale) : unknown;
+    };
+
+    return function(t) {
+      transform = t, t0 = t(x0), t1 = t(x1), t2 = t(x2), k10 = t0 === t1 ? 0 : 0.5 / (t1 - t0), k21 = t1 === t2 ? 0 : 0.5 / (t2 - t1);
+      return scale;
+    };
+  }
+
+  function diverging() {
+    var scale = linearish(transformer()(identity$1));
+
+    scale.copy = function() {
+      return copy(scale, diverging());
+    };
+
+    return initInterpolator.apply(scale, arguments);
+  }
+
+  function colors(specifier) {
+    var n = specifier.length / 6 | 0, colors = new Array(n), i = 0;
+    while (i < n) colors[i] = "#" + specifier.slice(i * 6, ++i * 6);
+    return colors;
+  }
+
+  function ramp$1(scheme) {
+    return rgbBasis(scheme[scheme.length - 1]);
+  }
+
+  var scheme$k = new Array(3).concat(
+    "d8b365f5f5f55ab4ac",
+    "a6611adfc27d80cdc1018571",
+    "a6611adfc27df5f5f580cdc1018571",
+    "8c510ad8b365f6e8c3c7eae55ab4ac01665e",
+    "8c510ad8b365f6e8c3f5f5f5c7eae55ab4ac01665e",
+    "8c510abf812ddfc27df6e8c3c7eae580cdc135978f01665e",
+    "8c510abf812ddfc27df6e8c3f5f5f5c7eae580cdc135978f01665e",
+    "5430058c510abf812ddfc27df6e8c3c7eae580cdc135978f01665e003c30",
+    "5430058c510abf812ddfc27df6e8c3f5f5f5c7eae580cdc135978f01665e003c30"
+  ).map(colors);
+
+  var interpolateBrBG = ramp$1(scheme$k);
+
+  var scheme$j = new Array(3).concat(
+    "af8dc3f7f7f77fbf7b",
+    "7b3294c2a5cfa6dba0008837",
+    "7b3294c2a5cff7f7f7a6dba0008837",
+    "762a83af8dc3e7d4e8d9f0d37fbf7b1b7837",
+    "762a83af8dc3e7d4e8f7f7f7d9f0d37fbf7b1b7837",
+    "762a839970abc2a5cfe7d4e8d9f0d3a6dba05aae611b7837",
+    "762a839970abc2a5cfe7d4e8f7f7f7d9f0d3a6dba05aae611b7837",
+    "40004b762a839970abc2a5cfe7d4e8d9f0d3a6dba05aae611b783700441b",
+    "40004b762a839970abc2a5cfe7d4e8f7f7f7d9f0d3a6dba05aae611b783700441b"
+  ).map(colors);
+
+  var interpolatePRGn = ramp$1(scheme$j);
+
+  var scheme$i = new Array(3).concat(
+    "e9a3c9f7f7f7a1d76a",
+    "d01c8bf1b6dab8e1864dac26",
+    "d01c8bf1b6daf7f7f7b8e1864dac26",
+    "c51b7de9a3c9fde0efe6f5d0a1d76a4d9221",
+    "c51b7de9a3c9fde0eff7f7f7e6f5d0a1d76a4d9221",
+    "c51b7dde77aef1b6dafde0efe6f5d0b8e1867fbc414d9221",
+    "c51b7dde77aef1b6dafde0eff7f7f7e6f5d0b8e1867fbc414d9221",
+    "8e0152c51b7dde77aef1b6dafde0efe6f5d0b8e1867fbc414d9221276419",
+    "8e0152c51b7dde77aef1b6dafde0eff7f7f7e6f5d0b8e1867fbc414d9221276419"
+  ).map(colors);
+
+  var interpolatePiYG = ramp$1(scheme$i);
+
+  var scheme$h = new Array(3).concat(
+    "998ec3f7f7f7f1a340",
+    "5e3c99b2abd2fdb863e66101",
+    "5e3c99b2abd2f7f7f7fdb863e66101",
+    "542788998ec3d8daebfee0b6f1a340b35806",
+    "542788998ec3d8daebf7f7f7fee0b6f1a340b35806",
+    "5427888073acb2abd2d8daebfee0b6fdb863e08214b35806",
+    "5427888073acb2abd2d8daebf7f7f7fee0b6fdb863e08214b35806",
+    "2d004b5427888073acb2abd2d8daebfee0b6fdb863e08214b358067f3b08",
+    "2d004b5427888073acb2abd2d8daebf7f7f7fee0b6fdb863e08214b358067f3b08"
+  ).map(colors);
+
+  var interpolatePuOr = ramp$1(scheme$h);
+
+  var scheme$g = new Array(3).concat(
+    "ef8a62f7f7f767a9cf",
+    "ca0020f4a58292c5de0571b0",
+    "ca0020f4a582f7f7f792c5de0571b0",
+    "b2182bef8a62fddbc7d1e5f067a9cf2166ac",
+    "b2182bef8a62fddbc7f7f7f7d1e5f067a9cf2166ac",
+    "b2182bd6604df4a582fddbc7d1e5f092c5de4393c32166ac",
+    "b2182bd6604df4a582fddbc7f7f7f7d1e5f092c5de4393c32166ac",
+    "67001fb2182bd6604df4a582fddbc7d1e5f092c5de4393c32166ac053061",
+    "67001fb2182bd6604df4a582fddbc7f7f7f7d1e5f092c5de4393c32166ac053061"
+  ).map(colors);
+
+  var interpolateRdBu = ramp$1(scheme$g);
+
+  var scheme$f = new Array(3).concat(
+    "ef8a62ffffff999999",
+    "ca0020f4a582bababa404040",
+    "ca0020f4a582ffffffbababa404040",
+    "b2182bef8a62fddbc7e0e0e09999994d4d4d",
+    "b2182bef8a62fddbc7ffffffe0e0e09999994d4d4d",
+    "b2182bd6604df4a582fddbc7e0e0e0bababa8787874d4d4d",
+    "b2182bd6604df4a582fddbc7ffffffe0e0e0bababa8787874d4d4d",
+    "67001fb2182bd6604df4a582fddbc7e0e0e0bababa8787874d4d4d1a1a1a",
+    "67001fb2182bd6604df4a582fddbc7ffffffe0e0e0bababa8787874d4d4d1a1a1a"
+  ).map(colors);
+
+  var interpolateRdGy = ramp$1(scheme$f);
+
+  var scheme$e = new Array(3).concat(
+    "fc8d59ffffbf91bfdb",
+    "d7191cfdae61abd9e92c7bb6",
+    "d7191cfdae61ffffbfabd9e92c7bb6",
+    "d73027fc8d59fee090e0f3f891bfdb4575b4",
+    "d73027fc8d59fee090ffffbfe0f3f891bfdb4575b4",
+    "d73027f46d43fdae61fee090e0f3f8abd9e974add14575b4",
+    "d73027f46d43fdae61fee090ffffbfe0f3f8abd9e974add14575b4",
+    "a50026d73027f46d43fdae61fee090e0f3f8abd9e974add14575b4313695",
+    "a50026d73027f46d43fdae61fee090ffffbfe0f3f8abd9e974add14575b4313695"
+  ).map(colors);
+
+  var interpolateRdYlBu = ramp$1(scheme$e);
+
+  var scheme$d = new Array(3).concat(
+    "fc8d59ffffbf91cf60",
+    "d7191cfdae61a6d96a1a9641",
+    "d7191cfdae61ffffbfa6d96a1a9641",
+    "d73027fc8d59fee08bd9ef8b91cf601a9850",
+    "d73027fc8d59fee08bffffbfd9ef8b91cf601a9850",
+    "d73027f46d43fdae61fee08bd9ef8ba6d96a66bd631a9850",
+    "d73027f46d43fdae61fee08bffffbfd9ef8ba6d96a66bd631a9850",
+    "a50026d73027f46d43fdae61fee08bd9ef8ba6d96a66bd631a9850006837",
+    "a50026d73027f46d43fdae61fee08bffffbfd9ef8ba6d96a66bd631a9850006837"
+  ).map(colors);
+
+  var interpolateRdYlGn = ramp$1(scheme$d);
+
+  var scheme$c = new Array(3).concat(
+    "fc8d59ffffbf99d594",
+    "d7191cfdae61abdda42b83ba",
+    "d7191cfdae61ffffbfabdda42b83ba",
+    "d53e4ffc8d59fee08be6f59899d5943288bd",
+    "d53e4ffc8d59fee08bffffbfe6f59899d5943288bd",
+    "d53e4ff46d43fdae61fee08be6f598abdda466c2a53288bd",
+    "d53e4ff46d43fdae61fee08bffffbfe6f598abdda466c2a53288bd",
+    "9e0142d53e4ff46d43fdae61fee08be6f598abdda466c2a53288bd5e4fa2",
+    "9e0142d53e4ff46d43fdae61fee08bffffbfe6f598abdda466c2a53288bd5e4fa2"
+  ).map(colors);
+
+  var interpolateSpectral = ramp$1(scheme$c);
+
+  var scheme$b = new Array(3).concat(
+    "e5f5f999d8c92ca25f",
+    "edf8fbb2e2e266c2a4238b45",
+    "edf8fbb2e2e266c2a42ca25f006d2c",
+    "edf8fbccece699d8c966c2a42ca25f006d2c",
+    "edf8fbccece699d8c966c2a441ae76238b45005824",
+    "f7fcfde5f5f9ccece699d8c966c2a441ae76238b45005824",
+    "f7fcfde5f5f9ccece699d8c966c2a441ae76238b45006d2c00441b"
+  ).map(colors);
+
+  var interpolateBuGn = ramp$1(scheme$b);
+
+  var scheme$a = new Array(3).concat(
+    "e0ecf49ebcda8856a7",
+    "edf8fbb3cde38c96c688419d",
+    "edf8fbb3cde38c96c68856a7810f7c",
+    "edf8fbbfd3e69ebcda8c96c68856a7810f7c",
+    "edf8fbbfd3e69ebcda8c96c68c6bb188419d6e016b",
+    "f7fcfde0ecf4bfd3e69ebcda8c96c68c6bb188419d6e016b",
+    "f7fcfde0ecf4bfd3e69ebcda8c96c68c6bb188419d810f7c4d004b"
+  ).map(colors);
+
+  var interpolateBuPu = ramp$1(scheme$a);
+
+  var scheme$9 = new Array(3).concat(
+    "e0f3dba8ddb543a2ca",
+    "f0f9e8bae4bc7bccc42b8cbe",
+    "f0f9e8bae4bc7bccc443a2ca0868ac",
+    "f0f9e8ccebc5a8ddb57bccc443a2ca0868ac",
+    "f0f9e8ccebc5a8ddb57bccc44eb3d32b8cbe08589e",
+    "f7fcf0e0f3dbccebc5a8ddb57bccc44eb3d32b8cbe08589e",
+    "f7fcf0e0f3dbccebc5a8ddb57bccc44eb3d32b8cbe0868ac084081"
+  ).map(colors);
+
+  var interpolateGnBu = ramp$1(scheme$9);
+
+  var scheme$8 = new Array(3).concat(
+    "fee8c8fdbb84e34a33",
+    "fef0d9fdcc8afc8d59d7301f",
+    "fef0d9fdcc8afc8d59e34a33b30000",
+    "fef0d9fdd49efdbb84fc8d59e34a33b30000",
+    "fef0d9fdd49efdbb84fc8d59ef6548d7301f990000",
+    "fff7ecfee8c8fdd49efdbb84fc8d59ef6548d7301f990000",
+    "fff7ecfee8c8fdd49efdbb84fc8d59ef6548d7301fb300007f0000"
+  ).map(colors);
+
+  var interpolateOrRd = ramp$1(scheme$8);
+
+  var scheme$7 = new Array(3).concat(
+    "ece2f0a6bddb1c9099",
+    "f6eff7bdc9e167a9cf02818a",
+    "f6eff7bdc9e167a9cf1c9099016c59",
+    "f6eff7d0d1e6a6bddb67a9cf1c9099016c59",
+    "f6eff7d0d1e6a6bddb67a9cf3690c002818a016450",
+    "fff7fbece2f0d0d1e6a6bddb67a9cf3690c002818a016450",
+    "fff7fbece2f0d0d1e6a6bddb67a9cf3690c002818a016c59014636"
+  ).map(colors);
+
+  var interpolatePuBuGn = ramp$1(scheme$7);
+
+  var scheme$6 = new Array(3).concat(
+    "ece7f2a6bddb2b8cbe",
+    "f1eef6bdc9e174a9cf0570b0",
+    "f1eef6bdc9e174a9cf2b8cbe045a8d",
+    "f1eef6d0d1e6a6bddb74a9cf2b8cbe045a8d",
+    "f1eef6d0d1e6a6bddb74a9cf3690c00570b0034e7b",
+    "fff7fbece7f2d0d1e6a6bddb74a9cf3690c00570b0034e7b",
+    "fff7fbece7f2d0d1e6a6bddb74a9cf3690c00570b0045a8d023858"
+  ).map(colors);
+
+  var interpolatePuBu = ramp$1(scheme$6);
+
+  var scheme$5 = new Array(3).concat(
+    "e7e1efc994c7dd1c77",
+    "f1eef6d7b5d8df65b0ce1256",
+    "f1eef6d7b5d8df65b0dd1c77980043",
+    "f1eef6d4b9dac994c7df65b0dd1c77980043",
+    "f1eef6d4b9dac994c7df65b0e7298ace125691003f",
+    "f7f4f9e7e1efd4b9dac994c7df65b0e7298ace125691003f",
+    "f7f4f9e7e1efd4b9dac994c7df65b0e7298ace125698004367001f"
+  ).map(colors);
+
+  var interpolatePuRd = ramp$1(scheme$5);
+
+  var scheme$4 = new Array(3).concat(
+    "fde0ddfa9fb5c51b8a",
+    "feebe2fbb4b9f768a1ae017e",
+    "feebe2fbb4b9f768a1c51b8a7a0177",
+    "feebe2fcc5c0fa9fb5f768a1c51b8a7a0177",
+    "feebe2fcc5c0fa9fb5f768a1dd3497ae017e7a0177",
+    "fff7f3fde0ddfcc5c0fa9fb5f768a1dd3497ae017e7a0177",
+    "fff7f3fde0ddfcc5c0fa9fb5f768a1dd3497ae017e7a017749006a"
+  ).map(colors);
+
+  var interpolateRdPu = ramp$1(scheme$4);
+
+  var scheme$3 = new Array(3).concat(
+    "edf8b17fcdbb2c7fb8",
+    "ffffcca1dab441b6c4225ea8",
+    "ffffcca1dab441b6c42c7fb8253494",
+    "ffffccc7e9b47fcdbb41b6c42c7fb8253494",
+    "ffffccc7e9b47fcdbb41b6c41d91c0225ea80c2c84",
+    "ffffd9edf8b1c7e9b47fcdbb41b6c41d91c0225ea80c2c84",
+    "ffffd9edf8b1c7e9b47fcdbb41b6c41d91c0225ea8253494081d58"
+  ).map(colors);
+
+  var interpolateYlGnBu = ramp$1(scheme$3);
+
+  var scheme$2 = new Array(3).concat(
+    "f7fcb9addd8e31a354",
+    "ffffccc2e69978c679238443",
+    "ffffccc2e69978c67931a354006837",
+    "ffffccd9f0a3addd8e78c67931a354006837",
+    "ffffccd9f0a3addd8e78c67941ab5d238443005a32",
+    "ffffe5f7fcb9d9f0a3addd8e78c67941ab5d238443005a32",
+    "ffffe5f7fcb9d9f0a3addd8e78c67941ab5d238443006837004529"
+  ).map(colors);
+
+  var interpolateYlGn = ramp$1(scheme$2);
+
+  var scheme$1 = new Array(3).concat(
+    "fff7bcfec44fd95f0e",
+    "ffffd4fed98efe9929cc4c02",
+    "ffffd4fed98efe9929d95f0e993404",
+    "ffffd4fee391fec44ffe9929d95f0e993404",
+    "ffffd4fee391fec44ffe9929ec7014cc4c028c2d04",
+    "ffffe5fff7bcfee391fec44ffe9929ec7014cc4c028c2d04",
+    "ffffe5fff7bcfee391fec44ffe9929ec7014cc4c02993404662506"
+  ).map(colors);
+
+  var interpolateYlOrBr = ramp$1(scheme$1);
+
+  var scheme = new Array(3).concat(
+    "ffeda0feb24cf03b20",
+    "ffffb2fecc5cfd8d3ce31a1c",
+    "ffffb2fecc5cfd8d3cf03b20bd0026",
+    "ffffb2fed976feb24cfd8d3cf03b20bd0026",
+    "ffffb2fed976feb24cfd8d3cfc4e2ae31a1cb10026",
+    "ffffccffeda0fed976feb24cfd8d3cfc4e2ae31a1cb10026",
+    "ffffccffeda0fed976feb24cfd8d3cfc4e2ae31a1cbd0026800026"
+  ).map(colors);
+
+  var interpolateYlOrRd = ramp$1(scheme);
+
+  var interpolateCubehelixDefault = cubehelixLong(cubehelix$1(300, 0.5, 0.0), cubehelix$1(-240, 0.5, 1.0));
+
+  var warm = cubehelixLong(cubehelix$1(-100, 0.75, 0.35), cubehelix$1(80, 1.50, 0.8));
+
+  var cool = cubehelixLong(cubehelix$1(260, 0.75, 0.35), cubehelix$1(80, 1.50, 0.8));
+
+  cubehelix$1();
+
+  function ramp(range) {
+    var n = range.length;
+    return function(t) {
+      return range[Math.max(0, Math.min(n - 1, Math.floor(t * n)))];
+    };
+  }
+
+  var interpolateViridis = ramp(colors("44015444025645045745055946075a46085c460a5d460b5e470d60470e6147106347116447136548146748166848176948186a481a6c481b6d481c6e481d6f481f70482071482173482374482475482576482677482878482979472a7a472c7a472d7b472e7c472f7d46307e46327e46337f463480453581453781453882443983443a83443b84433d84433e85423f854240864241864142874144874045884046883f47883f48893e49893e4a893e4c8a3d4d8a3d4e8a3c4f8a3c508b3b518b3b528b3a538b3a548c39558c39568c38588c38598c375a8c375b8d365c8d365d8d355e8d355f8d34608d34618d33628d33638d32648e32658e31668e31678e31688e30698e306a8e2f6b8e2f6c8e2e6d8e2e6e8e2e6f8e2d708e2d718e2c718e2c728e2c738e2b748e2b758e2a768e2a778e2a788e29798e297a8e297b8e287c8e287d8e277e8e277f8e27808e26818e26828e26828e25838e25848e25858e24868e24878e23888e23898e238a8d228b8d228c8d228d8d218e8d218f8d21908d21918c20928c20928c20938c1f948c1f958b1f968b1f978b1f988b1f998a1f9a8a1e9b8a1e9c891e9d891f9e891f9f881fa0881fa1881fa1871fa28720a38620a48621a58521a68522a78522a88423a98324aa8325ab8225ac8226ad8127ad8128ae8029af7f2ab07f2cb17e2db27d2eb37c2fb47c31b57b32b67a34b67935b77937b87838b9773aba763bbb753dbc743fbc7340bd7242be7144bf7046c06f48c16e4ac16d4cc26c4ec36b50c46a52c56954c56856c66758c7655ac8645cc8635ec96260ca6063cb5f65cb5e67cc5c69cd5b6ccd5a6ece5870cf5773d05675d05477d1537ad1517cd2507fd34e81d34d84d44b86d54989d5488bd6468ed64590d74393d74195d84098d83e9bd93c9dd93ba0da39a2da37a5db36a8db34aadc32addc30b0dd2fb2dd2db5de2bb8de29bade28bddf26c0df25c2df23c5e021c8e020cae11fcde11dd0e11cd2e21bd5e21ad8e219dae319dde318dfe318e2e418e5e419e7e419eae51aece51befe51cf1e51df4e61ef6e620f8e621fbe723fde725"));
+
+  var magma = ramp(colors("00000401000501010601010802010902020b02020d03030f03031204041405041606051806051a07061c08071e0907200a08220b09240c09260d0a290e0b2b100b2d110c2f120d31130d34140e36150e38160f3b180f3d19103f1a10421c10441d11471e114920114b21114e22115024125325125527125829115a2a115c2c115f2d11612f116331116533106734106936106b38106c390f6e3b0f703d0f713f0f72400f74420f75440f764510774710784910784a10794c117a4e117b4f127b51127c52137c54137d56147d57157e59157e5a167e5c167f5d177f5f187f601880621980641a80651a80671b80681c816a1c816b1d816d1d816e1e81701f81721f817320817521817621817822817922827b23827c23827e24828025828125818326818426818627818827818928818b29818c29818e2a81902a81912b81932b80942c80962c80982d80992d809b2e7f9c2e7f9e2f7fa02f7fa1307ea3307ea5317ea6317da8327daa337dab337cad347cae347bb0357bb2357bb3367ab5367ab73779b83779ba3878bc3978bd3977bf3a77c03a76c23b75c43c75c53c74c73d73c83e73ca3e72cc3f71cd4071cf4070d0416fd2426fd3436ed5446dd6456cd8456cd9466bdb476adc4869de4968df4a68e04c67e24d66e34e65e44f64e55064e75263e85362e95462ea5661eb5760ec5860ed5a5fee5b5eef5d5ef05f5ef1605df2625df2645cf3655cf4675cf4695cf56b5cf66c5cf66e5cf7705cf7725cf8745cf8765cf9785df9795df97b5dfa7d5efa7f5efa815ffb835ffb8560fb8761fc8961fc8a62fc8c63fc8e64fc9065fd9266fd9467fd9668fd9869fd9a6afd9b6bfe9d6cfe9f6dfea16efea36ffea571fea772fea973feaa74feac76feae77feb078feb27afeb47bfeb67cfeb77efeb97ffebb81febd82febf84fec185fec287fec488fec68afec88cfeca8dfecc8ffecd90fecf92fed194fed395fed597fed799fed89afdda9cfddc9efddea0fde0a1fde2a3fde3a5fde5a7fde7a9fde9aafdebacfcecaefceeb0fcf0b2fcf2b4fcf4b6fcf6b8fcf7b9fcf9bbfcfbbdfcfdbf"));
+
+  var inferno = ramp(colors("00000401000501010601010802010a02020c02020e03021004031204031405041706041907051b08051d09061f0a07220b07240c08260d08290e092b10092d110a30120a32140b34150b37160b39180c3c190c3e1b0c411c0c431e0c451f0c48210c4a230c4c240c4f260c51280b53290b552b0b572d0b592f0a5b310a5c320a5e340a5f3609613809623909633b09643d09653e0966400a67420a68440a68450a69470b6a490b6a4a0c6b4c0c6b4d0d6c4f0d6c510e6c520e6d540f6d550f6d57106e59106e5a116e5c126e5d126e5f136e61136e62146e64156e65156e67166e69166e6a176e6c186e6d186e6f196e71196e721a6e741a6e751b6e771c6d781c6d7a1d6d7c1d6d7d1e6d7f1e6c801f6c82206c84206b85216b87216b88226a8a226a8c23698d23698f24699025689225689326679526679727669827669a28659b29649d29649f2a63a02a63a22b62a32c61a52c60a62d60a82e5fa92e5eab2f5ead305dae305cb0315bb1325ab3325ab43359b63458b73557b93556ba3655bc3754bd3853bf3952c03a51c13a50c33b4fc43c4ec63d4dc73e4cc83f4bca404acb4149cc4248ce4347cf4446d04545d24644d34743d44842d54a41d74b3fd84c3ed94d3dda4e3cdb503bdd513ade5238df5337e05536e15635e25734e35933e45a31e55c30e65d2fe75e2ee8602de9612bea632aeb6429eb6628ec6726ed6925ee6a24ef6c23ef6e21f06f20f1711ff1731df2741cf3761bf37819f47918f57b17f57d15f67e14f68013f78212f78410f8850ff8870ef8890cf98b0bf98c0af98e09fa9008fa9207fa9407fb9606fb9706fb9906fb9b06fb9d07fc9f07fca108fca309fca50afca60cfca80dfcaa0ffcac11fcae12fcb014fcb216fcb418fbb61afbb81dfbba1ffbbc21fbbe23fac026fac228fac42afac62df9c72ff9c932f9cb35f8cd37f8cf3af7d13df7d340f6d543f6d746f5d949f5db4cf4dd4ff4df53f4e156f3e35af3e55df2e661f2e865f2ea69f1ec6df1ed71f1ef75f1f179f2f27df2f482f3f586f3f68af4f88ef5f992f6fa96f8fb9af9fc9dfafda1fcffa4"));
+
+  var plasma = ramp(colors("0d088710078813078916078a19068c1b068d1d068e20068f2206902406912605912805922a05932c05942e05952f059631059733059735049837049938049a3a049a3c049b3e049c3f049c41049d43039e44039e46039f48039f4903a04b03a14c02a14e02a25002a25102a35302a35502a45601a45801a45901a55b01a55c01a65e01a66001a66100a76300a76400a76600a76700a86900a86a00a86c00a86e00a86f00a87100a87201a87401a87501a87701a87801a87a02a87b02a87d03a87e03a88004a88104a78305a78405a78606a68707a68808a68a09a58b0aa58d0ba58e0ca48f0da4910ea3920fa39410a29511a19613a19814a099159f9a169f9c179e9d189d9e199da01a9ca11b9ba21d9aa31e9aa51f99a62098a72197a82296aa2395ab2494ac2694ad2793ae2892b02991b12a90b22b8fb32c8eb42e8db52f8cb6308bb7318ab83289ba3388bb3488bc3587bd3786be3885bf3984c03a83c13b82c23c81c33d80c43e7fc5407ec6417dc7427cc8437bc9447aca457acb4679cc4778cc4977cd4a76ce4b75cf4c74d04d73d14e72d24f71d35171d45270d5536fd5546ed6556dd7566cd8576bd9586ada5a6ada5b69db5c68dc5d67dd5e66de5f65de6164df6263e06363e16462e26561e26660e3685fe4695ee56a5de56b5de66c5ce76e5be76f5ae87059e97158e97257ea7457eb7556eb7655ec7754ed7953ed7a52ee7b51ef7c51ef7e50f07f4ff0804ef1814df1834cf2844bf3854bf3874af48849f48948f58b47f58c46f68d45f68f44f79044f79143f79342f89441f89540f9973ff9983ef99a3efa9b3dfa9c3cfa9e3bfb9f3afba139fba238fca338fca537fca636fca835fca934fdab33fdac33fdae32fdaf31fdb130fdb22ffdb42ffdb52efeb72dfeb82cfeba2cfebb2bfebd2afebe2afec029fdc229fdc328fdc527fdc627fdc827fdca26fdcb26fccd25fcce25fcd025fcd225fbd324fbd524fbd724fad824fada24f9dc24f9dd25f8df25f8e125f7e225f7e425f6e626f6e826f5e926f5eb27f4ed27f3ee27f3f027f2f227f1f426f1f525f0f724f0f921"));
+
+  function ascendingSort(a, b) {
+  	return a - b;
+  }
+
+  function getFixedSizeThresholds(state, domain) {
+  	var domain_min = domain[0];
+  	var domain_max = domain[domain.length - 1];
+
+  	var scale = quantize().domain([domain_min, domain_max]);
+  	var n = Math.floor(state.bin_count);
+  	scale.range(range(n));
+  	var thresholds = scale.thresholds();
+
+  	return thresholds;
+  }
+
+  function getQuantileThresholds(state, domain, values) {
+  	var scale = quantile().domain(values);
+  	var n = Math.floor(state.bin_count);
+  	scale.range(range(n));
+  	var thresholds = scale.quantiles();
+
+  	return thresholds;
+  }
+
+  function getCustomThresholds(state) {
+  	var thresholds = state.bin_thresholds
+  		.split(";")
+  		.map(parseFloat)
+  		.filter(function (val) {
+  			return !isNaN(val) && val !== null;
+  		})
+  		.sort(ascendingSort);
+
+  	return thresholds;
+  }
+
+  function getThresholds(state, domain, values) {
+  	var thresholds;
+  	if (state.bin_mode == "fixed") {
+  		thresholds = getFixedSizeThresholds(state, domain);
+  	} else if (state.bin_mode == "quantile") {
+  		thresholds = getQuantileThresholds(state, domain, values);
+  	} else {
+  		thresholds = getCustomThresholds(state);
+  	}
+
+  	return thresholds;
+  }
+
+  function getBinCenters(min, thresholds, max) {
+  	var centers = [];
+
+  	if (thresholds.length === 0) return [0.5 * (min + max)];
+
+  	centers.push(0.5 * (min + thresholds[0]));
+  	for (var i = 0; i < thresholds.length - 1; i++) {
+  		centers.push(0.5 * (thresholds[i] + thresholds[i + 1]));
+  	}
+  	centers.push(0.5 * (max + thresholds[thresholds.length - 1]));
+
+  	return centers;
+  }
+
+  function getIndexOfBinCenterAtDomainMid(centers, domain_mid) {
+  	var found_index,
+  		tolerance = 1e-3;
+  	centers.forEach(function (d, i) {
+  		if (Math.abs(d - domain_mid) < tolerance) {
+  			found_index = i;
+  		}
+  	});
+  	return found_index;
+  }
+
+  function getNumberOfPreMidBinCenters(centers, domain_mid) {
+  	var num = 0;
+  	centers.forEach(function (d) {
+  		if (d < domain_mid) num++;
+  	});
+  	return num;
+  }
+
+  function pushSamples(n, offset, sample_scale, colorInterpolator, colors) {
+  	for (var i = 1 + offset; i <= n + offset; i++) {
+  		colors.push(colorInterpolator(sample_scale(i)));
+  	}
+  }
+
+  function sampleColors(domain, bin_centers, colorInterpolator) {
+  	// Sample colors from colorInterpolator
+  	// Sequential is straightforward (just sample evenly)
+  	// Diverging is less straightforward (sample evenly below 0.5 and above 0.5 of the colorInterpolator)
+
+  	var n_bins = bin_centers.length;
+
+  	var sample_scale = linear$1(); // sample_scale is used to evenly sample colors across a domain
+  	var colors = [];
+
+  	if (n_bins === 1) {
+  		colors.push(colorInterpolator(0.5));
+  	} else if (domain.length === 2) {
+  		// SEQUENTIAL
+  		sample_scale.domain([1, n_bins]).range([0, 1]);
+  		pushSamples(n_bins, 0, sample_scale, colorInterpolator, colors);
+  	} else if (n_bins === 2) {
+  		// DIVERGING (2 bins)
+  		// Use the min/max values of colorInterpolator
+  		colors.push(colorInterpolator(0));
+  		colors.push(colorInterpolator(1));
+  	} else {
+  		// DIVERGING (>2 bins)
+  		var domain_mid = domain[1];
+  		var pre_mid_n; // number of bin centers < domain_mid
+  		var post_mid_n; // number of bin centers > domain_mid
+
+  		// mid_i is the index within bin_centers of domain_mid (returns undefined if non-existent)
+  		var mid_i = getIndexOfBinCenterAtDomainMid(bin_centers, domain_mid);
+
+  		if (mid_i) {
+  			// Special case: one of the bin centers is equal to domain_mid
+
+  			// Sample color scale at:
+  			// - the first pre_mid_n samples from (pre_mid_n + 1) samples between 0 and 0.5
+  			// - 0.5
+  			// - the last post_mid_n samples from (post_mid_n + 1) samples between 0.5 and 1
+
+  			pre_mid_n = mid_i;
+  			post_mid_n = n_bins - mid_i - 1;
+
+  			sample_scale.domain([1, pre_mid_n + 1]).range([0, 0.5]);
+  			pushSamples(pre_mid_n, 0, sample_scale, colorInterpolator, colors);
+  			colors.push(colorInterpolator(0.5));
+  			sample_scale.domain([1, post_mid_n + 1]).range([0.5, 1]);
+  			pushSamples(post_mid_n, 1, sample_scale, colorInterpolator, colors);
+  		} else {
+  			// Take color samples either side of colorInterpolator's midpoint (0.5)
+  			pre_mid_n = getNumberOfPreMidBinCenters(bin_centers, domain_mid);
+  			post_mid_n = n_bins - pre_mid_n;
+
+  			sample_scale.domain([1, pre_mid_n + 1]).range([0, 0.5]);
+  			pushSamples(pre_mid_n, 0, sample_scale, colorInterpolator, colors);
+  			sample_scale.domain([1, post_mid_n + 1]).range([0.5, 1]);
+  			pushSamples(post_mid_n, 1, sample_scale, colorInterpolator, colors);
+  		}
+  	}
+
+  	return colors;
+  }
+
+  function binnedScale(state, domain, values, colorInterpolator) {
+  	// Returns a binned scale
+  	// colorInterpolator (whose domain is [0, 1]) defines the colour range
+  	// domain is a 2 or 3 element array that defines the domain of the input data
+  	// values is the input data
+
+  	// The method is:
+  	// - get thresholds across domain (getThresholds)
+  	// - compute midpoints between each threshold (getThresholdMidpoints)
+  	// - sample evenly across colour scale (sampleColors)
+  	// - return quantile or threshold scale using colour samples as range
+
+  	var thresholds = getThresholds(state, domain, values);
+  	var domain_min = domain[0];
+  	var domain_max = domain[domain.length - 1];
+
+  	var bin_centers = getBinCenters(domain_min, thresholds, domain_max);
+  	var colors = sampleColors(domain, bin_centers, colorInterpolator);
+
+  	var scale;
+  	if (state.bin_mode == "quantile") {
+  		scale = quantile().domain(values);
+  	} else {
+  		scale = threshold().domain(thresholds);
+  	}
+
+  	scale.range(colors);
+
+  	var colorScale = function (value) {
+  		return isNaN(value) || value === null ? null : scale(value);
+  	};
+
+  	colorScale.domain = Object.freeze(domain);
+  	colorScale.thresholds = Object.freeze(thresholds);
+  	colorScale.centers = Object.freeze(bin_centers);
+
+  	return colorScale;
+  }
+
+  function getDomain(values) {
+  	var domain = Array.isArray(values) ? extent(values) : [0, 1];
+  	return domain;
+  }
+
+  const CARROTS = Object.freeze([
+  	"#efeca4",
+  	"#e9e28f",
+  	"#dccf64",
+  	"#e3b23c",
+  	"#e49547",
+  	"#e37746",
+  	"#dc5b36",
+  	"#cb4144",
+  	"#bb2244",
+  	"#972545",
+  	"#6a2c4f",
+  ]);
+
+  const FLOURISH_BLUES = Object.freeze([
+  	"rgb(245, 247, 255)",
+  	"rgb(242, 245, 254)",
+  	"rgb(239, 243, 254)",
+  	"rgb(237, 242, 254)",
+  	"rgb(234, 240, 254)",
+  	"rgb(231, 239, 254)",
+  	"rgb(228, 237, 254)",
+  	"rgb(225, 236, 254)",
+  	"rgb(222, 234, 254)",
+  	"rgb(219, 233, 254)",
+  	"rgb(216, 231, 254)",
+  	"rgb(213, 230, 254)",
+  	"rgb(210, 228, 254)",
+  	"rgb(207, 227, 254)",
+  	"rgb(204, 225, 254)",
+  	"rgb(200, 224, 253)",
+  	"rgb(198, 222, 253)",
+  	"rgb(195, 221, 253)",
+  	"rgb(192, 219, 253)",
+  	"rgb(189, 217, 253)",
+  	"rgb(186, 216, 253)",
+  	"rgb(183, 214, 253)",
+  	"rgb(180, 212, 253)",
+  	"rgb(177, 211, 253)",
+  	"rgb(174, 209, 253)",
+  	"rgb(171, 207, 253)",
+  	"rgb(168, 206, 253)",
+  	"rgb(165, 204, 253)",
+  	"rgb(162, 202, 253)",
+  	"rgb(159, 201, 253)",
+  	"rgb(156, 199, 253)",
+  	"rgb(152, 197, 253)",
+  	"rgb(149, 195, 253)",
+  	"rgb(146, 193, 253)",
+  	"rgb(143, 192, 253)",
+  	"rgb(140, 190, 253)",
+  	"rgb(137, 188, 253)",
+  	"rgb(134, 186, 253)",
+  	"rgb(130, 184, 253)",
+  	"rgb(127, 183, 253)",
+  	"rgb(124, 181, 253)",
+  	"rgb(121, 179, 253)",
+  	"rgb(117, 177, 253)",
+  	"rgb(114, 175, 253)",
+  	"rgb(111, 173, 253)",
+  	"rgb(107, 171, 253)",
+  	"rgb(104, 169, 253)",
+  	"rgb(100, 167, 253)",
+  	"rgb(97, 165, 253)",
+  	"rgb(93, 163, 253)",
+  	"rgb(90, 161, 252)",
+  	"rgb(87, 159, 251)",
+  	"rgb(84, 157, 250)",
+  	"rgb(81, 155, 248)",
+  	"rgb(78, 153, 247)",
+  	"rgb(75, 151, 245)",
+  	"rgb(72, 149, 244)",
+  	"rgb(68, 147, 243)",
+  	"rgb(65, 145, 241)",
+  	"rgb(61, 143, 240)",
+  	"rgb(58, 141, 239)",
+  	"rgb(55, 139, 237)",
+  	"rgb(51, 136, 236)",
+  	"rgb(48, 134, 235)",
+  	"rgb(44, 132, 234)",
+  	"rgb(41, 130, 233)",
+  	"rgb(37, 127, 231)",
+  	"rgb(32, 125, 230)",
+  	"rgb(28, 123, 229)",
+  	"rgb(24, 120, 228)",
+  	"rgb(23, 117, 228)",
+  	"rgb(21, 114, 227)",
+  	"rgb(20, 111, 227)",
+  	"rgb(19, 108, 226)",
+  	"rgb(18, 105, 226)",
+  	"rgb(17, 102, 225)",
+  	"rgb(17, 99, 225)",
+  	"rgb(17, 96, 225)",
+  	"rgb(17, 93, 223)",
+  	"rgb(16, 90, 220)",
+  	"rgb(16, 88, 217)",
+  	"rgb(15, 85, 214)",
+  	"rgb(14, 82, 211)",
+  	"rgb(13, 80, 208)",
+  	"rgb(12, 77, 205)",
+  	"rgb(12, 74, 202)",
+  	"rgb(10, 71, 198)",
+  	"rgb(9, 69, 195)",
+  	"rgb(7, 66, 191)",
+  	"rgb(6, 63, 187)",
+  	"rgb(5, 61, 184)",
+  	"rgb(4, 58, 180)",
+  	"rgb(3, 55, 176)",
+  	"rgb(2, 52, 172)",
+  	"rgb(1, 49, 168)",
+  	"rgb(1, 46, 164)",
+  	"rgb(0, 43, 160)",
+  	"rgb(0, 40, 157)",
+  	"rgb(0, 36, 153)",
+  	"rgb(0, 33, 150)",
+  ]);
+
+  const FLOURISH_GREENS = Object.freeze([
+  	"rgb(224, 255, 236)",
+  	"rgb(220, 253, 233)",
+  	"rgb(216, 252, 230)",
+  	"rgb(213, 251, 227)",
+  	"rgb(209, 250, 225)",
+  	"rgb(206, 249, 222)",
+  	"rgb(202, 247, 219)",
+  	"rgb(198, 246, 216)",
+  	"rgb(195, 245, 213)",
+  	"rgb(191, 244, 210)",
+  	"rgb(187, 242, 207)",
+  	"rgb(184, 241, 204)",
+  	"rgb(180, 240, 201)",
+  	"rgb(176, 238, 198)",
+  	"rgb(173, 237, 195)",
+  	"rgb(169, 236, 192)",
+  	"rgb(165, 234, 188)",
+  	"rgb(161, 233, 186)",
+  	"rgb(157, 232, 183)",
+  	"rgb(153, 230, 180)",
+  	"rgb(149, 229, 178)",
+  	"rgb(145, 228, 175)",
+  	"rgb(141, 226, 172)",
+  	"rgb(137, 225, 169)",
+  	"rgb(132, 223, 167)",
+  	"rgb(128, 222, 164)",
+  	"rgb(123, 221, 161)",
+  	"rgb(119, 219, 158)",
+  	"rgb(114, 218, 156)",
+  	"rgb(111, 216, 153)",
+  	"rgb(107, 214, 151)",
+  	"rgb(104, 212, 148)",
+  	"rgb(101, 210, 146)",
+  	"rgb(97, 209, 143)",
+  	"rgb(94, 207, 141)",
+  	"rgb(90, 205, 138)",
+  	"rgb(87, 203, 136)",
+  	"rgb(83, 201, 133)",
+  	"rgb(79, 199, 131)",
+  	"rgb(76, 198, 128)",
+  	"rgb(73, 196, 126)",
+  	"rgb(70, 194, 124)",
+  	"rgb(66, 191, 122)",
+  	"rgb(63, 189, 120)",
+  	"rgb(59, 187, 118)",
+  	"rgb(56, 185, 116)",
+  	"rgb(52, 183, 114)",
+  	"rgb(48, 181, 111)",
+  	"rgb(43, 179, 109)",
+  	"rgb(39, 177, 107)",
+  	"rgb(37, 175, 105)",
+  	"rgb(34, 172, 103)",
+  	"rgb(32, 170, 100)",
+  	"rgb(30, 168, 98)",
+  	"rgb(27, 166, 96)",
+  	"rgb(24, 163, 94)",
+  	"rgb(21, 161, 92)",
+  	"rgb(18, 159, 89)",
+  	"rgb(14, 156, 87)",
+  	"rgb(11, 154, 85)",
+  	"rgb(11, 151, 82)",
+  	"rgb(11, 149, 79)",
+  	"rgb(11, 146, 77)",
+  	"rgb(11, 144, 74)",
+  	"rgb(11, 141, 72)",
+  	"rgb(11, 139, 69)",
+  	"rgb(11, 136, 66)",
+  	"rgb(11, 134, 64)",
+  	"rgb(11, 131, 61)",
+  	"rgb(11, 128, 59)",
+  	"rgb(10, 126, 56)",
+  	"rgb(10, 123, 54)",
+  	"rgb(10, 120, 51)",
+  	"rgb(10, 118, 49)",
+  	"rgb(9, 115, 46)",
+  	"rgb(9, 112, 44)",
+  	"rgb(8, 109, 41)",
+  	"rgb(8, 107, 39)",
+  	"rgb(7, 104, 36)",
+  	"rgb(7, 101, 34)",
+  	"rgb(6, 98, 31)",
+  	"rgb(6, 95, 28)",
+  	"rgb(5, 93, 25)",
+  	"rgb(5, 90, 23)",
+  	"rgb(5, 87, 21)",
+  	"rgb(6, 84, 20)",
+  	"rgb(6, 80, 18)",
+  	"rgb(6, 77, 17)",
+  	"rgb(6, 74, 15)",
+  	"rgb(6, 71, 14)",
+  	"rgb(5, 68, 12)",
+  	"rgb(5, 65, 10)",
+  	"rgb(4, 61, 8)",
+  	"rgb(4, 58, 7)",
+  	"rgb(3, 55, 5)",
+  	"rgb(2, 52, 4)",
+  	"rgb(1, 48, 2)",
+  	"rgb(1, 45, 1)",
+  	"rgb(0, 41, 0)",
+  	"rgb(0, 38, 0)",
+  ]);
+
+  const FLOURISH_GREYS = Object.freeze([
+  	"rgb(248, 247, 248)",
+  	"rgb(245, 245, 246)",
+  	"rgb(243, 243, 244)",
+  	"rgb(241, 241, 242)",
+  	"rgb(239, 239, 240)",
+  	"rgb(237, 237, 238)",
+  	"rgb(234, 235, 236)",
+  	"rgb(232, 232, 234)",
+  	"rgb(230, 230, 232)",
+  	"rgb(228, 228, 231)",
+  	"rgb(226, 226, 229)",
+  	"rgb(223, 224, 227)",
+  	"rgb(221, 222, 225)",
+  	"rgb(219, 220, 223)",
+  	"rgb(217, 218, 221)",
+  	"rgb(214, 216, 219)",
+  	"rgb(212, 214, 217)",
+  	"rgb(210, 212, 215)",
+  	"rgb(208, 210, 213)",
+  	"rgb(206, 208, 211)",
+  	"rgb(203, 206, 209)",
+  	"rgb(201, 204, 207)",
+  	"rgb(199, 202, 205)",
+  	"rgb(197, 199, 202)",
+  	"rgb(195, 197, 200)",
+  	"rgb(192, 195, 198)",
+  	"rgb(190, 193, 196)",
+  	"rgb(188, 191, 194)",
+  	"rgb(186, 189, 192)",
+  	"rgb(184, 187, 190)",
+  	"rgb(181, 184, 188)",
+  	"rgb(179, 182, 186)",
+  	"rgb(177, 180, 184)",
+  	"rgb(175, 178, 182)",
+  	"rgb(172, 175, 179)",
+  	"rgb(170, 173, 177)",
+  	"rgb(168, 171, 175)",
+  	"rgb(166, 169, 172)",
+  	"rgb(164, 166, 170)",
+  	"rgb(162, 164, 168)",
+  	"rgb(160, 162, 165)",
+  	"rgb(157, 160, 163)",
+  	"rgb(155, 157, 160)",
+  	"rgb(153, 155, 158)",
+  	"rgb(151, 153, 155)",
+  	"rgb(149, 150, 153)",
+  	"rgb(146, 148, 151)",
+  	"rgb(144, 146, 148)",
+  	"rgb(142, 143, 146)",
+  	"rgb(140, 141, 143)",
+  	"rgb(137, 138, 141)",
+  	"rgb(135, 136, 138)",
+  	"rgb(133, 134, 135)",
+  	"rgb(131, 131, 133)",
+  	"rgb(129, 129, 130)",
+  	"rgb(127, 126, 127)",
+  	"rgb(125, 124, 125)",
+  	"rgb(122, 121, 122)",
+  	"rgb(120, 119, 120)",
+  	"rgb(117, 116, 117)",
+  	"rgb(115, 114, 115)",
+  	"rgb(112, 111, 112)",
+  	"rgb(110, 109, 110)",
+  	"rgb(107, 106, 107)",
+  	"rgb(105, 104, 105)",
+  	"rgb(102, 101, 102)",
+  	"rgb(99, 98, 99)",
+  	"rgb(97, 96, 97)",
+  	"rgb(94, 93, 94)",
+  	"rgb(92, 91, 92)",
+  	"rgb(89, 88, 89)",
+  	"rgb(86, 85, 86)",
+  	"rgb(84, 83, 83)",
+  	"rgb(81, 80, 80)",
+  	"rgb(78, 77, 77)",
+  	"rgb(75, 74, 74)",
+  	"rgb(73, 72, 72)",
+  	"rgb(70, 69, 69)",
+  	"rgb(67, 66, 66)",
+  	"rgb(64, 63, 63)",
+  	"rgb(61, 60, 60)",
+  	"rgb(58, 57, 57)",
+  	"rgb(55, 54, 54)",
+  	"rgb(52, 51, 51)",
+  	"rgb(49, 48, 48)",
+  	"rgb(45, 45, 45)",
+  	"rgb(42, 42, 42)",
+  	"rgb(38, 38, 38)",
+  	"rgb(35, 35, 35)",
+  	"rgb(32, 32, 32)",
+  	"rgb(28, 28, 28)",
+  	"rgb(25, 25, 25)",
+  	"rgb(21, 21, 21)",
+  	"rgb(17, 17, 17)",
+  	"rgb(13, 13, 13)",
+  	"rgb(9, 9, 9)",
+  	"rgb(5, 5, 5)",
+  	"rgb(2, 2, 2)",
+  	"rgb(1, 1, 1)",
+  	"rgb(0, 0, 0)",
+  ]);
+
+  const FLOURISH_ORANGES = Object.freeze([
+  	"rgb(254, 235, 222)",
+  	"rgb(253, 232, 218)",
+  	"rgb(253, 230, 215)",
+  	"rgb(253, 228, 211)",
+  	"rgb(253, 226, 208)",
+  	"rgb(253, 224, 204)",
+  	"rgb(253, 222, 201)",
+  	"rgb(253, 220, 197)",
+  	"rgb(253, 218, 194)",
+  	"rgb(253, 216, 190)",
+  	"rgb(253, 214, 187)",
+  	"rgb(252, 211, 183)",
+  	"rgb(252, 209, 180)",
+  	"rgb(252, 207, 177)",
+  	"rgb(252, 205, 173)",
+  	"rgb(252, 203, 170)",
+  	"rgb(252, 201, 167)",
+  	"rgb(251, 198, 163)",
+  	"rgb(251, 196, 160)",
+  	"rgb(251, 194, 156)",
+  	"rgb(251, 191, 153)",
+  	"rgb(251, 189, 149)",
+  	"rgb(251, 187, 146)",
+  	"rgb(251, 184, 141)",
+  	"rgb(252, 181, 136)",
+  	"rgb(252, 179, 132)",
+  	"rgb(253, 176, 127)",
+  	"rgb(253, 173, 122)",
+  	"rgb(253, 170, 117)",
+  	"rgb(254, 168, 112)",
+  	"rgb(254, 165, 107)",
+  	"rgb(254, 162, 103)",
+  	"rgb(254, 159, 98)",
+  	"rgb(254, 156, 93)",
+  	"rgb(255, 153, 88)",
+  	"rgb(255, 151, 84)",
+  	"rgb(255, 148, 79)",
+  	"rgb(255, 144, 73)",
+  	"rgb(255, 141, 68)",
+  	"rgb(255, 138, 63)",
+  	"rgb(255, 135, 57)",
+  	"rgb(255, 132, 52)",
+  	"rgb(255, 129, 46)",
+  	"rgb(254, 125, 40)",
+  	"rgb(253, 123, 38)",
+  	"rgb(252, 121, 36)",
+  	"rgb(251, 118, 34)",
+  	"rgb(249, 116, 32)",
+  	"rgb(248, 113, 30)",
+  	"rgb(247, 111, 27)",
+  	"rgb(245, 108, 25)",
+  	"rgb(244, 105, 23)",
+  	"rgb(242, 103, 20)",
+  	"rgb(241, 100, 18)",
+  	"rgb(239, 98, 15)",
+  	"rgb(238, 95, 13)",
+  	"rgb(236, 93, 10)",
+  	"rgb(235, 90, 7)",
+  	"rgb(233, 87, 4)",
+  	"rgb(231, 85, 2)",
+  	"rgb(230, 82, 0)",
+  	"rgb(227, 80, 0)",
+  	"rgb(225, 78, 0)",
+  	"rgb(223, 76, 0)",
+  	"rgb(220, 74, 0)",
+  	"rgb(218, 72, 0)",
+  	"rgb(215, 70, 0)",
+  	"rgb(213, 68, 0)",
+  	"rgb(210, 66, 0)",
+  	"rgb(208, 65, 0)",
+  	"rgb(205, 63, 0)",
+  	"rgb(203, 61, 0)",
+  	"rgb(200, 59, 0)",
+  	"rgb(197, 58, 0)",
+  	"rgb(195, 56, 0)",
+  	"rgb(192, 54, 0)",
+  	"rgb(189, 52, 0)",
+  	"rgb(186, 50, 0)",
+  	"rgb(183, 49, 0)",
+  	"rgb(180, 47, 0)",
+  	"rgb(177, 46, 0)",
+  	"rgb(174, 45, 0)",
+  	"rgb(171, 44, 0)",
+  	"rgb(168, 42, 0)",
+  	"rgb(164, 41, 0)",
+  	"rgb(161, 40, 1)",
+  	"rgb(158, 39, 1)",
+  	"rgb(154, 38, 2)",
+  	"rgb(151, 37, 3)",
+  	"rgb(147, 36, 3)",
+  	"rgb(144, 34, 4)",
+  	"rgb(140, 33, 4)",
+  	"rgb(137, 32, 4)",
+  	"rgb(133, 31, 4)",
+  	"rgb(130, 30, 5)",
+  	"rgb(126, 28, 6)",
+  	"rgb(123, 27, 6)",
+  	"rgb(119, 26, 7)",
+  	"rgb(115, 25, 7)",
+  	"rgb(112, 24, 8)",
+  ]);
+
+  const FLOURISH_PINKS = Object.freeze([
+  	"rgb(255, 245, 250)",
+  	"rgb(254, 242, 249)",
+  	"rgb(254, 239, 248)",
+  	"rgb(254, 237, 247)",
+  	"rgb(254, 234, 246)",
+  	"rgb(253, 232, 245)",
+  	"rgb(253, 229, 244)",
+  	"rgb(253, 226, 243)",
+  	"rgb(253, 224, 241)",
+  	"rgb(253, 221, 240)",
+  	"rgb(253, 218, 239)",
+  	"rgb(253, 216, 238)",
+  	"rgb(253, 213, 236)",
+  	"rgb(254, 210, 235)",
+  	"rgb(254, 207, 233)",
+  	"rgb(254, 204, 232)",
+  	"rgb(254, 201, 230)",
+  	"rgb(254, 198, 229)",
+  	"rgb(254, 195, 227)",
+  	"rgb(254, 192, 225)",
+  	"rgb(254, 189, 224)",
+  	"rgb(254, 186, 222)",
+  	"rgb(254, 183, 220)",
+  	"rgb(254, 180, 218)",
+  	"rgb(255, 177, 216)",
+  	"rgb(255, 174, 214)",
+  	"rgb(255, 171, 211)",
+  	"rgb(254, 168, 209)",
+  	"rgb(254, 165, 207)",
+  	"rgb(254, 162, 204)",
+  	"rgb(254, 158, 202)",
+  	"rgb(254, 155, 199)",
+  	"rgb(254, 152, 196)",
+  	"rgb(254, 149, 194)",
+  	"rgb(254, 146, 191)",
+  	"rgb(253, 142, 188)",
+  	"rgb(253, 139, 186)",
+  	"rgb(253, 135, 183)",
+  	"rgb(253, 131, 180)",
+  	"rgb(253, 128, 178)",
+  	"rgb(253, 124, 175)",
+  	"rgb(252, 120, 172)",
+  	"rgb(252, 117, 169)",
+  	"rgb(252, 113, 166)",
+  	"rgb(251, 109, 163)",
+  	"rgb(250, 106, 160)",
+  	"rgb(249, 102, 157)",
+  	"rgb(248, 98, 155)",
+  	"rgb(248, 94, 152)",
+  	"rgb(247, 91, 149)",
+  	"rgb(246, 87, 146)",
+  	"rgb(244, 83, 143)",
+  	"rgb(243, 79, 140)",
+  	"rgb(242, 75, 137)",
+  	"rgb(239, 72, 135)",
+  	"rgb(237, 70, 134)",
+  	"rgb(235, 67, 132)",
+  	"rgb(232, 65, 130)",
+  	"rgb(230, 62, 129)",
+  	"rgb(227, 59, 127)",
+  	"rgb(224, 56, 125)",
+  	"rgb(222, 53, 124)",
+  	"rgb(219, 50, 122)",
+  	"rgb(217, 48, 119)",
+  	"rgb(214, 46, 116)",
+  	"rgb(211, 43, 113)",
+  	"rgb(208, 41, 110)",
+  	"rgb(205, 39, 107)",
+  	"rgb(202, 36, 104)",
+  	"rgb(199, 34, 101)",
+  	"rgb(197, 31, 98)",
+  	"rgb(194, 29, 95)",
+  	"rgb(190, 26, 91)",
+  	"rgb(187, 24, 88)",
+  	"rgb(184, 21, 85)",
+  	"rgb(181, 18, 82)",
+  	"rgb(178, 15, 78)",
+  	"rgb(174, 12, 75)",
+  	"rgb(171, 8, 72)",
+  	"rgb(168, 4, 69)",
+  	"rgb(164, 2, 65)",
+  	"rgb(160, 2, 62)",
+  	"rgb(156, 2, 58)",
+  	"rgb(152, 2, 55)",
+  	"rgb(148, 1, 51)",
+  	"rgb(144, 1, 48)",
+  	"rgb(140, 1, 45)",
+  	"rgb(136, 1, 42)",
+  	"rgb(132, 1, 39)",
+  	"rgb(128, 1, 36)",
+  	"rgb(123, 1, 33)",
+  	"rgb(119, 0, 31)",
+  	"rgb(114, 0, 28)",
+  	"rgb(110, 0, 26)",
+  	"rgb(105, 0, 23)",
+  	"rgb(101, 0, 21)",
+  	"rgb(96, 0, 18)",
+  	"rgb(91, 0, 16)",
+  	"rgb(86, 0, 14)",
+  	"rgb(82, 0, 12)",
+  ]);
+
+  const FLOURISH_PURPLES = Object.freeze([
+  	"rgb(253, 245, 254)",
+  	"rgb(251, 242, 253)",
+  	"rgb(250, 240, 253)",
+  	"rgb(249, 238, 253)",
+  	"rgb(248, 236, 253)",
+  	"rgb(246, 234, 253)",
+  	"rgb(245, 231, 253)",
+  	"rgb(244, 229, 253)",
+  	"rgb(242, 227, 253)",
+  	"rgb(241, 225, 252)",
+  	"rgb(240, 223, 252)",
+  	"rgb(239, 220, 252)",
+  	"rgb(237, 218, 252)",
+  	"rgb(236, 216, 252)",
+  	"rgb(235, 213, 252)",
+  	"rgb(234, 211, 251)",
+  	"rgb(233, 209, 251)",
+  	"rgb(231, 206, 251)",
+  	"rgb(230, 204, 251)",
+  	"rgb(229, 202, 251)",
+  	"rgb(228, 199, 250)",
+  	"rgb(227, 197, 250)",
+  	"rgb(225, 195, 250)",
+  	"rgb(224, 192, 250)",
+  	"rgb(223, 190, 250)",
+  	"rgb(222, 187, 250)",
+  	"rgb(221, 185, 249)",
+  	"rgb(219, 182, 249)",
+  	"rgb(218, 180, 249)",
+  	"rgb(217, 177, 249)",
+  	"rgb(216, 175, 249)",
+  	"rgb(214, 172, 249)",
+  	"rgb(213, 170, 249)",
+  	"rgb(212, 167, 249)",
+  	"rgb(211, 164, 249)",
+  	"rgb(209, 162, 249)",
+  	"rgb(208, 159, 249)",
+  	"rgb(207, 156, 249)",
+  	"rgb(206, 154, 249)",
+  	"rgb(204, 151, 249)",
+  	"rgb(203, 148, 249)",
+  	"rgb(202, 145, 249)",
+  	"rgb(200, 142, 249)",
+  	"rgb(199, 140, 248)",
+  	"rgb(197, 138, 247)",
+  	"rgb(195, 136, 246)",
+  	"rgb(193, 133, 245)",
+  	"rgb(191, 131, 244)",
+  	"rgb(189, 129, 242)",
+  	"rgb(187, 126, 241)",
+  	"rgb(185, 124, 240)",
+  	"rgb(183, 122, 238)",
+  	"rgb(182, 119, 237)",
+  	"rgb(180, 117, 235)",
+  	"rgb(178, 114, 234)",
+  	"rgb(176, 112, 233)",
+  	"rgb(174, 109, 231)",
+  	"rgb(172, 107, 230)",
+  	"rgb(170, 104, 229)",
+  	"rgb(168, 102, 227)",
+  	"rgb(166, 99, 226)",
+  	"rgb(164, 97, 224)",
+  	"rgb(162, 94, 223)",
+  	"rgb(160, 91, 221)",
+  	"rgb(158, 89, 220)",
+  	"rgb(156, 86, 219)",
+  	"rgb(154, 83, 217)",
+  	"rgb(152, 81, 216)",
+  	"rgb(149, 79, 213)",
+  	"rgb(146, 77, 210)",
+  	"rgb(143, 75, 208)",
+  	"rgb(141, 73, 205)",
+  	"rgb(138, 71, 202)",
+  	"rgb(135, 69, 199)",
+  	"rgb(132, 67, 197)",
+  	"rgb(130, 65, 194)",
+  	"rgb(127, 63, 191)",
+  	"rgb(124, 61, 188)",
+  	"rgb(122, 58, 185)",
+  	"rgb(119, 56, 183)",
+  	"rgb(117, 53, 180)",
+  	"rgb(114, 50, 178)",
+  	"rgb(112, 47, 175)",
+  	"rgb(109, 44, 173)",
+  	"rgb(107, 41, 170)",
+  	"rgb(104, 38, 167)",
+  	"rgb(102, 35, 164)",
+  	"rgb(99, 32, 161)",
+  	"rgb(96, 29, 157)",
+  	"rgb(93, 26, 153)",
+  	"rgb(90, 24, 149)",
+  	"rgb(88, 22, 144)",
+  	"rgb(85, 20, 139)",
+  	"rgb(81, 17, 134)",
+  	"rgb(78, 14, 129)",
+  	"rgb(75, 12, 125)",
+  	"rgb(72, 8, 120)",
+  	"rgb(69, 5, 115)",
+  	"rgb(66, 2, 110)",
+  	"rgb(63, 0, 106)",
+  ]);
+
+  const FLOURISH_TEALS = Object.freeze([
+  	"rgb(219, 252, 255)",
+  	"rgb(215, 250, 253)",
+  	"rgb(211, 249, 252)",
+  	"rgb(208, 248, 251)",
+  	"rgb(204, 246, 250)",
+  	"rgb(200, 245, 249)",
+  	"rgb(196, 244, 248)",
+  	"rgb(193, 243, 247)",
+  	"rgb(189, 241, 246)",
+  	"rgb(185, 240, 245)",
+  	"rgb(181, 239, 244)",
+  	"rgb(177, 237, 243)",
+  	"rgb(173, 236, 242)",
+  	"rgb(169, 235, 241)",
+  	"rgb(164, 234, 240)",
+  	"rgb(160, 232, 239)",
+  	"rgb(156, 231, 238)",
+  	"rgb(152, 229, 237)",
+  	"rgb(149, 228, 236)",
+  	"rgb(145, 226, 234)",
+  	"rgb(142, 225, 233)",
+  	"rgb(138, 223, 232)",
+  	"rgb(135, 221, 231)",
+  	"rgb(131, 220, 230)",
+  	"rgb(128, 218, 229)",
+  	"rgb(124, 216, 228)",
+  	"rgb(120, 215, 227)",
+  	"rgb(116, 213, 226)",
+  	"rgb(112, 211, 224)",
+  	"rgb(110, 210, 223)",
+  	"rgb(108, 208, 221)",
+  	"rgb(106, 206, 219)",
+  	"rgb(104, 204, 217)",
+  	"rgb(102, 202, 216)",
+  	"rgb(100, 200, 214)",
+  	"rgb(98, 198, 212)",
+  	"rgb(96, 196, 210)",
+  	"rgb(93, 194, 208)",
+  	"rgb(91, 192, 207)",
+  	"rgb(89, 190, 205)",
+  	"rgb(87, 188, 203)",
+  	"rgb(85, 186, 201)",
+  	"rgb(82, 184, 199)",
+  	"rgb(80, 182, 197)",
+  	"rgb(78, 180, 195)",
+  	"rgb(75, 178, 193)",
+  	"rgb(73, 176, 191)",
+  	"rgb(71, 174, 189)",
+  	"rgb(68, 172, 187)",
+  	"rgb(66, 170, 185)",
+  	"rgb(63, 168, 183)",
+  	"rgb(60, 166, 180)",
+  	"rgb(58, 163, 178)",
+  	"rgb(55, 161, 176)",
+  	"rgb(52, 159, 174)",
+  	"rgb(49, 157, 172)",
+  	"rgb(45, 155, 169)",
+  	"rgb(42, 153, 167)",
+  	"rgb(38, 151, 165)",
+  	"rgb(35, 149, 163)",
+  	"rgb(33, 147, 161)",
+  	"rgb(30, 144, 158)",
+  	"rgb(28, 142, 156)",
+  	"rgb(26, 140, 154)",
+  	"rgb(23, 137, 151)",
+  	"rgb(20, 135, 149)",
+  	"rgb(17, 133, 147)",
+  	"rgb(14, 130, 144)",
+  	"rgb(10, 128, 142)",
+  	"rgb(8, 126, 140)",
+  	"rgb(7, 123, 137)",
+  	"rgb(6, 121, 135)",
+  	"rgb(6, 118, 132)",
+  	"rgb(5, 116, 130)",
+  	"rgb(4, 113, 127)",
+  	"rgb(3, 111, 125)",
+  	"rgb(2, 108, 122)",
+  	"rgb(2, 105, 119)",
+  	"rgb(2, 103, 117)",
+  	"rgb(2, 100, 114)",
+  	"rgb(2, 97, 112)",
+  	"rgb(2, 95, 109)",
+  	"rgb(2, 92, 106)",
+  	"rgb(2, 89, 103)",
+  	"rgb(2, 87, 101)",
+  	"rgb(2, 84, 98)",
+  	"rgb(1, 81, 95)",
+  	"rgb(1, 78, 92)",
+  	"rgb(1, 75, 90)",
+  	"rgb(0, 73, 87)",
+  	"rgb(0, 70, 84)",
+  	"rgb(0, 67, 81)",
+  	"rgb(0, 64, 77)",
+  	"rgb(0, 61, 73)",
+  	"rgb(0, 58, 70)",
+  	"rgb(0, 55, 66)",
+  	"rgb(0, 52, 62)",
+  	"rgb(0, 49, 59)",
+  	"rgb(0, 46, 55)",
+  	"rgb(0, 43, 51)",
+  ]);
+
+  const FLOURISH_REDS = Object.freeze([
+  	"rgb(255, 247, 246)",
+  	"rgb(254, 244, 243)",
+  	"rgb(255, 242, 240)",
+  	"rgb(255, 239, 238)",
+  	"rgb(255, 237, 235)",
+  	"rgb(255, 235, 232)",
+  	"rgb(255, 232, 229)",
+  	"rgb(255, 230, 227)",
+  	"rgb(255, 227, 224)",
+  	"rgb(255, 225, 221)",
+  	"rgb(255, 222, 218)",
+  	"rgb(255, 220, 215)",
+  	"rgb(255, 217, 213)",
+  	"rgb(255, 215, 210)",
+  	"rgb(255, 212, 207)",
+  	"rgb(255, 210, 203)",
+  	"rgb(255, 207, 200)",
+  	"rgb(255, 204, 197)",
+  	"rgb(255, 202, 194)",
+  	"rgb(255, 199, 191)",
+  	"rgb(255, 197, 188)",
+  	"rgb(255, 194, 185)",
+  	"rgb(255, 191, 182)",
+  	"rgb(255, 189, 179)",
+  	"rgb(255, 186, 175)",
+  	"rgb(255, 183, 172)",
+  	"rgb(255, 180, 169)",
+  	"rgb(255, 177, 166)",
+  	"rgb(255, 174, 162)",
+  	"rgb(255, 171, 159)",
+  	"rgb(255, 168, 156)",
+  	"rgb(255, 165, 153)",
+  	"rgb(255, 162, 149)",
+  	"rgb(255, 159, 146)",
+  	"rgb(255, 156, 143)",
+  	"rgb(255, 153, 140)",
+  	"rgb(255, 149, 136)",
+  	"rgb(255, 146, 133)",
+  	"rgb(255, 142, 130)",
+  	"rgb(255, 139, 127)",
+  	"rgb(255, 135, 124)",
+  	"rgb(255, 132, 120)",
+  	"rgb(255, 128, 117)",
+  	"rgb(255, 125, 114)",
+  	"rgb(254, 121, 111)",
+  	"rgb(254, 117, 108)",
+  	"rgb(253, 114, 105)",
+  	"rgb(252, 110, 102)",
+  	"rgb(252, 107, 99)",
+  	"rgb(251, 103, 96)",
+  	"rgb(250, 99, 93)",
+  	"rgb(249, 95, 91)",
+  	"rgb(248, 92, 88)",
+  	"rgb(247, 88, 85)",
+  	"rgb(246, 85, 82)",
+  	"rgb(244, 81, 80)",
+  	"rgb(242, 78, 77)",
+  	"rgb(240, 75, 75)",
+  	"rgb(239, 72, 72)",
+  	"rgb(237, 68, 70)",
+  	"rgb(235, 65, 67)",
+  	"rgb(233, 61, 65)",
+  	"rgb(231, 57, 62)",
+  	"rgb(229, 55, 60)",
+  	"rgb(226, 52, 58)",
+  	"rgb(223, 49, 56)",
+  	"rgb(221, 46, 53)",
+  	"rgb(218, 44, 51)",
+  	"rgb(215, 41, 49)",
+  	"rgb(213, 38, 47)",
+  	"rgb(210, 35, 45)",
+  	"rgb(207, 31, 43)",
+  	"rgb(204, 28, 40)",
+  	"rgb(201, 26, 38)",
+  	"rgb(198, 23, 36)",
+  	"rgb(195, 20, 34)",
+  	"rgb(191, 17, 32)",
+  	"rgb(188, 14, 30)",
+  	"rgb(185, 10, 27)",
+  	"rgb(181, 6, 25)",
+  	"rgb(178, 2, 23)",
+  	"rgb(174, 1, 21)",
+  	"rgb(170, 1, 18)",
+  	"rgb(166, 1, 16)",
+  	"rgb(162, 1, 13)",
+  	"rgb(158, 1, 11)",
+  	"rgb(154, 0, 8)",
+  	"rgb(150, 0, 6)",
+  	"rgb(146, 0, 4)",
+  	"rgb(142, 0, 3)",
+  	"rgb(138, 0, 2)",
+  	"rgb(133, 0, 2)",
+  	"rgb(129, 0, 1)",
+  	"rgb(125, 0, 1)",
+  	"rgb(120, 0, 0)",
+  	"rgb(116, 0, 0)",
+  	"rgb(111, 0, 0)",
+  	"rgb(107, 0, 0)",
+  	"rgb(102, 0, 0)",
+  	"rgb(98, 0, 0)",
+  ]);
+
+  const FLOURISH_YELLOWS = Object.freeze([
+  	"rgb(255, 249, 224)",
+  	"rgb(254, 247, 218)",
+  	"rgb(253, 245, 212)",
+  	"rgb(252, 243, 206)",
+  	"rgb(251, 241, 200)",
+  	"rgb(251, 239, 194)",
+  	"rgb(250, 237, 188)",
+  	"rgb(250, 235, 182)",
+  	"rgb(250, 233, 176)",
+  	"rgb(249, 231, 170)",
+  	"rgb(249, 229, 163)",
+  	"rgb(249, 227, 157)",
+  	"rgb(249, 225, 151)",
+  	"rgb(248, 222, 145)",
+  	"rgb(248, 220, 139)",
+  	"rgb(247, 218, 132)",
+  	"rgb(247, 216, 126)",
+  	"rgb(247, 214, 120)",
+  	"rgb(246, 211, 113)",
+  	"rgb(246, 209, 107)",
+  	"rgb(245, 207, 100)",
+  	"rgb(245, 204, 93)",
+  	"rgb(245, 202, 87)",
+  	"rgb(244, 200, 80)",
+  	"rgb(244, 197, 73)",
+  	"rgb(243, 195, 68)",
+  	"rgb(241, 193, 64)",
+  	"rgb(240, 191, 59)",
+  	"rgb(239, 189, 55)",
+  	"rgb(237, 187, 50)",
+  	"rgb(236, 184, 46)",
+  	"rgb(234, 182, 40)",
+  	"rgb(233, 180, 35)",
+  	"rgb(231, 178, 29)",
+  	"rgb(230, 176, 22)",
+  	"rgb(229, 174, 13)",
+  	"rgb(226, 172, 12)",
+  	"rgb(224, 170, 12)",
+  	"rgb(222, 168, 11)",
+  	"rgb(219, 166, 11)",
+  	"rgb(217, 164, 10)",
+  	"rgb(215, 163, 9)",
+  	"rgb(212, 161, 9)",
+  	"rgb(210, 159, 8)",
+  	"rgb(208, 157, 8)",
+  	"rgb(205, 155, 7)",
+  	"rgb(203, 153, 6)",
+  	"rgb(200, 151, 6)",
+  	"rgb(198, 150, 6)",
+  	"rgb(195, 148, 6)",
+  	"rgb(193, 146, 6)",
+  	"rgb(190, 144, 6)",
+  	"rgb(187, 142, 6)",
+  	"rgb(185, 141, 5)",
+  	"rgb(182, 139, 5)",
+  	"rgb(180, 137, 5)",
+  	"rgb(177, 135, 5)",
+  	"rgb(175, 133, 5)",
+  	"rgb(172, 131, 5)",
+  	"rgb(170, 129, 5)",
+  	"rgb(168, 127, 5)",
+  	"rgb(165, 125, 5)",
+  	"rgb(163, 123, 6)",
+  	"rgb(160, 121, 6)",
+  	"rgb(158, 119, 6)",
+  	"rgb(156, 116, 6)",
+  	"rgb(153, 114, 6)",
+  	"rgb(150, 112, 6)",
+  	"rgb(148, 110, 6)",
+  	"rgb(145, 108, 6)",
+  	"rgb(143, 106, 6)",
+  	"rgb(140, 104, 6)",
+  	"rgb(137, 102, 6)",
+  	"rgb(135, 100, 6)",
+  	"rgb(132, 98, 6)",
+  	"rgb(129, 96, 5)",
+  	"rgb(126, 94, 5)",
+  	"rgb(123, 92, 4)",
+  	"rgb(120, 90, 4)",
+  	"rgb(117, 88, 3)",
+  	"rgb(114, 86, 3)",
+  	"rgb(111, 84, 2)",
+  	"rgb(108, 81, 2)",
+  	"rgb(105, 79, 1)",
+  	"rgb(102, 77, 1)",
+  	"rgb(99, 75, 1)",
+  	"rgb(96, 73, 1)",
+  	"rgb(93, 70, 0)",
+  	"rgb(90, 68, 0)",
+  	"rgb(87, 66, 0)",
+  	"rgb(84, 63, 0)",
+  	"rgb(81, 61, 0)",
+  	"rgb(78, 58, 0)",
+  	"rgb(75, 56, 0)",
+  	"rgb(72, 53, 0)",
+  	"rgb(69, 51, 0)",
+  	"rgb(66, 48, 0)",
+  	"rgb(62, 46, 0)",
+  	"rgb(59, 43, 0)",
+  	"rgb(56, 41, 0)",
+  ]);
+
+  var INTERPOLATORS$1 = Object.freeze({
+  	BuGn: interpolateBuGn,
+  	BuPu: interpolateBuPu,
+  	Carrots: rgbBasis(CARROTS),
+  	Cool: cool,
+  	CubehelixDefault: interpolateCubehelixDefault,
+  	FlourishBlues: rgbBasis(FLOURISH_BLUES),
+  	FlourishGreens: rgbBasis(FLOURISH_GREENS),
+  	FlourishGreys: rgbBasis(FLOURISH_GREYS),
+  	FlourishOranges: rgbBasis(FLOURISH_ORANGES),
+  	FlourishPinks: rgbBasis(FLOURISH_PINKS),
+  	FlourishPurples: rgbBasis(FLOURISH_PURPLES),
+  	FlourishReds: rgbBasis(FLOURISH_REDS),
+  	FlourishTeals: rgbBasis(FLOURISH_TEALS),
+  	FlourishYellows: rgbBasis(FLOURISH_YELLOWS),
+  	GnBu: interpolateGnBu,
+  	Inferno: inferno,
+  	Magma: magma,
+  	OrRd: interpolateOrRd,
+  	Plasma: plasma,
+  	PuBu: interpolatePuBu,
+  	PuBuGn: interpolatePuBuGn,
+  	PuRd: interpolatePuRd,
+  	RdPu: interpolateRdPu,
+  	Viridis: interpolateViridis,
+  	Warm: warm,
+  	YlGn: interpolateYlGn,
+  	YlGnBu: interpolateYlGnBu,
+  	YlOrBr: interpolateYlOrBr,
+  	YlOrRd: interpolateYlOrRd,
+  });
+
+  var INTERPOLATOR_GENERATORS$1 = {
+  	hcl: interpolateHcl,
+  	hsl: interpolateHsl,
+  	lab: lab,
+  	rgb: interpolateRgb$1,
+  };
+
+  function getCustomInterpolator$1(state) {
+  	var color_space = state.sequential_color_space;
+  	var min = state.sequential_custom_min;
+  	var max = state.sequential_custom_max;
+  	return INTERPOLATOR_GENERATORS$1[color_space](min, max);
+  }
+
+  function getSequentialFunction(state, values) {
+  	var domain = state.sequential_custom_domain
+  		? [state.sequential_domain_min, state.sequential_domain_max]
+  		: getDomain(values);
+  	var colorInterpolator = function (t) {
+  		var interpolation =
+  			INTERPOLATORS$1[state.sequential_palette] || getCustomInterpolator$1(state);
+  		if (state.sequential_reverse) return interpolation(1 - t);
+  		else return interpolation(t);
+  	};
+
+  	if (state.binning)
+  		return binnedScale(state, domain, values, colorInterpolator);
+
+  	var scale = sequential(colorInterpolator).domain(domain);
+  	var colorScale = function (value) {
+  		return isNaN(value) || value === null ? null : scale(value);
+  	};
+  	colorScale.domain = Object.freeze(domain);
+
+  	return colorScale;
+  }
+
+  var INTERPOLATORS = Object.freeze({
+  	BrBG: interpolateBrBG,
+  	PiYG: interpolatePiYG,
+  	PRGn: interpolatePRGn,
+  	PuOr: interpolatePuOr,
+  	RdBu: interpolateRdBu,
+  	RdGy: interpolateRdGy,
+  	RdYlBu: interpolateRdYlBu,
+  	RdYlGn: interpolateRdYlGn,
+  	Spectral: interpolateSpectral,
+  });
+
+  var INTERPOLATOR_GENERATORS = {
+  	hcl: interpolateHcl,
+  	hsl: interpolateHsl,
+  	lab: lab,
+  	rgb: interpolateRgb$1,
+  };
+
+  function getCustomInterpolator(state) {
+  	var color_space = state.diverging_color_space;
+  	var min = state.diverging_custom_min;
+  	var mid = state.diverging_custom_mid;
+  	var max = state.diverging_custom_max;
+  	return piecewise(INTERPOLATOR_GENERATORS[color_space], [min, mid, max]);
+  }
+
+  function getDivergingFunction(state, values) {
+  	var extent = getDomain(values);
+  	var midpoint =
+  		extent[0] < 0 && extent[1] > 0 ? 0 : (extent[0] + extent[1]) / 2;
+  	var domain = [extent[0], midpoint, extent[1]];
+
+  	if (state.diverging_custom_domain) {
+  		domain = [
+  			state.diverging_domain_min,
+  			state.diverging_domain_mid,
+  			state.diverging_domain_max,
+  		];
+  	}
+
+  	var colorInterpolator = function (t) {
+  		var interpolation =
+  			INTERPOLATORS[state.diverging_palette] || getCustomInterpolator(state);
+  		if (state.diverging_reverse) return interpolation(1 - t);
+  		else return interpolation(t);
+  	};
+
+  	if (state.binning)
+  		return binnedScale(state, domain, values, colorInterpolator);
+
+  	var scale = diverging(colorInterpolator).domain(domain);
+  	var colorScale = function (value) {
+  		return isNaN(value) || value === null ? null : scale(value);
+  	};
+
+  	colorScale.domain = Object.freeze(domain);
+  	colorScale.midpoint = state.diverging_custom_domain
+  		? state.diverging_domain_mid
+  		: midpoint;
+
+  	return colorScale;
+  }
+
+  function init$1(state) {
+  	var colorFunction = null;
+
+  	for (var key in DEFAULTS) {
+  		if (state[key] === undefined) state[key] = DEFAULTS[key];
+  	}
+
+  	var fallback_value = DEFAULT_FALLBACK_VALUE;
+
+  	var updateColorScale = function (values) {
+  		if (typeof values[0] != "number")
+  			colorFunction = getCategoricalFunction(state, values);
+  		else if (state.numeric_type === "sequential")
+  			colorFunction = getSequentialFunction(state, values);
+  		else if (state.numeric_type === "diverging")
+  			colorFunction = getDivergingFunction(state, values);
+
+  		getColor.thresholds = colorFunction.thresholds;
+  		getColor.centers = colorFunction.centers;
+  		getColor.midpoint = colorFunction.midpoint;
+  		getColor.domain = colorFunction.domain;
+  		getColor.colors = colorFunction.colors;
+  		getColor.items = colorFunction.items;
+
+  		return this;
+  	};
+
+  	var fallback = function (value) {
+  		if (value === undefined) return fallback_value;
+  		if (value === "default") fallback_value = DEFAULT_FALLBACK_VALUE;
+  		else fallback_value = value;
+  		return this;
+  	};
+
+  	var getColor = function (value) {
+  		return colorFunction
+  			? colorFunction(value) || fallback_value
+  			: fallback_value;
+  	};
+
+  	return {
+  		getColor: getColor,
+  		updateColorScale: updateColorScale,
+  		fallback: fallback,
+  	};
+  }
+
+  var state = {
+
+      // Voronoi chart specific settings
       voronoi_settings: {
 
           fill: "#ccc",
@@ -6643,9 +10098,11 @@ var template = (function (exports) {
 
 
       layout: {}, // layout module state properties
+      color: {}, // color module state properties
   };
 
-  var layout = init$1(state.layout);
+  var layout = init$2(state.layout);
+  init$1(state.color);
 
   var data = {};
 
@@ -7678,8 +11135,8 @@ var template = (function (exports) {
   var interpolateRgb = (function rgbGamma(y) {
     var color = gamma(y);
 
-    function rgb$1(start, end) {
-      var r = color((start = rgb(start)).r, (end = rgb(end)).r),
+    function rgb(start, end) {
+      var r = color((start = rgb$1(start)).r, (end = rgb$1(end)).r),
           g = color(start.g, end.g),
           b = color(start.b, end.b),
           opacity = nogamma(start.opacity, end.opacity);
@@ -7692,9 +11149,9 @@ var template = (function (exports) {
       };
     }
 
-    rgb$1.gamma = rgbGamma;
+    rgb.gamma = rgbGamma;
 
-    return rgb$1;
+    return rgb;
   })(1);
 
   function interpolateNumber(a, b) {
@@ -8255,8 +11712,8 @@ var template = (function (exports) {
   function interpolate(a, b) {
     var c;
     return (typeof b === "number" ? interpolateNumber
-        : b instanceof color ? interpolateRgb
-        : (c = color(b)) ? (b = c, interpolateRgb)
+        : b instanceof color$1 ? interpolateRgb
+        : (c = color$1(b)) ? (b = c, interpolateRgb)
         : interpolateString)(a, b);
   }
 
@@ -11496,6 +14953,9 @@ var template = (function (exports) {
           throw new Error("Unknown clip shape: " + shape);
       }
   }
+
+  // TODO: Additional advanced settings - handling small values
+
 
   // Simple seeded PRNG (mulberry32) to keep layout stable across redraws
   function seedrandom(seed) {
