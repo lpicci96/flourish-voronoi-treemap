@@ -11519,8 +11519,12 @@ var template = (function (exports) {
       container.appendChild(svg);
       sizeSvg();
 
-      console.log("data", data);
-      console.log("processed data", processData(data));
+      const hierarchy = processData(data);
+      if (!hierarchy) return;
+
+      const width = layout.getPrimaryWidth();
+      const height = layout.getPrimaryHeight();
+      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings);
   }
 
   function update() {

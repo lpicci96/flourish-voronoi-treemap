@@ -2,7 +2,7 @@ import data from "./data";
 import state from "./state";
 import { layout } from "../init";
 import { sizeSvg, svg } from "./draw";
-import { processData, drawVoronoi } from "../voronoi";
+import { processData, drawVoronoi } from "./chart/voronoi";
 
 export default function() {
     layout.update();

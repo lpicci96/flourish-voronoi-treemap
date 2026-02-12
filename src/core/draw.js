@@ -1,6 +1,7 @@
 import data from "./data";
 import { layout } from "../init";
-import {processData} from "../voronoi";
+import {drawVoronoi, processData} from "./chart/voronoi";
+import state from "./state";
 
 let svg;
 
@@ -22,8 +23,12 @@ export default function() {
     container.appendChild(svg);
     sizeSvg();
 
-    console.log("data", data);
-    console.log("processed data", processData(data));
+    const hierarchy = processData(data);
+    if (!hierarchy) return;
+
+    const width = layout.getPrimaryWidth();
+    const height = layout.getPrimaryHeight();
+    drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings);
 }
 
 export { svg };
