@@ -38,10 +38,6 @@ settings:
   # • "color" >> gives a color picker
 
   - Voronoi Treemap
-  - property: voronoi_settings.fill
-    name: Voronoi Fill Color
-    description: The fill color for the Voronoi polygons.
-    type: color
   - property: voronoi_settings.border_color
     name: Border Color
     description: The fill color for the polygon borders.

@@ -3,7 +3,6 @@ export default {
     // Voronoi chart specific settings
     voronoi_settings: {
 
-        fill: "#ccc",
         border_color: "#fff",
         border_size: 1,
         clip_type: "rectangle",
@@ -16,5 +15,5 @@ export default {
 
 
     layout: {}, // layout module state properties
-    color: {}, // color module state properties
+    colors: {}, // color module state properties
 }
