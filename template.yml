@@ -61,6 +61,26 @@ settings:
       - "diamond"
       - "pentagon"
       - "hexagon"
+  - property: voronoi_settings.seed
+    name: Random Seed
+    description: The seed for the random number generator, which affects the layout of the Voronoi polygons.
+    type: number
+    min: 1
+  - property: voronoi_settings.max_iterations
+    name: Max Iterations
+    description: The maximum number of iterations for the Voronoi layout algorithm. Higher values may produce better layouts but take longer to compute. The recommended value is 50
+    type: number
+    min: 1
+    max: 100
+  - property: voronoi_settings.convergence_ratio
+    name: Convergence Ratio
+    description: The ratio used to determine when the Voronoi layout algorithm has converged. A lower value may produce better layouts but take longer to compute. The recommended value is 0.001
+    type: number
+    min: 0.001
+    max: 0.1
+    step: 0.001
+
+
 
   - Section title # Headings can be used to break up the settings into collapsible sections
   - property: example_state_property # Refers to a property in the template's state object

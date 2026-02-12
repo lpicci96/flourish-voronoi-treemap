@@ -6633,7 +6633,10 @@ var template = (function (exports) {
           fill: "#ccc",
           border_color: "#fff",
           border_size: 1,
-          clip_type: "rectangle"
+          clip_type: "rectangle",
+          seed: 42,
+          max_iterations: 50,
+          convergence_ratio: 0.001
 
       },
 
@@ -11494,6 +11497,16 @@ var template = (function (exports) {
       }
   }
 
+  // Simple seeded PRNG (mulberry32) to keep layout stable across redraws
+  function seedrandom(seed) {
+      return function() {
+          seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+          var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+          t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+          return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+  }
+
   const _voronoiTreemap = voronoiTreemap();
 
   function processData(data) {
@@ -11542,8 +11555,9 @@ var template = (function (exports) {
 
       _voronoiTreemap
           .clip(clip)
-          .convergenceRatio(0.001)
-          .maxIterationCount(50);
+          .convergenceRatio(voronoi_settings.convergence_ratio)
+          .maxIterationCount(voronoi_settings.max_iterations)
+          .prng(seedrandom(voronoi_settings.seed));
 
       _voronoiTreemap(hierarchy);
 

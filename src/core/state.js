@@ -6,7 +6,10 @@ export default {
         fill: "#ccc",
         border_color: "#fff",
         border_size: 1,
-        clip_type: "rectangle"
+        clip_type: "rectangle",
+        seed: 42,
+        max_iterations: 50,
+        convergence_ratio: 0.001
 
     },
 
