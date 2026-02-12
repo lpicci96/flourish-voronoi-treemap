@@ -1,5 +1,6 @@
 import data from "./data";
 import { layout } from "../init";
+import {processData} from "../voronoi";
 
 let svg;
 
@@ -20,6 +21,9 @@ export default function() {
     svg.style.border = "1px solid red";
     container.appendChild(svg);
     sizeSvg();
+
+    console.log("data", data);
+    console.log("processed data", processData(data));
 }
 
 export { svg };
