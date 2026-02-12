@@ -6,7 +6,7 @@ export default {
         fill: "#ccc",
         border_color: "#fff",
         border_size: 1,
-
+        clip_type: "rectangle"
 
     },
 

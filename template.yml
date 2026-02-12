@@ -50,6 +50,13 @@ settings:
     name: Border Size
     description: The size of the polygon borders.
     type: number
+  - property: voronoi_settings.clip_type
+    name: Clipping Type
+    description: The method used to clip the Voronoi polygons.
+    type: string
+    choices:
+      - "circle"
+      - "rectangle"
 
   - Section title # Headings can be used to break up the settings into collapsible sections
   - property: example_state_property # Refers to a property in the template's state object

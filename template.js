@@ -6633,7 +6633,7 @@ var template = (function (exports) {
           fill: "#ccc",
           border_color: "#fff",
           border_size: 1,
-
+          clip_type: "rectangle"
 
       },
 
@@ -11425,6 +11425,34 @@ var template = (function (exports) {
     return _voronoiTreemap;
   }
 
+  function rectangularClip(height, width) {
+      // Clipping polygon (counterclockwise rectangle)
+      return [[0, 0], [0, height], [width, height], [width, 0]];
+  }
+
+  function circularClip(height, width, nPoints = 64) {
+      const cx = width / 2;
+      const cy = height / 2;
+      const r = Math.min(cx, cy);
+      const points = [];
+      for (let i = 0; i < nPoints; i++) {
+          const angle = (2 * Math.PI * i) / nPoints;
+          points.push([cx + r * Math.cos(angle), cy + r * Math.sin(angle)]);
+      }
+      return points;
+  }
+
+  function clipVoronoi(shape, height, width) {
+
+      if (shape === "rectangle") {
+          return rectangularClip(height, width);
+      }else if (shape === "circle") {
+          return circularClip(height, width);
+      }else {
+          throw new Error("Unknown clip shape: " + shape);
+      }
+  }
+
   const _voronoiTreemap = voronoiTreemap();
 
   function processData(data) {
@@ -11469,7 +11497,7 @@ var template = (function (exports) {
       if (!hierarchy) return;
 
       // Clipping polygon (counterclockwise rectangle)
-      const clip = [[0, 0], [0, height], [width, height], [width, 0]];
+      const clip = clipVoronoi(voronoi_settings.clip_type ,height, width);
 
       _voronoiTreemap
           .clip(clip)

@@ -1,5 +1,7 @@
 import * as d3 from "d3";
 import { voronoiTreemap } from "d3-voronoi-treemap";
+// import {rectangularClip, circularClip} from "./clip";
+import {clipVoronoi} from "./clip";
 
 const _voronoiTreemap = voronoiTreemap();
 
@@ -45,7 +47,7 @@ export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings) {
     if (!hierarchy) return;
 
     // Clipping polygon (counterclockwise rectangle)
-    const clip = [[0, 0], [0, height], [width, height], [width, 0]];
+    const clip = clipVoronoi(voronoi_settings.clip_type ,height, width);
 
     _voronoiTreemap
         .clip(clip)
