@@ -1,0 +1,215 @@
+entity_name,region,value
+Algeria,Africa,46814308
+Angola,Africa,37885849
+Benin,Africa,14462724
+Botswana,Africa,2521139
+Burkina Faso,Africa,23548781
+Burundi,Africa,14047786
+Cabo Verde,Africa,524877
+Cameroon,Africa,29123744
+Central African Republic,Africa,5330690
+Chad,Africa,20299123
+Comoros,Africa,866628
+"Congo, Dem. Rep.",Africa,109276265
+"Congo, Rep.",Africa,6332961
+Cote d'Ivoire,Africa,31934230
+Djibouti,Africa,1168722
+"Egypt, Arab Rep.",Africa,116538258
+Equatorial Guinea,Africa,1892516
+Eritrea,Africa,3535603
+Eswatini,Africa,1242822
+Ethiopia,Africa,132059767
+Gabon,Africa,2538952
+"Gambia, The",Africa,2759988
+Ghana,Africa,34427414
+Guinea,Africa,14754785
+Guinea-Bissau,Africa,2201352
+Kenya,Africa,56432944
+Lesotho,Africa,2337423
+Liberia,Africa,5612817
+Libya,Africa,7381023
+Madagascar,Africa,31964956
+Malawi,Africa,21655286
+Mali,Africa,24478595
+Mauritania,Africa,5169395
+Mauritius,Africa,1245779
+Morocco,Africa,38081173
+Mozambique,Africa,34631766
+Namibia,Africa,3030131
+Niger,Africa,27032412
+Nigeria,Africa,232679478
+Rwanda,Africa,14256567
+Sao Tome and Principe,Africa,235536
+Senegal,Africa,18501984
+Seychelles,Africa,121354
+Sierra Leone,Africa,8642022
+"Somalia, Fed. Rep.",Africa,19009151
+South Africa,Africa,64007187
+South Sudan,Africa,11943408
+Sudan,Africa,50448963
+Tanzania,Africa,68560157
+Togo,Africa,9515236
+Tunisia,Africa,12277109
+Uganda,Africa,50015092
+Zambia,Africa,21314956
+Zimbabwe,Africa,16634373
+Antigua and Barbuda,Americas,93772
+Argentina,Americas,45696159
+Aruba,Americas,107995
+"Bahamas, The",Americas,401283
+Barbados,Americas,282467
+Belize,Americas,417072
+Bermuda,Americas,64636
+Bolivia,Americas,12413315
+Brazil,Americas,211998573
+British Virgin Islands,Americas,39471
+Canada,Americas,41288599
+Cayman Islands,Americas,74457
+Chile,Americas,19764771
+Colombia,Americas,52886363
+Costa Rica,Americas,5129910
+Cuba,Americas,10979783
+Curacao,Americas,155967
+Dominica,Americas,66205
+Dominican Republic,Americas,11427557
+Ecuador,Americas,18135478
+El Salvador,Americas,6338193
+Greenland,Americas,56836
+Grenada,Americas,117207
+Guatemala,Americas,18406359
+Guyana,Americas,831087
+Haiti,Americas,11772557
+Honduras,Americas,10825703
+Jamaica,Americas,2839175
+Mexico,Americas,130861007
+Nicaragua,Americas,6916140
+Panama,Americas,4515577
+Paraguay,Americas,6929153
+Peru,Americas,34217848
+Sint Maarten (Dutch part),Americas,43350
+St. Kitts and Nevis,Americas,46843
+St. Lucia,Americas,179744
+St. Martin (French part),Americas,26129
+St. Vincent and the Grenadines,Americas,100616
+Suriname,Americas,634431
+Trinidad and Tobago,Americas,1368333
+Turks and Caicos Islands,Americas,46535
+United States,Americas,340110988
+Uruguay,Americas,3386588
+"Venezuela, RB",Americas,28405543
+Virgin Islands (U.S.),Americas,104377
+Afghanistan,Asia,42647492
+Armenia,Asia,3033500
+Azerbaijan,Asia,10202830
+Bahrain,Asia,1588670
+Bangladesh,Asia,173562364
+Bhutan,Asia,791524
+Brunei Darussalam,Asia,462721
+Cambodia,Asia,17638801
+China,Asia,1408975000
+Cyprus,Asia,1358282
+Georgia,Asia,3699557
+"Hong Kong SAR, China",Asia,7524100
+India,Asia,1450935791
+Indonesia,Asia,283487931
+"Iran, Islamic Rep.",Asia,91567738
+Iraq,Asia,46042015
+Israel,Asia,9974400
+Japan,Asia,123975371
+Jordan,Asia,11552876
+Kazakhstan,Asia,20592571
+"Korea, Dem. People's Rep.",Asia,26498823
+"Korea, Rep.",Asia,51751065
+Kuwait,Asia,4897263
+Kyrgyz Republic,Asia,7221868
+Lao PDR,Asia,7769819
+Lebanon,Asia,5805962
+"Macao SAR, China",Asia,687000
+Malaysia,Asia,35557673
+Maldives,Asia,527799
+Mongolia,Asia,3524788
+Myanmar,Asia,54500091
+Nepal,Asia,29651054
+Oman,Asia,5281538
+Pakistan,Asia,251269164
+Philippines,Asia,115843670
+Qatar,Asia,2857822
+Saudi Arabia,Asia,35300280
+Singapore,Asia,6036860
+Sri Lanka,Asia,21916000
+Syrian Arab Republic,Asia,24672760
+Tajikistan,Asia,10590927
+Thailand,Asia,71668011
+Timor-Leste,Asia,1400638
+Turkiye,Asia,85518661
+Turkmenistan,Asia,7494498
+United Arab Emirates,Asia,10986400
+Uzbekistan,Asia,36361859
+Viet Nam,Asia,100987686
+"Yemen, Rep.",Asia,40583164
+Albania,Europe,2377128
+Andorra,Europe,81938
+Austria,Europe,9177982
+Belarus,Europe,9132629
+Belgium,Europe,11858610
+Bosnia and Herzegovina,Europe,3164253
+Bulgaria,Europe,6441421
+Croatia,Europe,3866200
+Czechia,Europe,10905028
+Denmark,Europe,5976992
+Estonia,Europe,1372341
+Faroe Islands,Europe,54681
+Finland,Europe,5619911
+France,Europe,68551653
+Germany,Europe,83516593
+Gibraltar,Europe,39329
+Greece,Europe,10405134
+Hungary,Europe,9562065
+Iceland,Europe,386506
+Ireland,Europe,5395790
+Isle of Man,Europe,84160
+Italy,Europe,58952704
+Kosovo,Europe,1594353
+Latvia,Europe,1866124
+Liechtenstein,Europe,40450
+Lithuania,Europe,2888278
+Luxembourg,Europe,677012
+Malta,Europe,568847
+Moldova,Europe,2402306
+Monaco,Europe,38631
+Montenegro,Europe,623525
+Netherlands,Europe,17993485
+North Macedonia,Europe,1824359
+Norway,Europe,5572279
+Poland,Europe,36559233
+Portugal,Europe,10694681
+Romania,Europe,19051804
+Russian Federation,Europe,143533851
+San Marino,Europe,33977
+Serbia,Europe,6586476
+Slovak Republic,Europe,5422069
+Slovenia,Europe,2127400
+Spain,Europe,48848840
+Sweden,Europe,10569709
+Switzerland,Europe,9005582
+Ukraine,Europe,37860221
+United Kingdom,Europe,69226000
+American Samoa,Oceania,46765
+Australia,Oceania,27196812
+Fiji,Oceania,928784
+French Polynesia,Oceania,281807
+Guam,Oceania,167777
+Kiribati,Oceania,134518
+Marshall Islands,Oceania,37548
+"Micronesia, Fed. Sts.",Oceania,113160
+Nauru,Oceania,11947
+New Caledonia,Oceania,292639
+New Zealand,Oceania,5287500
+Northern Mariana Islands,Oceania,44278
+Palau,Oceania,17695
+Papua New Guinea,Oceania,10576502
+Samoa,Oceania,218019
+Solomon Islands,Oceania,819198
+Tonga,Oceania,104175
+Tuvalu,Oceania,9646
+Vanuatu,Oceania,327777
