@@ -15,6 +15,7 @@
   "dependencies": {
     "@flourish/layout": "^8.7.3",
     "d3": "^7.9.0",
+    "d3-voronoi-treemap": "^1.1.2",
     "less": "^3.0.1",
     "less-plugin-clean-css": "^1.5.1",
     "rollup": "^4.57.1",
