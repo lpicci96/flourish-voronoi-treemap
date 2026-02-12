@@ -44,5 +44,28 @@ settings:
     type: number # See available types above
 
 data:
-  # The data section determines how data is made available to your template,
-  # and the sample data that is used. See the documentation.
+  - key: firstLevel
+    name: First level
+    type: column
+    dataset: data
+    column: "Data::B"
+    data_type:
+      - string
+
+  - key: secondLevel
+    name: Second level
+    type: column
+    dataset: data
+    column: "Data::A"
+    data_type:
+      - string
+
+  - key: values
+    name: Values
+    type: column
+    dataset: data
+    column: "Data::C"
+    data_type:
+      - string
+
+
