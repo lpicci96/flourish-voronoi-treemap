@@ -1,21 +1,9 @@
-export var data = {};
-// If your template includes data tables, use this variable to access the data.
-// Each of the 'datasets' in data.json file will be available as properties of the data.
+import "./init";
 
-export var state = {
-  example_state_property: 25
-  // The current state of template. You can make some or all of the properties
-  // of the state object available to the user as settings in settings.js.
-};
+export { default as data } from "./core/data";
 
-export function update() {
-  // The update function is called whenever the user changes a data table or settings
-  // in the visualisation editor, or when changing slides in the story editor.
+export { default as state } from "./core/state";
 
-  // Tip: to make your template work nicely in the story editor, ensure that all user
-  // interface controls such as buttons and sliders update the state and then call update.
-}
+export { default as draw } from "./core/draw";
 
-export function draw() {
-  // The draw function is called when the template first loads
-}
+export { default as update } from "./core/update";
