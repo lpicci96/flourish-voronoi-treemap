@@ -64,6 +64,7 @@ data:
     column: "Data::A"
     data_type:
       - string
+    optional: true
 
   - key: values
     name: Values

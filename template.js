@@ -11420,24 +11420,35 @@ var template = (function (exports) {
       const rows = Array.isArray(data) ? data : data.data;
       if (!rows || rows.length === 0) return null;
 
-      // Group flat rows by firstLevel (continent)
-      const grouped = {};
-      rows.forEach(d => {
-          if (!grouped[d.firstLevel]) grouped[d.firstLevel] = [];
-          grouped[d.firstLevel].push(d);
-      });
+      const hasTwoLevels = !!rows[0].secondLevel;
 
-      // Build nested structure for d3.hierarchy
-      const rootData = {
-          name: "root",
-          children: Object.keys(grouped).map(key => ({
-              name: key,
-              children: grouped[key].map(d => ({
-                  name: d.secondLevel,
+      let rootData;
+      if (hasTwoLevels) {
+          const grouped = {};
+          rows.forEach(d => {
+              if (!grouped[d.firstLevel]) grouped[d.firstLevel] = [];
+              grouped[d.firstLevel].push(d);
+          });
+
+          rootData = {
+              name: "root",
+              children: Object.keys(grouped).map(key => ({
+                  name: key,
+                  children: grouped[key].map(d => ({
+                      name: d.secondLevel,
+                      value: +d.values || 0
+                  }))
+              }))
+          };
+      } else {
+          rootData = {
+              name: "root",
+              children: rows.map(d => ({
+                  name: d.firstLevel,
                   value: +d.values || 0
               }))
-          }))
-      };
+          };
+      }
 
       return hierarchy(rootData)
           .sum(d => d.value);
