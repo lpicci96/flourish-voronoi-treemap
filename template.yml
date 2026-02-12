@@ -37,6 +37,20 @@ settings:
   # • "boolean" >> gives a checkbox
   # • "color" >> gives a color picker
 
+  - Voronoi Treemap
+  - property: voronoi_settings.fill
+    name: Voronoi Fill Color
+    description: The fill color for the Voronoi polygons.
+    type: color
+  - property: voronoi_settings.border_color
+    name: Border Color
+    description: The fill color for the polygon borders.
+    type: color
+  - property: voronoi_settings.border_size
+    name: Border Size
+    description: The size of the polygon borders.
+    type: number
+
   - Section title # Headings can be used to break up the settings into collapsible sections
   - property: example_state_property # Refers to a property in the template's state object
     name: Example number setting # Display name for the settings panel

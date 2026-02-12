@@ -6628,6 +6628,17 @@ var template = (function (exports) {
   var state = {
       example_state_property: 25,
 
+      voronoi_settings: {
+
+          fill: "#ccc",
+          border_color: "#fff",
+          border_size: 1,
+
+
+      },
+
+
+
       layout: {}, // layout module state properties
   };
 
@@ -11454,7 +11465,7 @@ var template = (function (exports) {
           .sum(d => d.value);
   }
 
-  function drawVoronoi(svg, hierarchy, width, height) {
+  function drawVoronoi(svg, hierarchy, width, height, voronoi_settings) {
       if (!hierarchy) return;
 
       // Clipping polygon (counterclockwise rectangle)
@@ -11479,9 +11490,9 @@ var template = (function (exports) {
 
           const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
           path.setAttribute("d", "M" + leaf.polygon.map(pt => pt[0] + "," + pt[1]).join("L") + "Z");
-          path.setAttribute("fill", "#ccc");
-          path.setAttribute("stroke", "#fff");
-          path.setAttribute("stroke-width", "1");
+          path.setAttribute("fill", voronoi_settings.fill);
+          path.setAttribute("stroke", voronoi_settings.border_color);
+          path.setAttribute("stroke-width", voronoi_settings.border_size);
           g.appendChild(path);
       });
 
@@ -11521,7 +11532,7 @@ var template = (function (exports) {
 
       const width = layout.getPrimaryWidth();
       const height = layout.getPrimaryHeight();
-      drawVoronoi(svg, hierarchy, width, height);
+      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings);
   }
 
   exports.data = data;

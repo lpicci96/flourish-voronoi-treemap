@@ -41,7 +41,7 @@ export function processData(data) {
         .sum(d => d.value);
 }
 
-export function drawVoronoi(svg, hierarchy, width, height) {
+export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings) {
     if (!hierarchy) return;
 
     // Clipping polygon (counterclockwise rectangle)
@@ -66,9 +66,9 @@ export function drawVoronoi(svg, hierarchy, width, height) {
 
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute("d", "M" + leaf.polygon.map(pt => pt[0] + "," + pt[1]).join("L") + "Z");
-        path.setAttribute("fill", "#ccc");
-        path.setAttribute("stroke", "#fff");
-        path.setAttribute("stroke-width", "1");
+        path.setAttribute("fill", voronoi_settings.fill);
+        path.setAttribute("stroke", voronoi_settings.border_color);
+        path.setAttribute("stroke-width", voronoi_settings.border_size);
         g.appendChild(path);
     });
 
