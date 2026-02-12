@@ -1,8 +1,8 @@
 # The 'id' should be a string that uniquely identifies your template
-id: ''
-name: Untitled template
-description: A Flourish template
-author: Unknown author
+id: 'voronoi-treemap'
+name: Voronoi Treemap
+description: A hierarchical treemap diagram using Voronoi tessellation.
+author: Luca Picci
 
 # This template is compatible with SDK version 3
 sdk_version: 3
