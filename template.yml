@@ -55,8 +55,12 @@ settings:
     description: The method used to clip the Voronoi polygons.
     type: string
     choices:
-      - "circle"
       - "rectangle"
+      - "circle"
+      - "triangle"
+      - "diamond"
+      - "pentagon"
+      - "hexagon"
 
   - Section title # Headings can be used to break up the settings into collapsible sections
   - property: example_state_property # Refers to a property in the template's state object
