@@ -43,6 +43,11 @@ settings:
     description: A setting for changing a number # Optional description for the settings panel
     type: number # See available types above
 
+  # imported modules
+  - property: layout
+    import: "@flourish/layout"
+
+
 data:
   - key: firstLevel
     name: First level
