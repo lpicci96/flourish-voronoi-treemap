@@ -1,0 +1,20 @@
+{
+  "name": "flourish-voronoi-treemap",
+  "version": "0.0.1",
+  "description": "A Flourish template for voronoi treemap visualisation",
+  "homepage": "https://github.com/lpicci96/flourish-voronoi-treemap#readme",
+  "bugs": {
+    "url": "https://github.com/lpicci96/flourish-voronoi-treemap/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lpicci96/flourish-voronoi-treemap.git"
+  },
+  "license": "MIT",
+  "author": "Luca Picci",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
