@@ -2,19 +2,29 @@
   "name": "flourish-voronoi-treemap",
   "version": "0.0.1",
   "description": "A Flourish template for voronoi treemap visualisation",
-  "homepage": "https://github.com/lpicci96/flourish-voronoi-treemap#readme",
-  "bugs": {
-    "url": "https://github.com/lpicci96/flourish-voronoi-treemap/issues"
-  },
+  "main": "index.js",
+  "author": "Luca Picci",
+  "license": "MIT",
+  "keywords": [
+    "flourish", "voronoi", "treemap", "visualisation"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lpicci96/flourish-voronoi-treemap.git"
   },
-  "license": "MIT",
-  "author": "Luca Picci",
-  "type": "commonjs",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rollup -c",
+    "less": "lessc --plugin=less-plugin-clean-css --source-map less/style.less static/style.css"
+  },
+  "dependencies": {
+    "less": "^3.0.1",
+    "less-plugin-clean-css": "^1.5.1",
+    "rollup": "^1.16.2",
+    "rollup-plugin-node-resolve": "^5.1.0",
+    "rollup-plugin-uglify": "^6.0.2"
+  },
+  "engines": {
+    "node": "24.12.x",
+    "npm": "11.x"
   }
 }
