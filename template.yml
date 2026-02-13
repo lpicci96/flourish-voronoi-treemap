@@ -52,6 +52,7 @@ settings:
     type: string
     choices:
       - "rectangle"
+      - "square"
       - "circle"
       - "triangle"
       - "diamond"

@@ -1,4 +1,9 @@
-// TODO: Add square clip (equal width and height)
+function squareClip(height, width) {
+    const side = Math.min(height, width);
+    const offsetX = (width - side) / 2;
+    const offsetY = (height - side) / 2;
+    return [[offsetX, offsetY], [offsetX, offsetY + side], [offsetX + side, offsetY + side], [offsetX + side, offsetY]];
+}
 
 function rectangularClip(height, width) {
     // Clipping polygon (counterclockwise rectangle)
@@ -52,7 +57,9 @@ function diamondClip(height, width) {
 
 export function clipVoronoi(shape, height, width) {
 
-    if (shape === "rectangle") {
+    if (shape === "square") {
+        return squareClip(height, width);
+    }else if (shape === "rectangle") {
         return rectangularClip(height, width);
     }else if (shape === "circle") {
         return circularClip(height, width);
