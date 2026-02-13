@@ -5,7 +5,8 @@ export default {
 
         border_color: "#ffffff",
         border_size: 1,
-        clip_type: "rectangle",
+        clip_type: "circle",
+        advanced_settings: false,
         seed: 42,
         max_iterations: 50,
         convergence_ratio: 0.001,
@@ -13,9 +14,12 @@ export default {
     },
 
     legend_container: {},
-    legend_categorical: {show_legend: false},
+    legend_categorical: {show_legend: true},
 
-    layout: {}, // layout module state properties
+    // layout module state properties
+    layout: {
+        footer_note: `Flourish template by <a href="https://lpicci96.github.io/LucaPicci/" Luca Picci" target="_blank">Luca Picci</a>`,
+    },
     colors: {}, // color module state properties
     popup: {}, // popup module state properties
 
