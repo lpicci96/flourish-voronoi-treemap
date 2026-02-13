@@ -6,7 +6,7 @@
   "author": "Luca Picci",
   "license": "MIT",
   "keywords": [
-    "flourish"
+    "flourish", "voronoi", "treemap", "hierarchy"
   ],
   "scripts": {
     "build": "rollup -c",
