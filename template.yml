@@ -87,11 +87,6 @@ settings:
     import: "@flourish/colors"
 
   - Legend
-#  - property: legend_categorical.show_legend
-#    name: Show Legend
-#    description: Whether to display the legend on the chart.
-#    type: boolean
-
   - property: legend_container
     import: "@flourish/legend/container"
   - property: legend_categorical
@@ -100,6 +95,12 @@ settings:
   - Popups & panels
   - property: popup
     import: "@flourish/info-popup"
+
+  - Number formatting
+  - property: localization
+    import: "@flourish/number-localization"
+  - property: number_format
+    import: "@flourish/number-formatter"
 
 
 

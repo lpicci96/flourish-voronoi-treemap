@@ -117,7 +117,7 @@ function renderCells(svg, leaves, root, voronoi_settings, colors, popup) {
     });
 }
 
-function configurePopup(popup, leaves) {
+function configurePopup(popup, leaves, localization, number_format) {
     const sampleRow = leaves[0] && leaves[0].data._row;
     if (!sampleRow) return;
 
@@ -126,10 +126,14 @@ function configurePopup(popup, leaves) {
         columnNames[key] = key;
     });
 
+    const formatter = number_format(localization.getFormatterFunction());
+    const formatters = { values: formatter };
+
     popup.setColumnNames(columnNames);
+    popup.setFormatters(formatters);
 }
 
-export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors, popup) {
+export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format) {
     if (!hierarchy) return;
 
     computeLayout(hierarchy, voronoi_settings, height, width);
@@ -138,6 +142,6 @@ export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, col
     colors.updateColorScale(firstLevelNames);
 
     const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
-    configurePopup(popup, leaves);
+    configurePopup(popup, leaves, localization, number_format);
     renderCells(svg, leaves, hierarchy, voronoi_settings, colors, popup);
 }

@@ -1,6 +1,6 @@
 import data from "./data";
 import state from "./state";
-import { layout, colors, legend_container, legend_categorical, popup } from "../init";
+import { layout, colors, legend_container, legend_categorical, popup, localization, number_format } from "../init";
 import { sizeSvg, svg, updateLegend } from "./draw";
 import { processData, drawVoronoi } from "./chart/voronoi";
 
@@ -19,6 +19,6 @@ export default function() {
 
     const width = layout.getPrimaryWidth();
     const height = layout.getPrimaryHeight();
-    drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup);
+    drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup, localization, number_format);
     popup.update();
 }

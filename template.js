@@ -1315,7 +1315,7 @@ var template = (function (exports) {
   	}
   }
 
-  function init$5() {
+  function init$7() {
   	header_el = document.createElement("header");
   	header_el.className = "flourish-header";
 
@@ -5777,7 +5777,7 @@ var template = (function (exports) {
   	}
   }
 
-  function init$4() {
+  function init$6() {
   	appendStyles$1();
 
   	footer_el = document.createElement("footer");
@@ -6197,7 +6197,7 @@ var template = (function (exports) {
   	document.body.style.backgroundPosition = state$1.background_image_position;
   }
 
-  var DEFAULTS$4 = Object.freeze({
+  var DEFAULTS$6 = Object.freeze({
   	body_font: {
   		name: "Canva Sans Variable",
   		url: "https://public.flourish.studio/resources/fonts/canva-sans.css",
@@ -6754,10 +6754,10 @@ var template = (function (exports) {
   }
 
   // Main init function ----------------------------------------
-  function init$3(state_) {
+  function init$5(state_) {
   	state$1 = state_;
-  	for (var key in DEFAULTS$4) {
-  		if (state$1[key] === undefined) state$1[key] = DEFAULTS$4[key];
+  	for (var key in DEFAULTS$6) {
+  		if (state$1[key] === undefined) state$1[key] = DEFAULTS$6[key];
   	}
 
   	initFontStyles();
@@ -6765,8 +6765,8 @@ var template = (function (exports) {
   	SECTIONS.forEach(function (section, i) {
   		elements[section] = addElement(section, i);
   	});
-  	getSection("header").appendChild(init$5());
-  	getSection("footer").appendChild(init$4());
+  	getSection("header").appendChild(init$7());
+  	getSection("footer").appendChild(init$6());
   	elements.primary.outer.style.overflow = "hidden";
   	createOverlay();
 
@@ -6793,7 +6793,7 @@ var template = (function (exports) {
   	};
   }
 
-  var DEFAULTS$3 = Object.freeze({
+  var DEFAULTS$5 = Object.freeze({
   	categorical_type: "palette",
   	categorical_palette: [
   		"#135ae1",
@@ -6893,7 +6893,7 @@ var template = (function (exports) {
   	var n = palette.length;
 
   	if (state.categorical_extend) {
-  		var angle = DEFAULTS$3.rotation_angle;
+  		var angle = DEFAULTS$5.rotation_angle;
   		var generator_name = "hcl";
   		var colorGenerator = color_generators[generator_name](palette, angle);
   		unique_domain.forEach(function (label, i) {
@@ -10038,11 +10038,11 @@ var template = (function (exports) {
   	return colorScale;
   }
 
-  function init$2(state) {
+  function init$4(state) {
   	var colorFunction = null;
 
-  	for (var key in DEFAULTS$3) {
-  		if (state[key] === undefined) state[key] = DEFAULTS$3[key];
+  	for (var key in DEFAULTS$5) {
+  		if (state[key] === undefined) state[key] = DEFAULTS$5[key];
   	}
 
   	var fallback_value = DEFAULT_FALLBACK_VALUE;
@@ -11131,7 +11131,7 @@ var template = (function (exports) {
   }
 
   var legend_count = 0;
-  var DEFAULTS$2 = Object.freeze({
+  var DEFAULTS$4 = Object.freeze({
   	show_legend: true,
 
   	title_mode: "auto",
@@ -11158,8 +11158,8 @@ var template = (function (exports) {
 
   function DiscreteColorLegend(state_) {
   	this._state = state_;
-  	for (var key in DEFAULTS$2) {
-  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$2[key];
+  	for (var key in DEFAULTS$4) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$4[key];
   	}
 
   	this._colorFunction = undefined;
@@ -11662,7 +11662,7 @@ var template = (function (exports) {
   	font_weight,
   	default_text_size = 1;
 
-  var DEFAULTS$1 = Object.freeze({
+  var DEFAULTS$3 = Object.freeze({
   	alignment: "start",
   	orientation: "horizontal",
   	text_color: null,
@@ -11674,8 +11674,8 @@ var template = (function (exports) {
 
   function legendContainer(state_) {
   	this._state = state_;
-  	for (var key in DEFAULTS$1) {
-  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$1[key];
+  	for (var key in DEFAULTS$3) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$3[key];
   	}
 
   	return this;
@@ -13598,7 +13598,7 @@ var template = (function (exports) {
     });
   }
 
-  function init$1(node, id) {
+  function init$3(node, id) {
     var schedule = get$3(node, id);
     if (schedule.state > CREATED$1) throw new Error("too late; already scheduled");
     return schedule;
@@ -14949,13 +14949,13 @@ var template = (function (exports) {
 
   function delayFunction$1(id, value) {
     return function() {
-      init$1(this, id).delay = +value.apply(this, arguments);
+      init$3(this, id).delay = +value.apply(this, arguments);
     };
   }
 
   function delayConstant$1(id, value) {
     return value = +value, function() {
-      init$1(this, id).delay = value;
+      init$3(this, id).delay = value;
     };
   }
 
@@ -15047,7 +15047,7 @@ var template = (function (exports) {
   }
 
   function onFunction$1(id, name, listener) {
-    var on0, on1, sit = start$1(name) ? init$1 : set$3;
+    var on0, on1, sit = start$1(name) ? init$3 : set$3;
     return function() {
       var schedule = sit(this, id),
           on = schedule.on;
@@ -15891,7 +15891,7 @@ var template = (function (exports) {
   	return new Panel();
   }
 
-  var DEFAULTS = {
+  var DEFAULTS$2 = {
   	mode: "popup",
 
   	// If truthy, means panel or popup are locked
@@ -16680,8 +16680,8 @@ var template = (function (exports) {
   		return null;
   	};
 
-  	for (var key in DEFAULTS) {
-  		if (state[key] == undefined) state[key] = DEFAULTS[key];
+  	for (var key in DEFAULTS$2) {
+  		if (state[key] == undefined) state[key] = DEFAULTS$2[key];
   	}
 
   	this.panel = initPanel()
@@ -17209,6 +17209,122 @@ var template = (function (exports) {
   	return new InfoPopup(state, panel_container, popup_container);
   }
 
+  var DEFAULTS$1 = Object.freeze({
+  	input_decimal_separator: ".",
+  	output_separators: ",.",
+  });
+
+  function getLocaleObject(decimal, thousands) {
+  	return {
+  		decimal: decimal,
+  		thousands: thousands,
+  		grouping: [ 3 ],
+  		currency: [ "", "" ]
+  	};
+  }
+
+
+  function makeParser(separator) {
+  	var number_regex = new RegExp("[^-0-9eE" + separator + "]", "g");
+
+  	return function(val_string) {
+  		if (typeof val_string === "number") return val_string;
+  		if (val_string === "" || typeof val_string == "undefined") return NaN;
+  		return parseFloat(val_string.replace(number_regex, "").replace(separator, "."));
+  	};
+  }
+
+
+  function makeFormatterFunction(separators) {
+  	var multi_char = separators.length > 1;
+  	var decimal = multi_char ? separators.charAt(1) : separators.charAt(0);
+  	var thousands = multi_char ? separators.charAt(0) : "";
+  	var formatter = formatLocale(getLocaleObject(decimal, thousands)).format;
+  	// Attach separator properties for easy querying
+  	formatter.decimal = decimal;
+  	formatter.thousands = thousands;
+  	return formatter;
+  }
+
+
+  function init$2(state) {
+  	for (var key in DEFAULTS$1) {
+  		if (state[key] === undefined) state[key] = DEFAULTS$1[key];
+  	}
+
+  	return {
+  		getParser: function() { return makeParser(state.input_decimal_separator); },
+  		getFormatterFunction: function() { return makeFormatterFunction(state.output_separators); }
+  	};
+  }
+
+  var DEFAULTS = Object.freeze({
+  	transform_labels: false,
+  	transform: "multiply",
+  	multiply_divide_constant: 1,
+  	exponentiate_constant: 0,
+  	multiplier: 1,
+  	prefix: "",
+  	n_dec: 2,
+  	suffix: "",
+  	strip_zeros: true,
+  	strip_separator: true,
+  	negative_sign: "-$nk"
+  });
+
+  function round(val, pow) {
+  	pow = pow > 0 ? Math.floor(pow) : Math.ceil(pow);
+  	if (!pow) return Math.round(val);
+  	var rounder =  Math.pow(10, Math.abs(pow));
+  	return pow > 0 ? (Math.round(val*rounder) / rounder) : (Math.round(val/rounder) * rounder);
+  }
+
+  function getTransformFunction(state) {
+  	var constant = 1;
+  	if (state.transform_labels) {
+  		if (state.transform === "multiply") constant = state.multiply_divide_constant;
+  		else if (state.transform === "divide") constant = 1 / state.multiply_divide_constant;
+  		else constant = Math.pow(10, state.exponentiate_constant);
+  	}
+  	return function(x) { return x * constant; };
+  }
+
+  function makeNumberFormatter(state, formatterFunction) {
+  	var n_dec = state.n_dec >= 0 ? Math.floor(state.n_dec) : Math.ceil(state.n_dec);
+  	var form = formatterFunction(",." + (n_dec > 0 ? n_dec : "0") + "f");
+  	var decimal = formatterFunction.decimal;
+  	var thousands = formatterFunction.thousands;
+  	var strip_zeros_regex = (state.strip_zeros && n_dec > 0) ? new RegExp("\\" + decimal + "?0+$") : null;
+  	var may_strip_separator = state.strip_separator && thousands;
+  	var neg_sign = state.negative_sign;
+  	var transform = getTransformFunction(state);
+
+  	return function(val) {
+  		var num = n_dec >= 0 ? transform(val) : round(transform(val), n_dec);
+  		var is_negative = num < 0;
+  		var abs_num = Math.abs(num);
+  		var strip_separator = may_strip_separator && thousands && abs_num >= 1000 && abs_num < 10000;
+  		var num_string = form(abs_num);
+  		if (strip_zeros_regex) num_string = num_string.replace(strip_zeros_regex, "");
+  		if (strip_separator) num_string = num_string.replace(thousands, "");
+  		if (!is_negative || neg_sign === "none") return state.prefix + num_string + state.suffix;
+  		if (neg_sign === "-$nk") return "-" + state.prefix + num_string + state.suffix;
+  		if (neg_sign === "$-nk") return state.prefix + "-" + num_string + state.suffix;
+  		if (neg_sign === "($nk)") return "(" + state.prefix + num_string + state.suffix + ")";
+  		return state.prefix + "(" + num_string + ")" + state.suffix;
+  	};
+  }
+
+  function init$1(state) {
+  	for (var key in DEFAULTS) {
+  		if (state[key] === undefined) state[key] = DEFAULTS[key];
+  	}
+
+  	return function(formatterFunction) {
+  		return makeNumberFormatter(state, formatterFunction);
+  	};
+  }
+
   var state = {
 
       // Voronoi chart specific settings
@@ -17228,14 +17344,19 @@ var template = (function (exports) {
 
       layout: {}, // layout module state properties
       colors: {}, // color module state properties
-      popup: {}
+      popup: {}, // popup module state properties
+
+      localization: {}, // localization module state properties
+      number_format: {}, // number format module state properties
   };
 
-  var layout = init$3(state.layout);
-  var colors = init$2(state.colors);
+  var layout = init$5(state.layout);
+  var colors = init$4(state.colors);
   var legend_container = createLegendContainer(state.legend_container);
   var legend_categorical = createDiscreteColorLegend(state.legend_categorical);
   var popup = createInfoPopup(state.popup);
+  var localization = init$2(state.localization);
+  var number_format = init$1(state.number_format);
 
   var data = {};
 
@@ -22216,7 +22337,7 @@ var template = (function (exports) {
       });
   }
 
-  function configurePopup(popup, leaves) {
+  function configurePopup(popup, leaves, localization, number_format) {
       const sampleRow = leaves[0] && leaves[0].data._row;
       if (!sampleRow) return;
 
@@ -22225,10 +22346,14 @@ var template = (function (exports) {
           columnNames[key] = key;
       });
 
+      const formatter = number_format(localization.getFormatterFunction());
+      const formatters = { values: formatter };
+
       popup.setColumnNames(columnNames);
+      popup.setFormatters(formatters);
   }
 
-  function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors, popup) {
+  function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format) {
       if (!hierarchy) return;
 
       computeLayout(hierarchy, voronoi_settings, height, width);
@@ -22237,7 +22362,7 @@ var template = (function (exports) {
       colors.updateColorScale(firstLevelNames);
 
       const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
-      configurePopup(popup, leaves);
+      configurePopup(popup, leaves, localization, number_format);
       renderCells(svg, leaves, hierarchy, voronoi_settings, colors, popup);
   }
 
@@ -22284,7 +22409,7 @@ var template = (function (exports) {
 
       const width = layout.getPrimaryWidth();
       const height = layout.getPrimaryHeight();
-      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup);
+      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup, localization, number_format);
   }
 
   function update() {
@@ -22302,7 +22427,7 @@ var template = (function (exports) {
 
       const width = layout.getPrimaryWidth();
       const height = layout.getPrimaryHeight();
-      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup);
+      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup, localization, number_format);
       popup.update();
   }
 

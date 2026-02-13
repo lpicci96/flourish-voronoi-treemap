@@ -17,5 +17,8 @@ export default {
 
     layout: {}, // layout module state properties
     colors: {}, // color module state properties
-    popup: {}
+    popup: {}, // popup module state properties
+
+    localization: {}, // localization module state properties
+    number_format: {}, // number format module state properties
 }
