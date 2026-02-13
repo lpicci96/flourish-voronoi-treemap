@@ -22370,6 +22370,25 @@ var template = (function (exports) {
       renderCells(svg, leaves, hierarchy, voronoi_settings, colors, popup);
   }
 
+  function update() {
+      const hierarchy = processData(data);
+      if (!hierarchy) {
+          layout.update();
+          sizeSvg();
+          return;
+      }
+
+      // Update legend before layout so layout allocates space for it
+      updateLegend(hierarchy);
+      layout.update();
+      sizeSvg();
+
+      const width = layout.getPrimaryWidth();
+      const height = layout.getPrimaryHeight();
+      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup, localization, number_format);
+      popup.update();
+  }
+
   let svg;
 
   function sizeSvg() {
@@ -22396,43 +22415,12 @@ var template = (function (exports) {
       // Append legend to DOM
       legend_container.appendTo(legendSection).add(legend_categorical);
 
-      const hierarchy = processData(data);
-      if (!hierarchy) {
-          layout.update();
-          return;
-      }
-
-      // Update legend before layout so layout allocates space for it
-      updateLegend(hierarchy);
-      layout.update();
-
       svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       svg.style.border = "1px solid red";
       container.appendChild(svg);
-      sizeSvg();
 
-      const width = layout.getPrimaryWidth();
-      const height = layout.getPrimaryHeight();
-      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup, localization, number_format);
-  }
-
-  function update() {
-      const hierarchy = processData(data);
-      if (!hierarchy) {
-          layout.update();
-          sizeSvg();
-          return;
-      }
-
-      // Update legend before layout so layout allocates space for it
-      updateLegend(hierarchy);
-      layout.update();
-      sizeSvg();
-
-      const width = layout.getPrimaryWidth();
-      const height = layout.getPrimaryHeight();
-      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup, localization, number_format);
-      popup.update();
+      update();
+      window.onresize = function () { update(); };
   }
 
   exports.data = data;
