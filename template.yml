@@ -85,6 +85,22 @@ settings:
   - property: colors
     import: "@flourish/colors"
 
+  - Legend
+#  - property: legend_categorical.show_legend
+#    name: Show Legend
+#    description: Whether to display the legend on the chart.
+#    type: boolean
+
+  - property: legend_container
+    import: "@flourish/legend/container"
+  - property: legend_categorical
+    import: "@flourish/legend/discrete-color"
+
+  - Popups & panels
+  - property: popup
+    import: "@flourish/info-popup"
+
+
 
 data:
   - key: firstLevel
