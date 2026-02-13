@@ -85,14 +85,14 @@ settings:
     step: 0.001
     show_if: voronoi_settings.advanced_settings
 
-
-  # imported modules
-  - property: layout
-    import: "@flourish/layout"
-
   - Colours
   - property: colors
     import: "@flourish/colors"
+
+
+
+
+
 
   - Legend
   - property: legend_container
@@ -109,6 +109,10 @@ settings:
     import: "@flourish/number-localization"
   - property: number_format
     import: "@flourish/number-formatter"
+
+  # imported modules
+  - property: layout
+    import: "@flourish/layout"
 
 
 
