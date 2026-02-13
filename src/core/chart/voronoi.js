@@ -1,4 +1,6 @@
 // TODO: Additional advanced settings - handling small values
+// TODO: Aggregation of values
+// TODO: Align chart left, center or right within section
 
 
 
@@ -57,11 +59,8 @@ export function processData(data) {
         .sum(d => d.value);
 }
 
-export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors) {
-    if (!hierarchy) return;
-
-    // Clipping polygon (counterclockwise rectangle)
-    const clip = clipVoronoi(voronoi_settings.clip_type ,height, width);
+function computeLayout(hierarchy, voronoi_settings, height, width) {
+    const clip = clipVoronoi(voronoi_settings.clip_type, height, width);
 
     _voronoiTreemap
         .clip(clip)
@@ -70,32 +69,40 @@ export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, col
         .prng(seedrandom(voronoi_settings.seed));
 
     _voronoiTreemap(hierarchy);
+}
 
-    // Clear previous paths
-    const cells = svg.querySelector(".cells");
-    if (cells) cells.remove();
+function polygonPath(polygon) {
+    return "M" + polygon.map(pt => pt[0] + "," + pt[1]).join("L") + "Z";
+}
 
-    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    g.setAttribute("class", "cells");
+function getCellColor(leaf, root, colors) {
+    const firstLevel = leaf.parent === root ? leaf.data.name : leaf.parent.data.name;
+    return colors.getColor(firstLevel);
+}
 
-    // Build color domain from unique firstLevel names
-    const root = hierarchy;
-    const firstLevelNames = (root.children || []).map(d => d.data.name);
+function renderCells(svg, leaves, root, voronoi_settings, colors) {
+    const svgSel = d3.select(svg);
+
+    let g = svgSel.selectAll("g.cells").data([null]);
+    g = g.enter().append("g").attr("class", "cells").merge(g);
+
+    g.selectAll("path")
+        .data(leaves, d => d.data.name)
+        .join("path")
+        .attr("d", d => polygonPath(d.polygon))
+        .attr("fill", d => getCellColor(d, root, colors))
+        .attr("stroke", voronoi_settings.border_color)
+        .attr("stroke-width", voronoi_settings.border_size);
+}
+
+export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors) {
+    if (!hierarchy) return;
+
+    computeLayout(hierarchy, voronoi_settings, height, width);
+
+    const firstLevelNames = (hierarchy.children || []).map(d => d.data.name);
     colors.updateColorScale(firstLevelNames);
 
-    hierarchy.leaves().forEach(leaf => {
-        if (!leaf.polygon || leaf.polygon.length === 0) return;
-
-        // In two-level mode leaf.parent is a firstLevel group; in one-level mode leaf itself is firstLevel
-        const firstLevel = leaf.parent === root ? leaf.data.name : leaf.parent.data.name;
-
-        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        path.setAttribute("d", "M" + leaf.polygon.map(pt => pt[0] + "," + pt[1]).join("L") + "Z");
-        path.setAttribute("fill", colors.getColor(firstLevel));
-        path.setAttribute("stroke", voronoi_settings.border_color);
-        path.setAttribute("stroke-width", voronoi_settings.border_size);
-        g.appendChild(path);
-    });
-
-    svg.appendChild(g);
+    const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
+    renderCells(svg, leaves, hierarchy, voronoi_settings, colors);
 }
