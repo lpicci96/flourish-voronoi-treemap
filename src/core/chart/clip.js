@@ -1,4 +1,4 @@
-
+// TODO: Add square clip (equal width and height)
 
 function rectangularClip(height, width) {
     // Clipping polygon (counterclockwise rectangle)
