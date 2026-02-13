@@ -22223,6 +22223,26 @@ var template = (function (exports) {
       }
   }
 
+  function createValueFormatter(localization, number_format) {
+      return number_format(localization.getFormatterFunction());
+  }
+
+  function configurePopup(popup, leaves, localization, number_format) {
+      const sampleRow = leaves[0] && leaves[0].data._row;
+      if (!sampleRow) return;
+
+      const columnNames = {};
+      Object.keys(sampleRow).forEach(key => {
+          columnNames[key] = key;
+      });
+
+      const formatter = createValueFormatter(localization, number_format);
+      const formatters = { values: formatter };
+
+      popup.setColumnNames(columnNames);
+      popup.setFormatters(formatters);
+  }
+
   // TODO: Additional advanced settings - handling small values
   // TODO: Aggregation of values
   // TODO: Align chart left, center or right within section
@@ -22335,22 +22355,6 @@ var template = (function (exports) {
       svgSel.on("click", function() {
           popup.clickout();
       });
-  }
-
-  function configurePopup(popup, leaves, localization, number_format) {
-      const sampleRow = leaves[0] && leaves[0].data._row;
-      if (!sampleRow) return;
-
-      const columnNames = {};
-      Object.keys(sampleRow).forEach(key => {
-          columnNames[key] = key;
-      });
-
-      const formatter = number_format(localization.getFormatterFunction());
-      const formatters = { values: formatter };
-
-      popup.setColumnNames(columnNames);
-      popup.setFormatters(formatters);
   }
 
   function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format) {

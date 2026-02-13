@@ -7,6 +7,7 @@
 import * as d3 from "d3";
 import { voronoiTreemap } from "d3-voronoi-treemap";
 import {clipVoronoi} from "./clip";
+import {configurePopup} from "./format";
 
 // Simple seeded PRNG (mulberry32) to keep layout stable across redraws
 function seedrandom(seed) {
@@ -115,22 +116,6 @@ function renderCells(svg, leaves, root, voronoi_settings, colors, popup) {
     svgSel.on("click", function() {
         popup.clickout();
     });
-}
-
-function configurePopup(popup, leaves, localization, number_format) {
-    const sampleRow = leaves[0] && leaves[0].data._row;
-    if (!sampleRow) return;
-
-    const columnNames = {};
-    Object.keys(sampleRow).forEach(key => {
-        columnNames[key] = key;
-    });
-
-    const formatter = number_format(localization.getFormatterFunction());
-    const formatters = { values: formatter };
-
-    popup.setColumnNames(columnNames);
-    popup.setFormatters(formatters);
 }
 
 export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format) {
