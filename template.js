@@ -22418,7 +22418,6 @@ var template = (function (exports) {
       legend_container.appendTo(legendSection).add(legend_categorical);
 
       svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.style.border = "1px solid red";
       container.appendChild(svg);
 
       update();
