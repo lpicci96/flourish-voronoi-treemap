@@ -8,12 +8,14 @@ export default {
         clip_type: "rectangle",
         seed: 42,
         max_iterations: 50,
-        convergence_ratio: 0.001
+        convergence_ratio: 0.001,
 
     },
 
-
+    legend_container: {},
+    legend_categorical: {show_legend: false},
 
     layout: {}, // layout module state properties
     colors: {}, // color module state properties
+    popup: {}
 }

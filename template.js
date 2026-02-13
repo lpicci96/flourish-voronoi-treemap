@@ -1217,7 +1217,7 @@ var template = (function (exports) {
 
   var window_width, base_size;
 
-  function remToPx(rem) {
+  function remToPx$1(rem) {
   	if (window.innerWidth !== window_width) {
   		window_width = window.innerWidth;
   		base_size = parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -4955,7 +4955,7 @@ var template = (function (exports) {
   }
 
   var locale;
-  var format;
+  var format$1;
   var formatPrefix;
 
   defaultLocale({
@@ -4968,7 +4968,7 @@ var template = (function (exports) {
 
   function defaultLocale(definition) {
     locale = formatLocale(definition);
-    format = locale.format;
+    format$1 = locale.format;
     formatPrefix = locale.formatPrefix;
     return locale;
   }
@@ -6192,7 +6192,7 @@ var template = (function (exports) {
   	document.body.style.backgroundPosition = state$1.background_image_position;
   }
 
-  var DEFAULTS$1 = Object.freeze({
+  var DEFAULTS$3 = Object.freeze({
   	body_font: {
   		name: "Canva Sans Variable",
   		url: "https://public.flourish.studio/resources/fonts/canva-sans.css",
@@ -6676,7 +6676,7 @@ var template = (function (exports) {
   		margin = state$1.margin_left + state$1.margin_right;
   	else if (side == "vertical") margin = state$1.margin_top + state$1.margin_bottom;
 
-  	return remToPx(margin);
+  	return remToPx$1(margin);
   }
 
   function getBorderWidth(space) {
@@ -6751,8 +6751,8 @@ var template = (function (exports) {
   // Main init function ----------------------------------------
   function init$2(state_) {
   	state$1 = state_;
-  	for (var key in DEFAULTS$1) {
-  		if (state$1[key] === undefined) state$1[key] = DEFAULTS$1[key];
+  	for (var key in DEFAULTS$3) {
+  		if (state$1[key] === undefined) state$1[key] = DEFAULTS$3[key];
   	}
 
   	initFontStyles();
@@ -6780,7 +6780,7 @@ var template = (function (exports) {
   		getPrimaryScreenReadability: getPrimaryScreenReadability,
   		setHeight: setHeight,
   		showOverlay: showOverlay,
-  		remToPx: remToPx,
+  		remToPx: remToPx$1,
   		getOverlay: getOverlay,
   		awaitFonts: awaitFonts,
   		prepareScreenshotSVG: prepareScreenshotSVG,
@@ -6788,7 +6788,7 @@ var template = (function (exports) {
   	};
   }
 
-  var DEFAULTS = Object.freeze({
+  var DEFAULTS$2 = Object.freeze({
   	categorical_type: "palette",
   	categorical_palette: [
   		"#135ae1",
@@ -6888,7 +6888,7 @@ var template = (function (exports) {
   	var n = palette.length;
 
   	if (state.categorical_extend) {
-  		var angle = DEFAULTS.rotation_angle;
+  		var angle = DEFAULTS$2.rotation_angle;
   		var generator_name = "hcl";
   		var colorGenerator = color_generators[generator_name](palette, angle);
   		unique_domain.forEach(function (label, i) {
@@ -6927,12 +6927,12 @@ var template = (function (exports) {
   	return colorScale;
   }
 
-  function ascending$1(a, b) {
+  function ascending$3(a, b) {
     return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
   }
 
-  function bisector(compare) {
-    if (compare.length === 1) compare = ascendingComparator(compare);
+  function bisector$1(compare) {
+    if (compare.length === 1) compare = ascendingComparator$1(compare);
     return {
       left: function(a, x, lo, hi) {
         if (lo == null) lo = 0;
@@ -6957,13 +6957,13 @@ var template = (function (exports) {
     };
   }
 
-  function ascendingComparator(f) {
+  function ascendingComparator$1(f) {
     return function(d, x) {
-      return ascending$1(f(d), x);
+      return ascending$3(f(d), x);
     };
   }
 
-  var ascendingBisect = bisector(ascending$1);
+  var ascendingBisect = bisector$1(ascending$3);
   var bisectRight = ascendingBisect.right;
 
   function number$1(x) {
@@ -7670,7 +7670,7 @@ var template = (function (exports) {
     };
   }
 
-  function constant$3(x) {
+  function constant$4(x) {
     return function() {
       return x;
     };
@@ -7690,18 +7690,18 @@ var template = (function (exports) {
 
   function hue(a, b) {
     var d = b - a;
-    return d ? linear$2(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant$3(isNaN(a) ? b : a);
+    return d ? linear$2(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant$4(isNaN(a) ? b : a);
   }
 
   function gamma$1(y) {
     return (y = +y) === 1 ? nogamma$1 : function(a, b) {
-      return b - a ? exponential$1(a, b, y) : constant$3(isNaN(a) ? b : a);
+      return b - a ? exponential$1(a, b, y) : constant$4(isNaN(a) ? b : a);
     };
   }
 
   function nogamma$1(a, b) {
     var d = b - a;
-    return d ? linear$2(a, d) : constant$3(isNaN(a) ? b : a);
+    return d ? linear$2(a, d) : constant$4(isNaN(a) ? b : a);
   }
 
   var interpolateRgb$1 = (function rgbGamma(y) {
@@ -7885,7 +7885,7 @@ var template = (function (exports) {
 
   function interpolateValue(a, b) {
     var t = typeof b, c;
-    return b == null || t === "boolean" ? constant$3(b)
+    return b == null || t === "boolean" ? constant$4(b)
         : (t === "number" ? interpolateNumber$1
         : t === "string" ? ((c = color(b)) ? (b = c, interpolateRgb$1) : string)
         : b instanceof color ? interpolateRgb$1
@@ -7988,7 +7988,7 @@ var template = (function (exports) {
     };
   }
 
-  function constant$2(x) {
+  function constant$3(x) {
     return function() {
       return x;
     };
@@ -8007,7 +8007,7 @@ var template = (function (exports) {
   function normalize(a, b) {
     return (b -= (a = +a))
         ? function(x) { return (x - a) / b; }
-        : constant$2(isNaN(b) ? NaN : 0.5);
+        : constant$3(isNaN(b) ? NaN : 0.5);
   }
 
   function clamper(domain) {
@@ -8141,7 +8141,7 @@ var template = (function (exports) {
         break;
       }
     }
-    return format(specifier);
+    return format$1(specifier);
   }
 
   function linearish(scale) {
@@ -8241,7 +8241,7 @@ var template = (function (exports) {
       if (!arguments.length) return domain.slice();
       domain = [];
       for (var i = 0, n = _.length, d; i < n; ++i) if (d = _[i], d != null && !isNaN(d = +d)) domain.push(d);
-      domain.sort(ascending$1);
+      domain.sort(ascending$3);
       return rescale();
     };
 
@@ -10036,8 +10036,8 @@ var template = (function (exports) {
   function init$1(state) {
   	var colorFunction = null;
 
-  	for (var key in DEFAULTS) {
-  		if (state[key] === undefined) state[key] = DEFAULTS[key];
+  	for (var key in DEFAULTS$2) {
+  		if (state[key] === undefined) state[key] = DEFAULTS$2[key];
   	}
 
   	var fallback_value = DEFAULT_FALLBACK_VALUE;
@@ -10080,6 +10080,1738 @@ var template = (function (exports) {
   	};
   }
 
+  var xhtml$1 = "http://www.w3.org/1999/xhtml";
+
+  var namespaces$1 = {
+    svg: "http://www.w3.org/2000/svg",
+    xhtml: xhtml$1,
+    xlink: "http://www.w3.org/1999/xlink",
+    xml: "http://www.w3.org/XML/1998/namespace",
+    xmlns: "http://www.w3.org/2000/xmlns/"
+  };
+
+  function namespace$1(name) {
+    var prefix = name += "", i = prefix.indexOf(":");
+    if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns") name = name.slice(i + 1);
+    return namespaces$1.hasOwnProperty(prefix) ? {space: namespaces$1[prefix], local: name} : name;
+  }
+
+  function creatorInherit$1(name) {
+    return function() {
+      var document = this.ownerDocument,
+          uri = this.namespaceURI;
+      return uri === xhtml$1 && document.documentElement.namespaceURI === xhtml$1
+          ? document.createElement(name)
+          : document.createElementNS(uri, name);
+    };
+  }
+
+  function creatorFixed$1(fullname) {
+    return function() {
+      return this.ownerDocument.createElementNS(fullname.space, fullname.local);
+    };
+  }
+
+  function creator$1(name) {
+    var fullname = namespace$1(name);
+    return (fullname.local
+        ? creatorFixed$1
+        : creatorInherit$1)(fullname);
+  }
+
+  function none$1() {}
+
+  function selector$1(selector) {
+    return selector == null ? none$1 : function() {
+      return this.querySelector(selector);
+    };
+  }
+
+  function selection_select$1(select) {
+    if (typeof select !== "function") select = selector$1(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+        if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
+          if ("__data__" in node) subnode.__data__ = node.__data__;
+          subgroup[i] = subnode;
+        }
+      }
+    }
+
+    return new Selection$2(subgroups, this._parents);
+  }
+
+  function empty$1() {
+    return [];
+  }
+
+  function selectorAll$1(selector) {
+    return selector == null ? empty$1 : function() {
+      return this.querySelectorAll(selector);
+    };
+  }
+
+  function selection_selectAll$1(select) {
+    if (typeof select !== "function") select = selectorAll$1(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          subgroups.push(select.call(node, node.__data__, i, group));
+          parents.push(node);
+        }
+      }
+    }
+
+    return new Selection$2(subgroups, parents);
+  }
+
+  function matcher$1(selector) {
+    return function() {
+      return this.matches(selector);
+    };
+  }
+
+  function selection_filter$1(match) {
+    if (typeof match !== "function") match = matcher$1(match);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+        if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
+          subgroup.push(node);
+        }
+      }
+    }
+
+    return new Selection$2(subgroups, this._parents);
+  }
+
+  function sparse$1(update) {
+    return new Array(update.length);
+  }
+
+  function selection_enter$1() {
+    return new Selection$2(this._enter || this._groups.map(sparse$1), this._parents);
+  }
+
+  function EnterNode$1(parent, datum) {
+    this.ownerDocument = parent.ownerDocument;
+    this.namespaceURI = parent.namespaceURI;
+    this._next = null;
+    this._parent = parent;
+    this.__data__ = datum;
+  }
+
+  EnterNode$1.prototype = {
+    constructor: EnterNode$1,
+    appendChild: function(child) { return this._parent.insertBefore(child, this._next); },
+    insertBefore: function(child, next) { return this._parent.insertBefore(child, next); },
+    querySelector: function(selector) { return this._parent.querySelector(selector); },
+    querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
+  };
+
+  function constant$2(x) {
+    return function() {
+      return x;
+    };
+  }
+
+  var keyPrefix = "$"; // Protect against keys like “__proto__”.
+
+  function bindIndex$1(parent, group, enter, update, exit, data) {
+    var i = 0,
+        node,
+        groupLength = group.length,
+        dataLength = data.length;
+
+    // Put any non-null nodes that fit into update.
+    // Put any null nodes into enter.
+    // Put any remaining data into enter.
+    for (; i < dataLength; ++i) {
+      if (node = group[i]) {
+        node.__data__ = data[i];
+        update[i] = node;
+      } else {
+        enter[i] = new EnterNode$1(parent, data[i]);
+      }
+    }
+
+    // Put any non-null nodes that don’t fit into exit.
+    for (; i < groupLength; ++i) {
+      if (node = group[i]) {
+        exit[i] = node;
+      }
+    }
+  }
+
+  function bindKey$1(parent, group, enter, update, exit, data, key) {
+    var i,
+        node,
+        nodeByKeyValue = {},
+        groupLength = group.length,
+        dataLength = data.length,
+        keyValues = new Array(groupLength),
+        keyValue;
+
+    // Compute the key for each node.
+    // If multiple nodes have the same key, the duplicates are added to exit.
+    for (i = 0; i < groupLength; ++i) {
+      if (node = group[i]) {
+        keyValues[i] = keyValue = keyPrefix + key.call(node, node.__data__, i, group);
+        if (keyValue in nodeByKeyValue) {
+          exit[i] = node;
+        } else {
+          nodeByKeyValue[keyValue] = node;
+        }
+      }
+    }
+
+    // Compute the key for each datum.
+    // If there a node associated with this key, join and add it to update.
+    // If there is not (or the key is a duplicate), add it to enter.
+    for (i = 0; i < dataLength; ++i) {
+      keyValue = keyPrefix + key.call(parent, data[i], i, data);
+      if (node = nodeByKeyValue[keyValue]) {
+        update[i] = node;
+        node.__data__ = data[i];
+        nodeByKeyValue[keyValue] = null;
+      } else {
+        enter[i] = new EnterNode$1(parent, data[i]);
+      }
+    }
+
+    // Add any remaining nodes that were not bound to data to exit.
+    for (i = 0; i < groupLength; ++i) {
+      if ((node = group[i]) && (nodeByKeyValue[keyValues[i]] === node)) {
+        exit[i] = node;
+      }
+    }
+  }
+
+  function selection_data$1(value, key) {
+    if (!value) {
+      data = new Array(this.size()), j = -1;
+      this.each(function(d) { data[++j] = d; });
+      return data;
+    }
+
+    var bind = key ? bindKey$1 : bindIndex$1,
+        parents = this._parents,
+        groups = this._groups;
+
+    if (typeof value !== "function") value = constant$2(value);
+
+    for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
+      var parent = parents[j],
+          group = groups[j],
+          groupLength = group.length,
+          data = value.call(parent, parent && parent.__data__, j, parents),
+          dataLength = data.length,
+          enterGroup = enter[j] = new Array(dataLength),
+          updateGroup = update[j] = new Array(dataLength),
+          exitGroup = exit[j] = new Array(groupLength);
+
+      bind(parent, group, enterGroup, updateGroup, exitGroup, data, key);
+
+      // Now connect the enter nodes to their following update node, such that
+      // appendChild can insert the materialized enter node before this node,
+      // rather than at the end of the parent node.
+      for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
+        if (previous = enterGroup[i0]) {
+          if (i0 >= i1) i1 = i0 + 1;
+          while (!(next = updateGroup[i1]) && ++i1 < dataLength);
+          previous._next = next || null;
+        }
+      }
+    }
+
+    update = new Selection$2(update, parents);
+    update._enter = enter;
+    update._exit = exit;
+    return update;
+  }
+
+  function selection_exit$1() {
+    return new Selection$2(this._exit || this._groups.map(sparse$1), this._parents);
+  }
+
+  function selection_join$1(onenter, onupdate, onexit) {
+    var enter = this.enter(), update = this, exit = this.exit();
+    enter = typeof onenter === "function" ? onenter(enter) : enter.append(onenter + "");
+    if (onupdate != null) update = onupdate(update);
+    if (onexit == null) exit.remove(); else onexit(exit);
+    return enter && update ? enter.merge(update).order() : update;
+  }
+
+  function selection_merge$1(selection) {
+
+    for (var groups0 = this._groups, groups1 = selection._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+      for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group0[i] || group1[i]) {
+          merge[i] = node;
+        }
+      }
+    }
+
+    for (; j < m0; ++j) {
+      merges[j] = groups0[j];
+    }
+
+    return new Selection$2(merges, this._parents);
+  }
+
+  function selection_order$1() {
+
+    for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
+      for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
+        if (node = group[i]) {
+          if (next && node.compareDocumentPosition(next) ^ 4) next.parentNode.insertBefore(node, next);
+          next = node;
+        }
+      }
+    }
+
+    return this;
+  }
+
+  function selection_sort$1(compare) {
+    if (!compare) compare = ascending$2;
+
+    function compareNode(a, b) {
+      return a && b ? compare(a.__data__, b.__data__) : !a - !b;
+    }
+
+    for (var groups = this._groups, m = groups.length, sortgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, sortgroup = sortgroups[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          sortgroup[i] = node;
+        }
+      }
+      sortgroup.sort(compareNode);
+    }
+
+    return new Selection$2(sortgroups, this._parents).order();
+  }
+
+  function ascending$2(a, b) {
+    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+  }
+
+  function selection_call$1() {
+    var callback = arguments[0];
+    arguments[0] = this;
+    callback.apply(null, arguments);
+    return this;
+  }
+
+  function selection_nodes$1() {
+    var nodes = new Array(this.size()), i = -1;
+    this.each(function() { nodes[++i] = this; });
+    return nodes;
+  }
+
+  function selection_node$1() {
+
+    for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+      for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
+        var node = group[i];
+        if (node) return node;
+      }
+    }
+
+    return null;
+  }
+
+  function selection_size$1() {
+    var size = 0;
+    this.each(function() { ++size; });
+    return size;
+  }
+
+  function selection_empty$1() {
+    return !this.node();
+  }
+
+  function selection_each$1(callback) {
+
+    for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+      for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
+        if (node = group[i]) callback.call(node, node.__data__, i, group);
+      }
+    }
+
+    return this;
+  }
+
+  function attrRemove$2(name) {
+    return function() {
+      this.removeAttribute(name);
+    };
+  }
+
+  function attrRemoveNS$2(fullname) {
+    return function() {
+      this.removeAttributeNS(fullname.space, fullname.local);
+    };
+  }
+
+  function attrConstant$2(name, value) {
+    return function() {
+      this.setAttribute(name, value);
+    };
+  }
+
+  function attrConstantNS$2(fullname, value) {
+    return function() {
+      this.setAttributeNS(fullname.space, fullname.local, value);
+    };
+  }
+
+  function attrFunction$2(name, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.removeAttribute(name);
+      else this.setAttribute(name, v);
+    };
+  }
+
+  function attrFunctionNS$2(fullname, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
+      else this.setAttributeNS(fullname.space, fullname.local, v);
+    };
+  }
+
+  function selection_attr$1(name, value) {
+    var fullname = namespace$1(name);
+
+    if (arguments.length < 2) {
+      var node = this.node();
+      return fullname.local
+          ? node.getAttributeNS(fullname.space, fullname.local)
+          : node.getAttribute(fullname);
+    }
+
+    return this.each((value == null
+        ? (fullname.local ? attrRemoveNS$2 : attrRemove$2) : (typeof value === "function"
+        ? (fullname.local ? attrFunctionNS$2 : attrFunction$2)
+        : (fullname.local ? attrConstantNS$2 : attrConstant$2)))(fullname, value));
+  }
+
+  function defaultView$1(node) {
+    return (node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
+        || (node.document && node) // node is a Window
+        || node.defaultView; // node is a Document
+  }
+
+  function styleRemove$2(name) {
+    return function() {
+      this.style.removeProperty(name);
+    };
+  }
+
+  function styleConstant$2(name, value, priority) {
+    return function() {
+      this.style.setProperty(name, value, priority);
+    };
+  }
+
+  function styleFunction$2(name, value, priority) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.style.removeProperty(name);
+      else this.style.setProperty(name, v, priority);
+    };
+  }
+
+  function selection_style$1(name, value, priority) {
+    return arguments.length > 1
+        ? this.each((value == null
+              ? styleRemove$2 : typeof value === "function"
+              ? styleFunction$2
+              : styleConstant$2)(name, value, priority == null ? "" : priority))
+        : styleValue$1(this.node(), name);
+  }
+
+  function styleValue$1(node, name) {
+    return node.style.getPropertyValue(name)
+        || defaultView$1(node).getComputedStyle(node, null).getPropertyValue(name);
+  }
+
+  function propertyRemove$1(name) {
+    return function() {
+      delete this[name];
+    };
+  }
+
+  function propertyConstant$1(name, value) {
+    return function() {
+      this[name] = value;
+    };
+  }
+
+  function propertyFunction$1(name, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) delete this[name];
+      else this[name] = v;
+    };
+  }
+
+  function selection_property$1(name, value) {
+    return arguments.length > 1
+        ? this.each((value == null
+            ? propertyRemove$1 : typeof value === "function"
+            ? propertyFunction$1
+            : propertyConstant$1)(name, value))
+        : this.node()[name];
+  }
+
+  function classArray$1(string) {
+    return string.trim().split(/^|\s+/);
+  }
+
+  function classList$1(node) {
+    return node.classList || new ClassList$1(node);
+  }
+
+  function ClassList$1(node) {
+    this._node = node;
+    this._names = classArray$1(node.getAttribute("class") || "");
+  }
+
+  ClassList$1.prototype = {
+    add: function(name) {
+      var i = this._names.indexOf(name);
+      if (i < 0) {
+        this._names.push(name);
+        this._node.setAttribute("class", this._names.join(" "));
+      }
+    },
+    remove: function(name) {
+      var i = this._names.indexOf(name);
+      if (i >= 0) {
+        this._names.splice(i, 1);
+        this._node.setAttribute("class", this._names.join(" "));
+      }
+    },
+    contains: function(name) {
+      return this._names.indexOf(name) >= 0;
+    }
+  };
+
+  function classedAdd$1(node, names) {
+    var list = classList$1(node), i = -1, n = names.length;
+    while (++i < n) list.add(names[i]);
+  }
+
+  function classedRemove$1(node, names) {
+    var list = classList$1(node), i = -1, n = names.length;
+    while (++i < n) list.remove(names[i]);
+  }
+
+  function classedTrue$1(names) {
+    return function() {
+      classedAdd$1(this, names);
+    };
+  }
+
+  function classedFalse$1(names) {
+    return function() {
+      classedRemove$1(this, names);
+    };
+  }
+
+  function classedFunction$1(names, value) {
+    return function() {
+      (value.apply(this, arguments) ? classedAdd$1 : classedRemove$1)(this, names);
+    };
+  }
+
+  function selection_classed$1(name, value) {
+    var names = classArray$1(name + "");
+
+    if (arguments.length < 2) {
+      var list = classList$1(this.node()), i = -1, n = names.length;
+      while (++i < n) if (!list.contains(names[i])) return false;
+      return true;
+    }
+
+    return this.each((typeof value === "function"
+        ? classedFunction$1 : value
+        ? classedTrue$1
+        : classedFalse$1)(names, value));
+  }
+
+  function textRemove$1() {
+    this.textContent = "";
+  }
+
+  function textConstant$2(value) {
+    return function() {
+      this.textContent = value;
+    };
+  }
+
+  function textFunction$2(value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      this.textContent = v == null ? "" : v;
+    };
+  }
+
+  function selection_text$1(value) {
+    return arguments.length
+        ? this.each(value == null
+            ? textRemove$1 : (typeof value === "function"
+            ? textFunction$2
+            : textConstant$2)(value))
+        : this.node().textContent;
+  }
+
+  function htmlRemove$1() {
+    this.innerHTML = "";
+  }
+
+  function htmlConstant$1(value) {
+    return function() {
+      this.innerHTML = value;
+    };
+  }
+
+  function htmlFunction$1(value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      this.innerHTML = v == null ? "" : v;
+    };
+  }
+
+  function selection_html$1(value) {
+    return arguments.length
+        ? this.each(value == null
+            ? htmlRemove$1 : (typeof value === "function"
+            ? htmlFunction$1
+            : htmlConstant$1)(value))
+        : this.node().innerHTML;
+  }
+
+  function raise$1() {
+    if (this.nextSibling) this.parentNode.appendChild(this);
+  }
+
+  function selection_raise$1() {
+    return this.each(raise$1);
+  }
+
+  function lower$1() {
+    if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
+  }
+
+  function selection_lower$1() {
+    return this.each(lower$1);
+  }
+
+  function selection_append$1(name) {
+    var create = typeof name === "function" ? name : creator$1(name);
+    return this.select(function() {
+      return this.appendChild(create.apply(this, arguments));
+    });
+  }
+
+  function constantNull$1() {
+    return null;
+  }
+
+  function selection_insert$1(name, before) {
+    var create = typeof name === "function" ? name : creator$1(name),
+        select = before == null ? constantNull$1 : typeof before === "function" ? before : selector$1(before);
+    return this.select(function() {
+      return this.insertBefore(create.apply(this, arguments), select.apply(this, arguments) || null);
+    });
+  }
+
+  function remove$1() {
+    var parent = this.parentNode;
+    if (parent) parent.removeChild(this);
+  }
+
+  function selection_remove$1() {
+    return this.each(remove$1);
+  }
+
+  function selection_cloneShallow$1() {
+    var clone = this.cloneNode(false), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+  }
+
+  function selection_cloneDeep$1() {
+    var clone = this.cloneNode(true), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+  }
+
+  function selection_clone$1(deep) {
+    return this.select(deep ? selection_cloneDeep$1 : selection_cloneShallow$1);
+  }
+
+  function selection_datum$1(value) {
+    return arguments.length
+        ? this.property("__data__", value)
+        : this.node().__data__;
+  }
+
+  var filterEvents = {};
+
+  var event = null;
+
+  if (typeof document !== "undefined") {
+    var element = document.documentElement;
+    if (!("onmouseenter" in element)) {
+      filterEvents = {mouseenter: "mouseover", mouseleave: "mouseout"};
+    }
+  }
+
+  function filterContextListener(listener, index, group) {
+    listener = contextListener$1(listener, index, group);
+    return function(event) {
+      var related = event.relatedTarget;
+      if (!related || (related !== this && !(related.compareDocumentPosition(this) & 8))) {
+        listener.call(this, event);
+      }
+    };
+  }
+
+  function contextListener$1(listener, index, group) {
+    return function(event1) {
+      var event0 = event; // Events can be reentrant (e.g., focus).
+      event = event1;
+      try {
+        listener.call(this, this.__data__, index, group);
+      } finally {
+        event = event0;
+      }
+    };
+  }
+
+  function parseTypenames$3(typenames) {
+    return typenames.trim().split(/^|\s+/).map(function(t) {
+      var name = "", i = t.indexOf(".");
+      if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
+      return {type: t, name: name};
+    });
+  }
+
+  function onRemove$1(typename) {
+    return function() {
+      var on = this.__on;
+      if (!on) return;
+      for (var j = 0, i = -1, m = on.length, o; j < m; ++j) {
+        if (o = on[j], (!typename.type || o.type === typename.type) && o.name === typename.name) {
+          this.removeEventListener(o.type, o.listener, o.capture);
+        } else {
+          on[++i] = o;
+        }
+      }
+      if (++i) on.length = i;
+      else delete this.__on;
+    };
+  }
+
+  function onAdd$1(typename, value, capture) {
+    var wrap = filterEvents.hasOwnProperty(typename.type) ? filterContextListener : contextListener$1;
+    return function(d, i, group) {
+      var on = this.__on, o, listener = wrap(value, i, group);
+      if (on) for (var j = 0, m = on.length; j < m; ++j) {
+        if ((o = on[j]).type === typename.type && o.name === typename.name) {
+          this.removeEventListener(o.type, o.listener, o.capture);
+          this.addEventListener(o.type, o.listener = listener, o.capture = capture);
+          o.value = value;
+          return;
+        }
+      }
+      this.addEventListener(typename.type, listener, capture);
+      o = {type: typename.type, name: typename.name, value: value, listener: listener, capture: capture};
+      if (!on) this.__on = [o];
+      else on.push(o);
+    };
+  }
+
+  function selection_on$1(typename, value, capture) {
+    var typenames = parseTypenames$3(typename + ""), i, n = typenames.length, t;
+
+    if (arguments.length < 2) {
+      var on = this.node().__on;
+      if (on) for (var j = 0, m = on.length, o; j < m; ++j) {
+        for (i = 0, o = on[j]; i < n; ++i) {
+          if ((t = typenames[i]).type === o.type && t.name === o.name) {
+            return o.value;
+          }
+        }
+      }
+      return;
+    }
+
+    on = value ? onAdd$1 : onRemove$1;
+    if (capture == null) capture = false;
+    for (i = 0; i < n; ++i) this.each(on(typenames[i], value, capture));
+    return this;
+  }
+
+  function dispatchEvent$1(node, type, params) {
+    var window = defaultView$1(node),
+        event = window.CustomEvent;
+
+    if (typeof event === "function") {
+      event = new event(type, params);
+    } else {
+      event = window.document.createEvent("Event");
+      if (params) event.initEvent(type, params.bubbles, params.cancelable), event.detail = params.detail;
+      else event.initEvent(type, false, false);
+    }
+
+    node.dispatchEvent(event);
+  }
+
+  function dispatchConstant$1(type, params) {
+    return function() {
+      return dispatchEvent$1(this, type, params);
+    };
+  }
+
+  function dispatchFunction$1(type, params) {
+    return function() {
+      return dispatchEvent$1(this, type, params.apply(this, arguments));
+    };
+  }
+
+  function selection_dispatch$1(type, params) {
+    return this.each((typeof params === "function"
+        ? dispatchFunction$1
+        : dispatchConstant$1)(type, params));
+  }
+
+  var root$1 = [null];
+
+  function Selection$2(groups, parents) {
+    this._groups = groups;
+    this._parents = parents;
+  }
+
+  Selection$2.prototype = {
+    constructor: Selection$2,
+    select: selection_select$1,
+    selectAll: selection_selectAll$1,
+    filter: selection_filter$1,
+    data: selection_data$1,
+    enter: selection_enter$1,
+    exit: selection_exit$1,
+    join: selection_join$1,
+    merge: selection_merge$1,
+    order: selection_order$1,
+    sort: selection_sort$1,
+    call: selection_call$1,
+    nodes: selection_nodes$1,
+    node: selection_node$1,
+    size: selection_size$1,
+    empty: selection_empty$1,
+    each: selection_each$1,
+    attr: selection_attr$1,
+    style: selection_style$1,
+    property: selection_property$1,
+    classed: selection_classed$1,
+    text: selection_text$1,
+    html: selection_html$1,
+    raise: selection_raise$1,
+    lower: selection_lower$1,
+    append: selection_append$1,
+    insert: selection_insert$1,
+    remove: selection_remove$1,
+    clone: selection_clone$1,
+    datum: selection_datum$1,
+    on: selection_on$1,
+    dispatch: selection_dispatch$1
+  };
+
+  function select$1(selector) {
+    return typeof selector === "string"
+        ? new Selection$2([[document.querySelector(selector)]], [document.documentElement])
+        : new Selection$2([[selector]], root$1);
+  }
+
+  function ascending$1(a, b) {
+    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+  }
+
+  function bisector(compare) {
+    if (compare.length === 1) compare = ascendingComparator(compare);
+    return {
+      left: function(a, x, lo, hi) {
+        if (lo == null) lo = 0;
+        if (hi == null) hi = a.length;
+        while (lo < hi) {
+          var mid = lo + hi >>> 1;
+          if (compare(a[mid], x) < 0) lo = mid + 1;
+          else hi = mid;
+        }
+        return lo;
+      },
+      right: function(a, x, lo, hi) {
+        if (lo == null) lo = 0;
+        if (hi == null) hi = a.length;
+        while (lo < hi) {
+          var mid = lo + hi >>> 1;
+          if (compare(a[mid], x) > 0) hi = mid;
+          else lo = mid + 1;
+        }
+        return lo;
+      }
+    };
+  }
+
+  function ascendingComparator(f) {
+    return function(d, x) {
+      return ascending$1(f(d), x);
+    };
+  }
+
+  bisector(ascending$1);
+
+  function Stylesheet() {
+  	this.declarations = [];
+  	return this;
+  }
+
+  Stylesheet.prototype.select = function(selector) {
+  	if (!selector) return this;
+  	var declaration = new Declaration(selector);
+  	declaration.parent = this;
+  	this.addDeclaration(declaration);
+
+  	return declaration;
+  };
+
+  Stylesheet.prototype.addDeclaration = function(declaration) {
+  	this.declarations.push(declaration);
+  	return this;
+  };
+
+  Stylesheet.prototype.print = function() {
+  	var text = "";
+  	this.declarations.forEach(function(declaration) {
+  		text += declaration.selector + " {\n";
+  		declaration.styles.forEach(function(style) {
+  			text += "\t" + style[0] + ": " + style[1] + ";\n";
+  		});
+  		text += "}\n\n";
+  	});
+  	return text;
+  };
+
+  Stylesheet.prototype.clear = function() {
+  	this.declarations = [];
+  	return this;
+  };
+
+  function Declaration(selector) {
+  	this.selector = selector;
+  	this.styles = [];
+  	return this;
+  }
+
+  Declaration.prototype.style = function(property, _value) {
+  	var value = typeof value_ == "function" ? _value() : _value;
+  	if (value !== "" && value !== null && value !== undefined) this.styles.push([property, value]);
+  	return this;
+  };
+
+  Declaration.prototype.select = function(selector) {
+  	return this.parent.select(this.selector + " " + selector);
+  };
+
+  var small_gap = "0.2em";
+
+  function appendTo(container) {
+  	container.appendChild(this._container.node());
+
+  	if (!document.querySelector("#legend-styles")) {
+  		var css = document.createElement("style");
+  		var styles = new Stylesheet();
+
+  		styles
+  			.select(".fl-legend-container.interactive .fl-legend-item")
+  			.style("cursor", "pointer");
+
+  		styles
+  			.select(".fl-legend-container.interactive .fl-legend-item:hover")
+  			.style("opacity", 0.75);
+
+  		styles
+  			.select(".fl-legend-container.interactive .fl-legend-item:focus-visible")
+  			.style("border-radius", "4px")
+  			.style("outline", "2.5px solid #4d90fe")
+  			.style("outline-offset", "-2.25px");
+
+  		styles
+  			.select(".fl-legend-sr-only")
+  			.style("position", "absolute")
+  			.style("width", "1px")
+  			.style("height", "1px")
+  			.style("padding", "0")
+  			.style("margin", "-1px")
+  			.style("overflow", "hidden")
+  			.style("clip", "rect(0, 0, 0, 0)")
+  			.style("white-space", "nowrap")
+  			.style("border", "0");
+
+  		css.id = "legend-styles";
+  		css.type = "text/css";
+
+  		css.innerHTML = styles.print();
+  		document.head.appendChild(css);
+  	}
+
+  	return this;
+  }
+
+  function format(formatFunction) {
+  	this._formatFunction = formatFunction;
+  	return this;
+  }
+
+  function getContainer() {
+  	return this._container;
+  }
+
+  function visible(visible_) {
+  	if (visible_ === undefined) return this._visible;
+  	this._visible = visible_;
+  	return this;
+  }
+
+  function allowSingleEntry(allow_single_entry) {
+  	if (allow_single_entry === undefined) return this._allow_single_entry;
+  	this._allow_single_entry = allow_single_entry;
+  	return this;
+  }
+
+  function autoTitle(value) {
+  	if (value === undefined) return this._auto_title;
+  	this._auto_title = value;
+  	return this;
+  }
+
+  function _updateTitle() {
+  	var _this = this;
+  	var title =
+  		_this._state.title_mode == "auto" ? _this.autoTitle() : _this._state.title;
+
+  	this._container
+  		.select(".fl-legend-title")
+  		.text(title)
+  		.style("display", function () {
+  			if (!title.trim()) return "none";
+  			else if (_this._state.orientation === undefined) return "inline-block";
+  			else
+  				return _this._state.orientation == "horizontal"
+  					? "inline-block"
+  					: "block";
+  		})
+  		.style("padding-inline-start", 0)
+  		.style("padding-inline-end", small_gap);
+  }
+
+  function remToPx(rem) {
+  	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+  }
+
+  var legend_count = 0;
+  var DEFAULTS$1 = Object.freeze({
+  	show_legend: true,
+
+  	title_mode: "auto",
+  	title: "",
+
+  	max_width: 100,
+
+  	swatch_width: 0.75,
+  	swatch_height: 1,
+  	swatch_radius: 3,
+  	swatch_outline: false,
+  	swatch_outline_color: null,
+  	legend_items_padding: 0.5,
+
+  	icon_height: 1,
+  	icon_color: "#777777",
+  	icon_fill_opacity: 1,
+  	icon_stroke_opacity: 1,
+
+  	order_override: "",
+
+  	orientation: "horizontal",
+  });
+
+  function DiscreteColorLegend(state_) {
+  	this._state = state_;
+  	for (var key in DEFAULTS$1) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$1[key];
+  	}
+
+  	this._colorFunction = undefined;
+  	this._formatFunction = undefined;
+  	this._legend_items = [];
+  	this._filtered_items = [];
+  	this._eventListeners = [];
+  	this._id = "fl-legend-discrete-color-" + legend_count;
+  	this._visible = true;
+  	this._auto_title = "";
+  	this._last_clicked_item = null;
+
+  	this._container = select$1(document.createElement("div"))
+  		.attr("class", "fl-legend-container")
+  		.attr("id", this._id);
+  	this._container.append("p").attr("class", "fl-legend-title");
+  	legend_count++;
+
+  	return this;
+  }
+
+  // Common methods
+  DiscreteColorLegend.prototype.appendTo = appendTo;
+  DiscreteColorLegend.prototype.format = format;
+  DiscreteColorLegend.prototype.getContainer = getContainer;
+  DiscreteColorLegend.prototype.visible = visible;
+  DiscreteColorLegend.prototype.allowSingleEntry = allowSingleEntry;
+  DiscreteColorLegend.prototype.autoTitle = autoTitle;
+  DiscreteColorLegend.prototype._updateTitle = _updateTitle;
+
+  DiscreteColorLegend.prototype.data = function (items_, colorFunction_) {
+  	this._colorFunction = colorFunction_;
+  	if (!items_ && !colorFunction_) return this._legend_items.slice();
+
+  	if (!colorFunction_)
+  		this._legend_items = Array.isArray(items_) ? items_.slice() : [];
+  	else if (!Array.isArray(items_)) this._legend_items = [];
+  	else {
+  		this._legend_items = items_
+  			.slice()
+  			.map(function (legend_item, i) {
+  				var legend_item_label =
+  					typeof legend_item == "object"
+  						? legend_item?.label || ""
+  						: legend_item;
+  				return !legend_item_label
+  					? null
+  					: {
+  							label: legend_item_label,
+  							color: colorFunction_(legend_item_label),
+  							index: i,
+  						};
+  			})
+  			.filter(function (legend_item) {
+  				return legend_item !== null;
+  			});
+  	}
+  	return this;
+  };
+
+  DiscreteColorLegend.prototype.filtered = function (items_) {
+  	if (!items_) return this._filtered_items.slice();
+  	this._filtered_items = Array.isArray(items_) ? items_.slice() : [];
+  	return this;
+  };
+
+  DiscreteColorLegend.prototype._isFilteredItem = function (item_data) {
+  	return this._filtered_items.includes(item_data.label);
+  };
+
+  DiscreteColorLegend.prototype.on = function (type, callback) {
+  	if (!this._container) return this;
+
+  	// Update list of event listeners, so we know if there are any interactions going on
+  	if (callback && this._eventListeners.indexOf(type) < 0)
+  		this._eventListeners.push(type);
+  	else if (!callback)
+  		this._eventListeners.splice(this._eventListeners.indexOf[type], 1);
+  	this._container.classed("interactive", this._isInteractive());
+
+  	if (!callback) {
+  		// Remove event listeners if callback is empty
+  		this._container.on(type, null);
+  		if (type == "click") this._container.on("keydown", null);
+  	} else {
+  		const handleLegendInteraction = () => {
+  			if (
+  				event.type === "keydown" &&
+  				event.key !== "Enter" &&
+  				event.key !== " "
+  			)
+  				return;
+
+  			const t = event.target;
+  			const t_parent = t.parentNode;
+  			const item = t.classList.contains("fl-legend-item")
+  				? t
+  				: t_parent.classList.contains("fl-legend-item")
+  					? t_parent
+  					: null;
+  			if (item) {
+  				const item_data = select$1(item).datum();
+  				this._last_clicked_item = item_data;
+
+  				if (item.matches(":focus-visible")) {
+  					// Fixes lost focus in Safari + Voiceover for Ctrl+Option+Space initiated clicks
+  					// We force a re-focus on the clicked item if it was visibly focused before the click
+  					setTimeout(() => {
+  						item.blur();
+  						item.focus();
+  					}, 100);
+  				}
+
+  				callback.call(item, item_data, item_data.index);
+  			}
+  		};
+
+  		this._container.on(type, handleLegendInteraction);
+
+  		if (type == "click") {
+  			this._container.on("keydown", handleLegendInteraction);
+  		}
+  	}
+
+  	return this;
+  };
+
+  DiscreteColorLegend.prototype.update = function () {
+  	const minimum_legend_items_before_hide = this._allow_single_entry ? 1 : 2;
+  	const should_display =
+  		this._state.show_legend &&
+  		this._visible &&
+  		this._legend_items.length >= minimum_legend_items_before_hide;
+
+  	this._container.style("display", should_display ? "" : "none");
+  	if (!should_display) return this;
+
+  	this._updateTitle();
+  	this._updateLegend();
+
+  	return this;
+  };
+
+  function sortByOrderOverride(items, order_override_string) {
+  	// First build a lookup table from each of the overridden legend
+  	// labels to the index of its new position in the legend.
+  	var new_index_lookup = {};
+  	var overrides = order_override_string.split(/\s*\n\s*/);
+  	for (var i = 0; i < overrides.length; i++) {
+  		var override = overrides[i];
+  		new_index_lookup[override] = i;
+  	}
+  	// Now go through each of the original items and if it appears in
+  	// the lookup table, set it at its new position in sorted_items.
+  	var sorted_items = [];
+  	for (var old_index = 0; old_index < items.length; old_index++) {
+  		var item = items[old_index];
+  		var new_index = new_index_lookup[item.label];
+  		if (new_index === undefined) continue;
+  		sorted_items[new_index] = item;
+  	}
+  	// If there was any override that isn't a legend label (e.g. it's
+  	// mispelled), there'll be a "hole" in the sorted_items array, so
+  	// compact it before returning.
+  	return sorted_items.filter(function (item) {
+  		return item !== undefined;
+  	});
+  }
+
+  DiscreteColorLegend.prototype._isInteractive = function () {
+  	return this._eventListeners.length > 0;
+  };
+
+  DiscreteColorLegend.prototype._updateAnnouncements = function () {
+  	const is_interactive = this._isInteractive();
+
+  	const last_clicked_item = this._last_clicked_item;
+  	const last_clicked_hidden =
+  		last_clicked_item && this._isFilteredItem(last_clicked_item);
+
+  	const items_total_count = this._legend_items.length;
+  	const items_visible_count = this._legend_items.filter(
+  		(item) => !this._isFilteredItem(item),
+  	).length;
+
+  	this._container.attr(
+  		"aria-label",
+  		is_interactive && items_total_count > 0
+  			? this._state.screenreader_instructions ||
+  					"Select the legend items to toggle visibility of data series."
+  			: null,
+  	);
+
+  	const announce_count = `There are ${items_visible_count} of ${items_total_count} series visible.`;
+  	let announce_text;
+
+  	// The below cases are ordered to prefer the most specific announcement given the updated legend state
+  	if (!is_interactive || items_visible_count === items_total_count) {
+  		// If all series visible (the initial state in most cases)
+  		announce_text = "All series are visible.";
+  	} else if (items_visible_count === 0) {
+  		// If all series hidden
+  		announce_text = "All series are hidden.";
+  	} else if (items_visible_count === 1) {
+  		// If one series visible (e.g. in single select mode)
+  		const visible_item = this._legend_items.find(
+  			(item) => !this._isFilteredItem(item),
+  		);
+  		announce_text = `${visible_item.label} series is visible. All other series are hidden.`;
+  	} else if (last_clicked_item) {
+  		// If multiple series visible after clicking a legend item (e.g. in multi select mode)
+  		announce_text = `${last_clicked_item.label} series now ${last_clicked_hidden ? "hidden" : "visible"}. ${announce_count}`;
+  	} else {
+  		// For any other legend state e.g. after other filters or story data changes the legend
+  		announce_text = announce_count;
+  	}
+
+  	select$1("#fl-legend-announcement")
+  		.text(announce_text)
+  		.attr("aria-live", "assertive");
+  };
+
+  DiscreteColorLegend.prototype._updateLegend = function () {
+  	const _this = this;
+  	const format = this._formatFunction;
+  	const is_interactive = this._isInteractive();
+
+  	this._updateAnnouncements();
+
+  	this._container
+  		.style("max-width", remToPx(this._state.max_width) + "px")
+  		.style("display", "inline-flex")
+  		.style("flex-wrap", "wrap")
+  		.style(
+  			"align-items",
+  			this._state.orientation == "horizontal" ? "center" : "start",
+  		)
+  		.style(
+  			"align-content",
+  			this._state.orientation == "horizontal" ? "center" : null,
+  		)
+  		.style(
+  			"flex-direction",
+  			this._state.orientation == "horizontal" ? null : "column",
+  		)
+  		// Prevent legend from filling whole window when column with lots of
+  		// unique values is bound
+  		.style("max-height", `${window.innerHeight * 0.5}px`)
+  		.style("overflow-y", "auto")
+  		.attr("role", "group");
+
+  	var legend_item_data;
+  	if (this._state.order_override.trim()) {
+  		legend_item_data = sortByOrderOverride(
+  			this._legend_items,
+  			this._state.order_override,
+  		);
+  	} else {
+  		legend_item_data = this._legend_items;
+  	}
+
+  	var legend_items = this._container
+  		.selectAll(".fl-legend-item")
+  		.data(legend_item_data);
+
+  	var legend_items_enter = legend_items
+  		.enter()
+  		.append("div")
+  		.attr("class", "fl-legend-item");
+
+  	legend_items_enter.append("div").attr("class", "fl-legend-swatch");
+
+  	// Add icon elements
+  	let icon_container = legend_items_enter
+  		.append("div")
+  		.attr("class", "fl-legend-icon-container");
+
+  	icon_container
+  		.append("svg")
+  		.attr("class", "fl-legend-icon fl-ignore-svg-download")
+  		.append("path");
+
+  	icon_container.append("img").attr("class", "fl-legend-icon");
+
+  	icon_container.append("div").attr("class", "fl-legend-icon");
+
+  	legend_items_enter.append("p").attr("class", "fl-legend-label");
+
+  	var legend_items_update = legend_items.merge(legend_items_enter);
+
+  	legend_items_update
+  		.style(
+  			"display",
+  			this._state.orientation == "horizontal" ? "inline-flex" : "flex",
+  		)
+  		.style("flex-direction", function (d) {
+  			return d.reverse ? "row-reverse" : "row";
+  		})
+  		.style("opacity", function (d) {
+  			return _this._isFilteredItem(d) ? 0.2 : "";
+  		})
+  		.style("align-items", "center")
+  		.style(
+  			"padding-inline-end",
+  			this._state.orientation == "horizontal"
+  				? this._state.legend_items_padding + "rem"
+  				: 0,
+  		)
+  		.style("padding-inline-start", 0)
+  		.attr("tabindex", is_interactive ? "0" : null)
+  		.attr("role", is_interactive ? "button" : null)
+  		.attr("aria-pressed", function (d) {
+  			return is_interactive ? (!_this._isFilteredItem(d)).toString() : null;
+  		})
+  		.attr("aria-label", function (d) {
+  			return is_interactive
+  				? `Toggle ${d.label} series visibility, currently ${_this._isFilteredItem(d) ? "hidden" : "visible"}`
+  				: null;
+  		});
+
+  	// Swatch
+  	legend_items_update
+  		.select(".fl-legend-swatch")
+  		.style("height", this._state.swatch_height + "rem")
+  		.style("width", this._state.swatch_width + "rem")
+  		.style("border-radius", this._state.swatch_radius + "px")
+  		.style("background-color", function (d) {
+  			return d.color;
+  		})
+  		.style("border", () => {
+  			if (!this._state.swatch_outline) return "none";
+  			else if (!this._state.swatch_outline_color) return "1px solid";
+  			else return `1px solid ${this._state.swatch_outline_color}`;
+  		})
+  		.style(
+  			"box-sizing",
+  			this._state.swatch_outline ? "border-box" : "content-box",
+  		)
+  		.style("flex-shrink", "0")
+  		// Only display if icon not defined
+  		.style("display", function (d) {
+  			return d.icon ? "none" : null;
+  		});
+
+  	// Icons
+  	const legend_items_with_icons_update = legend_items_update.filter(
+  		(d) => d.icon,
+  	);
+
+  	// Style all icons
+  	legend_items_with_icons_update.each(function (d) {
+  		// Using Math.ceil on SVG width and height seems to prevent subtle cropping of the icon edges (particularly apparent in outline mode)
+  		let height = Math.ceil(remToPx(_this._state.icon_height));
+
+  		let width = "auto";
+  		if (d.icon.width) {
+  			let w = d.icon.width;
+  			let h = d.icon.height;
+  			let stroke_width = d.outline ? h * d.stroke_thickness : 0;
+  			w += stroke_width;
+  			h += stroke_width;
+
+  			let aspect_ratio = w / h;
+  			let width_px = remToPx(_this._state.icon_height * aspect_ratio);
+  			width = Math.ceil(width_px);
+  		}
+
+  		let margin_right = _this._state.text_size * 0.25 + "rem";
+
+  		select$1(this)
+  			.selectAll(".fl-legend-icon")
+  			.attr("height", height)
+  			.attr("width", width)
+  			.style("margin-right", margin_right);
+  	});
+
+  	// Icon visibility
+  	legend_items_update
+  		.select(".fl-legend-icon-container")
+  		.style("display", function (d) {
+  			return d.icon ? null : "none";
+  		});
+
+  	legend_items_with_icons_update.each(function (d) {
+  		select$1(this)
+  			.select("svg.fl-legend-icon")
+  			.style("display", d.icon.path_string ? "inline" : "none");
+  		select$1(this)
+  			.select("img.fl-legend-icon")
+  			.style("display", d.icon.url ? "inline" : "none");
+  		select$1(this)
+  			.select("div.fl-legend-icon")
+  			.style("display", d.icon.html ? "inline-block" : "none");
+  	});
+
+  	// Image icons
+  	legend_items_with_icons_update
+  		.filter((d) => d.icon.url)
+  		.select("img.fl-legend-icon")
+  		.attr("src", (d) => d.icon.url);
+
+  	// HTML icons (e.g. Font Awesome)
+  	legend_items_with_icons_update
+  		.filter((d) => d.icon.html)
+  		.select("div.fl-legend-icon")
+  		.html((d) => d.icon.html)
+  		.style("font-size", `${Math.ceil(remToPx(this._state.icon_height))}px`)
+  		.style("color", function (d) {
+  			if (d.outline) return "none";
+  			return d.fill || d.color || _this._state.icon_color;
+  		});
+
+  	// SVG icons
+  	legend_items_with_icons_update
+  		.filter((d) => d.icon.path_string)
+  		.select("svg.fl-legend-icon path")
+  		.attr("d", function (d) {
+  			return d.icon ? d.icon.path_string : null;
+  		})
+  		.attr("transform", function (d) {
+  			if (!d.icon) return null;
+
+  			var h = d.icon.height;
+  			var stroke_width = d.outline ? h * d.stroke_thickness : 0;
+  			h += stroke_width;
+
+  			var svg_height = remToPx(_this._state.icon_height);
+  			var scale_factor = svg_height / h;
+
+  			var transform = "scale(" + scale_factor + ")";
+  			transform +=
+  				"translate(" + 0.5 * stroke_width + "," + 0.5 * stroke_width + ")";
+
+  			return transform;
+  		})
+  		.style("fill", function (d) {
+  			if (d.outline) return "none";
+  			return d.fill || d.color || _this._state.icon_color;
+  		})
+  		.style("fill-opacity", function (d) {
+  			if (d.outline) return 0;
+  			return d.fill_opacity || _this._state.icon_fill_opacity;
+  		})
+  		.style("stroke", function (d) {
+  			if (!d.outline && !d.stroke) return "none";
+  			return d.stroke || d.color || _this._state.icon_color;
+  		})
+  		.style("stroke-width", function (d) {
+  			if (!d.outline && !d.stroke_width) return 0;
+  			var stroke_width = d.icon.height * d.stroke_thickness;
+  			return d.stroke_width || stroke_width;
+  		})
+  		.style("stroke-opacity", function (d) {
+  			if (!d.outline && !d.stroke_opacity) return 0;
+  			return d.stroke_opacity || _this._state.icon_stroke_opacity;
+  		});
+
+  	// Label
+  	legend_items_update
+  		.select(".fl-legend-label")
+  		.text(function (d) {
+  			return format ? format(d.label) : d.label;
+  		})
+  		.style("margin", 0)
+  		.style("user-select", "none")
+  		.style("-webkit-user-select", "none")
+  		.style("padding-inline-end", 0)
+  		.style("padding-inline-start", small_gap);
+
+  	legend_items.exit().remove();
+
+  	this._legend_item_els = legend_items_update;
+
+  	return this;
+  };
+
+  DiscreteColorLegend.prototype.prepareScreenshotSVG = function () {
+  	if (!this._state.show_legend || !this._visible || !this._legend_items.length)
+  		return;
+
+  	createScreenshotSVG(
+  		"#fl-layout-wrapper",
+  		this._id + "-svg-screenshot-container",
+  	)
+  		.addTextElements(".fl-legend-title")
+  		.addSwatchElements(".fl-legend-swatch", ".fl-legend-label")
+  		.addTextElements(".fl-legend-label");
+  };
+
+  DiscreteColorLegend.prototype.clearScreenshotSVG = function () {
+  	const container = document.getElementById(
+  		this._id + "-svg-screenshot-container",
+  	);
+  	if (container) container.remove();
+  };
+
+  var font_size,
+  	font_color,
+  	font_family,
+  	font_weight,
+  	default_text_size = 1;
+
+  var DEFAULTS = Object.freeze({
+  	alignment: "start",
+  	orientation: "horizontal",
+  	text_color: null,
+  	title_weight: "bold",
+  	text_weight: "normal",
+  	text_size: default_text_size,
+  	screenreader_instructions: "",
+  });
+
+  function legendContainer(state_) {
+  	this._state = state_;
+  	for (var key in DEFAULTS) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS[key];
+  	}
+
+  	return this;
+  }
+
+  legendContainer.prototype.appendTo = function (container_) {
+  	this._container = select$1(container_)
+  		.append("div")
+  		.classed("fl-legend-wrapper", true)
+  		.style("user-select", "none")
+  		.style("-webkit-user-select", "none")
+  		.node();
+
+  	select$1(this._container)
+  		.insert("p", ":first-child")
+  		.attr("class", "fl-legend-announcement fl-legend-sr-only")
+  		.attr("id", "fl-legend-announcement");
+
+  	return this;
+  };
+
+  legendContainer.prototype.add = function (legends) {
+  	this._legends = Array.isArray(legends) ? legends : [legends];
+  	var self = this;
+
+  	this._legends.forEach(function (legend) {
+  		if (legend && typeof legend.appendTo == "function")
+  			legend.appendTo(self._container);
+  		else console.warn("Please pass in valid legend instances into .add()");
+  	});
+
+  	return this;
+  };
+
+  legendContainer.prototype.update = function () {
+  	// Initialize some main style elements that can be imported by the individual legend containers
+  	var template = window.template || undefined;
+  	var layout = template ? template.state.layout : undefined;
+  	font_color =
+  		this._state.text_color ||
+  		(template && layout && layout.font_color) ||
+  		"#333333";
+  	font_family = layout
+  		? layout.body_font.name
+  		: window.getComputedStyle(document.body).fontFamily;
+  	font_size = this._state.text_size;
+  	font_weight = this._state.text_weight;
+
+  	var font = {
+  		family: font_family,
+  		weight: font_weight,
+  		size: font_size,
+  		color: font_color,
+  	};
+
+  	this._legends.forEach(function (legend) {
+  		if (legend && typeof legend.update == "function") legend.update(font);
+  	});
+
+  	var is_horizontal = this._state.orientation === "horizontal";
+  	var alignment = this._state.alignment;
+  	var flex_alignment = alignment == "center" ? alignment : "flex-" + alignment;
+
+  	// ================== //
+  	// MAIN LEGEND STYLES //
+  	// ================== //
+
+  	// Styles for main legend wrapper container
+  	select$1(this._container)
+  		.style("justify-content", is_horizontal ? flex_alignment : null)
+  		.style("align-items", is_horizontal ? null : flex_alignment)
+  		.style("display", "flex")
+  		.style("flex-direction", is_horizontal ? "row" : "column");
+
+  	var individual_legend_containers = select$1(this._container).selectAll(
+  		".fl-legend-container",
+  	);
+
+  	// This next section deals with the padding around the legends
+  	individual_legend_containers
+  		.style("padding-inline-end", function () {
+  			if (!is_horizontal) return 0;
+  			return "0.5rem";
+  		})
+  		.style("padding-bottom", function () {
+  			if (is_horizontal) return 0;
+  			return "0.25rem";
+  		})
+  		.style("justify-content", flex_alignment);
+
+  	// Styles for the titles of each legend
+  	select$1(this._container)
+  		.selectAll(".fl-legend-title")
+  		.style("color", this._state.text_color)
+  		.style("font-weight", this._state.title_weight)
+  		.style("font-size", font_size + "rem")
+  		.style("margin-right", font_size * 0.25 + "rem")
+  		.style("line-height", "1.25em")
+  		.style("margin-top", 0)
+  		.style("margin-bottom", 0)
+  		.style("text-align", alignment);
+
+  	// ============================ //
+  	// DISCRETE COLOR LEGEND STYLES //
+  	// ============================ //
+
+  	// Styles for discrete color legend items
+  	select$1(this._container)
+  		.selectAll(".fl-legend-item")
+  		.style("display", "inline-flex")
+  		.style("text-align", alignment);
+
+  	// Styles discrete color legend labels
+  	select$1(this._container)
+  		.selectAll(".fl-legend-label")
+  		.style("color", this._state.text_color)
+  		.style("font-weight", this._state.text_weight)
+  		.style("font-size", font_size + "rem");
+
+  	// ===================================== //
+  	// CONTINUOUS SIZE & COLOR LEGEND STYLES //
+  	// ===================================== //
+
+  	// Styles for continuous size and color legend labels
+  	select$1(this._container)
+  		.selectAll(".label")
+  		.style("color", this._state.text_color)
+  		.style("font-weight", this._state.text_weight)
+  		.style("font-size", font_size + "rem");
+
+  	return this;
+  };
+
+  function createLegendContainer(state) {
+  	return new legendContainer(state);
+  }
+
+  function createDiscreteColorLegend(state) {
+  	return new DiscreteColorLegend(state);
+  }
+
   var state = {
 
       // Voronoi chart specific settings
@@ -10090,18 +11822,22 @@ var template = (function (exports) {
           clip_type: "rectangle",
           seed: 42,
           max_iterations: 50,
-          convergence_ratio: 0.001
+          convergence_ratio: 0.001,
 
       },
 
-
+      legend_container: {},
+      legend_categorical: {show_legend: false},
 
       layout: {}, // layout module state properties
       colors: {}, // color module state properties
+      popup: {}
   };
 
   var layout = init$2(state.layout);
   var colors = init$1(state.colors);
+  var legend_container = createLegendContainer(state.legend_container);
+  var legend_categorical = createDiscreteColorLegend(state.legend_categorical);
 
   var data = {};
 
@@ -11105,6 +12841,12 @@ var template = (function (exports) {
     dispatch: selection_dispatch,
     [Symbol.iterator]: selection_iterator
   };
+
+  function select(selector) {
+    return typeof selector === "string"
+        ? new Selection$1([[document.querySelector(selector)]], [document.documentElement])
+        : new Selection$1([[selector]], root);
+  }
 
   var constant = x => () => x;
 
@@ -14884,6 +16626,8 @@ var template = (function (exports) {
     return _voronoiTreemap;
   }
 
+  // TODO: Add square clip (equal width and height)
+
   function rectangularClip(height, width) {
       // Clipping polygon (counterclockwise rectangle)
       return [[0, 0], [0, height], [width, height], [width, 0]];
@@ -14954,6 +16698,8 @@ var template = (function (exports) {
   }
 
   // TODO: Additional advanced settings - handling small values
+  // TODO: Aggregation of values
+  // TODO: Align chart left, center or right within section
 
 
   // Simple seeded PRNG (mulberry32) to keep layout stable across redraws
@@ -15006,11 +16752,8 @@ var template = (function (exports) {
           .sum(d => d.value);
   }
 
-  function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors) {
-      if (!hierarchy) return;
-
-      // Clipping polygon (counterclockwise rectangle)
-      const clip = clipVoronoi(voronoi_settings.clip_type ,height, width);
+  function computeLayout(hierarchy, voronoi_settings, height, width) {
+      const clip = clipVoronoi(voronoi_settings.clip_type, height, width);
 
       _voronoiTreemap
           .clip(clip)
@@ -15019,34 +16762,42 @@ var template = (function (exports) {
           .prng(seedrandom(voronoi_settings.seed));
 
       _voronoiTreemap(hierarchy);
+  }
 
-      // Clear previous paths
-      const cells = svg.querySelector(".cells");
-      if (cells) cells.remove();
+  function polygonPath(polygon) {
+      return "M" + polygon.map(pt => pt[0] + "," + pt[1]).join("L") + "Z";
+  }
 
-      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      g.setAttribute("class", "cells");
+  function getCellColor(leaf, root, colors) {
+      const firstLevel = leaf.parent === root ? leaf.data.name : leaf.parent.data.name;
+      return colors.getColor(firstLevel);
+  }
 
-      // Build color domain from unique firstLevel names
-      const root = hierarchy;
-      const firstLevelNames = (root.children || []).map(d => d.data.name);
+  function renderCells(svg, leaves, root, voronoi_settings, colors) {
+      const svgSel = select(svg);
+
+      let g = svgSel.selectAll("g.cells").data([null]);
+      g = g.enter().append("g").attr("class", "cells").merge(g);
+
+      g.selectAll("path")
+          .data(leaves, d => d.data.name)
+          .join("path")
+          .attr("d", d => polygonPath(d.polygon))
+          .attr("fill", d => getCellColor(d, root, colors))
+          .attr("stroke", voronoi_settings.border_color)
+          .attr("stroke-width", voronoi_settings.border_size);
+  }
+
+  function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors) {
+      if (!hierarchy) return;
+
+      computeLayout(hierarchy, voronoi_settings, height, width);
+
+      const firstLevelNames = (hierarchy.children || []).map(d => d.data.name);
       colors.updateColorScale(firstLevelNames);
 
-      hierarchy.leaves().forEach(leaf => {
-          if (!leaf.polygon || leaf.polygon.length === 0) return;
-
-          // In two-level mode leaf.parent is a firstLevel group; in one-level mode leaf itself is firstLevel
-          const firstLevel = leaf.parent === root ? leaf.data.name : leaf.parent.data.name;
-
-          const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-          path.setAttribute("d", "M" + leaf.polygon.map(pt => pt[0] + "," + pt[1]).join("L") + "Z");
-          path.setAttribute("fill", colors.getColor(firstLevel));
-          path.setAttribute("stroke", voronoi_settings.border_color);
-          path.setAttribute("stroke-width", voronoi_settings.border_size);
-          g.appendChild(path);
-      });
-
-      svg.appendChild(g);
+      const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
+      renderCells(svg, leaves, hierarchy, voronoi_settings, colors);
   }
 
   let svg;
@@ -15059,9 +16810,30 @@ var template = (function (exports) {
       svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
   }
 
+  function updateLegend(hierarchy) {
+      const legendSection = layout.getSection("legend");
+      const firstLevelNames = (hierarchy.children || []).map(d => d.data.name);
+      colors.updateColorScale(firstLevelNames);
+      legend_categorical.data(firstLevelNames, (v) => colors.getColor(v));
+      legend_container.update();
+      legendSection.style.display = state.legend_categorical.show_legend ? "" : "none";
+  }
+
   function draw() {
       const container = layout.getSection("primary");
+      const legendSection = layout.getSection("legend");
 
+      // Append legend to DOM
+      legend_container.appendTo(legendSection).add(legend_categorical);
+
+      const hierarchy = processData(data);
+      if (!hierarchy) {
+          layout.update();
+          return;
+      }
+
+      // Update legend before layout so layout allocates space for it
+      updateLegend(hierarchy);
       layout.update();
 
       svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -15069,20 +16841,23 @@ var template = (function (exports) {
       container.appendChild(svg);
       sizeSvg();
 
-      const hierarchy = processData(data);
-      if (!hierarchy) return;
-
       const width = layout.getPrimaryWidth();
       const height = layout.getPrimaryHeight();
       drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors);
   }
 
   function update() {
+      const hierarchy = processData(data);
+      if (!hierarchy) {
+          layout.update();
+          sizeSvg();
+          return;
+      }
+
+      // Update legend before layout so layout allocates space for it
+      updateLegend(hierarchy);
       layout.update();
       sizeSvg();
-
-      const hierarchy = processData(data);
-      if (!hierarchy) return;
 
       const width = layout.getPrimaryWidth();
       const height = layout.getPrimaryHeight();
