@@ -1,7 +1,7 @@
 # The 'id' should be a string that uniquely identifies your template
 id: 'voronoi-treemap'
 name: Voronoi Treemap
-description: A hierarchical treemap diagram using Voronoi tessellation.
+description: A hierarchical voronoi treemap.
 author: Luca Picci
 
 # This template is compatible with SDK version 3
@@ -89,11 +89,6 @@ settings:
   - property: colors
     import: "@flourish/colors"
 
-
-
-
-
-
   - Legend
   - property: legend_container
     import: "@flourish/legend/container"
@@ -113,7 +108,6 @@ settings:
   # imported modules
   - property: layout
     import: "@flourish/layout"
-
 
 
 data:
