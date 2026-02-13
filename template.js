@@ -1,34 +1,34 @@
 var template = (function (exports) {
   'use strict';
 
-  function define$1(constructor, factory, prototype) {
+  function define$3(constructor, factory, prototype) {
     constructor.prototype = factory.prototype = prototype;
     prototype.constructor = constructor;
   }
 
-  function extend$1(parent, definition) {
+  function extend$3(parent, definition) {
     var prototype = Object.create(parent.prototype);
     for (var key in definition) prototype[key] = definition[key];
     return prototype;
   }
 
-  function Color$1() {}
+  function Color$3() {}
 
-  var darker$1 = 0.7;
-  var brighter$1 = 1 / darker$1;
+  var darker$3 = 0.7;
+  var brighter$3 = 1 / darker$3;
 
-  var reI$1 = "\\s*([+-]?\\d+)\\s*",
-      reN$1 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-      reP$1 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-      reHex$1 = /^#([0-9a-f]{3,8})$/,
-      reRgbInteger$1 = new RegExp(`^rgb\\(${reI$1},${reI$1},${reI$1}\\)$`),
-      reRgbPercent$1 = new RegExp(`^rgb\\(${reP$1},${reP$1},${reP$1}\\)$`),
-      reRgbaInteger$1 = new RegExp(`^rgba\\(${reI$1},${reI$1},${reI$1},${reN$1}\\)$`),
-      reRgbaPercent$1 = new RegExp(`^rgba\\(${reP$1},${reP$1},${reP$1},${reN$1}\\)$`),
-      reHslPercent$1 = new RegExp(`^hsl\\(${reN$1},${reP$1},${reP$1}\\)$`),
-      reHslaPercent$1 = new RegExp(`^hsla\\(${reN$1},${reP$1},${reP$1},${reN$1}\\)$`);
+  var reI$3 = "\\s*([+-]?\\d+)\\s*",
+      reN$3 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+      reP$3 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+      reHex$3 = /^#([0-9a-f]{3,8})$/,
+      reRgbInteger$3 = new RegExp(`^rgb\\(${reI$3},${reI$3},${reI$3}\\)$`),
+      reRgbPercent$3 = new RegExp(`^rgb\\(${reP$3},${reP$3},${reP$3}\\)$`),
+      reRgbaInteger$3 = new RegExp(`^rgba\\(${reI$3},${reI$3},${reI$3},${reN$3}\\)$`),
+      reRgbaPercent$3 = new RegExp(`^rgba\\(${reP$3},${reP$3},${reP$3},${reN$3}\\)$`),
+      reHslPercent$3 = new RegExp(`^hsl\\(${reN$3},${reP$3},${reP$3}\\)$`),
+      reHslaPercent$3 = new RegExp(`^hsla\\(${reN$3},${reP$3},${reP$3},${reN$3}\\)$`);
 
-  var named$1 = {
+  var named$3 = {
     aliceblue: 0xf0f8ff,
     antiquewhite: 0xfaebd7,
     aqua: 0x00ffff,
@@ -179,22 +179,22 @@ var template = (function (exports) {
     yellowgreen: 0x9acd32
   };
 
-  define$1(Color$1, color$1, {
+  define$3(Color$3, color$3, {
     copy(channels) {
       return Object.assign(new this.constructor, this, channels);
     },
     displayable() {
       return this.rgb().displayable();
     },
-    hex: color_formatHex$1, // Deprecated! Use color.formatHex.
-    formatHex: color_formatHex$1,
+    hex: color_formatHex$3, // Deprecated! Use color.formatHex.
+    formatHex: color_formatHex$3,
     formatHex8: color_formatHex8,
-    formatHsl: color_formatHsl$1,
-    formatRgb: color_formatRgb$1,
-    toString: color_formatRgb$1
+    formatHsl: color_formatHsl$3,
+    formatRgb: color_formatRgb$3,
+    toString: color_formatRgb$3
   });
 
-  function color_formatHex$1() {
+  function color_formatHex$3() {
     return this.rgb().formatHex();
   }
 
@@ -202,74 +202,74 @@ var template = (function (exports) {
     return this.rgb().formatHex8();
   }
 
-  function color_formatHsl$1() {
-    return hslConvert$1(this).formatHsl();
+  function color_formatHsl$3() {
+    return hslConvert$3(this).formatHsl();
   }
 
-  function color_formatRgb$1() {
+  function color_formatRgb$3() {
     return this.rgb().formatRgb();
   }
 
-  function color$1(format) {
+  function color$3(format) {
     var m, l;
     format = (format + "").trim().toLowerCase();
-    return (m = reHex$1.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$1(m) // #ff0000
-        : l === 3 ? new Rgb$1((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-        : l === 8 ? rgba$1(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-        : l === 4 ? rgba$1((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+    return (m = reHex$3.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$3(m) // #ff0000
+        : l === 3 ? new Rgb$3((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+        : l === 8 ? rgba$3(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+        : l === 4 ? rgba$3((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
         : null) // invalid hex
-        : (m = reRgbInteger$1.exec(format)) ? new Rgb$1(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-        : (m = reRgbPercent$1.exec(format)) ? new Rgb$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-        : (m = reRgbaInteger$1.exec(format)) ? rgba$1(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-        : (m = reRgbaPercent$1.exec(format)) ? rgba$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-        : (m = reHslPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-        : (m = reHslaPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-        : named$1.hasOwnProperty(format) ? rgbn$1(named$1[format]) // eslint-disable-line no-prototype-builtins
-        : format === "transparent" ? new Rgb$1(NaN, NaN, NaN, 0)
+        : (m = reRgbInteger$3.exec(format)) ? new Rgb$3(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+        : (m = reRgbPercent$3.exec(format)) ? new Rgb$3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+        : (m = reRgbaInteger$3.exec(format)) ? rgba$3(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+        : (m = reRgbaPercent$3.exec(format)) ? rgba$3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+        : (m = reHslPercent$3.exec(format)) ? hsla$3(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+        : (m = reHslaPercent$3.exec(format)) ? hsla$3(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+        : named$3.hasOwnProperty(format) ? rgbn$3(named$3[format]) // eslint-disable-line no-prototype-builtins
+        : format === "transparent" ? new Rgb$3(NaN, NaN, NaN, 0)
         : null;
   }
 
-  function rgbn$1(n) {
-    return new Rgb$1(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+  function rgbn$3(n) {
+    return new Rgb$3(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
   }
 
-  function rgba$1(r, g, b, a) {
+  function rgba$3(r, g, b, a) {
     if (a <= 0) r = g = b = NaN;
-    return new Rgb$1(r, g, b, a);
+    return new Rgb$3(r, g, b, a);
   }
 
-  function rgbConvert$1(o) {
-    if (!(o instanceof Color$1)) o = color$1(o);
-    if (!o) return new Rgb$1;
+  function rgbConvert$3(o) {
+    if (!(o instanceof Color$3)) o = color$3(o);
+    if (!o) return new Rgb$3;
     o = o.rgb();
-    return new Rgb$1(o.r, o.g, o.b, o.opacity);
+    return new Rgb$3(o.r, o.g, o.b, o.opacity);
   }
 
-  function rgb$1(r, g, b, opacity) {
-    return arguments.length === 1 ? rgbConvert$1(r) : new Rgb$1(r, g, b, opacity == null ? 1 : opacity);
+  function rgb$3(r, g, b, opacity) {
+    return arguments.length === 1 ? rgbConvert$3(r) : new Rgb$3(r, g, b, opacity == null ? 1 : opacity);
   }
 
-  function Rgb$1(r, g, b, opacity) {
+  function Rgb$3(r, g, b, opacity) {
     this.r = +r;
     this.g = +g;
     this.b = +b;
     this.opacity = +opacity;
   }
 
-  define$1(Rgb$1, rgb$1, extend$1(Color$1, {
+  define$3(Rgb$3, rgb$3, extend$3(Color$3, {
     brighter(k) {
-      k = k == null ? brighter$1 : Math.pow(brighter$1, k);
-      return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
+      k = k == null ? brighter$3 : Math.pow(brighter$3, k);
+      return new Rgb$3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     darker(k) {
-      k = k == null ? darker$1 : Math.pow(darker$1, k);
-      return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
+      k = k == null ? darker$3 : Math.pow(darker$3, k);
+      return new Rgb$3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     rgb() {
       return this;
     },
     clamp() {
-      return new Rgb$1(clampi(this.r), clampi(this.g), clampi(this.b), clampa(this.opacity));
+      return new Rgb$3(clampi(this.r), clampi(this.g), clampi(this.b), clampa(this.opacity));
     },
     displayable() {
       return (-0.5 <= this.r && this.r < 255.5)
@@ -277,22 +277,22 @@ var template = (function (exports) {
           && (-0.5 <= this.b && this.b < 255.5)
           && (0 <= this.opacity && this.opacity <= 1);
     },
-    hex: rgb_formatHex$1, // Deprecated! Use color.formatHex.
-    formatHex: rgb_formatHex$1,
+    hex: rgb_formatHex$3, // Deprecated! Use color.formatHex.
+    formatHex: rgb_formatHex$3,
     formatHex8: rgb_formatHex8,
-    formatRgb: rgb_formatRgb$1,
-    toString: rgb_formatRgb$1
+    formatRgb: rgb_formatRgb$3,
+    toString: rgb_formatRgb$3
   }));
 
-  function rgb_formatHex$1() {
-    return `#${hex$1(this.r)}${hex$1(this.g)}${hex$1(this.b)}`;
+  function rgb_formatHex$3() {
+    return `#${hex$3(this.r)}${hex$3(this.g)}${hex$3(this.b)}`;
   }
 
   function rgb_formatHex8() {
-    return `#${hex$1(this.r)}${hex$1(this.g)}${hex$1(this.b)}${hex$1((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
+    return `#${hex$3(this.r)}${hex$3(this.g)}${hex$3(this.b)}${hex$3((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
   }
 
-  function rgb_formatRgb$1() {
+  function rgb_formatRgb$3() {
     const a = clampa(this.opacity);
     return `${a === 1 ? "rgb(" : "rgba("}${clampi(this.r)}, ${clampi(this.g)}, ${clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
   }
@@ -305,23 +305,23 @@ var template = (function (exports) {
     return Math.max(0, Math.min(255, Math.round(value) || 0));
   }
 
-  function hex$1(value) {
+  function hex$3(value) {
     value = clampi(value);
     return (value < 16 ? "0" : "") + value.toString(16);
   }
 
-  function hsla$1(h, s, l, a) {
+  function hsla$3(h, s, l, a) {
     if (a <= 0) h = s = l = NaN;
     else if (l <= 0 || l >= 1) h = s = NaN;
     else if (s <= 0) h = NaN;
-    return new Hsl$1(h, s, l, a);
+    return new Hsl$3(h, s, l, a);
   }
 
-  function hslConvert$1(o) {
-    if (o instanceof Hsl$1) return new Hsl$1(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof Color$1)) o = color$1(o);
-    if (!o) return new Hsl$1;
-    if (o instanceof Hsl$1) return o;
+  function hslConvert$3(o) {
+    if (o instanceof Hsl$3) return new Hsl$3(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color$3)) o = color$3(o);
+    if (!o) return new Hsl$3;
+    if (o instanceof Hsl$3) return o;
     o = o.rgb();
     var r = o.r / 255,
         g = o.g / 255,
@@ -340,28 +340,28 @@ var template = (function (exports) {
     } else {
       s = l > 0 && l < 1 ? 0 : h;
     }
-    return new Hsl$1(h, s, l, o.opacity);
+    return new Hsl$3(h, s, l, o.opacity);
   }
 
-  function hsl$2(h, s, l, opacity) {
-    return arguments.length === 1 ? hslConvert$1(h) : new Hsl$1(h, s, l, opacity == null ? 1 : opacity);
+  function hsl$4(h, s, l, opacity) {
+    return arguments.length === 1 ? hslConvert$3(h) : new Hsl$3(h, s, l, opacity == null ? 1 : opacity);
   }
 
-  function Hsl$1(h, s, l, opacity) {
+  function Hsl$3(h, s, l, opacity) {
     this.h = +h;
     this.s = +s;
     this.l = +l;
     this.opacity = +opacity;
   }
 
-  define$1(Hsl$1, hsl$2, extend$1(Color$1, {
+  define$3(Hsl$3, hsl$4, extend$3(Color$3, {
     brighter(k) {
-      k = k == null ? brighter$1 : Math.pow(brighter$1, k);
-      return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
+      k = k == null ? brighter$3 : Math.pow(brighter$3, k);
+      return new Hsl$3(this.h, this.s, this.l * k, this.opacity);
     },
     darker(k) {
-      k = k == null ? darker$1 : Math.pow(darker$1, k);
-      return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
+      k = k == null ? darker$3 : Math.pow(darker$3, k);
+      return new Hsl$3(this.h, this.s, this.l * k, this.opacity);
     },
     rgb() {
       var h = this.h % 360 + (this.h < 0) * 360,
@@ -369,15 +369,15 @@ var template = (function (exports) {
           l = this.l,
           m2 = l + (l < 0.5 ? l : 1 - l) * s,
           m1 = 2 * l - m2;
-      return new Rgb$1(
-        hsl2rgb$1(h >= 240 ? h - 240 : h + 120, m1, m2),
-        hsl2rgb$1(h, m1, m2),
-        hsl2rgb$1(h < 120 ? h + 240 : h - 120, m1, m2),
+      return new Rgb$3(
+        hsl2rgb$3(h >= 240 ? h - 240 : h + 120, m1, m2),
+        hsl2rgb$3(h, m1, m2),
+        hsl2rgb$3(h < 120 ? h + 240 : h - 120, m1, m2),
         this.opacity
       );
     },
     clamp() {
-      return new Hsl$1(clamph(this.h), clampt(this.s), clampt(this.l), clampa(this.opacity));
+      return new Hsl$3(clamph(this.h), clampt(this.s), clampt(this.l), clampa(this.opacity));
     },
     displayable() {
       return (0 <= this.s && this.s <= 1 || isNaN(this.s))
@@ -400,7 +400,7 @@ var template = (function (exports) {
   }
 
   /* From FvD 13.37, CSS Color Module Level 3 */
-  function hsl2rgb$1(h, m1, m2) {
+  function hsl2rgb$3(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60
         : h < 180 ? m2
         : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
@@ -408,7 +408,7 @@ var template = (function (exports) {
   }
 
   const radians = Math.PI / 180;
-  const degrees$1 = 180 / Math.PI;
+  const degrees$2 = 180 / Math.PI;
 
   // https://observablehq.com/@mbostock/lab-and-rgb
   const K$1 = 18,
@@ -423,7 +423,7 @@ var template = (function (exports) {
   function labConvert$1(o) {
     if (o instanceof Lab$1) return new Lab$1(o.l, o.a, o.b, o.opacity);
     if (o instanceof Hcl$1) return hcl2lab$1(o);
-    if (!(o instanceof Rgb$1)) o = rgbConvert$1(o);
+    if (!(o instanceof Rgb$3)) o = rgbConvert$3(o);
     var r = rgb2lrgb$1(o.r),
         g = rgb2lrgb$1(o.g),
         b = rgb2lrgb$1(o.b),
@@ -446,7 +446,7 @@ var template = (function (exports) {
     this.opacity = +opacity;
   }
 
-  define$1(Lab$1, lab$2, extend$1(Color$1, {
+  define$3(Lab$1, lab$2, extend$3(Color$3, {
     brighter(k) {
       return new Lab$1(this.l + K$1 * (k == null ? 1 : k), this.a, this.b, this.opacity);
     },
@@ -460,7 +460,7 @@ var template = (function (exports) {
       x = Xn$1 * lab2xyz$1(x);
       y = Yn$1 * lab2xyz$1(y);
       z = Zn$1 * lab2xyz$1(z);
-      return new Rgb$1(
+      return new Rgb$3(
         lrgb2rgb$1( 3.1338561 * x - 1.6168667 * y - 0.4906146 * z),
         lrgb2rgb$1(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z),
         lrgb2rgb$1( 0.0719453 * x - 0.2289914 * y + 1.4052427 * z),
@@ -489,7 +489,7 @@ var template = (function (exports) {
     if (o instanceof Hcl$1) return new Hcl$1(o.h, o.c, o.l, o.opacity);
     if (!(o instanceof Lab$1)) o = labConvert$1(o);
     if (o.a === 0 && o.b === 0) return new Hcl$1(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
-    var h = Math.atan2(o.b, o.a) * degrees$1;
+    var h = Math.atan2(o.b, o.a) * degrees$2;
     return new Hcl$1(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
   }
 
@@ -510,7 +510,7 @@ var template = (function (exports) {
     return new Lab$1(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
   }
 
-  define$1(Hcl$1, hcl$2, extend$1(Color$1, {
+  define$3(Hcl$1, hcl$2, extend$3(Color$3, {
     brighter(k) {
       return new Hcl$1(this.h, this.c, this.l + K$1 * (k == null ? 1 : k), this.opacity);
     },
@@ -600,7 +600,7 @@ var template = (function (exports) {
 
   var proto = map$2.prototype;
 
-  Set.prototype = set$3.prototype = {
+  Set.prototype = set$5.prototype = {
     constructor: Set,
     has: proto.has,
     add: function(value) {
@@ -616,7 +616,7 @@ var template = (function (exports) {
     each: proto.each
   };
 
-  function set$3(object, f) {
+  function set$5(object, f) {
     var set = new Set;
 
     // Copy constructor.
@@ -844,6 +844,11 @@ var template = (function (exports) {
   		addGradient,
   		remove,
   	};
+  }
+
+  function isUrl(string) {
+  	if (typeof string != "string") return false;
+  	return string.match(/^(https?:\/\/|data:)/i) != null;
   }
 
   // This is an exception because mocha doesn't run in a browser context, so some
@@ -1310,7 +1315,7 @@ var template = (function (exports) {
   	}
   }
 
-  function init$4() {
+  function init$5() {
   	header_el = document.createElement("header");
   	header_el.className = "flourish-header";
 
@@ -1646,7 +1651,7 @@ var template = (function (exports) {
 
   function hexToColor(hex_string, opacity) {
   	if (typeof hex_string != "string") return false;
-  	var c = color$1(hex_string);
+  	var c = color$3(hex_string);
   	c.opacity = 1;
 
   	return c;
@@ -4810,7 +4815,7 @@ var template = (function (exports) {
     "x": function(x) { return Math.round(x).toString(16); }
   };
 
-  function identity$2(x) {
+  function identity$3(x) {
     return x;
   }
 
@@ -4818,11 +4823,11 @@ var template = (function (exports) {
       prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
 
   function formatLocale(locale) {
-    var group = locale.grouping === undefined || locale.thousands === undefined ? identity$2 : formatGroup(map$1.call(locale.grouping, Number), locale.thousands + ""),
+    var group = locale.grouping === undefined || locale.thousands === undefined ? identity$3 : formatGroup(map$1.call(locale.grouping, Number), locale.thousands + ""),
         currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
         currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
         decimal = locale.decimal === undefined ? "." : locale.decimal + "",
-        numerals = locale.numerals === undefined ? identity$2 : formatNumerals(map$1.call(locale.numerals, String)),
+        numerals = locale.numerals === undefined ? identity$3 : formatNumerals(map$1.call(locale.numerals, String)),
         percent = locale.percent === undefined ? "%" : locale.percent + "",
         minus = locale.minus === undefined ? "-" : locale.minus + "",
         nan = locale.nan === undefined ? "NaN" : locale.nan + "";
@@ -5730,7 +5735,7 @@ var template = (function (exports) {
   let footer_el, text_el, logo_el, logo_img, logo_link;
   let has_footer = false;
 
-  function appendStyles() {
+  function appendStyles$1() {
   	var css = document.createElement("style");
   	css.type = "text/css";
   	css.innerHTML =
@@ -5772,8 +5777,8 @@ var template = (function (exports) {
   	}
   }
 
-  function init$3() {
-  	appendStyles();
+  function init$4() {
+  	appendStyles$1();
 
   	footer_el = document.createElement("footer");
   	footer_el.className = "flourish-footer";
@@ -6192,7 +6197,7 @@ var template = (function (exports) {
   	document.body.style.backgroundPosition = state$1.background_image_position;
   }
 
-  var DEFAULTS$3 = Object.freeze({
+  var DEFAULTS$4 = Object.freeze({
   	body_font: {
   		name: "Canva Sans Variable",
   		url: "https://public.flourish.studio/resources/fonts/canva-sans.css",
@@ -6749,10 +6754,10 @@ var template = (function (exports) {
   }
 
   // Main init function ----------------------------------------
-  function init$2(state_) {
+  function init$3(state_) {
   	state$1 = state_;
-  	for (var key in DEFAULTS$3) {
-  		if (state$1[key] === undefined) state$1[key] = DEFAULTS$3[key];
+  	for (var key in DEFAULTS$4) {
+  		if (state$1[key] === undefined) state$1[key] = DEFAULTS$4[key];
   	}
 
   	initFontStyles();
@@ -6760,8 +6765,8 @@ var template = (function (exports) {
   	SECTIONS.forEach(function (section, i) {
   		elements[section] = addElement(section, i);
   	});
-  	getSection("header").appendChild(init$4());
-  	getSection("footer").appendChild(init$3());
+  	getSection("header").appendChild(init$5());
+  	getSection("footer").appendChild(init$4());
   	elements.primary.outer.style.overflow = "hidden";
   	createOverlay();
 
@@ -6788,7 +6793,7 @@ var template = (function (exports) {
   	};
   }
 
-  var DEFAULTS$2 = Object.freeze({
+  var DEFAULTS$3 = Object.freeze({
   	categorical_type: "palette",
   	categorical_palette: [
   		"#135ae1",
@@ -6866,14 +6871,14 @@ var template = (function (exports) {
   		return function nextColor() {
   			var rotation = ++i * angle;
   			var h = (h_init + rotation) % 360;
-  			return color$1(colorSpace(h, second_channel, third_channel)).hex();
+  			return color$3(colorSpace(h, second_channel, third_channel)).hex();
   		};
   	};
   }
 
   var hclGenerator = hueRotationGenerator(hcl$2, "c", "l");
 
-  var hslGenerator = hueRotationGenerator(hsl$2, "s", "l");
+  var hslGenerator = hueRotationGenerator(hsl$4, "s", "l");
 
   var color_generators = {
   	hcl: hclGenerator,
@@ -6883,12 +6888,12 @@ var template = (function (exports) {
   function getCategoricalFunction(state, domain) {
   	var lookup = {};
 
-  	var unique_domain = set$3(domain).values();
+  	var unique_domain = set$5(domain).values();
   	var palette = state.categorical_palette;
   	var n = palette.length;
 
   	if (state.categorical_extend) {
-  		var angle = DEFAULTS$2.rotation_angle;
+  		var angle = DEFAULTS$3.rotation_angle;
   		var generator_name = "hcl";
   		var colorGenerator = color_generators[generator_name](palette, angle);
   		unique_domain.forEach(function (label, i) {
@@ -6927,7 +6932,7 @@ var template = (function (exports) {
   	return colorScale;
   }
 
-  function ascending$3(a, b) {
+  function ascending$4(a, b) {
     return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
   }
 
@@ -6959,11 +6964,11 @@ var template = (function (exports) {
 
   function ascendingComparator$1(f) {
     return function(d, x) {
-      return ascending$3(f(d), x);
+      return ascending$4(f(d), x);
     };
   }
 
-  var ascendingBisect = bisector$1(ascending$3);
+  var ascendingBisect = bisector$1(ascending$4);
   var bisectRight = ascendingBisect.right;
 
   function number$1(x) {
@@ -7096,34 +7101,34 @@ var template = (function (exports) {
   var map = array$1.map;
   var slice = array$1.slice;
 
-  function define(constructor, factory, prototype) {
+  function define$2(constructor, factory, prototype) {
     constructor.prototype = factory.prototype = prototype;
     prototype.constructor = constructor;
   }
 
-  function extend(parent, definition) {
+  function extend$2(parent, definition) {
     var prototype = Object.create(parent.prototype);
     for (var key in definition) prototype[key] = definition[key];
     return prototype;
   }
 
-  function Color() {}
+  function Color$2() {}
 
-  var darker = 0.7;
-  var brighter = 1 / darker;
+  var darker$2 = 0.7;
+  var brighter$2 = 1 / darker$2;
 
-  var reI = "\\s*([+-]?\\d+)\\s*",
-      reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-      reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-      reHex = /^#([0-9a-f]{3,8})$/,
-      reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
-      reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
-      reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
-      reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
-      reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
-      reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
+  var reI$2 = "\\s*([+-]?\\d+)\\s*",
+      reN$2 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+      reP$2 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+      reHex$2 = /^#([0-9a-f]{3,8})$/,
+      reRgbInteger$2 = new RegExp("^rgb\\(" + [reI$2, reI$2, reI$2] + "\\)$"),
+      reRgbPercent$2 = new RegExp("^rgb\\(" + [reP$2, reP$2, reP$2] + "\\)$"),
+      reRgbaInteger$2 = new RegExp("^rgba\\(" + [reI$2, reI$2, reI$2, reN$2] + "\\)$"),
+      reRgbaPercent$2 = new RegExp("^rgba\\(" + [reP$2, reP$2, reP$2, reN$2] + "\\)$"),
+      reHslPercent$2 = new RegExp("^hsl\\(" + [reN$2, reP$2, reP$2] + "\\)$"),
+      reHslaPercent$2 = new RegExp("^hsla\\(" + [reN$2, reP$2, reP$2, reN$2] + "\\)$");
 
-  var named = {
+  var named$2 = {
     aliceblue: 0xf0f8ff,
     antiquewhite: 0xfaebd7,
     aqua: 0x00ffff,
@@ -7274,86 +7279,86 @@ var template = (function (exports) {
     yellowgreen: 0x9acd32
   };
 
-  define(Color, color, {
+  define$2(Color$2, color$2, {
     copy: function(channels) {
       return Object.assign(new this.constructor, this, channels);
     },
     displayable: function() {
       return this.rgb().displayable();
     },
-    hex: color_formatHex, // Deprecated! Use color.formatHex.
-    formatHex: color_formatHex,
-    formatHsl: color_formatHsl,
-    formatRgb: color_formatRgb,
-    toString: color_formatRgb
+    hex: color_formatHex$2, // Deprecated! Use color.formatHex.
+    formatHex: color_formatHex$2,
+    formatHsl: color_formatHsl$2,
+    formatRgb: color_formatRgb$2,
+    toString: color_formatRgb$2
   });
 
-  function color_formatHex() {
+  function color_formatHex$2() {
     return this.rgb().formatHex();
   }
 
-  function color_formatHsl() {
-    return hslConvert(this).formatHsl();
+  function color_formatHsl$2() {
+    return hslConvert$2(this).formatHsl();
   }
 
-  function color_formatRgb() {
+  function color_formatRgb$2() {
     return this.rgb().formatRgb();
   }
 
-  function color(format) {
+  function color$2(format) {
     var m, l;
     format = (format + "").trim().toLowerCase();
-    return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
-        : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-        : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-        : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+    return (m = reHex$2.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$2(m) // #ff0000
+        : l === 3 ? new Rgb$2((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+        : l === 8 ? rgba$2(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+        : l === 4 ? rgba$2((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
         : null) // invalid hex
-        : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-        : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-        : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-        : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-        : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-        : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-        : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
-        : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
+        : (m = reRgbInteger$2.exec(format)) ? new Rgb$2(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+        : (m = reRgbPercent$2.exec(format)) ? new Rgb$2(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+        : (m = reRgbaInteger$2.exec(format)) ? rgba$2(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+        : (m = reRgbaPercent$2.exec(format)) ? rgba$2(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+        : (m = reHslPercent$2.exec(format)) ? hsla$2(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+        : (m = reHslaPercent$2.exec(format)) ? hsla$2(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+        : named$2.hasOwnProperty(format) ? rgbn$2(named$2[format]) // eslint-disable-line no-prototype-builtins
+        : format === "transparent" ? new Rgb$2(NaN, NaN, NaN, 0)
         : null;
   }
 
-  function rgbn(n) {
-    return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+  function rgbn$2(n) {
+    return new Rgb$2(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
   }
 
-  function rgba(r, g, b, a) {
+  function rgba$2(r, g, b, a) {
     if (a <= 0) r = g = b = NaN;
-    return new Rgb(r, g, b, a);
+    return new Rgb$2(r, g, b, a);
   }
 
-  function rgbConvert(o) {
-    if (!(o instanceof Color)) o = color(o);
-    if (!o) return new Rgb;
+  function rgbConvert$2(o) {
+    if (!(o instanceof Color$2)) o = color$2(o);
+    if (!o) return new Rgb$2;
     o = o.rgb();
-    return new Rgb(o.r, o.g, o.b, o.opacity);
+    return new Rgb$2(o.r, o.g, o.b, o.opacity);
   }
 
-  function rgb(r, g, b, opacity) {
-    return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
+  function rgb$2(r, g, b, opacity) {
+    return arguments.length === 1 ? rgbConvert$2(r) : new Rgb$2(r, g, b, opacity == null ? 1 : opacity);
   }
 
-  function Rgb(r, g, b, opacity) {
+  function Rgb$2(r, g, b, opacity) {
     this.r = +r;
     this.g = +g;
     this.b = +b;
     this.opacity = +opacity;
   }
 
-  define(Rgb, rgb, extend(Color, {
+  define$2(Rgb$2, rgb$2, extend$2(Color$2, {
     brighter: function(k) {
-      k = k == null ? brighter : Math.pow(brighter, k);
-      return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+      k = k == null ? brighter$2 : Math.pow(brighter$2, k);
+      return new Rgb$2(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     darker: function(k) {
-      k = k == null ? darker : Math.pow(darker, k);
-      return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+      k = k == null ? darker$2 : Math.pow(darker$2, k);
+      return new Rgb$2(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     rgb: function() {
       return this;
@@ -7364,17 +7369,17 @@ var template = (function (exports) {
           && (-0.5 <= this.b && this.b < 255.5)
           && (0 <= this.opacity && this.opacity <= 1);
     },
-    hex: rgb_formatHex, // Deprecated! Use color.formatHex.
-    formatHex: rgb_formatHex,
-    formatRgb: rgb_formatRgb,
-    toString: rgb_formatRgb
+    hex: rgb_formatHex$2, // Deprecated! Use color.formatHex.
+    formatHex: rgb_formatHex$2,
+    formatRgb: rgb_formatRgb$2,
+    toString: rgb_formatRgb$2
   }));
 
-  function rgb_formatHex() {
-    return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+  function rgb_formatHex$2() {
+    return "#" + hex$2(this.r) + hex$2(this.g) + hex$2(this.b);
   }
 
-  function rgb_formatRgb() {
+  function rgb_formatRgb$2() {
     var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
     return (a === 1 ? "rgb(" : "rgba(")
         + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
@@ -7383,23 +7388,23 @@ var template = (function (exports) {
         + (a === 1 ? ")" : ", " + a + ")");
   }
 
-  function hex(value) {
+  function hex$2(value) {
     value = Math.max(0, Math.min(255, Math.round(value) || 0));
     return (value < 16 ? "0" : "") + value.toString(16);
   }
 
-  function hsla(h, s, l, a) {
+  function hsla$2(h, s, l, a) {
     if (a <= 0) h = s = l = NaN;
     else if (l <= 0 || l >= 1) h = s = NaN;
     else if (s <= 0) h = NaN;
-    return new Hsl(h, s, l, a);
+    return new Hsl$2(h, s, l, a);
   }
 
-  function hslConvert(o) {
-    if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof Color)) o = color(o);
-    if (!o) return new Hsl;
-    if (o instanceof Hsl) return o;
+  function hslConvert$2(o) {
+    if (o instanceof Hsl$2) return new Hsl$2(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color$2)) o = color$2(o);
+    if (!o) return new Hsl$2;
+    if (o instanceof Hsl$2) return o;
     o = o.rgb();
     var r = o.r / 255,
         g = o.g / 255,
@@ -7418,28 +7423,28 @@ var template = (function (exports) {
     } else {
       s = l > 0 && l < 1 ? 0 : h;
     }
-    return new Hsl(h, s, l, o.opacity);
+    return new Hsl$2(h, s, l, o.opacity);
   }
 
-  function hsl$1(h, s, l, opacity) {
-    return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+  function hsl$3(h, s, l, opacity) {
+    return arguments.length === 1 ? hslConvert$2(h) : new Hsl$2(h, s, l, opacity == null ? 1 : opacity);
   }
 
-  function Hsl(h, s, l, opacity) {
+  function Hsl$2(h, s, l, opacity) {
     this.h = +h;
     this.s = +s;
     this.l = +l;
     this.opacity = +opacity;
   }
 
-  define(Hsl, hsl$1, extend(Color, {
+  define$2(Hsl$2, hsl$3, extend$2(Color$2, {
     brighter: function(k) {
-      k = k == null ? brighter : Math.pow(brighter, k);
-      return new Hsl(this.h, this.s, this.l * k, this.opacity);
+      k = k == null ? brighter$2 : Math.pow(brighter$2, k);
+      return new Hsl$2(this.h, this.s, this.l * k, this.opacity);
     },
     darker: function(k) {
-      k = k == null ? darker : Math.pow(darker, k);
-      return new Hsl(this.h, this.s, this.l * k, this.opacity);
+      k = k == null ? darker$2 : Math.pow(darker$2, k);
+      return new Hsl$2(this.h, this.s, this.l * k, this.opacity);
     },
     rgb: function() {
       var h = this.h % 360 + (this.h < 0) * 360,
@@ -7447,10 +7452,10 @@ var template = (function (exports) {
           l = this.l,
           m2 = l + (l < 0.5 ? l : 1 - l) * s,
           m1 = 2 * l - m2;
-      return new Rgb(
-        hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
-        hsl2rgb(h, m1, m2),
-        hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
+      return new Rgb$2(
+        hsl2rgb$2(h >= 240 ? h - 240 : h + 120, m1, m2),
+        hsl2rgb$2(h, m1, m2),
+        hsl2rgb$2(h < 120 ? h + 240 : h - 120, m1, m2),
         this.opacity
       );
     },
@@ -7470,7 +7475,7 @@ var template = (function (exports) {
   }));
 
   /* From FvD 13.37, CSS Color Module Level 3 */
-  function hsl2rgb(h, m1, m2) {
+  function hsl2rgb$2(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60
         : h < 180 ? m2
         : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
@@ -7493,7 +7498,7 @@ var template = (function (exports) {
   function labConvert(o) {
     if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
     if (o instanceof Hcl) return hcl2lab(o);
-    if (!(o instanceof Rgb)) o = rgbConvert(o);
+    if (!(o instanceof Rgb$2)) o = rgbConvert$2(o);
     var r = rgb2lrgb(o.r),
         g = rgb2lrgb(o.g),
         b = rgb2lrgb(o.b),
@@ -7516,7 +7521,7 @@ var template = (function (exports) {
     this.opacity = +opacity;
   }
 
-  define(Lab, lab$1, extend(Color, {
+  define$2(Lab, lab$1, extend$2(Color$2, {
     brighter: function(k) {
       return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
     },
@@ -7530,7 +7535,7 @@ var template = (function (exports) {
       x = Xn * lab2xyz(x);
       y = Yn * lab2xyz(y);
       z = Zn * lab2xyz(z);
-      return new Rgb(
+      return new Rgb$2(
         lrgb2rgb( 3.1338561 * x - 1.6168667 * y - 0.4906146 * z),
         lrgb2rgb(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z),
         lrgb2rgb( 0.0719453 * x - 0.2289914 * y + 1.4052427 * z),
@@ -7580,7 +7585,7 @@ var template = (function (exports) {
     return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
   }
 
-  define(Hcl, hcl$1, extend(Color, {
+  define$2(Hcl, hcl$1, extend$2(Color$2, {
     brighter: function(k) {
       return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
     },
@@ -7603,7 +7608,7 @@ var template = (function (exports) {
 
   function cubehelixConvert(o) {
     if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof Rgb)) o = rgbConvert(o);
+    if (!(o instanceof Rgb$2)) o = rgbConvert$2(o);
     var r = o.r / 255,
         g = o.g / 255,
         b = o.b / 255,
@@ -7626,13 +7631,13 @@ var template = (function (exports) {
     this.opacity = +opacity;
   }
 
-  define(Cubehelix, cubehelix$1, extend(Color, {
+  define$2(Cubehelix, cubehelix$1, extend$2(Color$2, {
     brighter: function(k) {
-      k = k == null ? brighter : Math.pow(brighter, k);
+      k = k == null ? brighter$2 : Math.pow(brighter$2, k);
       return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
     },
     darker: function(k) {
-      k = k == null ? darker : Math.pow(darker, k);
+      k = k == null ? darker$2 : Math.pow(darker$2, k);
       return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
     },
     rgb: function() {
@@ -7641,7 +7646,7 @@ var template = (function (exports) {
           a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
           cosh = Math.cos(h),
           sinh = Math.sin(h);
-      return new Rgb(
+      return new Rgb$2(
         255 * (l + a * (A * cosh + B * sinh)),
         255 * (l + a * (C * cosh + D * sinh)),
         255 * (l + a * (E * cosh)),
@@ -7670,19 +7675,19 @@ var template = (function (exports) {
     };
   }
 
-  function constant$4(x) {
+  function constant$6(x) {
     return function() {
       return x;
     };
   }
 
-  function linear$2(a, d) {
+  function linear$3(a, d) {
     return function(t) {
       return a + t * d;
     };
   }
 
-  function exponential$1(a, b, y) {
+  function exponential$2(a, b, y) {
     return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
       return Math.pow(a + t * b, y);
     };
@@ -7690,28 +7695,28 @@ var template = (function (exports) {
 
   function hue(a, b) {
     var d = b - a;
-    return d ? linear$2(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant$4(isNaN(a) ? b : a);
+    return d ? linear$3(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant$6(isNaN(a) ? b : a);
   }
 
-  function gamma$1(y) {
-    return (y = +y) === 1 ? nogamma$1 : function(a, b) {
-      return b - a ? exponential$1(a, b, y) : constant$4(isNaN(a) ? b : a);
+  function gamma$2(y) {
+    return (y = +y) === 1 ? nogamma$2 : function(a, b) {
+      return b - a ? exponential$2(a, b, y) : constant$6(isNaN(a) ? b : a);
     };
   }
 
-  function nogamma$1(a, b) {
+  function nogamma$2(a, b) {
     var d = b - a;
-    return d ? linear$2(a, d) : constant$4(isNaN(a) ? b : a);
+    return d ? linear$3(a, d) : constant$6(isNaN(a) ? b : a);
   }
 
-  var interpolateRgb$1 = (function rgbGamma(y) {
-    var color = gamma$1(y);
+  var interpolateRgb$2 = (function rgbGamma(y) {
+    var color = gamma$2(y);
 
-    function rgb$1(start, end) {
-      var r = color((start = rgb(start)).r, (end = rgb(end)).r),
+    function rgb(start, end) {
+      var r = color((start = rgb$2(start)).r, (end = rgb$2(end)).r),
           g = color(start.g, end.g),
           b = color(start.b, end.b),
-          opacity = nogamma$1(start.opacity, end.opacity);
+          opacity = nogamma$2(start.opacity, end.opacity);
       return function(t) {
         start.r = r(t);
         start.g = g(t);
@@ -7721,9 +7726,9 @@ var template = (function (exports) {
       };
     }
 
-    rgb$1.gamma = rgbGamma;
+    rgb.gamma = rgbGamma;
 
-    return rgb$1;
+    return rgb;
   })(1);
 
   function rgbSpline(spline) {
@@ -7734,7 +7739,7 @@ var template = (function (exports) {
           b = new Array(n),
           i, color;
       for (i = 0; i < n; ++i) {
-        color = rgb(colors[i]);
+        color = rgb$2(colors[i]);
         r[i] = color.r || 0;
         g[i] = color.g || 0;
         b[i] = color.b || 0;
@@ -7792,7 +7797,7 @@ var template = (function (exports) {
     };
   }
 
-  function interpolateNumber$1(a, b) {
+  function interpolateNumber$2(a, b) {
     return a = +a, b = +b, function(t) {
       return a * (1 - t) + b * t;
     };
@@ -7820,23 +7825,23 @@ var template = (function (exports) {
     };
   }
 
-  var reA$1 = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
-      reB$1 = new RegExp(reA$1.source, "g");
+  var reA$2 = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
+      reB$2 = new RegExp(reA$2.source, "g");
 
-  function zero$1(b) {
+  function zero$2(b) {
     return function() {
       return b;
     };
   }
 
-  function one$1(b) {
+  function one$2(b) {
     return function(t) {
       return b(t) + "";
     };
   }
 
   function string(a, b) {
-    var bi = reA$1.lastIndex = reB$1.lastIndex = 0, // scan index for next number in b
+    var bi = reA$2.lastIndex = reB$2.lastIndex = 0, // scan index for next number in b
         am, // current match in a
         bm, // current match in b
         bs, // string preceding current number in b, if any
@@ -7848,8 +7853,8 @@ var template = (function (exports) {
     a = a + "", b = b + "";
 
     // Interpolate pairs of numbers in a & b.
-    while ((am = reA$1.exec(a))
-        && (bm = reB$1.exec(b))) {
+    while ((am = reA$2.exec(a))
+        && (bm = reB$2.exec(b))) {
       if ((bs = bm.index) > bi) { // a string precedes the next number in b
         bs = b.slice(bi, bs);
         if (s[i]) s[i] += bs; // coalesce with previous string
@@ -7860,9 +7865,9 @@ var template = (function (exports) {
         else s[++i] = bm;
       } else { // interpolate non-matching numbers
         s[++i] = null;
-        q.push({i: i, x: interpolateNumber$1(am, bm)});
+        q.push({i: i, x: interpolateNumber$2(am, bm)});
       }
-      bi = reB$1.lastIndex;
+      bi = reB$2.lastIndex;
     }
 
     // Add remains of b.
@@ -7875,8 +7880,8 @@ var template = (function (exports) {
     // Special optimization for only a single match.
     // Otherwise, interpolate each of the numbers and rejoin the string.
     return s.length < 2 ? (q[0]
-        ? one$1(q[0].x)
-        : zero$1(b))
+        ? one$2(q[0].x)
+        : zero$2(b))
         : (b = q.length, function(t) {
             for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
             return s.join("");
@@ -7885,15 +7890,15 @@ var template = (function (exports) {
 
   function interpolateValue(a, b) {
     var t = typeof b, c;
-    return b == null || t === "boolean" ? constant$4(b)
-        : (t === "number" ? interpolateNumber$1
-        : t === "string" ? ((c = color(b)) ? (b = c, interpolateRgb$1) : string)
-        : b instanceof color ? interpolateRgb$1
+    return b == null || t === "boolean" ? constant$6(b)
+        : (t === "number" ? interpolateNumber$2
+        : t === "string" ? ((c = color$2(b)) ? (b = c, interpolateRgb$2) : string)
+        : b instanceof color$2 ? interpolateRgb$2
         : b instanceof Date ? date
         : isNumberArray(b) ? numberArray
         : Array.isArray(b) ? genericArray
         : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
-        : interpolateNumber$1)(a, b);
+        : interpolateNumber$2)(a, b);
   }
 
   function interpolateRound(a, b) {
@@ -7902,12 +7907,12 @@ var template = (function (exports) {
     };
   }
 
-  function hsl(hue) {
+  function hsl$2(hue) {
     return function(start, end) {
-      var h = hue((start = hsl$1(start)).h, (end = hsl$1(end)).h),
-          s = nogamma$1(start.s, end.s),
-          l = nogamma$1(start.l, end.l),
-          opacity = nogamma$1(start.opacity, end.opacity);
+      var h = hue((start = hsl$3(start)).h, (end = hsl$3(end)).h),
+          s = nogamma$2(start.s, end.s),
+          l = nogamma$2(start.l, end.l),
+          opacity = nogamma$2(start.opacity, end.opacity);
       return function(t) {
         start.h = h(t);
         start.s = s(t);
@@ -7918,13 +7923,13 @@ var template = (function (exports) {
     }
   }
 
-  var interpolateHsl = hsl(hue);
+  var interpolateHsl = hsl$2(hue);
 
   function lab(start, end) {
-    var l = nogamma$1((start = lab$1(start)).l, (end = lab$1(end)).l),
-        a = nogamma$1(start.a, end.a),
-        b = nogamma$1(start.b, end.b),
-        opacity = nogamma$1(start.opacity, end.opacity);
+    var l = nogamma$2((start = lab$1(start)).l, (end = lab$1(end)).l),
+        a = nogamma$2(start.a, end.a),
+        b = nogamma$2(start.b, end.b),
+        opacity = nogamma$2(start.opacity, end.opacity);
     return function(t) {
       start.l = l(t);
       start.a = a(t);
@@ -7937,9 +7942,9 @@ var template = (function (exports) {
   function hcl(hue) {
     return function(start, end) {
       var h = hue((start = hcl$1(start)).h, (end = hcl$1(end)).h),
-          c = nogamma$1(start.c, end.c),
-          l = nogamma$1(start.l, end.l),
-          opacity = nogamma$1(start.opacity, end.opacity);
+          c = nogamma$2(start.c, end.c),
+          l = nogamma$2(start.l, end.l),
+          opacity = nogamma$2(start.opacity, end.opacity);
       return function(t) {
         start.h = h(t);
         start.c = c(t);
@@ -7958,9 +7963,9 @@ var template = (function (exports) {
 
       function cubehelix(start, end) {
         var h = hue((start = cubehelix$1(start)).h, (end = cubehelix$1(end)).h),
-            s = nogamma$1(start.s, end.s),
-            l = nogamma$1(start.l, end.l),
-            opacity = nogamma$1(start.opacity, end.opacity);
+            s = nogamma$2(start.s, end.s),
+            l = nogamma$2(start.l, end.l),
+            opacity = nogamma$2(start.opacity, end.opacity);
         return function(t) {
           start.h = h(t);
           start.s = s(t);
@@ -7977,7 +7982,7 @@ var template = (function (exports) {
   }
 
   cubehelix(hue);
-  var cubehelixLong = cubehelix(nogamma$1);
+  var cubehelixLong = cubehelix(nogamma$2);
 
   function piecewise(interpolate, values) {
     var i = 0, n = values.length - 1, v = values[0], I = new Array(n < 0 ? 0 : n);
@@ -7988,7 +7993,7 @@ var template = (function (exports) {
     };
   }
 
-  function constant$3(x) {
+  function constant$5(x) {
     return function() {
       return x;
     };
@@ -8000,14 +8005,14 @@ var template = (function (exports) {
 
   var unit = [0, 1];
 
-  function identity$1(x) {
+  function identity$2(x) {
     return x;
   }
 
   function normalize(a, b) {
     return (b -= (a = +a))
         ? function(x) { return (x - a) / b; }
-        : constant$3(isNaN(b) ? NaN : 0.5);
+        : constant$5(isNaN(b) ? NaN : 0.5);
   }
 
   function clamper(domain) {
@@ -8064,7 +8069,7 @@ var template = (function (exports) {
         transform,
         untransform,
         unknown,
-        clamp = identity$1,
+        clamp = identity$2,
         piecewise,
         output,
         input;
@@ -8080,11 +8085,11 @@ var template = (function (exports) {
     }
 
     scale.invert = function(y) {
-      return clamp(untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber$1)))(y)));
+      return clamp(untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber$2)))(y)));
     };
 
     scale.domain = function(_) {
-      return arguments.length ? (domain = map.call(_, number), clamp === identity$1 || (clamp = clamper(domain)), rescale()) : domain.slice();
+      return arguments.length ? (domain = map.call(_, number), clamp === identity$2 || (clamp = clamper(domain)), rescale()) : domain.slice();
     };
 
     scale.range = function(_) {
@@ -8096,7 +8101,7 @@ var template = (function (exports) {
     };
 
     scale.clamp = function(_) {
-      return arguments.length ? (clamp = _ ? clamper(domain) : identity$1, scale) : clamp !== identity$1;
+      return arguments.length ? (clamp = _ ? clamper(domain) : identity$2, scale) : clamp !== identity$2;
     };
 
     scale.interpolate = function(_) {
@@ -8200,11 +8205,11 @@ var template = (function (exports) {
     return scale;
   }
 
-  function linear$1() {
-    var scale = continuous(identity$1, identity$1);
+  function linear$2() {
+    var scale = continuous(identity$2, identity$2);
 
     scale.copy = function() {
-      return copy$1(scale, linear$1());
+      return copy$1(scale, linear$2());
     };
 
     initRange.apply(scale, arguments);
@@ -8241,7 +8246,7 @@ var template = (function (exports) {
       if (!arguments.length) return domain.slice();
       domain = [];
       for (var i = 0, n = _.length, d; i < n; ++i) if (d = _[i], d != null && !isNaN(d = +d)) domain.push(d);
-      domain.sort(ascending$3);
+      domain.sort(ascending$4);
       return rescale();
     };
 
@@ -8364,7 +8369,7 @@ var template = (function (exports) {
         t1,
         k10,
         transform,
-        interpolator = identity$1,
+        interpolator = identity$2,
         clamp = false,
         unknown;
 
@@ -8403,7 +8408,7 @@ var template = (function (exports) {
   }
 
   function sequential() {
-    var scale = linearish(transformer$1()(identity$1));
+    var scale = linearish(transformer$1()(identity$2));
 
     scale.copy = function() {
       return copy(scale, sequential());
@@ -8421,7 +8426,7 @@ var template = (function (exports) {
         t2,
         k10,
         k21,
-        interpolator = identity$1,
+        interpolator = identity$2,
         transform,
         clamp = false,
         unknown;
@@ -8453,7 +8458,7 @@ var template = (function (exports) {
   }
 
   function diverging() {
-    var scale = linearish(transformer()(identity$1));
+    var scale = linearish(transformer()(identity$2));
 
     scale.copy = function() {
       return copy(scale, diverging());
@@ -8861,7 +8866,7 @@ var template = (function (exports) {
 
   	var n_bins = bin_centers.length;
 
-  	var sample_scale = linear$1(); // sample_scale is used to evenly sample colors across a domain
+  	var sample_scale = linear$2(); // sample_scale is used to evenly sample colors across a domain
   	var colors = [];
 
   	if (n_bins === 1) {
@@ -9936,7 +9941,7 @@ var template = (function (exports) {
   	hcl: interpolateHcl,
   	hsl: interpolateHsl,
   	lab: lab,
-  	rgb: interpolateRgb$1,
+  	rgb: interpolateRgb$2,
   };
 
   function getCustomInterpolator$1(state) {
@@ -9985,7 +9990,7 @@ var template = (function (exports) {
   	hcl: interpolateHcl,
   	hsl: interpolateHsl,
   	lab: lab,
-  	rgb: interpolateRgb$1,
+  	rgb: interpolateRgb$2,
   };
 
   function getCustomInterpolator(state) {
@@ -10033,11 +10038,11 @@ var template = (function (exports) {
   	return colorScale;
   }
 
-  function init$1(state) {
+  function init$2(state) {
   	var colorFunction = null;
 
-  	for (var key in DEFAULTS$2) {
-  		if (state[key] === undefined) state[key] = DEFAULTS$2[key];
+  	for (var key in DEFAULTS$3) {
+  		if (state[key] === undefined) state[key] = DEFAULTS$3[key];
   	}
 
   	var fallback_value = DEFAULT_FALLBACK_VALUE;
@@ -10080,55 +10085,55 @@ var template = (function (exports) {
   	};
   }
 
-  var xhtml$1 = "http://www.w3.org/1999/xhtml";
+  var xhtml$2 = "http://www.w3.org/1999/xhtml";
 
-  var namespaces$1 = {
+  var namespaces$2 = {
     svg: "http://www.w3.org/2000/svg",
-    xhtml: xhtml$1,
+    xhtml: xhtml$2,
     xlink: "http://www.w3.org/1999/xlink",
     xml: "http://www.w3.org/XML/1998/namespace",
     xmlns: "http://www.w3.org/2000/xmlns/"
   };
 
-  function namespace$1(name) {
+  function namespace$2(name) {
     var prefix = name += "", i = prefix.indexOf(":");
     if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns") name = name.slice(i + 1);
-    return namespaces$1.hasOwnProperty(prefix) ? {space: namespaces$1[prefix], local: name} : name;
+    return namespaces$2.hasOwnProperty(prefix) ? {space: namespaces$2[prefix], local: name} : name;
   }
 
-  function creatorInherit$1(name) {
+  function creatorInherit$2(name) {
     return function() {
       var document = this.ownerDocument,
           uri = this.namespaceURI;
-      return uri === xhtml$1 && document.documentElement.namespaceURI === xhtml$1
+      return uri === xhtml$2 && document.documentElement.namespaceURI === xhtml$2
           ? document.createElement(name)
           : document.createElementNS(uri, name);
     };
   }
 
-  function creatorFixed$1(fullname) {
+  function creatorFixed$2(fullname) {
     return function() {
       return this.ownerDocument.createElementNS(fullname.space, fullname.local);
     };
   }
 
-  function creator$1(name) {
-    var fullname = namespace$1(name);
+  function creator$2(name) {
+    var fullname = namespace$2(name);
     return (fullname.local
-        ? creatorFixed$1
-        : creatorInherit$1)(fullname);
+        ? creatorFixed$2
+        : creatorInherit$2)(fullname);
   }
 
-  function none$1() {}
+  function none$2() {}
 
-  function selector$1(selector) {
-    return selector == null ? none$1 : function() {
+  function selector$2(selector) {
+    return selector == null ? none$2 : function() {
       return this.querySelector(selector);
     };
   }
 
-  function selection_select$1(select) {
-    if (typeof select !== "function") select = selector$1(select);
+  function selection_select$2(select) {
+    if (typeof select !== "function") select = selector$2(select);
 
     for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
       for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
@@ -10139,21 +10144,21 @@ var template = (function (exports) {
       }
     }
 
-    return new Selection$2(subgroups, this._parents);
+    return new Selection$4(subgroups, this._parents);
   }
 
-  function empty$1() {
+  function empty$2() {
     return [];
   }
 
-  function selectorAll$1(selector) {
-    return selector == null ? empty$1 : function() {
+  function selectorAll$2(selector) {
+    return selector == null ? empty$2 : function() {
       return this.querySelectorAll(selector);
     };
   }
 
-  function selection_selectAll$1(select) {
-    if (typeof select !== "function") select = selectorAll$1(select);
+  function selection_selectAll$2(select) {
+    if (typeof select !== "function") select = selectorAll$2(select);
 
     for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
       for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
@@ -10164,17 +10169,17 @@ var template = (function (exports) {
       }
     }
 
-    return new Selection$2(subgroups, parents);
+    return new Selection$4(subgroups, parents);
   }
 
-  function matcher$1(selector) {
+  function matcher$2(selector) {
     return function() {
       return this.matches(selector);
     };
   }
 
-  function selection_filter$1(match) {
-    if (typeof match !== "function") match = matcher$1(match);
+  function selection_filter$2(match) {
+    if (typeof match !== "function") match = matcher$2(match);
 
     for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
       for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
@@ -10184,18 +10189,18 @@ var template = (function (exports) {
       }
     }
 
-    return new Selection$2(subgroups, this._parents);
+    return new Selection$4(subgroups, this._parents);
   }
 
-  function sparse$1(update) {
+  function sparse$2(update) {
     return new Array(update.length);
   }
 
-  function selection_enter$1() {
-    return new Selection$2(this._enter || this._groups.map(sparse$1), this._parents);
+  function selection_enter$2() {
+    return new Selection$4(this._enter || this._groups.map(sparse$2), this._parents);
   }
 
-  function EnterNode$1(parent, datum) {
+  function EnterNode$2(parent, datum) {
     this.ownerDocument = parent.ownerDocument;
     this.namespaceURI = parent.namespaceURI;
     this._next = null;
@@ -10203,23 +10208,23 @@ var template = (function (exports) {
     this.__data__ = datum;
   }
 
-  EnterNode$1.prototype = {
-    constructor: EnterNode$1,
+  EnterNode$2.prototype = {
+    constructor: EnterNode$2,
     appendChild: function(child) { return this._parent.insertBefore(child, this._next); },
     insertBefore: function(child, next) { return this._parent.insertBefore(child, next); },
     querySelector: function(selector) { return this._parent.querySelector(selector); },
     querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
   };
 
-  function constant$2(x) {
+  function constant$4(x) {
     return function() {
       return x;
     };
   }
 
-  var keyPrefix = "$"; // Protect against keys like “__proto__”.
+  var keyPrefix$1 = "$"; // Protect against keys like “__proto__”.
 
-  function bindIndex$1(parent, group, enter, update, exit, data) {
+  function bindIndex$2(parent, group, enter, update, exit, data) {
     var i = 0,
         node,
         groupLength = group.length,
@@ -10233,7 +10238,7 @@ var template = (function (exports) {
         node.__data__ = data[i];
         update[i] = node;
       } else {
-        enter[i] = new EnterNode$1(parent, data[i]);
+        enter[i] = new EnterNode$2(parent, data[i]);
       }
     }
 
@@ -10245,7 +10250,7 @@ var template = (function (exports) {
     }
   }
 
-  function bindKey$1(parent, group, enter, update, exit, data, key) {
+  function bindKey$2(parent, group, enter, update, exit, data, key) {
     var i,
         node,
         nodeByKeyValue = {},
@@ -10258,7 +10263,7 @@ var template = (function (exports) {
     // If multiple nodes have the same key, the duplicates are added to exit.
     for (i = 0; i < groupLength; ++i) {
       if (node = group[i]) {
-        keyValues[i] = keyValue = keyPrefix + key.call(node, node.__data__, i, group);
+        keyValues[i] = keyValue = keyPrefix$1 + key.call(node, node.__data__, i, group);
         if (keyValue in nodeByKeyValue) {
           exit[i] = node;
         } else {
@@ -10271,13 +10276,13 @@ var template = (function (exports) {
     // If there a node associated with this key, join and add it to update.
     // If there is not (or the key is a duplicate), add it to enter.
     for (i = 0; i < dataLength; ++i) {
-      keyValue = keyPrefix + key.call(parent, data[i], i, data);
+      keyValue = keyPrefix$1 + key.call(parent, data[i], i, data);
       if (node = nodeByKeyValue[keyValue]) {
         update[i] = node;
         node.__data__ = data[i];
         nodeByKeyValue[keyValue] = null;
       } else {
-        enter[i] = new EnterNode$1(parent, data[i]);
+        enter[i] = new EnterNode$2(parent, data[i]);
       }
     }
 
@@ -10289,18 +10294,18 @@ var template = (function (exports) {
     }
   }
 
-  function selection_data$1(value, key) {
+  function selection_data$2(value, key) {
     if (!value) {
       data = new Array(this.size()), j = -1;
       this.each(function(d) { data[++j] = d; });
       return data;
     }
 
-    var bind = key ? bindKey$1 : bindIndex$1,
+    var bind = key ? bindKey$2 : bindIndex$2,
         parents = this._parents,
         groups = this._groups;
 
-    if (typeof value !== "function") value = constant$2(value);
+    if (typeof value !== "function") value = constant$4(value);
 
     for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
       var parent = parents[j],
@@ -10326,17 +10331,17 @@ var template = (function (exports) {
       }
     }
 
-    update = new Selection$2(update, parents);
+    update = new Selection$4(update, parents);
     update._enter = enter;
     update._exit = exit;
     return update;
   }
 
-  function selection_exit$1() {
-    return new Selection$2(this._exit || this._groups.map(sparse$1), this._parents);
+  function selection_exit$2() {
+    return new Selection$4(this._exit || this._groups.map(sparse$2), this._parents);
   }
 
-  function selection_join$1(onenter, onupdate, onexit) {
+  function selection_join$2(onenter, onupdate, onexit) {
     var enter = this.enter(), update = this, exit = this.exit();
     enter = typeof onenter === "function" ? onenter(enter) : enter.append(onenter + "");
     if (onupdate != null) update = onupdate(update);
@@ -10344,7 +10349,7 @@ var template = (function (exports) {
     return enter && update ? enter.merge(update).order() : update;
   }
 
-  function selection_merge$1(selection) {
+  function selection_merge$2(selection) {
 
     for (var groups0 = this._groups, groups1 = selection._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
       for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
@@ -10358,10 +10363,10 @@ var template = (function (exports) {
       merges[j] = groups0[j];
     }
 
-    return new Selection$2(merges, this._parents);
+    return new Selection$4(merges, this._parents);
   }
 
-  function selection_order$1() {
+  function selection_order$2() {
 
     for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
       for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
@@ -10375,8 +10380,8 @@ var template = (function (exports) {
     return this;
   }
 
-  function selection_sort$1(compare) {
-    if (!compare) compare = ascending$2;
+  function selection_sort$2(compare) {
+    if (!compare) compare = ascending$3;
 
     function compareNode(a, b) {
       return a && b ? compare(a.__data__, b.__data__) : !a - !b;
@@ -10391,27 +10396,27 @@ var template = (function (exports) {
       sortgroup.sort(compareNode);
     }
 
-    return new Selection$2(sortgroups, this._parents).order();
+    return new Selection$4(sortgroups, this._parents).order();
   }
 
-  function ascending$2(a, b) {
+  function ascending$3(a, b) {
     return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
   }
 
-  function selection_call$1() {
+  function selection_call$2() {
     var callback = arguments[0];
     arguments[0] = this;
     callback.apply(null, arguments);
     return this;
   }
 
-  function selection_nodes$1() {
+  function selection_nodes$2() {
     var nodes = new Array(this.size()), i = -1;
     this.each(function() { nodes[++i] = this; });
     return nodes;
   }
 
-  function selection_node$1() {
+  function selection_node$2() {
 
     for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
       for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
@@ -10423,17 +10428,17 @@ var template = (function (exports) {
     return null;
   }
 
-  function selection_size$1() {
+  function selection_size$2() {
     var size = 0;
     this.each(function() { ++size; });
     return size;
   }
 
-  function selection_empty$1() {
+  function selection_empty$2() {
     return !this.node();
   }
 
-  function selection_each$1(callback) {
+  function selection_each$2(callback) {
 
     for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
       for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
@@ -10444,31 +10449,31 @@ var template = (function (exports) {
     return this;
   }
 
-  function attrRemove$2(name) {
+  function attrRemove$4(name) {
     return function() {
       this.removeAttribute(name);
     };
   }
 
-  function attrRemoveNS$2(fullname) {
+  function attrRemoveNS$4(fullname) {
     return function() {
       this.removeAttributeNS(fullname.space, fullname.local);
     };
   }
 
-  function attrConstant$2(name, value) {
+  function attrConstant$4(name, value) {
     return function() {
       this.setAttribute(name, value);
     };
   }
 
-  function attrConstantNS$2(fullname, value) {
+  function attrConstantNS$4(fullname, value) {
     return function() {
       this.setAttributeNS(fullname.space, fullname.local, value);
     };
   }
 
-  function attrFunction$2(name, value) {
+  function attrFunction$4(name, value) {
     return function() {
       var v = value.apply(this, arguments);
       if (v == null) this.removeAttribute(name);
@@ -10476,7 +10481,7 @@ var template = (function (exports) {
     };
   }
 
-  function attrFunctionNS$2(fullname, value) {
+  function attrFunctionNS$4(fullname, value) {
     return function() {
       var v = value.apply(this, arguments);
       if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
@@ -10484,8 +10489,8 @@ var template = (function (exports) {
     };
   }
 
-  function selection_attr$1(name, value) {
-    var fullname = namespace$1(name);
+  function selection_attr$2(name, value) {
+    var fullname = namespace$2(name);
 
     if (arguments.length < 2) {
       var node = this.node();
@@ -10495,30 +10500,30 @@ var template = (function (exports) {
     }
 
     return this.each((value == null
-        ? (fullname.local ? attrRemoveNS$2 : attrRemove$2) : (typeof value === "function"
-        ? (fullname.local ? attrFunctionNS$2 : attrFunction$2)
-        : (fullname.local ? attrConstantNS$2 : attrConstant$2)))(fullname, value));
+        ? (fullname.local ? attrRemoveNS$4 : attrRemove$4) : (typeof value === "function"
+        ? (fullname.local ? attrFunctionNS$4 : attrFunction$4)
+        : (fullname.local ? attrConstantNS$4 : attrConstant$4)))(fullname, value));
   }
 
-  function defaultView$1(node) {
+  function defaultView$2(node) {
     return (node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
         || (node.document && node) // node is a Window
         || node.defaultView; // node is a Document
   }
 
-  function styleRemove$2(name) {
+  function styleRemove$4(name) {
     return function() {
       this.style.removeProperty(name);
     };
   }
 
-  function styleConstant$2(name, value, priority) {
+  function styleConstant$4(name, value, priority) {
     return function() {
       this.style.setProperty(name, value, priority);
     };
   }
 
-  function styleFunction$2(name, value, priority) {
+  function styleFunction$4(name, value, priority) {
     return function() {
       var v = value.apply(this, arguments);
       if (v == null) this.style.removeProperty(name);
@@ -10526,33 +10531,33 @@ var template = (function (exports) {
     };
   }
 
-  function selection_style$1(name, value, priority) {
+  function selection_style$2(name, value, priority) {
     return arguments.length > 1
         ? this.each((value == null
-              ? styleRemove$2 : typeof value === "function"
-              ? styleFunction$2
-              : styleConstant$2)(name, value, priority == null ? "" : priority))
-        : styleValue$1(this.node(), name);
+              ? styleRemove$4 : typeof value === "function"
+              ? styleFunction$4
+              : styleConstant$4)(name, value, priority == null ? "" : priority))
+        : styleValue$2(this.node(), name);
   }
 
-  function styleValue$1(node, name) {
+  function styleValue$2(node, name) {
     return node.style.getPropertyValue(name)
-        || defaultView$1(node).getComputedStyle(node, null).getPropertyValue(name);
+        || defaultView$2(node).getComputedStyle(node, null).getPropertyValue(name);
   }
 
-  function propertyRemove$1(name) {
+  function propertyRemove$2(name) {
     return function() {
       delete this[name];
     };
   }
 
-  function propertyConstant$1(name, value) {
+  function propertyConstant$2(name, value) {
     return function() {
       this[name] = value;
     };
   }
 
-  function propertyFunction$1(name, value) {
+  function propertyFunction$2(name, value) {
     return function() {
       var v = value.apply(this, arguments);
       if (v == null) delete this[name];
@@ -10560,29 +10565,29 @@ var template = (function (exports) {
     };
   }
 
-  function selection_property$1(name, value) {
+  function selection_property$2(name, value) {
     return arguments.length > 1
         ? this.each((value == null
-            ? propertyRemove$1 : typeof value === "function"
-            ? propertyFunction$1
-            : propertyConstant$1)(name, value))
+            ? propertyRemove$2 : typeof value === "function"
+            ? propertyFunction$2
+            : propertyConstant$2)(name, value))
         : this.node()[name];
   }
 
-  function classArray$1(string) {
+  function classArray$2(string) {
     return string.trim().split(/^|\s+/);
   }
 
-  function classList$1(node) {
-    return node.classList || new ClassList$1(node);
+  function classList$2(node) {
+    return node.classList || new ClassList$2(node);
   }
 
-  function ClassList$1(node) {
+  function ClassList$2(node) {
     this._node = node;
-    this._names = classArray$1(node.getAttribute("class") || "");
+    this._names = classArray$2(node.getAttribute("class") || "");
   }
 
-  ClassList$1.prototype = {
+  ClassList$2.prototype = {
     add: function(name) {
       var i = this._names.indexOf(name);
       if (i < 0) {
@@ -10602,178 +10607,178 @@ var template = (function (exports) {
     }
   };
 
-  function classedAdd$1(node, names) {
-    var list = classList$1(node), i = -1, n = names.length;
+  function classedAdd$2(node, names) {
+    var list = classList$2(node), i = -1, n = names.length;
     while (++i < n) list.add(names[i]);
   }
 
-  function classedRemove$1(node, names) {
-    var list = classList$1(node), i = -1, n = names.length;
+  function classedRemove$2(node, names) {
+    var list = classList$2(node), i = -1, n = names.length;
     while (++i < n) list.remove(names[i]);
   }
 
-  function classedTrue$1(names) {
+  function classedTrue$2(names) {
     return function() {
-      classedAdd$1(this, names);
+      classedAdd$2(this, names);
     };
   }
 
-  function classedFalse$1(names) {
+  function classedFalse$2(names) {
     return function() {
-      classedRemove$1(this, names);
+      classedRemove$2(this, names);
     };
   }
 
-  function classedFunction$1(names, value) {
+  function classedFunction$2(names, value) {
     return function() {
-      (value.apply(this, arguments) ? classedAdd$1 : classedRemove$1)(this, names);
+      (value.apply(this, arguments) ? classedAdd$2 : classedRemove$2)(this, names);
     };
   }
 
-  function selection_classed$1(name, value) {
-    var names = classArray$1(name + "");
+  function selection_classed$2(name, value) {
+    var names = classArray$2(name + "");
 
     if (arguments.length < 2) {
-      var list = classList$1(this.node()), i = -1, n = names.length;
+      var list = classList$2(this.node()), i = -1, n = names.length;
       while (++i < n) if (!list.contains(names[i])) return false;
       return true;
     }
 
     return this.each((typeof value === "function"
-        ? classedFunction$1 : value
-        ? classedTrue$1
-        : classedFalse$1)(names, value));
+        ? classedFunction$2 : value
+        ? classedTrue$2
+        : classedFalse$2)(names, value));
   }
 
-  function textRemove$1() {
+  function textRemove$2() {
     this.textContent = "";
   }
 
-  function textConstant$2(value) {
+  function textConstant$4(value) {
     return function() {
       this.textContent = value;
     };
   }
 
-  function textFunction$2(value) {
+  function textFunction$4(value) {
     return function() {
       var v = value.apply(this, arguments);
       this.textContent = v == null ? "" : v;
     };
   }
 
-  function selection_text$1(value) {
+  function selection_text$2(value) {
     return arguments.length
         ? this.each(value == null
-            ? textRemove$1 : (typeof value === "function"
-            ? textFunction$2
-            : textConstant$2)(value))
+            ? textRemove$2 : (typeof value === "function"
+            ? textFunction$4
+            : textConstant$4)(value))
         : this.node().textContent;
   }
 
-  function htmlRemove$1() {
+  function htmlRemove$2() {
     this.innerHTML = "";
   }
 
-  function htmlConstant$1(value) {
+  function htmlConstant$2(value) {
     return function() {
       this.innerHTML = value;
     };
   }
 
-  function htmlFunction$1(value) {
+  function htmlFunction$2(value) {
     return function() {
       var v = value.apply(this, arguments);
       this.innerHTML = v == null ? "" : v;
     };
   }
 
-  function selection_html$1(value) {
+  function selection_html$2(value) {
     return arguments.length
         ? this.each(value == null
-            ? htmlRemove$1 : (typeof value === "function"
-            ? htmlFunction$1
-            : htmlConstant$1)(value))
+            ? htmlRemove$2 : (typeof value === "function"
+            ? htmlFunction$2
+            : htmlConstant$2)(value))
         : this.node().innerHTML;
   }
 
-  function raise$1() {
+  function raise$2() {
     if (this.nextSibling) this.parentNode.appendChild(this);
   }
 
-  function selection_raise$1() {
-    return this.each(raise$1);
+  function selection_raise$2() {
+    return this.each(raise$2);
   }
 
-  function lower$1() {
+  function lower$2() {
     if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
   }
 
-  function selection_lower$1() {
-    return this.each(lower$1);
+  function selection_lower$2() {
+    return this.each(lower$2);
   }
 
-  function selection_append$1(name) {
-    var create = typeof name === "function" ? name : creator$1(name);
+  function selection_append$2(name) {
+    var create = typeof name === "function" ? name : creator$2(name);
     return this.select(function() {
       return this.appendChild(create.apply(this, arguments));
     });
   }
 
-  function constantNull$1() {
+  function constantNull$2() {
     return null;
   }
 
-  function selection_insert$1(name, before) {
-    var create = typeof name === "function" ? name : creator$1(name),
-        select = before == null ? constantNull$1 : typeof before === "function" ? before : selector$1(before);
+  function selection_insert$2(name, before) {
+    var create = typeof name === "function" ? name : creator$2(name),
+        select = before == null ? constantNull$2 : typeof before === "function" ? before : selector$2(before);
     return this.select(function() {
       return this.insertBefore(create.apply(this, arguments), select.apply(this, arguments) || null);
     });
   }
 
-  function remove$1() {
+  function remove$2() {
     var parent = this.parentNode;
     if (parent) parent.removeChild(this);
   }
 
-  function selection_remove$1() {
-    return this.each(remove$1);
+  function selection_remove$2() {
+    return this.each(remove$2);
   }
 
-  function selection_cloneShallow$1() {
+  function selection_cloneShallow$2() {
     var clone = this.cloneNode(false), parent = this.parentNode;
     return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
   }
 
-  function selection_cloneDeep$1() {
+  function selection_cloneDeep$2() {
     var clone = this.cloneNode(true), parent = this.parentNode;
     return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
   }
 
-  function selection_clone$1(deep) {
-    return this.select(deep ? selection_cloneDeep$1 : selection_cloneShallow$1);
+  function selection_clone$2(deep) {
+    return this.select(deep ? selection_cloneDeep$2 : selection_cloneShallow$2);
   }
 
-  function selection_datum$1(value) {
+  function selection_datum$2(value) {
     return arguments.length
         ? this.property("__data__", value)
         : this.node().__data__;
   }
 
-  var filterEvents = {};
+  var filterEvents$1 = {};
 
-  var event = null;
+  var event$2 = null;
 
   if (typeof document !== "undefined") {
-    var element = document.documentElement;
-    if (!("onmouseenter" in element)) {
-      filterEvents = {mouseenter: "mouseover", mouseleave: "mouseout"};
+    var element$1 = document.documentElement;
+    if (!("onmouseenter" in element$1)) {
+      filterEvents$1 = {mouseenter: "mouseover", mouseleave: "mouseout"};
     }
   }
 
-  function filterContextListener(listener, index, group) {
-    listener = contextListener$1(listener, index, group);
+  function filterContextListener$1(listener, index, group) {
+    listener = contextListener$2(listener, index, group);
     return function(event) {
       var related = event.relatedTarget;
       if (!related || (related !== this && !(related.compareDocumentPosition(this) & 8))) {
@@ -10782,19 +10787,19 @@ var template = (function (exports) {
     };
   }
 
-  function contextListener$1(listener, index, group) {
+  function contextListener$2(listener, index, group) {
     return function(event1) {
-      var event0 = event; // Events can be reentrant (e.g., focus).
-      event = event1;
+      var event0 = event$2; // Events can be reentrant (e.g., focus).
+      event$2 = event1;
       try {
         listener.call(this, this.__data__, index, group);
       } finally {
-        event = event0;
+        event$2 = event0;
       }
     };
   }
 
-  function parseTypenames$3(typenames) {
+  function parseTypenames$5(typenames) {
     return typenames.trim().split(/^|\s+/).map(function(t) {
       var name = "", i = t.indexOf(".");
       if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
@@ -10802,7 +10807,7 @@ var template = (function (exports) {
     });
   }
 
-  function onRemove$1(typename) {
+  function onRemove$2(typename) {
     return function() {
       var on = this.__on;
       if (!on) return;
@@ -10818,8 +10823,8 @@ var template = (function (exports) {
     };
   }
 
-  function onAdd$1(typename, value, capture) {
-    var wrap = filterEvents.hasOwnProperty(typename.type) ? filterContextListener : contextListener$1;
+  function onAdd$2(typename, value, capture) {
+    var wrap = filterEvents$1.hasOwnProperty(typename.type) ? filterContextListener$1 : contextListener$2;
     return function(d, i, group) {
       var on = this.__on, o, listener = wrap(value, i, group);
       if (on) for (var j = 0, m = on.length; j < m; ++j) {
@@ -10837,8 +10842,8 @@ var template = (function (exports) {
     };
   }
 
-  function selection_on$1(typename, value, capture) {
-    var typenames = parseTypenames$3(typename + ""), i, n = typenames.length, t;
+  function selection_on$2(typename, value, capture) {
+    var typenames = parseTypenames$5(typename + ""), i, n = typenames.length, t;
 
     if (arguments.length < 2) {
       var on = this.node().__on;
@@ -10852,14 +10857,14 @@ var template = (function (exports) {
       return;
     }
 
-    on = value ? onAdd$1 : onRemove$1;
+    on = value ? onAdd$2 : onRemove$2;
     if (capture == null) capture = false;
     for (i = 0; i < n; ++i) this.each(on(typenames[i], value, capture));
     return this;
   }
 
-  function dispatchEvent$1(node, type, params) {
-    var window = defaultView$1(node),
+  function dispatchEvent$2(node, type, params) {
+    var window = defaultView$2(node),
         event = window.CustomEvent;
 
     if (typeof event === "function") {
@@ -10873,73 +10878,73 @@ var template = (function (exports) {
     node.dispatchEvent(event);
   }
 
-  function dispatchConstant$1(type, params) {
+  function dispatchConstant$2(type, params) {
     return function() {
-      return dispatchEvent$1(this, type, params);
+      return dispatchEvent$2(this, type, params);
     };
   }
 
-  function dispatchFunction$1(type, params) {
+  function dispatchFunction$2(type, params) {
     return function() {
-      return dispatchEvent$1(this, type, params.apply(this, arguments));
+      return dispatchEvent$2(this, type, params.apply(this, arguments));
     };
   }
 
-  function selection_dispatch$1(type, params) {
+  function selection_dispatch$2(type, params) {
     return this.each((typeof params === "function"
-        ? dispatchFunction$1
-        : dispatchConstant$1)(type, params));
+        ? dispatchFunction$2
+        : dispatchConstant$2)(type, params));
   }
 
-  var root$1 = [null];
+  var root$2 = [null];
 
-  function Selection$2(groups, parents) {
+  function Selection$4(groups, parents) {
     this._groups = groups;
     this._parents = parents;
   }
 
-  Selection$2.prototype = {
-    constructor: Selection$2,
-    select: selection_select$1,
-    selectAll: selection_selectAll$1,
-    filter: selection_filter$1,
-    data: selection_data$1,
-    enter: selection_enter$1,
-    exit: selection_exit$1,
-    join: selection_join$1,
-    merge: selection_merge$1,
-    order: selection_order$1,
-    sort: selection_sort$1,
-    call: selection_call$1,
-    nodes: selection_nodes$1,
-    node: selection_node$1,
-    size: selection_size$1,
-    empty: selection_empty$1,
-    each: selection_each$1,
-    attr: selection_attr$1,
-    style: selection_style$1,
-    property: selection_property$1,
-    classed: selection_classed$1,
-    text: selection_text$1,
-    html: selection_html$1,
-    raise: selection_raise$1,
-    lower: selection_lower$1,
-    append: selection_append$1,
-    insert: selection_insert$1,
-    remove: selection_remove$1,
-    clone: selection_clone$1,
-    datum: selection_datum$1,
-    on: selection_on$1,
-    dispatch: selection_dispatch$1
+  Selection$4.prototype = {
+    constructor: Selection$4,
+    select: selection_select$2,
+    selectAll: selection_selectAll$2,
+    filter: selection_filter$2,
+    data: selection_data$2,
+    enter: selection_enter$2,
+    exit: selection_exit$2,
+    join: selection_join$2,
+    merge: selection_merge$2,
+    order: selection_order$2,
+    sort: selection_sort$2,
+    call: selection_call$2,
+    nodes: selection_nodes$2,
+    node: selection_node$2,
+    size: selection_size$2,
+    empty: selection_empty$2,
+    each: selection_each$2,
+    attr: selection_attr$2,
+    style: selection_style$2,
+    property: selection_property$2,
+    classed: selection_classed$2,
+    text: selection_text$2,
+    html: selection_html$2,
+    raise: selection_raise$2,
+    lower: selection_lower$2,
+    append: selection_append$2,
+    insert: selection_insert$2,
+    remove: selection_remove$2,
+    clone: selection_clone$2,
+    datum: selection_datum$2,
+    on: selection_on$2,
+    dispatch: selection_dispatch$2
   };
 
-  function select$1(selector) {
+  function select$2(selector) {
     return typeof selector === "string"
-        ? new Selection$2([[document.querySelector(selector)]], [document.documentElement])
-        : new Selection$2([[selector]], root$1);
+        ? new Selection$4([[document.querySelector(selector)]], [document.documentElement])
+        : new Selection$4([[selector]], root$2);
   }
 
-  function ascending$1(a, b) {
+  function ascending$2(a, b) {
     return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
   }
 
@@ -10971,11 +10976,11 @@ var template = (function (exports) {
 
   function ascendingComparator(f) {
     return function(d, x) {
-      return ascending$1(f(d), x);
+      return ascending$2(f(d), x);
     };
   }
 
-  bisector(ascending$1);
+  bisector(ascending$2);
 
   function Stylesheet() {
   	this.declarations = [];
@@ -11126,7 +11131,7 @@ var template = (function (exports) {
   }
 
   var legend_count = 0;
-  var DEFAULTS$1 = Object.freeze({
+  var DEFAULTS$2 = Object.freeze({
   	show_legend: true,
 
   	title_mode: "auto",
@@ -11153,8 +11158,8 @@ var template = (function (exports) {
 
   function DiscreteColorLegend(state_) {
   	this._state = state_;
-  	for (var key in DEFAULTS$1) {
-  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$1[key];
+  	for (var key in DEFAULTS$2) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$2[key];
   	}
 
   	this._colorFunction = undefined;
@@ -11167,7 +11172,7 @@ var template = (function (exports) {
   	this._auto_title = "";
   	this._last_clicked_item = null;
 
-  	this._container = select$1(document.createElement("div"))
+  	this._container = select$2(document.createElement("div"))
   		.attr("class", "fl-legend-container")
   		.attr("id", this._id);
   	this._container.append("p").attr("class", "fl-legend-title");
@@ -11242,13 +11247,13 @@ var template = (function (exports) {
   	} else {
   		const handleLegendInteraction = () => {
   			if (
-  				event.type === "keydown" &&
-  				event.key !== "Enter" &&
-  				event.key !== " "
+  				event$2.type === "keydown" &&
+  				event$2.key !== "Enter" &&
+  				event$2.key !== " "
   			)
   				return;
 
-  			const t = event.target;
+  			const t = event$2.target;
   			const t_parent = t.parentNode;
   			const item = t.classList.contains("fl-legend-item")
   				? t
@@ -11256,7 +11261,7 @@ var template = (function (exports) {
   					? t_parent
   					: null;
   			if (item) {
-  				const item_data = select$1(item).datum();
+  				const item_data = select$2(item).datum();
   				this._last_clicked_item = item_data;
 
   				if (item.matches(":focus-visible")) {
@@ -11372,7 +11377,7 @@ var template = (function (exports) {
   		announce_text = announce_count;
   	}
 
-  	select$1("#fl-legend-announcement")
+  	select$2("#fl-legend-announcement")
   		.text(announce_text)
   		.attr("aria-live", "assertive");
   };
@@ -11524,7 +11529,7 @@ var template = (function (exports) {
 
   		let margin_right = _this._state.text_size * 0.25 + "rem";
 
-  		select$1(this)
+  		select$2(this)
   			.selectAll(".fl-legend-icon")
   			.attr("height", height)
   			.attr("width", width)
@@ -11539,13 +11544,13 @@ var template = (function (exports) {
   		});
 
   	legend_items_with_icons_update.each(function (d) {
-  		select$1(this)
+  		select$2(this)
   			.select("svg.fl-legend-icon")
   			.style("display", d.icon.path_string ? "inline" : "none");
-  		select$1(this)
+  		select$2(this)
   			.select("img.fl-legend-icon")
   			.style("display", d.icon.url ? "inline" : "none");
-  		select$1(this)
+  		select$2(this)
   			.select("div.fl-legend-icon")
   			.style("display", d.icon.html ? "inline-block" : "none");
   	});
@@ -11657,7 +11662,7 @@ var template = (function (exports) {
   	font_weight,
   	default_text_size = 1;
 
-  var DEFAULTS = Object.freeze({
+  var DEFAULTS$1 = Object.freeze({
   	alignment: "start",
   	orientation: "horizontal",
   	text_color: null,
@@ -11669,22 +11674,22 @@ var template = (function (exports) {
 
   function legendContainer(state_) {
   	this._state = state_;
-  	for (var key in DEFAULTS) {
-  		if (this._state[key] === undefined) this._state[key] = DEFAULTS[key];
+  	for (var key in DEFAULTS$1) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$1[key];
   	}
 
   	return this;
   }
 
   legendContainer.prototype.appendTo = function (container_) {
-  	this._container = select$1(container_)
+  	this._container = select$2(container_)
   		.append("div")
   		.classed("fl-legend-wrapper", true)
   		.style("user-select", "none")
   		.style("-webkit-user-select", "none")
   		.node();
 
-  	select$1(this._container)
+  	select$2(this._container)
   		.insert("p", ":first-child")
   		.attr("class", "fl-legend-announcement fl-legend-sr-only")
   		.attr("id", "fl-legend-announcement");
@@ -11739,13 +11744,13 @@ var template = (function (exports) {
   	// ================== //
 
   	// Styles for main legend wrapper container
-  	select$1(this._container)
+  	select$2(this._container)
   		.style("justify-content", is_horizontal ? flex_alignment : null)
   		.style("align-items", is_horizontal ? null : flex_alignment)
   		.style("display", "flex")
   		.style("flex-direction", is_horizontal ? "row" : "column");
 
-  	var individual_legend_containers = select$1(this._container).selectAll(
+  	var individual_legend_containers = select$2(this._container).selectAll(
   		".fl-legend-container",
   	);
 
@@ -11762,7 +11767,7 @@ var template = (function (exports) {
   		.style("justify-content", flex_alignment);
 
   	// Styles for the titles of each legend
-  	select$1(this._container)
+  	select$2(this._container)
   		.selectAll(".fl-legend-title")
   		.style("color", this._state.text_color)
   		.style("font-weight", this._state.title_weight)
@@ -11778,13 +11783,13 @@ var template = (function (exports) {
   	// ============================ //
 
   	// Styles for discrete color legend items
-  	select$1(this._container)
+  	select$2(this._container)
   		.selectAll(".fl-legend-item")
   		.style("display", "inline-flex")
   		.style("text-align", alignment);
 
   	// Styles discrete color legend labels
-  	select$1(this._container)
+  	select$2(this._container)
   		.selectAll(".fl-legend-label")
   		.style("color", this._state.text_color)
   		.style("font-weight", this._state.text_weight)
@@ -11795,7 +11800,7 @@ var template = (function (exports) {
   	// ===================================== //
 
   	// Styles for continuous size and color legend labels
-  	select$1(this._container)
+  	select$2(this._container)
   		.selectAll(".label")
   		.style("color", this._state.text_color)
   		.style("font-weight", this._state.text_weight)
@@ -11812,12 +11817,5404 @@ var template = (function (exports) {
   	return new DiscreteColorLegend(state);
   }
 
+  var BORDER = 25,
+  	CORNER_RADIUS = 5,
+  	TRIANGLE_HALFWIDTH = 10,
+  	TRIANGLE_HEIGHT = 10;
+
+  var locateTriangle = {};
+
+  locateTriangle.bottom = function locateTriangle_bottom(w, h) {
+  	return {
+  		shape: [
+  			-TRIANGLE_HALFWIDTH,
+  			-TRIANGLE_HEIGHT,
+  			TRIANGLE_HALFWIDTH,
+  			-TRIANGLE_HEIGHT,
+  		],
+  		pos: [w / 2, h + TRIANGLE_HEIGHT],
+  	};
+  };
+
+  locateTriangle.top = function locateTriangle_top(w, _h) {
+  	return {
+  		shape: [
+  			-TRIANGLE_HALFWIDTH,
+  			TRIANGLE_HEIGHT,
+  			TRIANGLE_HALFWIDTH,
+  			TRIANGLE_HEIGHT,
+  		],
+  		pos: [w / 2, -TRIANGLE_HEIGHT],
+  	};
+  };
+
+  locateTriangle.left = function locateTriangle_left(w, h) {
+  	return {
+  		shape: [
+  			TRIANGLE_HEIGHT,
+  			TRIANGLE_HALFWIDTH,
+  			TRIANGLE_HEIGHT,
+  			-TRIANGLE_HALFWIDTH,
+  		],
+  		pos: [-TRIANGLE_HEIGHT, h / 2],
+  	};
+  };
+
+  locateTriangle.right = function locateTriangle_right(w, h) {
+  	return {
+  		shape: [
+  			-TRIANGLE_HEIGHT,
+  			TRIANGLE_HALFWIDTH,
+  			-TRIANGLE_HEIGHT,
+  			-TRIANGLE_HALFWIDTH,
+  		],
+  		pos: [w + TRIANGLE_HEIGHT, h / 2],
+  	};
+  };
+
+  locateTriangle.topLeft = function locateTriangle_topLeft(_w, _h) {
+  	return {
+  		shape: [
+  			TRIANGLE_HEIGHT + CORNER_RADIUS,
+  			TRIANGLE_HEIGHT,
+  			TRIANGLE_HEIGHT,
+  			TRIANGLE_HEIGHT + CORNER_RADIUS,
+  		],
+  		pos: [-TRIANGLE_HEIGHT, -TRIANGLE_HEIGHT],
+  	};
+  };
+
+  locateTriangle.bottomLeft = function locateTriangle_bottomLeft(w, h) {
+  	return {
+  		shape: [
+  			TRIANGLE_HEIGHT + CORNER_RADIUS,
+  			-TRIANGLE_HEIGHT,
+  			TRIANGLE_HEIGHT,
+  			-TRIANGLE_HEIGHT - CORNER_RADIUS,
+  		],
+  		pos: [-TRIANGLE_HEIGHT, h + TRIANGLE_HEIGHT],
+  	};
+  };
+
+  locateTriangle.topRight = function locateTriangle_topRight(w, _h) {
+  	return {
+  		shape: [
+  			-TRIANGLE_HEIGHT - CORNER_RADIUS,
+  			TRIANGLE_HEIGHT,
+  			-TRIANGLE_HEIGHT,
+  			TRIANGLE_HEIGHT + CORNER_RADIUS,
+  		],
+  		pos: [w + TRIANGLE_HEIGHT, -TRIANGLE_HEIGHT],
+  	};
+  };
+
+  locateTriangle.bottomRight = function locateTriangle_bottomRight(w, h) {
+  	return {
+  		shape: [
+  			-TRIANGLE_HEIGHT - CORNER_RADIUS,
+  			-TRIANGLE_HEIGHT,
+  			-TRIANGLE_HEIGHT,
+  			-TRIANGLE_HEIGHT - CORNER_RADIUS,
+  		],
+  		pos: [w + TRIANGLE_HEIGHT, h + TRIANGLE_HEIGHT],
+  	};
+  };
+
+  function hFlexTriangle(w, h, x, y, cb, y_factor, y_pos) {
+  	var l = x - w / 2 - TRIANGLE_HEIGHT,
+  		r = x + w / 2 + TRIANGLE_HEIGHT,
+  		px = w / 2 + Math.min(0, l - cb.left) + Math.max(0, r - cb.right),
+  		shape;
+
+  	if (px - TRIANGLE_HALFWIDTH < CORNER_RADIUS) {
+  		shape = [
+  			-px,
+  			(-TRIANGLE_HEIGHT - CORNER_RADIUS) * y_factor,
+  			Math.max(TRIANGLE_HALFWIDTH, CORNER_RADIUS - px),
+  			-TRIANGLE_HEIGHT * y_factor,
+  		];
+  	} else if (px + TRIANGLE_HALFWIDTH > w - CORNER_RADIUS) {
+  		shape = [
+  			Math.min(-TRIANGLE_HALFWIDTH, w - px - CORNER_RADIUS),
+  			-TRIANGLE_HEIGHT * y_factor,
+  			Math.min(TRIANGLE_HALFWIDTH, w - px),
+  			(-TRIANGLE_HEIGHT - CORNER_RADIUS) * y_factor,
+  		];
+  	} else {
+  		shape = [
+  			-TRIANGLE_HALFWIDTH,
+  			-TRIANGLE_HEIGHT * y_factor,
+  			TRIANGLE_HALFWIDTH,
+  			-TRIANGLE_HEIGHT * y_factor,
+  		];
+  	}
+
+  	return { pos: [px, y_pos], shape: shape };
+  }
+
+  function vFlexTriangle(w, h, x, y, cb, x_factor, x_pos) {
+  	var t = y - h / 2 - TRIANGLE_HEIGHT,
+  		b = y + h / 2 + TRIANGLE_HEIGHT,
+  		py = h / 2 + Math.min(0, t - cb.top) + Math.max(0, b - cb.bottom),
+  		shape;
+
+  	if (py - TRIANGLE_HALFWIDTH < CORNER_RADIUS) {
+  		shape = [
+  			(-TRIANGLE_HEIGHT - CORNER_RADIUS) * x_factor,
+  			-py,
+  			-TRIANGLE_HEIGHT * x_factor,
+  			Math.max(TRIANGLE_HALFWIDTH, CORNER_RADIUS - py),
+  		];
+  	} else if (py + TRIANGLE_HALFWIDTH > h - CORNER_RADIUS) {
+  		shape = [
+  			-TRIANGLE_HEIGHT * x_factor,
+  			Math.min(-TRIANGLE_HALFWIDTH, h - py - CORNER_RADIUS),
+  			(-TRIANGLE_HEIGHT - CORNER_RADIUS) * x_factor,
+  			Math.min(TRIANGLE_HALFWIDTH, h - py),
+  		];
+  	} else {
+  		shape = [
+  			-TRIANGLE_HEIGHT * x_factor,
+  			-TRIANGLE_HALFWIDTH,
+  			-TRIANGLE_HEIGHT * x_factor,
+  			TRIANGLE_HALFWIDTH,
+  		];
+  	}
+
+  	return { pos: [x_pos, py], shape: shape };
+  }
+
+  locateTriangle.bottomFlexible = function locateTriangle_bottomFlexible(
+  	w,
+  	h,
+  	x,
+  	y,
+  	cb,
+  ) {
+  	return hFlexTriangle(w, h, x, y, cb, 1, h + TRIANGLE_HEIGHT);
+  };
+
+  locateTriangle.topFlexible = function locateTriangle_topFlexible(
+  	w,
+  	h,
+  	x,
+  	y,
+  	cb,
+  ) {
+  	return hFlexTriangle(w, h, x, y, cb, -1, -TRIANGLE_HEIGHT);
+  };
+
+  locateTriangle.rightFlexible = function locateTriangle_rightFlexible(
+  	w,
+  	h,
+  	x,
+  	y,
+  	cb,
+  ) {
+  	return vFlexTriangle(w, h, x, y, cb, 1, w + TRIANGLE_HEIGHT);
+  };
+
+  locateTriangle.leftFlexible = function locateTriangle_leftFlexible(
+  	w,
+  	h,
+  	x,
+  	y,
+  	cb,
+  ) {
+  	return vFlexTriangle(w, h, x, y, cb, -1, -TRIANGLE_HEIGHT);
+  };
+
+  /* eslint-disable @flourish/flourish/no-mixed-spaces-and-tabs */
+
+
+  function boxBounds(dir, w, h, x, y, cb) {
+  	var lt = locateTriangle[dir](w, h, x, y, cb),
+  		left = x - BORDER - lt.pos[0],
+  		top = y - BORDER - lt.pos[1];
+  	return {
+  		left: left,
+  		top: top,
+  		right: left + w + 2 * BORDER,
+  		bottom: top + h + 2 * BORDER,
+  	};
+  }
+
+  function positionBox(dir, s, path, w, h, x, y, clientX, clientY, cb) {
+  	var lt = locateTriangle[dir](w, h, clientX, clientY, cb);
+  	s.left = x - BORDER - lt.pos[0] + "px";
+  	s.top = y - BORDER - lt.pos[1] + "px";
+  	path.setAttribute("d", "M0,0L" + lt.shape.join(",") + "Z");
+  	path.setAttribute(
+  		"transform",
+  		"translate(" + (lt.pos[0] + BORDER) + "," + (lt.pos[1] + BORDER) + ")",
+  	);
+  }
+
+  function Popup_draw() {
+  	var popup = this;
+
+  	popup.is_visible = true;
+
+  	function maxContentWidth(cb) {
+  		if (popup._maxWidth.match(/^\d+(?:\.\d+)?%$/)) {
+  			return (cb.width * parseFloat(popup._maxWidth)) / 100;
+  		}
+  		if (popup._maxWidth.match(/^\d+(?:\.\d+)?(?:px)?$/)) {
+  			return parseFloat(popup._maxWidth);
+  		}
+  		if (popup._maxWidth != null) {
+  			console.error("Popup: Unknown value for maxWidth: " + popup._maxWidth);
+  		}
+  		return cb.width;
+  	}
+
+  	if (!popup._point) {
+  		console.error("Popup: cannot draw popup till point() has been specified");
+  		return;
+  	}
+
+  	var doc_rect = document.documentElement.getBoundingClientRect(),
+  		clientX = popup._point[0],
+  		clientY = popup._point[1],
+  		cb = popup._container.getBoundingClientRect();
+
+  	if (clientX < cb.left) clientX = cb.left;
+  	else if (clientX > cb.right) clientX = cb.right;
+  	if (clientY < cb.top) clientY = cb.top;
+  	else if (clientY > cb.bottom) clientY = cb.bottom;
+
+  	var x = clientX - doc_rect.left,
+  		y = clientY - doc_rect.top;
+
+  	var el = popup._getElement(),
+  		s = el.style,
+  		svg = el.querySelector(".flourish-popup-svg"),
+  		g = svg.querySelector("g"),
+  		rect = g.querySelector("rect"),
+  		path = g.querySelector("path"),
+  		content = el.querySelector(".flourish-popup-content");
+
+  	s.display = "block";
+  	content.style.maxWidth = maxContentWidth(cb) + "px";
+  	if (popup._inner_html != popup._html) {
+  		content.innerHTML = popup._inner_html = popup._html;
+  	}
+  	var content_box = content.getBoundingClientRect(),
+  		w,
+  		h;
+  	do {
+  		w = Math.ceil(content_box.width);
+  		h = Math.ceil(content_box.height);
+  		s.width = w + 2 * BORDER + "px";
+  		s.height = h + 2 * BORDER + "px";
+  		content_box = content.getBoundingClientRect();
+  	} while (
+  		w != Math.ceil(content_box.width) ||
+  		h != Math.ceil(content_box.height)
+  	);
+
+  	rect.setAttribute("width", w);
+  	rect.setAttribute("height", h);
+  	svg.setAttribute("width", w + 2 * BORDER);
+  	svg.setAttribute("height", h + 2 * BORDER);
+
+  	var overlap = BORDER - TRIANGLE_HEIGHT;
+  	var first_fit = null,
+  		best_horizontal_fit = null,
+  		best_vertical_fit = null,
+  		least_horizontal_protrusion = Infinity,
+  		least_vertical_protrusion = Infinity,
+  		vp_at_least_hp,
+  		hp_at_least_vp;
+  	for (var i = 0; i < popup._directions.length; i++) {
+  		var dir = popup._directions[i],
+  			b = boxBounds(dir, w, h, clientX, clientY, cb),
+  			horizontal_protrusion =
+  				Math.max(0, Math.floor(cb.left) - b.left - overlap) +
+  				Math.max(0, b.right - Math.ceil(cb.right) - overlap),
+  			vertical_protrusion =
+  				Math.max(0, Math.floor(cb.top) - b.top - overlap) +
+  				Math.max(0, b.bottom - Math.ceil(cb.bottom) - overlap);
+
+  		if (horizontal_protrusion == 0 && vertical_protrusion == 0) {
+  			first_fit = dir;
+  			break;
+  		}
+  		if (
+  			horizontal_protrusion < least_horizontal_protrusion ||
+  			(horizontal_protrusion == least_horizontal_protrusion &&
+  				vertical_protrusion < vp_at_least_hp)
+  		) {
+  			least_horizontal_protrusion = horizontal_protrusion;
+  			vp_at_least_hp = vertical_protrusion;
+  			best_horizontal_fit = dir;
+  		}
+  		if (
+  			vertical_protrusion < least_vertical_protrusion ||
+  			(vertical_protrusion == least_vertical_protrusion &&
+  				horizontal_protrusion < hp_at_least_vp)
+  		) {
+  			least_vertical_protrusion = vertical_protrusion;
+  			hp_at_least_vp = horizontal_protrusion;
+  			best_vertical_fit = dir;
+  		}
+  	}
+
+  	// If the box can be fit completely within the container, do that
+  	if (first_fit) {
+  		dir = first_fit;
+  	}
+  	// Otherwise use the fallback fit (horizontal or vertical) if specified
+  	else if (popup._fallbackFit == "horizontal") {
+  		dir = best_horizontal_fit;
+  	} else if (popup._fallbackFit == "vertical") {
+  		dir = best_vertical_fit;
+  	}
+  	// If all else fails, issue a warning and use the first specified direction.
+  	else {
+  		console.warn(
+  			"Popup: failed to point box of size (" +
+  				w +
+  				", " +
+  				h +
+  				")" +
+  				" at (" +
+  				clientX +
+  				", " +
+  				clientY +
+  				") within (" +
+  				cb.left +
+  				", " +
+  				cb.top +
+  				", " +
+  				cb.right +
+  				", " +
+  				cb.bottom +
+  				")",
+  		);
+  		dir = popup._directions[0];
+  	}
+
+  	// Position the box and return
+  	positionBox(dir, s, path, w, h, x, y, clientX, clientY, cb);
+  	return popup;
+  }
+
+  function svgElement(tagName, attrs, styles) {
+  	var element = document.createElementNS("http://www.w3.org/2000/svg", tagName);
+  	var k;
+  	if (attrs) for (k in attrs) element.setAttribute(k, attrs[k]);
+
+  	var s = element.style;
+  	if (styles) for (k in styles) s[k] = styles[k];
+
+  	return element;
+  }
+
+  function Popup__getElement() {
+  	var popup = this;
+  	var el = popup.element;
+
+  	if (!el) {
+  		el = popup.element = document.createElement("div");
+
+  		var id = "flourish-popup-" + popup.unique_id;
+  		el.className = "flourish-popup";
+  		el.id = id;
+
+  		var s = el.style;
+  		s.display = "none";
+  		s.margin = s.padding = 0;
+  		s.position = "absolute";
+  		s.width = "80px";
+  		s.height = "40px";
+  		s.boxSizing = "border-box";
+
+  		el.addEventListener(
+  			"click",
+  			function (e) {
+  				popup.fire("click", e);
+  			},
+  			false,
+  		);
+
+  		var svg = svgElement(
+  			"svg",
+  			{ class: "flourish-popup-svg" },
+  			{
+  				position: "absolute",
+  				top: 0,
+  				left: 0,
+  				bottom: 0,
+  				right: 0,
+  			},
+  		);
+
+  		var filter = svgElement("filter", {
+  			id: "dropshadow-" + popup.unique_id,
+  			height: "130%",
+  		});
+  		filter.appendChild(
+  			svgElement("feGaussianBlur", { in: "SourceAlpha", stdDeviation: 5 }),
+  		);
+  		filter.appendChild(
+  			svgElement("feOffset", { dx: 0, dy: 2, result: "offsetblur" }),
+  		);
+  		var fe_component_transfer = svgElement("feComponentTransfer");
+  		fe_component_transfer.appendChild(
+  			svgElement("feFuncA", { type: "linear", slope: 0.2 }),
+  		);
+  		filter.appendChild(fe_component_transfer);
+  		var fe_merge = svgElement("feMerge");
+  		filter.appendChild(fe_merge);
+  		fe_merge.appendChild(svgElement("feMergeNode"));
+  		fe_merge.appendChild(svgElement("feMergeNode", { in: "SourceGraphic" }));
+  		svg.appendChild(filter);
+
+  		var g = svgElement("g", {
+  			filter: "url(#dropshadow-" + popup.unique_id + ")",
+  			fill: "white",
+  			stroke: "none",
+  		});
+  		g.appendChild(
+  			svgElement("rect", { x: BORDER, y: BORDER, rx: CORNER_RADIUS }),
+  		);
+  		g.appendChild(svgElement("path"));
+  		svg.appendChild(g);
+  		el.appendChild(svg);
+
+  		var content = document.createElement("div");
+  		content.className = "flourish-popup-content";
+
+  		s = content.style;
+  		s.position = "absolute";
+  		s.top = s.left = BORDER + "px";
+  		s.padding = "10px";
+  		el.appendChild(content);
+
+  		popup._getConstrainer().appendChild(el);
+  	}
+
+  	popup._resizeConstrainer();
+  	return el;
+  }
+
+  /* The popup element can technically be partly outside the page, even though
+     visually it is not. This causes the page to become horizontally scrollable,
+     which can lead to problems like kiln/flourish#1267.
+
+     This code adds an absolutely-positioned “constrainer” element containing the
+     popup that has overlow:hidden, which covers the entire document.
+
+     It’s surprisingly hard to achieve that – or at least I failed to find an easy
+     way – and so we explicitly set the dimensions of the constrainer to match the
+     document, and recompute them when the popup is redrawn.
+  */
+
+  // There is one constrainer for the entire page, however many Popup instances
+  // there are, so these variables are global rather than properties of the instance.
+  var constrainer, style;
+
+  function Popup__getConstrainer() {
+  	if (constrainer) return constrainer;
+
+  	constrainer = document.createElement("div");
+  	constrainer.id = "flourish-popup-constrainer";
+  	constrainer.setAttribute("aria-hidden", true);
+  	style = constrainer.style;
+
+  	style.overflow = "hidden";
+  	style.pointerEvents = "none";
+  	style.position = "absolute";
+  	style.left = "0";
+  	style.top = "0";
+  	style.margin = "0";
+  	style.padding = "0";
+
+  	document.body.appendChild(constrainer);
+  	this._resizeConstrainer();
+
+  	return constrainer;
+  }
+
+  function Popup__resizeConstrainer() {
+  	if (!constrainer) Popup__getConstrainer.call(this);
+  	// The element must be hidden before we compute the dimensions, or
+  	// it will affect those dimensions itself, with the effect that the
+  	// constrainer can only grow and never shrink.
+  	var old_display = style.display;
+  	style.display = "none";
+  	style.width = document.documentElement.scrollWidth + "px";
+  	style.height = document.documentElement.scrollHeight + "px";
+  	style.display = old_display;
+  }
+
+  var VERSION = "2.1.5";
+
+  var OPTIONS$1 = {
+  	container: document.body,
+  	maxWidth: "70%",
+  	point: null,
+  	html: null,
+  	directions: [
+  		"bottom",
+  		"top",
+  		"left",
+  		"right",
+  		"topLeft",
+  		"bottomLeft",
+  		"topRight",
+  		"bottomRight",
+  		"bottomFlexible",
+  		"topFlexible",
+  		"leftFlexible",
+  		"rightFlexible",
+  	],
+  	fallbackFit: "horizontal", // or "vertical"
+  };
+
+  function getNextGlobalPopupId() {
+  	// We want globally unique IDs across all instances and versions of flourish-popup
+  	let global_popup_id_store;
+  	let global_popup_id_key;
+
+  	// Get the relevant global on which to share the popup ID counter
+  	if ("Flourish" in window) {
+  		global_popup_id_store = window.Flourish;
+  		global_popup_id_key = "__popup_next_unique_id";
+  	} else {
+  		global_popup_id_store = window;
+  		global_popup_id_key = "__flourish_popup_next_unique_id";
+  	}
+
+  	// Initialise the global ID counter
+  	if (!global_popup_id_store[global_popup_id_key]) {
+  		// Compatibility: popup IDs now start at 1000
+  		// to avoid DOM ID clashes when used along side older instances of flourish-popup
+  		return (global_popup_id_store[global_popup_id_key] = 1000);
+  	}
+
+  	// Increment the global ID counter
+  	global_popup_id_store[global_popup_id_key] += 1;
+
+  	// Return the new ID
+  	return global_popup_id_store[global_popup_id_key];
+  }
+
+  function Popup() {
+  	this.unique_id = getNextGlobalPopupId();
+  	this.is_visible = true;
+  	this.element = null;
+
+  	for (var k in OPTIONS$1) this["_" + k] = OPTIONS$1[k];
+
+  	this.handlers = {
+  		click: [],
+  	};
+  }
+
+  // Create accessor methods for all the options
+  function accessor$1(k) {
+  	Popup.prototype[k] = function (v) {
+  		if (typeof v == "undefined") return this["_" + k];
+  		this["_" + k] = v;
+  		return this;
+  	};
+  }
+  for (var k$1 in OPTIONS$1) accessor$1(k$1);
+
+  // Custom accessor method for .point
+  Popup.prototype.point = function (arg1, arg2) {
+  	if (typeof arg1 == "undefined") return this._point;
+  	if (Array.isArray(arg1)) this._point = [arg1[0], arg1[1]];
+  	else if (typeof arg2 != "undefined") this._point = [arg1, arg2];
+  	else if (arg1 instanceof HTMLElement || arg1 instanceof SVGElement) {
+  		var r = arg1.getBoundingClientRect();
+  		this._point = [
+  			Math.floor(r.left + r.width / 2),
+  			Math.floor(r.top + r.height / 2),
+  		];
+  	} else {
+  		console.error("Popup: could not understand argument");
+  	}
+
+  	return this;
+  };
+
+  Popup.prototype.directions = function (arg) {
+  	if (typeof arg === "undefined") return this._directions;
+  	if (typeof arg === "string") arg = [arg];
+  	this._directions = arg.slice();
+  	return this;
+  };
+
+  function textToHtml(text) {
+  	return text.replace(/[&<>]/g, function (s) {
+  		return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[s];
+  	});
+  }
+
+  // Accessor (setter only) for setting plain text
+  Popup.prototype.text = function Popup_text(t) {
+  	this._html = textToHtml(t);
+  	return this;
+  };
+
+  // Attach event handlers
+  Popup.prototype.on = function Popup_on(event, handler) {
+  	if (!(event in this.handlers))
+  		throw new Error("Popup.on: No such event: " + event);
+  	this.handlers[event].push(handler);
+  	return this;
+  };
+
+  // Fire event
+  Popup.prototype.fire = function Popup_fire(event, d) {
+  	if (!(event in this.handlers))
+  		throw new Error("Popup.fire: No such event: " + event);
+  	var handlers = this.handlers[event];
+  	for (var i = 0; i < handlers.length; i++) {
+  		handlers[i].call(this, d);
+  	}
+  	return this;
+  };
+
+  Popup.prototype._getElement = Popup__getElement;
+  Popup.prototype._getConstrainer = Popup__getConstrainer;
+  Popup.prototype._resizeConstrainer = Popup__resizeConstrainer;
+
+  Popup.prototype.draw = Popup_draw;
+
+  Popup.prototype.hide = function Popup_hide() {
+  	if (!this.is_visible) return this;
+  	this.is_visible = false;
+  	this._getElement().style.display = "none";
+  	return this;
+  };
+
+  function Flourish_popup() {
+  	return new Popup();
+  }
+  Flourish_popup.version = VERSION;
+
+  var xhtml$1 = "http://www.w3.org/1999/xhtml";
+
+  var namespaces$1 = {
+    svg: "http://www.w3.org/2000/svg",
+    xhtml: xhtml$1,
+    xlink: "http://www.w3.org/1999/xlink",
+    xml: "http://www.w3.org/XML/1998/namespace",
+    xmlns: "http://www.w3.org/2000/xmlns/"
+  };
+
+  function namespace$1(name) {
+    var prefix = name += "", i = prefix.indexOf(":");
+    if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns") name = name.slice(i + 1);
+    return namespaces$1.hasOwnProperty(prefix) ? {space: namespaces$1[prefix], local: name} : name;
+  }
+
+  function creatorInherit$1(name) {
+    return function() {
+      var document = this.ownerDocument,
+          uri = this.namespaceURI;
+      return uri === xhtml$1 && document.documentElement.namespaceURI === xhtml$1
+          ? document.createElement(name)
+          : document.createElementNS(uri, name);
+    };
+  }
+
+  function creatorFixed$1(fullname) {
+    return function() {
+      return this.ownerDocument.createElementNS(fullname.space, fullname.local);
+    };
+  }
+
+  function creator$1(name) {
+    var fullname = namespace$1(name);
+    return (fullname.local
+        ? creatorFixed$1
+        : creatorInherit$1)(fullname);
+  }
+
+  function none$1() {}
+
+  function selector$1(selector) {
+    return selector == null ? none$1 : function() {
+      return this.querySelector(selector);
+    };
+  }
+
+  function selection_select$1(select) {
+    if (typeof select !== "function") select = selector$1(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+        if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
+          if ("__data__" in node) subnode.__data__ = node.__data__;
+          subgroup[i] = subnode;
+        }
+      }
+    }
+
+    return new Selection$3(subgroups, this._parents);
+  }
+
+  function empty$1() {
+    return [];
+  }
+
+  function selectorAll$1(selector) {
+    return selector == null ? empty$1 : function() {
+      return this.querySelectorAll(selector);
+    };
+  }
+
+  function selection_selectAll$1(select) {
+    if (typeof select !== "function") select = selectorAll$1(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          subgroups.push(select.call(node, node.__data__, i, group));
+          parents.push(node);
+        }
+      }
+    }
+
+    return new Selection$3(subgroups, parents);
+  }
+
+  function matcher$1(selector) {
+    return function() {
+      return this.matches(selector);
+    };
+  }
+
+  function selection_filter$1(match) {
+    if (typeof match !== "function") match = matcher$1(match);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+        if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
+          subgroup.push(node);
+        }
+      }
+    }
+
+    return new Selection$3(subgroups, this._parents);
+  }
+
+  function sparse$1(update) {
+    return new Array(update.length);
+  }
+
+  function selection_enter$1() {
+    return new Selection$3(this._enter || this._groups.map(sparse$1), this._parents);
+  }
+
+  function EnterNode$1(parent, datum) {
+    this.ownerDocument = parent.ownerDocument;
+    this.namespaceURI = parent.namespaceURI;
+    this._next = null;
+    this._parent = parent;
+    this.__data__ = datum;
+  }
+
+  EnterNode$1.prototype = {
+    constructor: EnterNode$1,
+    appendChild: function(child) { return this._parent.insertBefore(child, this._next); },
+    insertBefore: function(child, next) { return this._parent.insertBefore(child, next); },
+    querySelector: function(selector) { return this._parent.querySelector(selector); },
+    querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
+  };
+
+  function constant$3(x) {
+    return function() {
+      return x;
+    };
+  }
+
+  var keyPrefix = "$"; // Protect against keys like “__proto__”.
+
+  function bindIndex$1(parent, group, enter, update, exit, data) {
+    var i = 0,
+        node,
+        groupLength = group.length,
+        dataLength = data.length;
+
+    // Put any non-null nodes that fit into update.
+    // Put any null nodes into enter.
+    // Put any remaining data into enter.
+    for (; i < dataLength; ++i) {
+      if (node = group[i]) {
+        node.__data__ = data[i];
+        update[i] = node;
+      } else {
+        enter[i] = new EnterNode$1(parent, data[i]);
+      }
+    }
+
+    // Put any non-null nodes that don’t fit into exit.
+    for (; i < groupLength; ++i) {
+      if (node = group[i]) {
+        exit[i] = node;
+      }
+    }
+  }
+
+  function bindKey$1(parent, group, enter, update, exit, data, key) {
+    var i,
+        node,
+        nodeByKeyValue = {},
+        groupLength = group.length,
+        dataLength = data.length,
+        keyValues = new Array(groupLength),
+        keyValue;
+
+    // Compute the key for each node.
+    // If multiple nodes have the same key, the duplicates are added to exit.
+    for (i = 0; i < groupLength; ++i) {
+      if (node = group[i]) {
+        keyValues[i] = keyValue = keyPrefix + key.call(node, node.__data__, i, group);
+        if (keyValue in nodeByKeyValue) {
+          exit[i] = node;
+        } else {
+          nodeByKeyValue[keyValue] = node;
+        }
+      }
+    }
+
+    // Compute the key for each datum.
+    // If there a node associated with this key, join and add it to update.
+    // If there is not (or the key is a duplicate), add it to enter.
+    for (i = 0; i < dataLength; ++i) {
+      keyValue = keyPrefix + key.call(parent, data[i], i, data);
+      if (node = nodeByKeyValue[keyValue]) {
+        update[i] = node;
+        node.__data__ = data[i];
+        nodeByKeyValue[keyValue] = null;
+      } else {
+        enter[i] = new EnterNode$1(parent, data[i]);
+      }
+    }
+
+    // Add any remaining nodes that were not bound to data to exit.
+    for (i = 0; i < groupLength; ++i) {
+      if ((node = group[i]) && (nodeByKeyValue[keyValues[i]] === node)) {
+        exit[i] = node;
+      }
+    }
+  }
+
+  function selection_data$1(value, key) {
+    if (!value) {
+      data = new Array(this.size()), j = -1;
+      this.each(function(d) { data[++j] = d; });
+      return data;
+    }
+
+    var bind = key ? bindKey$1 : bindIndex$1,
+        parents = this._parents,
+        groups = this._groups;
+
+    if (typeof value !== "function") value = constant$3(value);
+
+    for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
+      var parent = parents[j],
+          group = groups[j],
+          groupLength = group.length,
+          data = value.call(parent, parent && parent.__data__, j, parents),
+          dataLength = data.length,
+          enterGroup = enter[j] = new Array(dataLength),
+          updateGroup = update[j] = new Array(dataLength),
+          exitGroup = exit[j] = new Array(groupLength);
+
+      bind(parent, group, enterGroup, updateGroup, exitGroup, data, key);
+
+      // Now connect the enter nodes to their following update node, such that
+      // appendChild can insert the materialized enter node before this node,
+      // rather than at the end of the parent node.
+      for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
+        if (previous = enterGroup[i0]) {
+          if (i0 >= i1) i1 = i0 + 1;
+          while (!(next = updateGroup[i1]) && ++i1 < dataLength);
+          previous._next = next || null;
+        }
+      }
+    }
+
+    update = new Selection$3(update, parents);
+    update._enter = enter;
+    update._exit = exit;
+    return update;
+  }
+
+  function selection_exit$1() {
+    return new Selection$3(this._exit || this._groups.map(sparse$1), this._parents);
+  }
+
+  function selection_join$1(onenter, onupdate, onexit) {
+    var enter = this.enter(), update = this, exit = this.exit();
+    enter = typeof onenter === "function" ? onenter(enter) : enter.append(onenter + "");
+    if (onupdate != null) update = onupdate(update);
+    if (onexit == null) exit.remove(); else onexit(exit);
+    return enter && update ? enter.merge(update).order() : update;
+  }
+
+  function selection_merge$1(selection) {
+
+    for (var groups0 = this._groups, groups1 = selection._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+      for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group0[i] || group1[i]) {
+          merge[i] = node;
+        }
+      }
+    }
+
+    for (; j < m0; ++j) {
+      merges[j] = groups0[j];
+    }
+
+    return new Selection$3(merges, this._parents);
+  }
+
+  function selection_order$1() {
+
+    for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
+      for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
+        if (node = group[i]) {
+          if (next && node.compareDocumentPosition(next) ^ 4) next.parentNode.insertBefore(node, next);
+          next = node;
+        }
+      }
+    }
+
+    return this;
+  }
+
+  function selection_sort$1(compare) {
+    if (!compare) compare = ascending$1;
+
+    function compareNode(a, b) {
+      return a && b ? compare(a.__data__, b.__data__) : !a - !b;
+    }
+
+    for (var groups = this._groups, m = groups.length, sortgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, sortgroup = sortgroups[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          sortgroup[i] = node;
+        }
+      }
+      sortgroup.sort(compareNode);
+    }
+
+    return new Selection$3(sortgroups, this._parents).order();
+  }
+
+  function ascending$1(a, b) {
+    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+  }
+
+  function selection_call$1() {
+    var callback = arguments[0];
+    arguments[0] = this;
+    callback.apply(null, arguments);
+    return this;
+  }
+
+  function selection_nodes$1() {
+    var nodes = new Array(this.size()), i = -1;
+    this.each(function() { nodes[++i] = this; });
+    return nodes;
+  }
+
+  function selection_node$1() {
+
+    for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+      for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
+        var node = group[i];
+        if (node) return node;
+      }
+    }
+
+    return null;
+  }
+
+  function selection_size$1() {
+    var size = 0;
+    this.each(function() { ++size; });
+    return size;
+  }
+
+  function selection_empty$1() {
+    return !this.node();
+  }
+
+  function selection_each$1(callback) {
+
+    for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+      for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
+        if (node = group[i]) callback.call(node, node.__data__, i, group);
+      }
+    }
+
+    return this;
+  }
+
+  function attrRemove$3(name) {
+    return function() {
+      this.removeAttribute(name);
+    };
+  }
+
+  function attrRemoveNS$3(fullname) {
+    return function() {
+      this.removeAttributeNS(fullname.space, fullname.local);
+    };
+  }
+
+  function attrConstant$3(name, value) {
+    return function() {
+      this.setAttribute(name, value);
+    };
+  }
+
+  function attrConstantNS$3(fullname, value) {
+    return function() {
+      this.setAttributeNS(fullname.space, fullname.local, value);
+    };
+  }
+
+  function attrFunction$3(name, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.removeAttribute(name);
+      else this.setAttribute(name, v);
+    };
+  }
+
+  function attrFunctionNS$3(fullname, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
+      else this.setAttributeNS(fullname.space, fullname.local, v);
+    };
+  }
+
+  function selection_attr$1(name, value) {
+    var fullname = namespace$1(name);
+
+    if (arguments.length < 2) {
+      var node = this.node();
+      return fullname.local
+          ? node.getAttributeNS(fullname.space, fullname.local)
+          : node.getAttribute(fullname);
+    }
+
+    return this.each((value == null
+        ? (fullname.local ? attrRemoveNS$3 : attrRemove$3) : (typeof value === "function"
+        ? (fullname.local ? attrFunctionNS$3 : attrFunction$3)
+        : (fullname.local ? attrConstantNS$3 : attrConstant$3)))(fullname, value));
+  }
+
+  function defaultView$1(node) {
+    return (node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
+        || (node.document && node) // node is a Window
+        || node.defaultView; // node is a Document
+  }
+
+  function styleRemove$3(name) {
+    return function() {
+      this.style.removeProperty(name);
+    };
+  }
+
+  function styleConstant$3(name, value, priority) {
+    return function() {
+      this.style.setProperty(name, value, priority);
+    };
+  }
+
+  function styleFunction$3(name, value, priority) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.style.removeProperty(name);
+      else this.style.setProperty(name, v, priority);
+    };
+  }
+
+  function selection_style$1(name, value, priority) {
+    return arguments.length > 1
+        ? this.each((value == null
+              ? styleRemove$3 : typeof value === "function"
+              ? styleFunction$3
+              : styleConstant$3)(name, value, priority == null ? "" : priority))
+        : styleValue$1(this.node(), name);
+  }
+
+  function styleValue$1(node, name) {
+    return node.style.getPropertyValue(name)
+        || defaultView$1(node).getComputedStyle(node, null).getPropertyValue(name);
+  }
+
+  function propertyRemove$1(name) {
+    return function() {
+      delete this[name];
+    };
+  }
+
+  function propertyConstant$1(name, value) {
+    return function() {
+      this[name] = value;
+    };
+  }
+
+  function propertyFunction$1(name, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) delete this[name];
+      else this[name] = v;
+    };
+  }
+
+  function selection_property$1(name, value) {
+    return arguments.length > 1
+        ? this.each((value == null
+            ? propertyRemove$1 : typeof value === "function"
+            ? propertyFunction$1
+            : propertyConstant$1)(name, value))
+        : this.node()[name];
+  }
+
+  function classArray$1(string) {
+    return string.trim().split(/^|\s+/);
+  }
+
+  function classList$1(node) {
+    return node.classList || new ClassList$1(node);
+  }
+
+  function ClassList$1(node) {
+    this._node = node;
+    this._names = classArray$1(node.getAttribute("class") || "");
+  }
+
+  ClassList$1.prototype = {
+    add: function(name) {
+      var i = this._names.indexOf(name);
+      if (i < 0) {
+        this._names.push(name);
+        this._node.setAttribute("class", this._names.join(" "));
+      }
+    },
+    remove: function(name) {
+      var i = this._names.indexOf(name);
+      if (i >= 0) {
+        this._names.splice(i, 1);
+        this._node.setAttribute("class", this._names.join(" "));
+      }
+    },
+    contains: function(name) {
+      return this._names.indexOf(name) >= 0;
+    }
+  };
+
+  function classedAdd$1(node, names) {
+    var list = classList$1(node), i = -1, n = names.length;
+    while (++i < n) list.add(names[i]);
+  }
+
+  function classedRemove$1(node, names) {
+    var list = classList$1(node), i = -1, n = names.length;
+    while (++i < n) list.remove(names[i]);
+  }
+
+  function classedTrue$1(names) {
+    return function() {
+      classedAdd$1(this, names);
+    };
+  }
+
+  function classedFalse$1(names) {
+    return function() {
+      classedRemove$1(this, names);
+    };
+  }
+
+  function classedFunction$1(names, value) {
+    return function() {
+      (value.apply(this, arguments) ? classedAdd$1 : classedRemove$1)(this, names);
+    };
+  }
+
+  function selection_classed$1(name, value) {
+    var names = classArray$1(name + "");
+
+    if (arguments.length < 2) {
+      var list = classList$1(this.node()), i = -1, n = names.length;
+      while (++i < n) if (!list.contains(names[i])) return false;
+      return true;
+    }
+
+    return this.each((typeof value === "function"
+        ? classedFunction$1 : value
+        ? classedTrue$1
+        : classedFalse$1)(names, value));
+  }
+
+  function textRemove$1() {
+    this.textContent = "";
+  }
+
+  function textConstant$3(value) {
+    return function() {
+      this.textContent = value;
+    };
+  }
+
+  function textFunction$3(value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      this.textContent = v == null ? "" : v;
+    };
+  }
+
+  function selection_text$1(value) {
+    return arguments.length
+        ? this.each(value == null
+            ? textRemove$1 : (typeof value === "function"
+            ? textFunction$3
+            : textConstant$3)(value))
+        : this.node().textContent;
+  }
+
+  function htmlRemove$1() {
+    this.innerHTML = "";
+  }
+
+  function htmlConstant$1(value) {
+    return function() {
+      this.innerHTML = value;
+    };
+  }
+
+  function htmlFunction$1(value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      this.innerHTML = v == null ? "" : v;
+    };
+  }
+
+  function selection_html$1(value) {
+    return arguments.length
+        ? this.each(value == null
+            ? htmlRemove$1 : (typeof value === "function"
+            ? htmlFunction$1
+            : htmlConstant$1)(value))
+        : this.node().innerHTML;
+  }
+
+  function raise$1() {
+    if (this.nextSibling) this.parentNode.appendChild(this);
+  }
+
+  function selection_raise$1() {
+    return this.each(raise$1);
+  }
+
+  function lower$1() {
+    if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
+  }
+
+  function selection_lower$1() {
+    return this.each(lower$1);
+  }
+
+  function selection_append$1(name) {
+    var create = typeof name === "function" ? name : creator$1(name);
+    return this.select(function() {
+      return this.appendChild(create.apply(this, arguments));
+    });
+  }
+
+  function constantNull$1() {
+    return null;
+  }
+
+  function selection_insert$1(name, before) {
+    var create = typeof name === "function" ? name : creator$1(name),
+        select = before == null ? constantNull$1 : typeof before === "function" ? before : selector$1(before);
+    return this.select(function() {
+      return this.insertBefore(create.apply(this, arguments), select.apply(this, arguments) || null);
+    });
+  }
+
+  function remove$1() {
+    var parent = this.parentNode;
+    if (parent) parent.removeChild(this);
+  }
+
+  function selection_remove$1() {
+    return this.each(remove$1);
+  }
+
+  function selection_cloneShallow$1() {
+    var clone = this.cloneNode(false), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+  }
+
+  function selection_cloneDeep$1() {
+    var clone = this.cloneNode(true), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+  }
+
+  function selection_clone$1(deep) {
+    return this.select(deep ? selection_cloneDeep$1 : selection_cloneShallow$1);
+  }
+
+  function selection_datum$1(value) {
+    return arguments.length
+        ? this.property("__data__", value)
+        : this.node().__data__;
+  }
+
+  var filterEvents = {};
+
+  var event$1 = null;
+
+  if (typeof document !== "undefined") {
+    var element = document.documentElement;
+    if (!("onmouseenter" in element)) {
+      filterEvents = {mouseenter: "mouseover", mouseleave: "mouseout"};
+    }
+  }
+
+  function filterContextListener(listener, index, group) {
+    listener = contextListener$1(listener, index, group);
+    return function(event) {
+      var related = event.relatedTarget;
+      if (!related || (related !== this && !(related.compareDocumentPosition(this) & 8))) {
+        listener.call(this, event);
+      }
+    };
+  }
+
+  function contextListener$1(listener, index, group) {
+    return function(event1) {
+      var event0 = event$1; // Events can be reentrant (e.g., focus).
+      event$1 = event1;
+      try {
+        listener.call(this, this.__data__, index, group);
+      } finally {
+        event$1 = event0;
+      }
+    };
+  }
+
+  function parseTypenames$4(typenames) {
+    return typenames.trim().split(/^|\s+/).map(function(t) {
+      var name = "", i = t.indexOf(".");
+      if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
+      return {type: t, name: name};
+    });
+  }
+
+  function onRemove$1(typename) {
+    return function() {
+      var on = this.__on;
+      if (!on) return;
+      for (var j = 0, i = -1, m = on.length, o; j < m; ++j) {
+        if (o = on[j], (!typename.type || o.type === typename.type) && o.name === typename.name) {
+          this.removeEventListener(o.type, o.listener, o.capture);
+        } else {
+          on[++i] = o;
+        }
+      }
+      if (++i) on.length = i;
+      else delete this.__on;
+    };
+  }
+
+  function onAdd$1(typename, value, capture) {
+    var wrap = filterEvents.hasOwnProperty(typename.type) ? filterContextListener : contextListener$1;
+    return function(d, i, group) {
+      var on = this.__on, o, listener = wrap(value, i, group);
+      if (on) for (var j = 0, m = on.length; j < m; ++j) {
+        if ((o = on[j]).type === typename.type && o.name === typename.name) {
+          this.removeEventListener(o.type, o.listener, o.capture);
+          this.addEventListener(o.type, o.listener = listener, o.capture = capture);
+          o.value = value;
+          return;
+        }
+      }
+      this.addEventListener(typename.type, listener, capture);
+      o = {type: typename.type, name: typename.name, value: value, listener: listener, capture: capture};
+      if (!on) this.__on = [o];
+      else on.push(o);
+    };
+  }
+
+  function selection_on$1(typename, value, capture) {
+    var typenames = parseTypenames$4(typename + ""), i, n = typenames.length, t;
+
+    if (arguments.length < 2) {
+      var on = this.node().__on;
+      if (on) for (var j = 0, m = on.length, o; j < m; ++j) {
+        for (i = 0, o = on[j]; i < n; ++i) {
+          if ((t = typenames[i]).type === o.type && t.name === o.name) {
+            return o.value;
+          }
+        }
+      }
+      return;
+    }
+
+    on = value ? onAdd$1 : onRemove$1;
+    if (capture == null) capture = false;
+    for (i = 0; i < n; ++i) this.each(on(typenames[i], value, capture));
+    return this;
+  }
+
+  function dispatchEvent$1(node, type, params) {
+    var window = defaultView$1(node),
+        event = window.CustomEvent;
+
+    if (typeof event === "function") {
+      event = new event(type, params);
+    } else {
+      event = window.document.createEvent("Event");
+      if (params) event.initEvent(type, params.bubbles, params.cancelable), event.detail = params.detail;
+      else event.initEvent(type, false, false);
+    }
+
+    node.dispatchEvent(event);
+  }
+
+  function dispatchConstant$1(type, params) {
+    return function() {
+      return dispatchEvent$1(this, type, params);
+    };
+  }
+
+  function dispatchFunction$1(type, params) {
+    return function() {
+      return dispatchEvent$1(this, type, params.apply(this, arguments));
+    };
+  }
+
+  function selection_dispatch$1(type, params) {
+    return this.each((typeof params === "function"
+        ? dispatchFunction$1
+        : dispatchConstant$1)(type, params));
+  }
+
+  var root$1 = [null];
+
+  function Selection$3(groups, parents) {
+    this._groups = groups;
+    this._parents = parents;
+  }
+
+  function selection$1() {
+    return new Selection$3([[document.documentElement]], root$1);
+  }
+
+  Selection$3.prototype = selection$1.prototype = {
+    constructor: Selection$3,
+    select: selection_select$1,
+    selectAll: selection_selectAll$1,
+    filter: selection_filter$1,
+    data: selection_data$1,
+    enter: selection_enter$1,
+    exit: selection_exit$1,
+    join: selection_join$1,
+    merge: selection_merge$1,
+    order: selection_order$1,
+    sort: selection_sort$1,
+    call: selection_call$1,
+    nodes: selection_nodes$1,
+    node: selection_node$1,
+    size: selection_size$1,
+    empty: selection_empty$1,
+    each: selection_each$1,
+    attr: selection_attr$1,
+    style: selection_style$1,
+    property: selection_property$1,
+    classed: selection_classed$1,
+    text: selection_text$1,
+    html: selection_html$1,
+    raise: selection_raise$1,
+    lower: selection_lower$1,
+    append: selection_append$1,
+    insert: selection_insert$1,
+    remove: selection_remove$1,
+    clone: selection_clone$1,
+    datum: selection_datum$1,
+    on: selection_on$1,
+    dispatch: selection_dispatch$1
+  };
+
+  function select$1(selector) {
+    return typeof selector === "string"
+        ? new Selection$3([[document.querySelector(selector)]], [document.documentElement])
+        : new Selection$3([[selector]], root$1);
+  }
+
+  function create$2(name) {
+    return select$1(creator$1(name).call(document.documentElement));
+  }
+
+  var frame$2 = 0, // is an animation frame pending?
+      timeout$4 = 0, // is a timeout pending?
+      interval$2 = 0, // are any timers active?
+      pokeDelay$2 = 1000, // how frequently we check for clock skew
+      taskHead$2,
+      taskTail$2,
+      clockLast$2 = 0,
+      clockNow$2 = 0,
+      clockSkew$2 = 0,
+      clock$2 = typeof performance === "object" && performance.now ? performance : Date,
+      setFrame$2 = typeof window === "object" && window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function(f) { setTimeout(f, 17); };
+
+  function now$2() {
+    return clockNow$2 || (setFrame$2(clearNow$2), clockNow$2 = clock$2.now() + clockSkew$2);
+  }
+
+  function clearNow$2() {
+    clockNow$2 = 0;
+  }
+
+  function Timer$2() {
+    this._call =
+    this._time =
+    this._next = null;
+  }
+
+  Timer$2.prototype = timer$2.prototype = {
+    constructor: Timer$2,
+    restart: function(callback, delay, time) {
+      if (typeof callback !== "function") throw new TypeError("callback is not a function");
+      time = (time == null ? now$2() : +time) + (delay == null ? 0 : +delay);
+      if (!this._next && taskTail$2 !== this) {
+        if (taskTail$2) taskTail$2._next = this;
+        else taskHead$2 = this;
+        taskTail$2 = this;
+      }
+      this._call = callback;
+      this._time = time;
+      sleep$2();
+    },
+    stop: function() {
+      if (this._call) {
+        this._call = null;
+        this._time = Infinity;
+        sleep$2();
+      }
+    }
+  };
+
+  function timer$2(callback, delay, time) {
+    var t = new Timer$2;
+    t.restart(callback, delay, time);
+    return t;
+  }
+
+  function timerFlush$2() {
+    now$2(); // Get the current time, if not already set.
+    ++frame$2; // Pretend we’ve set an alarm, if we haven’t already.
+    var t = taskHead$2, e;
+    while (t) {
+      if ((e = clockNow$2 - t._time) >= 0) t._call.call(null, e);
+      t = t._next;
+    }
+    --frame$2;
+  }
+
+  function wake$2() {
+    clockNow$2 = (clockLast$2 = clock$2.now()) + clockSkew$2;
+    frame$2 = timeout$4 = 0;
+    try {
+      timerFlush$2();
+    } finally {
+      frame$2 = 0;
+      nap$2();
+      clockNow$2 = 0;
+    }
+  }
+
+  function poke$2() {
+    var now = clock$2.now(), delay = now - clockLast$2;
+    if (delay > pokeDelay$2) clockSkew$2 -= delay, clockLast$2 = now;
+  }
+
+  function nap$2() {
+    var t0, t1 = taskHead$2, t2, time = Infinity;
+    while (t1) {
+      if (t1._call) {
+        if (time > t1._time) time = t1._time;
+        t0 = t1, t1 = t1._next;
+      } else {
+        t2 = t1._next, t1._next = null;
+        t1 = t0 ? t0._next = t2 : taskHead$2 = t2;
+      }
+    }
+    taskTail$2 = t0;
+    sleep$2(time);
+  }
+
+  function sleep$2(time) {
+    if (frame$2) return; // Soonest alarm already set, or will be.
+    if (timeout$4) timeout$4 = clearTimeout(timeout$4);
+    var delay = time - clockNow$2; // Strictly less than if we recomputed clockNow.
+    if (delay > 24) {
+      if (time < Infinity) timeout$4 = setTimeout(wake$2, time - clock$2.now() - clockSkew$2);
+      if (interval$2) interval$2 = clearInterval(interval$2);
+    } else {
+      if (!interval$2) clockLast$2 = clock$2.now(), interval$2 = setInterval(poke$2, pokeDelay$2);
+      frame$2 = 1, setFrame$2(wake$2);
+    }
+  }
+
+  function timeout$3(callback, delay, time) {
+    var t = new Timer$2;
+    delay = delay == null ? 0 : +delay;
+    t.restart(function(elapsed) {
+      t.stop();
+      callback(elapsed + delay);
+    }, delay, time);
+    return t;
+  }
+
+  var noop$2 = {value: function() {}};
+
+  function dispatch$2() {
+    for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
+      if (!(t = arguments[i] + "") || (t in _) || /[\s.]/.test(t)) throw new Error("illegal type: " + t);
+      _[t] = [];
+    }
+    return new Dispatch$2(_);
+  }
+
+  function Dispatch$2(_) {
+    this._ = _;
+  }
+
+  function parseTypenames$3(typenames, types) {
+    return typenames.trim().split(/^|\s+/).map(function(t) {
+      var name = "", i = t.indexOf(".");
+      if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
+      if (t && !types.hasOwnProperty(t)) throw new Error("unknown type: " + t);
+      return {type: t, name: name};
+    });
+  }
+
+  Dispatch$2.prototype = dispatch$2.prototype = {
+    constructor: Dispatch$2,
+    on: function(typename, callback) {
+      var _ = this._,
+          T = parseTypenames$3(typename + "", _),
+          t,
+          i = -1,
+          n = T.length;
+
+      // If no callback was specified, return the callback of the given type and name.
+      if (arguments.length < 2) {
+        while (++i < n) if ((t = (typename = T[i]).type) && (t = get$4(_[t], typename.name))) return t;
+        return;
+      }
+
+      // If a type was specified, set the callback for the given type and name.
+      // Otherwise, if a null callback was specified, remove callbacks of the given name.
+      if (callback != null && typeof callback !== "function") throw new Error("invalid callback: " + callback);
+      while (++i < n) {
+        if (t = (typename = T[i]).type) _[t] = set$4(_[t], typename.name, callback);
+        else if (callback == null) for (t in _) _[t] = set$4(_[t], typename.name, null);
+      }
+
+      return this;
+    },
+    copy: function() {
+      var copy = {}, _ = this._;
+      for (var t in _) copy[t] = _[t].slice();
+      return new Dispatch$2(copy);
+    },
+    call: function(type, that) {
+      if ((n = arguments.length - 2) > 0) for (var args = new Array(n), i = 0, n, t; i < n; ++i) args[i] = arguments[i + 2];
+      if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
+      for (t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
+    },
+    apply: function(type, that, args) {
+      if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
+      for (var t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
+    }
+  };
+
+  function get$4(type, name) {
+    for (var i = 0, n = type.length, c; i < n; ++i) {
+      if ((c = type[i]).name === name) {
+        return c.value;
+      }
+    }
+  }
+
+  function set$4(type, name, callback) {
+    for (var i = 0, n = type.length; i < n; ++i) {
+      if (type[i].name === name) {
+        type[i] = noop$2, type = type.slice(0, i).concat(type.slice(i + 1));
+        break;
+      }
+    }
+    if (callback != null) type.push({name: name, value: callback});
+    return type;
+  }
+
+  var emptyOn$1 = dispatch$2("start", "end", "cancel", "interrupt");
+  var emptyTween$1 = [];
+
+  var CREATED$1 = 0;
+  var SCHEDULED$1 = 1;
+  var STARTING$1 = 2;
+  var STARTED$1 = 3;
+  var RUNNING$1 = 4;
+  var ENDING$1 = 5;
+  var ENDED$1 = 6;
+
+  function schedule$1(node, name, id, index, group, timing) {
+    var schedules = node.__transition;
+    if (!schedules) node.__transition = {};
+    else if (id in schedules) return;
+    create$1(node, id, {
+      name: name,
+      index: index, // For context during callback.
+      group: group, // For context during callback.
+      on: emptyOn$1,
+      tween: emptyTween$1,
+      time: timing.time,
+      delay: timing.delay,
+      duration: timing.duration,
+      ease: timing.ease,
+      timer: null,
+      state: CREATED$1
+    });
+  }
+
+  function init$1(node, id) {
+    var schedule = get$3(node, id);
+    if (schedule.state > CREATED$1) throw new Error("too late; already scheduled");
+    return schedule;
+  }
+
+  function set$3(node, id) {
+    var schedule = get$3(node, id);
+    if (schedule.state > STARTED$1) throw new Error("too late; already running");
+    return schedule;
+  }
+
+  function get$3(node, id) {
+    var schedule = node.__transition;
+    if (!schedule || !(schedule = schedule[id])) throw new Error("transition not found");
+    return schedule;
+  }
+
+  function create$1(node, id, self) {
+    var schedules = node.__transition,
+        tween;
+
+    // Initialize the self timer when the transition is created.
+    // Note the actual delay is not known until the first callback!
+    schedules[id] = self;
+    self.timer = timer$2(schedule, 0, self.time);
+
+    function schedule(elapsed) {
+      self.state = SCHEDULED$1;
+      self.timer.restart(start, self.delay, self.time);
+
+      // If the elapsed delay is less than our first sleep, start immediately.
+      if (self.delay <= elapsed) start(elapsed - self.delay);
+    }
+
+    function start(elapsed) {
+      var i, j, n, o;
+
+      // If the state is not SCHEDULED, then we previously errored on start.
+      if (self.state !== SCHEDULED$1) return stop();
+
+      for (i in schedules) {
+        o = schedules[i];
+        if (o.name !== self.name) continue;
+
+        // While this element already has a starting transition during this frame,
+        // defer starting an interrupting transition until that transition has a
+        // chance to tick (and possibly end); see d3/d3-transition#54!
+        if (o.state === STARTED$1) return timeout$3(start);
+
+        // Interrupt the active transition, if any.
+        if (o.state === RUNNING$1) {
+          o.state = ENDED$1;
+          o.timer.stop();
+          o.on.call("interrupt", node, node.__data__, o.index, o.group);
+          delete schedules[i];
+        }
+
+        // Cancel any pre-empted transitions.
+        else if (+i < id) {
+          o.state = ENDED$1;
+          o.timer.stop();
+          o.on.call("cancel", node, node.__data__, o.index, o.group);
+          delete schedules[i];
+        }
+      }
+
+      // Defer the first tick to end of the current frame; see d3/d3#1576.
+      // Note the transition may be canceled after start and before the first tick!
+      // Note this must be scheduled before the start event; see d3/d3-transition#16!
+      // Assuming this is successful, subsequent callbacks go straight to tick.
+      timeout$3(function() {
+        if (self.state === STARTED$1) {
+          self.state = RUNNING$1;
+          self.timer.restart(tick, self.delay, self.time);
+          tick(elapsed);
+        }
+      });
+
+      // Dispatch the start event.
+      // Note this must be done before the tween are initialized.
+      self.state = STARTING$1;
+      self.on.call("start", node, node.__data__, self.index, self.group);
+      if (self.state !== STARTING$1) return; // interrupted
+      self.state = STARTED$1;
+
+      // Initialize the tween, deleting null tween.
+      tween = new Array(n = self.tween.length);
+      for (i = 0, j = -1; i < n; ++i) {
+        if (o = self.tween[i].value.call(node, node.__data__, self.index, self.group)) {
+          tween[++j] = o;
+        }
+      }
+      tween.length = j + 1;
+    }
+
+    function tick(elapsed) {
+      var t = elapsed < self.duration ? self.ease.call(null, elapsed / self.duration) : (self.timer.restart(stop), self.state = ENDING$1, 1),
+          i = -1,
+          n = tween.length;
+
+      while (++i < n) {
+        tween[i].call(node, t);
+      }
+
+      // Dispatch the end event.
+      if (self.state === ENDING$1) {
+        self.on.call("end", node, node.__data__, self.index, self.group);
+        stop();
+      }
+    }
+
+    function stop() {
+      self.state = ENDED$1;
+      self.timer.stop();
+      delete schedules[id];
+      for (var i in schedules) return; // eslint-disable-line no-unused-vars
+      delete node.__transition;
+    }
+  }
+
+  function interrupt$1(node, name) {
+    var schedules = node.__transition,
+        schedule,
+        active,
+        empty = true,
+        i;
+
+    if (!schedules) return;
+
+    name = name == null ? null : name + "";
+
+    for (i in schedules) {
+      if ((schedule = schedules[i]).name !== name) { empty = false; continue; }
+      active = schedule.state > STARTING$1 && schedule.state < ENDING$1;
+      schedule.state = ENDED$1;
+      schedule.timer.stop();
+      schedule.on.call(active ? "interrupt" : "cancel", node, node.__data__, schedule.index, schedule.group);
+      delete schedules[i];
+    }
+
+    if (empty) delete node.__transition;
+  }
+
+  function selection_interrupt$1(name) {
+    return this.each(function() {
+      interrupt$1(this, name);
+    });
+  }
+
+  function define$1(constructor, factory, prototype) {
+    constructor.prototype = factory.prototype = prototype;
+    prototype.constructor = constructor;
+  }
+
+  function extend$1(parent, definition) {
+    var prototype = Object.create(parent.prototype);
+    for (var key in definition) prototype[key] = definition[key];
+    return prototype;
+  }
+
+  function Color$1() {}
+
+  var darker$1 = 0.7;
+  var brighter$1 = 1 / darker$1;
+
+  var reI$1 = "\\s*([+-]?\\d+)\\s*",
+      reN$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+      reP$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+      reHex$1 = /^#([0-9a-f]{3,8})$/,
+      reRgbInteger$1 = new RegExp("^rgb\\(" + [reI$1, reI$1, reI$1] + "\\)$"),
+      reRgbPercent$1 = new RegExp("^rgb\\(" + [reP$1, reP$1, reP$1] + "\\)$"),
+      reRgbaInteger$1 = new RegExp("^rgba\\(" + [reI$1, reI$1, reI$1, reN$1] + "\\)$"),
+      reRgbaPercent$1 = new RegExp("^rgba\\(" + [reP$1, reP$1, reP$1, reN$1] + "\\)$"),
+      reHslPercent$1 = new RegExp("^hsl\\(" + [reN$1, reP$1, reP$1] + "\\)$"),
+      reHslaPercent$1 = new RegExp("^hsla\\(" + [reN$1, reP$1, reP$1, reN$1] + "\\)$");
+
+  var named$1 = {
+    aliceblue: 0xf0f8ff,
+    antiquewhite: 0xfaebd7,
+    aqua: 0x00ffff,
+    aquamarine: 0x7fffd4,
+    azure: 0xf0ffff,
+    beige: 0xf5f5dc,
+    bisque: 0xffe4c4,
+    black: 0x000000,
+    blanchedalmond: 0xffebcd,
+    blue: 0x0000ff,
+    blueviolet: 0x8a2be2,
+    brown: 0xa52a2a,
+    burlywood: 0xdeb887,
+    cadetblue: 0x5f9ea0,
+    chartreuse: 0x7fff00,
+    chocolate: 0xd2691e,
+    coral: 0xff7f50,
+    cornflowerblue: 0x6495ed,
+    cornsilk: 0xfff8dc,
+    crimson: 0xdc143c,
+    cyan: 0x00ffff,
+    darkblue: 0x00008b,
+    darkcyan: 0x008b8b,
+    darkgoldenrod: 0xb8860b,
+    darkgray: 0xa9a9a9,
+    darkgreen: 0x006400,
+    darkgrey: 0xa9a9a9,
+    darkkhaki: 0xbdb76b,
+    darkmagenta: 0x8b008b,
+    darkolivegreen: 0x556b2f,
+    darkorange: 0xff8c00,
+    darkorchid: 0x9932cc,
+    darkred: 0x8b0000,
+    darksalmon: 0xe9967a,
+    darkseagreen: 0x8fbc8f,
+    darkslateblue: 0x483d8b,
+    darkslategray: 0x2f4f4f,
+    darkslategrey: 0x2f4f4f,
+    darkturquoise: 0x00ced1,
+    darkviolet: 0x9400d3,
+    deeppink: 0xff1493,
+    deepskyblue: 0x00bfff,
+    dimgray: 0x696969,
+    dimgrey: 0x696969,
+    dodgerblue: 0x1e90ff,
+    firebrick: 0xb22222,
+    floralwhite: 0xfffaf0,
+    forestgreen: 0x228b22,
+    fuchsia: 0xff00ff,
+    gainsboro: 0xdcdcdc,
+    ghostwhite: 0xf8f8ff,
+    gold: 0xffd700,
+    goldenrod: 0xdaa520,
+    gray: 0x808080,
+    green: 0x008000,
+    greenyellow: 0xadff2f,
+    grey: 0x808080,
+    honeydew: 0xf0fff0,
+    hotpink: 0xff69b4,
+    indianred: 0xcd5c5c,
+    indigo: 0x4b0082,
+    ivory: 0xfffff0,
+    khaki: 0xf0e68c,
+    lavender: 0xe6e6fa,
+    lavenderblush: 0xfff0f5,
+    lawngreen: 0x7cfc00,
+    lemonchiffon: 0xfffacd,
+    lightblue: 0xadd8e6,
+    lightcoral: 0xf08080,
+    lightcyan: 0xe0ffff,
+    lightgoldenrodyellow: 0xfafad2,
+    lightgray: 0xd3d3d3,
+    lightgreen: 0x90ee90,
+    lightgrey: 0xd3d3d3,
+    lightpink: 0xffb6c1,
+    lightsalmon: 0xffa07a,
+    lightseagreen: 0x20b2aa,
+    lightskyblue: 0x87cefa,
+    lightslategray: 0x778899,
+    lightslategrey: 0x778899,
+    lightsteelblue: 0xb0c4de,
+    lightyellow: 0xffffe0,
+    lime: 0x00ff00,
+    limegreen: 0x32cd32,
+    linen: 0xfaf0e6,
+    magenta: 0xff00ff,
+    maroon: 0x800000,
+    mediumaquamarine: 0x66cdaa,
+    mediumblue: 0x0000cd,
+    mediumorchid: 0xba55d3,
+    mediumpurple: 0x9370db,
+    mediumseagreen: 0x3cb371,
+    mediumslateblue: 0x7b68ee,
+    mediumspringgreen: 0x00fa9a,
+    mediumturquoise: 0x48d1cc,
+    mediumvioletred: 0xc71585,
+    midnightblue: 0x191970,
+    mintcream: 0xf5fffa,
+    mistyrose: 0xffe4e1,
+    moccasin: 0xffe4b5,
+    navajowhite: 0xffdead,
+    navy: 0x000080,
+    oldlace: 0xfdf5e6,
+    olive: 0x808000,
+    olivedrab: 0x6b8e23,
+    orange: 0xffa500,
+    orangered: 0xff4500,
+    orchid: 0xda70d6,
+    palegoldenrod: 0xeee8aa,
+    palegreen: 0x98fb98,
+    paleturquoise: 0xafeeee,
+    palevioletred: 0xdb7093,
+    papayawhip: 0xffefd5,
+    peachpuff: 0xffdab9,
+    peru: 0xcd853f,
+    pink: 0xffc0cb,
+    plum: 0xdda0dd,
+    powderblue: 0xb0e0e6,
+    purple: 0x800080,
+    rebeccapurple: 0x663399,
+    red: 0xff0000,
+    rosybrown: 0xbc8f8f,
+    royalblue: 0x4169e1,
+    saddlebrown: 0x8b4513,
+    salmon: 0xfa8072,
+    sandybrown: 0xf4a460,
+    seagreen: 0x2e8b57,
+    seashell: 0xfff5ee,
+    sienna: 0xa0522d,
+    silver: 0xc0c0c0,
+    skyblue: 0x87ceeb,
+    slateblue: 0x6a5acd,
+    slategray: 0x708090,
+    slategrey: 0x708090,
+    snow: 0xfffafa,
+    springgreen: 0x00ff7f,
+    steelblue: 0x4682b4,
+    tan: 0xd2b48c,
+    teal: 0x008080,
+    thistle: 0xd8bfd8,
+    tomato: 0xff6347,
+    turquoise: 0x40e0d0,
+    violet: 0xee82ee,
+    wheat: 0xf5deb3,
+    white: 0xffffff,
+    whitesmoke: 0xf5f5f5,
+    yellow: 0xffff00,
+    yellowgreen: 0x9acd32
+  };
+
+  define$1(Color$1, color$1, {
+    copy: function(channels) {
+      return Object.assign(new this.constructor, this, channels);
+    },
+    displayable: function() {
+      return this.rgb().displayable();
+    },
+    hex: color_formatHex$1, // Deprecated! Use color.formatHex.
+    formatHex: color_formatHex$1,
+    formatHsl: color_formatHsl$1,
+    formatRgb: color_formatRgb$1,
+    toString: color_formatRgb$1
+  });
+
+  function color_formatHex$1() {
+    return this.rgb().formatHex();
+  }
+
+  function color_formatHsl$1() {
+    return hslConvert$1(this).formatHsl();
+  }
+
+  function color_formatRgb$1() {
+    return this.rgb().formatRgb();
+  }
+
+  function color$1(format) {
+    var m, l;
+    format = (format + "").trim().toLowerCase();
+    return (m = reHex$1.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$1(m) // #ff0000
+        : l === 3 ? new Rgb$1((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+        : l === 8 ? rgba$1(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+        : l === 4 ? rgba$1((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+        : null) // invalid hex
+        : (m = reRgbInteger$1.exec(format)) ? new Rgb$1(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+        : (m = reRgbPercent$1.exec(format)) ? new Rgb$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+        : (m = reRgbaInteger$1.exec(format)) ? rgba$1(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+        : (m = reRgbaPercent$1.exec(format)) ? rgba$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+        : (m = reHslPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+        : (m = reHslaPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+        : named$1.hasOwnProperty(format) ? rgbn$1(named$1[format]) // eslint-disable-line no-prototype-builtins
+        : format === "transparent" ? new Rgb$1(NaN, NaN, NaN, 0)
+        : null;
+  }
+
+  function rgbn$1(n) {
+    return new Rgb$1(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+  }
+
+  function rgba$1(r, g, b, a) {
+    if (a <= 0) r = g = b = NaN;
+    return new Rgb$1(r, g, b, a);
+  }
+
+  function rgbConvert$1(o) {
+    if (!(o instanceof Color$1)) o = color$1(o);
+    if (!o) return new Rgb$1;
+    o = o.rgb();
+    return new Rgb$1(o.r, o.g, o.b, o.opacity);
+  }
+
+  function rgb$1(r, g, b, opacity) {
+    return arguments.length === 1 ? rgbConvert$1(r) : new Rgb$1(r, g, b, opacity == null ? 1 : opacity);
+  }
+
+  function Rgb$1(r, g, b, opacity) {
+    this.r = +r;
+    this.g = +g;
+    this.b = +b;
+    this.opacity = +opacity;
+  }
+
+  define$1(Rgb$1, rgb$1, extend$1(Color$1, {
+    brighter: function(k) {
+      k = k == null ? brighter$1 : Math.pow(brighter$1, k);
+      return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    darker: function(k) {
+      k = k == null ? darker$1 : Math.pow(darker$1, k);
+      return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    rgb: function() {
+      return this;
+    },
+    displayable: function() {
+      return (-0.5 <= this.r && this.r < 255.5)
+          && (-0.5 <= this.g && this.g < 255.5)
+          && (-0.5 <= this.b && this.b < 255.5)
+          && (0 <= this.opacity && this.opacity <= 1);
+    },
+    hex: rgb_formatHex$1, // Deprecated! Use color.formatHex.
+    formatHex: rgb_formatHex$1,
+    formatRgb: rgb_formatRgb$1,
+    toString: rgb_formatRgb$1
+  }));
+
+  function rgb_formatHex$1() {
+    return "#" + hex$1(this.r) + hex$1(this.g) + hex$1(this.b);
+  }
+
+  function rgb_formatRgb$1() {
+    var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+    return (a === 1 ? "rgb(" : "rgba(")
+        + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
+        + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
+        + Math.max(0, Math.min(255, Math.round(this.b) || 0))
+        + (a === 1 ? ")" : ", " + a + ")");
+  }
+
+  function hex$1(value) {
+    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    return (value < 16 ? "0" : "") + value.toString(16);
+  }
+
+  function hsla$1(h, s, l, a) {
+    if (a <= 0) h = s = l = NaN;
+    else if (l <= 0 || l >= 1) h = s = NaN;
+    else if (s <= 0) h = NaN;
+    return new Hsl$1(h, s, l, a);
+  }
+
+  function hslConvert$1(o) {
+    if (o instanceof Hsl$1) return new Hsl$1(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color$1)) o = color$1(o);
+    if (!o) return new Hsl$1;
+    if (o instanceof Hsl$1) return o;
+    o = o.rgb();
+    var r = o.r / 255,
+        g = o.g / 255,
+        b = o.b / 255,
+        min = Math.min(r, g, b),
+        max = Math.max(r, g, b),
+        h = NaN,
+        s = max - min,
+        l = (max + min) / 2;
+    if (s) {
+      if (r === max) h = (g - b) / s + (g < b) * 6;
+      else if (g === max) h = (b - r) / s + 2;
+      else h = (r - g) / s + 4;
+      s /= l < 0.5 ? max + min : 2 - max - min;
+      h *= 60;
+    } else {
+      s = l > 0 && l < 1 ? 0 : h;
+    }
+    return new Hsl$1(h, s, l, o.opacity);
+  }
+
+  function hsl$1(h, s, l, opacity) {
+    return arguments.length === 1 ? hslConvert$1(h) : new Hsl$1(h, s, l, opacity == null ? 1 : opacity);
+  }
+
+  function Hsl$1(h, s, l, opacity) {
+    this.h = +h;
+    this.s = +s;
+    this.l = +l;
+    this.opacity = +opacity;
+  }
+
+  define$1(Hsl$1, hsl$1, extend$1(Color$1, {
+    brighter: function(k) {
+      k = k == null ? brighter$1 : Math.pow(brighter$1, k);
+      return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
+    },
+    darker: function(k) {
+      k = k == null ? darker$1 : Math.pow(darker$1, k);
+      return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
+    },
+    rgb: function() {
+      var h = this.h % 360 + (this.h < 0) * 360,
+          s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
+          l = this.l,
+          m2 = l + (l < 0.5 ? l : 1 - l) * s,
+          m1 = 2 * l - m2;
+      return new Rgb$1(
+        hsl2rgb$1(h >= 240 ? h - 240 : h + 120, m1, m2),
+        hsl2rgb$1(h, m1, m2),
+        hsl2rgb$1(h < 120 ? h + 240 : h - 120, m1, m2),
+        this.opacity
+      );
+    },
+    displayable: function() {
+      return (0 <= this.s && this.s <= 1 || isNaN(this.s))
+          && (0 <= this.l && this.l <= 1)
+          && (0 <= this.opacity && this.opacity <= 1);
+    },
+    formatHsl: function() {
+      var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+      return (a === 1 ? "hsl(" : "hsla(")
+          + (this.h || 0) + ", "
+          + (this.s || 0) * 100 + "%, "
+          + (this.l || 0) * 100 + "%"
+          + (a === 1 ? ")" : ", " + a + ")");
+    }
+  }));
+
+  /* From FvD 13.37, CSS Color Module Level 3 */
+  function hsl2rgb$1(h, m1, m2) {
+    return (h < 60 ? m1 + (m2 - m1) * h / 60
+        : h < 180 ? m2
+        : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
+        : m1) * 255;
+  }
+
+  function constant$2(x) {
+    return function() {
+      return x;
+    };
+  }
+
+  function linear$1(a, d) {
+    return function(t) {
+      return a + t * d;
+    };
+  }
+
+  function exponential$1(a, b, y) {
+    return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
+      return Math.pow(a + t * b, y);
+    };
+  }
+
+  function gamma$1(y) {
+    return (y = +y) === 1 ? nogamma$1 : function(a, b) {
+      return b - a ? exponential$1(a, b, y) : constant$2(isNaN(a) ? b : a);
+    };
+  }
+
+  function nogamma$1(a, b) {
+    var d = b - a;
+    return d ? linear$1(a, d) : constant$2(isNaN(a) ? b : a);
+  }
+
+  var interpolateRgb$1 = (function rgbGamma(y) {
+    var color = gamma$1(y);
+
+    function rgb(start, end) {
+      var r = color((start = rgb$1(start)).r, (end = rgb$1(end)).r),
+          g = color(start.g, end.g),
+          b = color(start.b, end.b),
+          opacity = nogamma$1(start.opacity, end.opacity);
+      return function(t) {
+        start.r = r(t);
+        start.g = g(t);
+        start.b = b(t);
+        start.opacity = opacity(t);
+        return start + "";
+      };
+    }
+
+    rgb.gamma = rgbGamma;
+
+    return rgb;
+  })(1);
+
+  function interpolateNumber$1(a, b) {
+    return a = +a, b = +b, function(t) {
+      return a * (1 - t) + b * t;
+    };
+  }
+
+  var reA$1 = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
+      reB$1 = new RegExp(reA$1.source, "g");
+
+  function zero$1(b) {
+    return function() {
+      return b;
+    };
+  }
+
+  function one$1(b) {
+    return function(t) {
+      return b(t) + "";
+    };
+  }
+
+  function interpolateString$1(a, b) {
+    var bi = reA$1.lastIndex = reB$1.lastIndex = 0, // scan index for next number in b
+        am, // current match in a
+        bm, // current match in b
+        bs, // string preceding current number in b, if any
+        i = -1, // index in s
+        s = [], // string constants and placeholders
+        q = []; // number interpolators
+
+    // Coerce inputs to strings.
+    a = a + "", b = b + "";
+
+    // Interpolate pairs of numbers in a & b.
+    while ((am = reA$1.exec(a))
+        && (bm = reB$1.exec(b))) {
+      if ((bs = bm.index) > bi) { // a string precedes the next number in b
+        bs = b.slice(bi, bs);
+        if (s[i]) s[i] += bs; // coalesce with previous string
+        else s[++i] = bs;
+      }
+      if ((am = am[0]) === (bm = bm[0])) { // numbers in a & b match
+        if (s[i]) s[i] += bm; // coalesce with previous string
+        else s[++i] = bm;
+      } else { // interpolate non-matching numbers
+        s[++i] = null;
+        q.push({i: i, x: interpolateNumber$1(am, bm)});
+      }
+      bi = reB$1.lastIndex;
+    }
+
+    // Add remains of b.
+    if (bi < b.length) {
+      bs = b.slice(bi);
+      if (s[i]) s[i] += bs; // coalesce with previous string
+      else s[++i] = bs;
+    }
+
+    // Special optimization for only a single match.
+    // Otherwise, interpolate each of the numbers and rejoin the string.
+    return s.length < 2 ? (q[0]
+        ? one$1(q[0].x)
+        : zero$1(b))
+        : (b = q.length, function(t) {
+            for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
+            return s.join("");
+          });
+  }
+
+  var degrees$1 = 180 / Math.PI;
+
+  var identity$1 = {
+    translateX: 0,
+    translateY: 0,
+    rotate: 0,
+    skewX: 0,
+    scaleX: 1,
+    scaleY: 1
+  };
+
+  function decompose$1(a, b, c, d, e, f) {
+    var scaleX, scaleY, skewX;
+    if (scaleX = Math.sqrt(a * a + b * b)) a /= scaleX, b /= scaleX;
+    if (skewX = a * c + b * d) c -= a * skewX, d -= b * skewX;
+    if (scaleY = Math.sqrt(c * c + d * d)) c /= scaleY, d /= scaleY, skewX /= scaleY;
+    if (a * d < b * c) a = -a, b = -b, skewX = -skewX, scaleX = -scaleX;
+    return {
+      translateX: e,
+      translateY: f,
+      rotate: Math.atan2(b, a) * degrees$1,
+      skewX: Math.atan(skewX) * degrees$1,
+      scaleX: scaleX,
+      scaleY: scaleY
+    };
+  }
+
+  var cssNode,
+      cssRoot,
+      cssView,
+      svgNode$1;
+
+  function parseCss$1(value) {
+    if (value === "none") return identity$1;
+    if (!cssNode) cssNode = document.createElement("DIV"), cssRoot = document.documentElement, cssView = document.defaultView;
+    cssNode.style.transform = value;
+    value = cssView.getComputedStyle(cssRoot.appendChild(cssNode), null).getPropertyValue("transform");
+    cssRoot.removeChild(cssNode);
+    value = value.slice(7, -1).split(",");
+    return decompose$1(+value[0], +value[1], +value[2], +value[3], +value[4], +value[5]);
+  }
+
+  function parseSvg$1(value) {
+    if (value == null) return identity$1;
+    if (!svgNode$1) svgNode$1 = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    svgNode$1.setAttribute("transform", value);
+    if (!(value = svgNode$1.transform.baseVal.consolidate())) return identity$1;
+    value = value.matrix;
+    return decompose$1(value.a, value.b, value.c, value.d, value.e, value.f);
+  }
+
+  function interpolateTransform$1(parse, pxComma, pxParen, degParen) {
+
+    function pop(s) {
+      return s.length ? s.pop() + " " : "";
+    }
+
+    function translate(xa, ya, xb, yb, s, q) {
+      if (xa !== xb || ya !== yb) {
+        var i = s.push("translate(", null, pxComma, null, pxParen);
+        q.push({i: i - 4, x: interpolateNumber$1(xa, xb)}, {i: i - 2, x: interpolateNumber$1(ya, yb)});
+      } else if (xb || yb) {
+        s.push("translate(" + xb + pxComma + yb + pxParen);
+      }
+    }
+
+    function rotate(a, b, s, q) {
+      if (a !== b) {
+        if (a - b > 180) b += 360; else if (b - a > 180) a += 360; // shortest path
+        q.push({i: s.push(pop(s) + "rotate(", null, degParen) - 2, x: interpolateNumber$1(a, b)});
+      } else if (b) {
+        s.push(pop(s) + "rotate(" + b + degParen);
+      }
+    }
+
+    function skewX(a, b, s, q) {
+      if (a !== b) {
+        q.push({i: s.push(pop(s) + "skewX(", null, degParen) - 2, x: interpolateNumber$1(a, b)});
+      } else if (b) {
+        s.push(pop(s) + "skewX(" + b + degParen);
+      }
+    }
+
+    function scale(xa, ya, xb, yb, s, q) {
+      if (xa !== xb || ya !== yb) {
+        var i = s.push(pop(s) + "scale(", null, ",", null, ")");
+        q.push({i: i - 4, x: interpolateNumber$1(xa, xb)}, {i: i - 2, x: interpolateNumber$1(ya, yb)});
+      } else if (xb !== 1 || yb !== 1) {
+        s.push(pop(s) + "scale(" + xb + "," + yb + ")");
+      }
+    }
+
+    return function(a, b) {
+      var s = [], // string constants and placeholders
+          q = []; // number interpolators
+      a = parse(a), b = parse(b);
+      translate(a.translateX, a.translateY, b.translateX, b.translateY, s, q);
+      rotate(a.rotate, b.rotate, s, q);
+      skewX(a.skewX, b.skewX, s, q);
+      scale(a.scaleX, a.scaleY, b.scaleX, b.scaleY, s, q);
+      a = b = null; // gc
+      return function(t) {
+        var i = -1, n = q.length, o;
+        while (++i < n) s[(o = q[i]).i] = o.x(t);
+        return s.join("");
+      };
+    };
+  }
+
+  var interpolateTransformCss$1 = interpolateTransform$1(parseCss$1, "px, ", "px)", "deg)");
+  var interpolateTransformSvg$1 = interpolateTransform$1(parseSvg$1, ", ", ")", ")");
+
+  function tweenRemove$1(id, name) {
+    var tween0, tween1;
+    return function() {
+      var schedule = set$3(this, id),
+          tween = schedule.tween;
+
+      // If this node shared tween with the previous node,
+      // just assign the updated shared tween and we’re done!
+      // Otherwise, copy-on-write.
+      if (tween !== tween0) {
+        tween1 = tween0 = tween;
+        for (var i = 0, n = tween1.length; i < n; ++i) {
+          if (tween1[i].name === name) {
+            tween1 = tween1.slice();
+            tween1.splice(i, 1);
+            break;
+          }
+        }
+      }
+
+      schedule.tween = tween1;
+    };
+  }
+
+  function tweenFunction$1(id, name, value) {
+    var tween0, tween1;
+    if (typeof value !== "function") throw new Error;
+    return function() {
+      var schedule = set$3(this, id),
+          tween = schedule.tween;
+
+      // If this node shared tween with the previous node,
+      // just assign the updated shared tween and we’re done!
+      // Otherwise, copy-on-write.
+      if (tween !== tween0) {
+        tween1 = (tween0 = tween).slice();
+        for (var t = {name: name, value: value}, i = 0, n = tween1.length; i < n; ++i) {
+          if (tween1[i].name === name) {
+            tween1[i] = t;
+            break;
+          }
+        }
+        if (i === n) tween1.push(t);
+      }
+
+      schedule.tween = tween1;
+    };
+  }
+
+  function transition_tween$1(name, value) {
+    var id = this._id;
+
+    name += "";
+
+    if (arguments.length < 2) {
+      var tween = get$3(this.node(), id).tween;
+      for (var i = 0, n = tween.length, t; i < n; ++i) {
+        if ((t = tween[i]).name === name) {
+          return t.value;
+        }
+      }
+      return null;
+    }
+
+    return this.each((value == null ? tweenRemove$1 : tweenFunction$1)(id, name, value));
+  }
+
+  function tweenValue$1(transition, name, value) {
+    var id = transition._id;
+
+    transition.each(function() {
+      var schedule = set$3(this, id);
+      (schedule.value || (schedule.value = {}))[name] = value.apply(this, arguments);
+    });
+
+    return function(node) {
+      return get$3(node, id).value[name];
+    };
+  }
+
+  function define(constructor, factory, prototype) {
+    constructor.prototype = factory.prototype = prototype;
+    prototype.constructor = constructor;
+  }
+
+  function extend(parent, definition) {
+    var prototype = Object.create(parent.prototype);
+    for (var key in definition) prototype[key] = definition[key];
+    return prototype;
+  }
+
+  function Color() {}
+
+  var darker = 0.7;
+  var brighter = 1 / darker;
+
+  var reI = "\\s*([+-]?\\d+)\\s*",
+      reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+      reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+      reHex = /^#([0-9a-f]{3,8})$/,
+      reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
+      reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
+      reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
+      reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
+      reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
+      reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
+
+  var named = {
+    aliceblue: 0xf0f8ff,
+    antiquewhite: 0xfaebd7,
+    aqua: 0x00ffff,
+    aquamarine: 0x7fffd4,
+    azure: 0xf0ffff,
+    beige: 0xf5f5dc,
+    bisque: 0xffe4c4,
+    black: 0x000000,
+    blanchedalmond: 0xffebcd,
+    blue: 0x0000ff,
+    blueviolet: 0x8a2be2,
+    brown: 0xa52a2a,
+    burlywood: 0xdeb887,
+    cadetblue: 0x5f9ea0,
+    chartreuse: 0x7fff00,
+    chocolate: 0xd2691e,
+    coral: 0xff7f50,
+    cornflowerblue: 0x6495ed,
+    cornsilk: 0xfff8dc,
+    crimson: 0xdc143c,
+    cyan: 0x00ffff,
+    darkblue: 0x00008b,
+    darkcyan: 0x008b8b,
+    darkgoldenrod: 0xb8860b,
+    darkgray: 0xa9a9a9,
+    darkgreen: 0x006400,
+    darkgrey: 0xa9a9a9,
+    darkkhaki: 0xbdb76b,
+    darkmagenta: 0x8b008b,
+    darkolivegreen: 0x556b2f,
+    darkorange: 0xff8c00,
+    darkorchid: 0x9932cc,
+    darkred: 0x8b0000,
+    darksalmon: 0xe9967a,
+    darkseagreen: 0x8fbc8f,
+    darkslateblue: 0x483d8b,
+    darkslategray: 0x2f4f4f,
+    darkslategrey: 0x2f4f4f,
+    darkturquoise: 0x00ced1,
+    darkviolet: 0x9400d3,
+    deeppink: 0xff1493,
+    deepskyblue: 0x00bfff,
+    dimgray: 0x696969,
+    dimgrey: 0x696969,
+    dodgerblue: 0x1e90ff,
+    firebrick: 0xb22222,
+    floralwhite: 0xfffaf0,
+    forestgreen: 0x228b22,
+    fuchsia: 0xff00ff,
+    gainsboro: 0xdcdcdc,
+    ghostwhite: 0xf8f8ff,
+    gold: 0xffd700,
+    goldenrod: 0xdaa520,
+    gray: 0x808080,
+    green: 0x008000,
+    greenyellow: 0xadff2f,
+    grey: 0x808080,
+    honeydew: 0xf0fff0,
+    hotpink: 0xff69b4,
+    indianred: 0xcd5c5c,
+    indigo: 0x4b0082,
+    ivory: 0xfffff0,
+    khaki: 0xf0e68c,
+    lavender: 0xe6e6fa,
+    lavenderblush: 0xfff0f5,
+    lawngreen: 0x7cfc00,
+    lemonchiffon: 0xfffacd,
+    lightblue: 0xadd8e6,
+    lightcoral: 0xf08080,
+    lightcyan: 0xe0ffff,
+    lightgoldenrodyellow: 0xfafad2,
+    lightgray: 0xd3d3d3,
+    lightgreen: 0x90ee90,
+    lightgrey: 0xd3d3d3,
+    lightpink: 0xffb6c1,
+    lightsalmon: 0xffa07a,
+    lightseagreen: 0x20b2aa,
+    lightskyblue: 0x87cefa,
+    lightslategray: 0x778899,
+    lightslategrey: 0x778899,
+    lightsteelblue: 0xb0c4de,
+    lightyellow: 0xffffe0,
+    lime: 0x00ff00,
+    limegreen: 0x32cd32,
+    linen: 0xfaf0e6,
+    magenta: 0xff00ff,
+    maroon: 0x800000,
+    mediumaquamarine: 0x66cdaa,
+    mediumblue: 0x0000cd,
+    mediumorchid: 0xba55d3,
+    mediumpurple: 0x9370db,
+    mediumseagreen: 0x3cb371,
+    mediumslateblue: 0x7b68ee,
+    mediumspringgreen: 0x00fa9a,
+    mediumturquoise: 0x48d1cc,
+    mediumvioletred: 0xc71585,
+    midnightblue: 0x191970,
+    mintcream: 0xf5fffa,
+    mistyrose: 0xffe4e1,
+    moccasin: 0xffe4b5,
+    navajowhite: 0xffdead,
+    navy: 0x000080,
+    oldlace: 0xfdf5e6,
+    olive: 0x808000,
+    olivedrab: 0x6b8e23,
+    orange: 0xffa500,
+    orangered: 0xff4500,
+    orchid: 0xda70d6,
+    palegoldenrod: 0xeee8aa,
+    palegreen: 0x98fb98,
+    paleturquoise: 0xafeeee,
+    palevioletred: 0xdb7093,
+    papayawhip: 0xffefd5,
+    peachpuff: 0xffdab9,
+    peru: 0xcd853f,
+    pink: 0xffc0cb,
+    plum: 0xdda0dd,
+    powderblue: 0xb0e0e6,
+    purple: 0x800080,
+    rebeccapurple: 0x663399,
+    red: 0xff0000,
+    rosybrown: 0xbc8f8f,
+    royalblue: 0x4169e1,
+    saddlebrown: 0x8b4513,
+    salmon: 0xfa8072,
+    sandybrown: 0xf4a460,
+    seagreen: 0x2e8b57,
+    seashell: 0xfff5ee,
+    sienna: 0xa0522d,
+    silver: 0xc0c0c0,
+    skyblue: 0x87ceeb,
+    slateblue: 0x6a5acd,
+    slategray: 0x708090,
+    slategrey: 0x708090,
+    snow: 0xfffafa,
+    springgreen: 0x00ff7f,
+    steelblue: 0x4682b4,
+    tan: 0xd2b48c,
+    teal: 0x008080,
+    thistle: 0xd8bfd8,
+    tomato: 0xff6347,
+    turquoise: 0x40e0d0,
+    violet: 0xee82ee,
+    wheat: 0xf5deb3,
+    white: 0xffffff,
+    whitesmoke: 0xf5f5f5,
+    yellow: 0xffff00,
+    yellowgreen: 0x9acd32
+  };
+
+  define(Color, color, {
+    copy: function(channels) {
+      return Object.assign(new this.constructor, this, channels);
+    },
+    displayable: function() {
+      return this.rgb().displayable();
+    },
+    hex: color_formatHex, // Deprecated! Use color.formatHex.
+    formatHex: color_formatHex,
+    formatHsl: color_formatHsl,
+    formatRgb: color_formatRgb,
+    toString: color_formatRgb
+  });
+
+  function color_formatHex() {
+    return this.rgb().formatHex();
+  }
+
+  function color_formatHsl() {
+    return hslConvert(this).formatHsl();
+  }
+
+  function color_formatRgb() {
+    return this.rgb().formatRgb();
+  }
+
+  function color(format) {
+    var m, l;
+    format = (format + "").trim().toLowerCase();
+    return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
+        : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+        : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+        : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+        : null) // invalid hex
+        : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+        : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+        : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+        : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+        : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+        : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+        : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
+        : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
+        : null;
+  }
+
+  function rgbn(n) {
+    return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+  }
+
+  function rgba(r, g, b, a) {
+    if (a <= 0) r = g = b = NaN;
+    return new Rgb(r, g, b, a);
+  }
+
+  function rgbConvert(o) {
+    if (!(o instanceof Color)) o = color(o);
+    if (!o) return new Rgb;
+    o = o.rgb();
+    return new Rgb(o.r, o.g, o.b, o.opacity);
+  }
+
+  function rgb(r, g, b, opacity) {
+    return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
+  }
+
+  function Rgb(r, g, b, opacity) {
+    this.r = +r;
+    this.g = +g;
+    this.b = +b;
+    this.opacity = +opacity;
+  }
+
+  define(Rgb, rgb, extend(Color, {
+    brighter: function(k) {
+      k = k == null ? brighter : Math.pow(brighter, k);
+      return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    darker: function(k) {
+      k = k == null ? darker : Math.pow(darker, k);
+      return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    rgb: function() {
+      return this;
+    },
+    displayable: function() {
+      return (-0.5 <= this.r && this.r < 255.5)
+          && (-0.5 <= this.g && this.g < 255.5)
+          && (-0.5 <= this.b && this.b < 255.5)
+          && (0 <= this.opacity && this.opacity <= 1);
+    },
+    hex: rgb_formatHex, // Deprecated! Use color.formatHex.
+    formatHex: rgb_formatHex,
+    formatRgb: rgb_formatRgb,
+    toString: rgb_formatRgb
+  }));
+
+  function rgb_formatHex() {
+    return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+  }
+
+  function rgb_formatRgb() {
+    var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+    return (a === 1 ? "rgb(" : "rgba(")
+        + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
+        + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
+        + Math.max(0, Math.min(255, Math.round(this.b) || 0))
+        + (a === 1 ? ")" : ", " + a + ")");
+  }
+
+  function hex(value) {
+    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    return (value < 16 ? "0" : "") + value.toString(16);
+  }
+
+  function hsla(h, s, l, a) {
+    if (a <= 0) h = s = l = NaN;
+    else if (l <= 0 || l >= 1) h = s = NaN;
+    else if (s <= 0) h = NaN;
+    return new Hsl(h, s, l, a);
+  }
+
+  function hslConvert(o) {
+    if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color)) o = color(o);
+    if (!o) return new Hsl;
+    if (o instanceof Hsl) return o;
+    o = o.rgb();
+    var r = o.r / 255,
+        g = o.g / 255,
+        b = o.b / 255,
+        min = Math.min(r, g, b),
+        max = Math.max(r, g, b),
+        h = NaN,
+        s = max - min,
+        l = (max + min) / 2;
+    if (s) {
+      if (r === max) h = (g - b) / s + (g < b) * 6;
+      else if (g === max) h = (b - r) / s + 2;
+      else h = (r - g) / s + 4;
+      s /= l < 0.5 ? max + min : 2 - max - min;
+      h *= 60;
+    } else {
+      s = l > 0 && l < 1 ? 0 : h;
+    }
+    return new Hsl(h, s, l, o.opacity);
+  }
+
+  function hsl(h, s, l, opacity) {
+    return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+  }
+
+  function Hsl(h, s, l, opacity) {
+    this.h = +h;
+    this.s = +s;
+    this.l = +l;
+    this.opacity = +opacity;
+  }
+
+  define(Hsl, hsl, extend(Color, {
+    brighter: function(k) {
+      k = k == null ? brighter : Math.pow(brighter, k);
+      return new Hsl(this.h, this.s, this.l * k, this.opacity);
+    },
+    darker: function(k) {
+      k = k == null ? darker : Math.pow(darker, k);
+      return new Hsl(this.h, this.s, this.l * k, this.opacity);
+    },
+    rgb: function() {
+      var h = this.h % 360 + (this.h < 0) * 360,
+          s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
+          l = this.l,
+          m2 = l + (l < 0.5 ? l : 1 - l) * s,
+          m1 = 2 * l - m2;
+      return new Rgb(
+        hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
+        hsl2rgb(h, m1, m2),
+        hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
+        this.opacity
+      );
+    },
+    displayable: function() {
+      return (0 <= this.s && this.s <= 1 || isNaN(this.s))
+          && (0 <= this.l && this.l <= 1)
+          && (0 <= this.opacity && this.opacity <= 1);
+    },
+    formatHsl: function() {
+      var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+      return (a === 1 ? "hsl(" : "hsla(")
+          + (this.h || 0) + ", "
+          + (this.s || 0) * 100 + "%, "
+          + (this.l || 0) * 100 + "%"
+          + (a === 1 ? ")" : ", " + a + ")");
+    }
+  }));
+
+  /* From FvD 13.37, CSS Color Module Level 3 */
+  function hsl2rgb(h, m1, m2) {
+    return (h < 60 ? m1 + (m2 - m1) * h / 60
+        : h < 180 ? m2
+        : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
+        : m1) * 255;
+  }
+
+  function interpolate$1(a, b) {
+    var c;
+    return (typeof b === "number" ? interpolateNumber$1
+        : b instanceof color ? interpolateRgb$1
+        : (c = color(b)) ? (b = c, interpolateRgb$1)
+        : interpolateString$1)(a, b);
+  }
+
+  function attrRemove$2(name) {
+    return function() {
+      this.removeAttribute(name);
+    };
+  }
+
+  function attrRemoveNS$2(fullname) {
+    return function() {
+      this.removeAttributeNS(fullname.space, fullname.local);
+    };
+  }
+
+  function attrConstant$2(name, interpolate, value1) {
+    var string00,
+        string1 = value1 + "",
+        interpolate0;
+    return function() {
+      var string0 = this.getAttribute(name);
+      return string0 === string1 ? null
+          : string0 === string00 ? interpolate0
+          : interpolate0 = interpolate(string00 = string0, value1);
+    };
+  }
+
+  function attrConstantNS$2(fullname, interpolate, value1) {
+    var string00,
+        string1 = value1 + "",
+        interpolate0;
+    return function() {
+      var string0 = this.getAttributeNS(fullname.space, fullname.local);
+      return string0 === string1 ? null
+          : string0 === string00 ? interpolate0
+          : interpolate0 = interpolate(string00 = string0, value1);
+    };
+  }
+
+  function attrFunction$2(name, interpolate, value) {
+    var string00,
+        string10,
+        interpolate0;
+    return function() {
+      var string0, value1 = value(this), string1;
+      if (value1 == null) return void this.removeAttribute(name);
+      string0 = this.getAttribute(name);
+      string1 = value1 + "";
+      return string0 === string1 ? null
+          : string0 === string00 && string1 === string10 ? interpolate0
+          : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
+    };
+  }
+
+  function attrFunctionNS$2(fullname, interpolate, value) {
+    var string00,
+        string10,
+        interpolate0;
+    return function() {
+      var string0, value1 = value(this), string1;
+      if (value1 == null) return void this.removeAttributeNS(fullname.space, fullname.local);
+      string0 = this.getAttributeNS(fullname.space, fullname.local);
+      string1 = value1 + "";
+      return string0 === string1 ? null
+          : string0 === string00 && string1 === string10 ? interpolate0
+          : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
+    };
+  }
+
+  function transition_attr$1(name, value) {
+    var fullname = namespace$1(name), i = fullname === "transform" ? interpolateTransformSvg$1 : interpolate$1;
+    return this.attrTween(name, typeof value === "function"
+        ? (fullname.local ? attrFunctionNS$2 : attrFunction$2)(fullname, i, tweenValue$1(this, "attr." + name, value))
+        : value == null ? (fullname.local ? attrRemoveNS$2 : attrRemove$2)(fullname)
+        : (fullname.local ? attrConstantNS$2 : attrConstant$2)(fullname, i, value));
+  }
+
+  function attrInterpolate$1(name, i) {
+    return function(t) {
+      this.setAttribute(name, i.call(this, t));
+    };
+  }
+
+  function attrInterpolateNS$1(fullname, i) {
+    return function(t) {
+      this.setAttributeNS(fullname.space, fullname.local, i.call(this, t));
+    };
+  }
+
+  function attrTweenNS$1(fullname, value) {
+    var t0, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0) t0 = (i0 = i) && attrInterpolateNS$1(fullname, i);
+      return t0;
+    }
+    tween._value = value;
+    return tween;
+  }
+
+  function attrTween$1(name, value) {
+    var t0, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0) t0 = (i0 = i) && attrInterpolate$1(name, i);
+      return t0;
+    }
+    tween._value = value;
+    return tween;
+  }
+
+  function transition_attrTween$1(name, value) {
+    var key = "attr." + name;
+    if (arguments.length < 2) return (key = this.tween(key)) && key._value;
+    if (value == null) return this.tween(key, null);
+    if (typeof value !== "function") throw new Error;
+    var fullname = namespace$1(name);
+    return this.tween(key, (fullname.local ? attrTweenNS$1 : attrTween$1)(fullname, value));
+  }
+
+  function delayFunction$1(id, value) {
+    return function() {
+      init$1(this, id).delay = +value.apply(this, arguments);
+    };
+  }
+
+  function delayConstant$1(id, value) {
+    return value = +value, function() {
+      init$1(this, id).delay = value;
+    };
+  }
+
+  function transition_delay$1(value) {
+    var id = this._id;
+
+    return arguments.length
+        ? this.each((typeof value === "function"
+            ? delayFunction$1
+            : delayConstant$1)(id, value))
+        : get$3(this.node(), id).delay;
+  }
+
+  function durationFunction$1(id, value) {
+    return function() {
+      set$3(this, id).duration = +value.apply(this, arguments);
+    };
+  }
+
+  function durationConstant$1(id, value) {
+    return value = +value, function() {
+      set$3(this, id).duration = value;
+    };
+  }
+
+  function transition_duration$1(value) {
+    var id = this._id;
+
+    return arguments.length
+        ? this.each((typeof value === "function"
+            ? durationFunction$1
+            : durationConstant$1)(id, value))
+        : get$3(this.node(), id).duration;
+  }
+
+  function easeConstant$1(id, value) {
+    if (typeof value !== "function") throw new Error;
+    return function() {
+      set$3(this, id).ease = value;
+    };
+  }
+
+  function transition_ease$1(value) {
+    var id = this._id;
+
+    return arguments.length
+        ? this.each(easeConstant$1(id, value))
+        : get$3(this.node(), id).ease;
+  }
+
+  function transition_filter$1(match) {
+    if (typeof match !== "function") match = matcher$1(match);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+        if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
+          subgroup.push(node);
+        }
+      }
+    }
+
+    return new Transition$1(subgroups, this._parents, this._name, this._id);
+  }
+
+  function transition_merge$1(transition) {
+    if (transition._id !== this._id) throw new Error;
+
+    for (var groups0 = this._groups, groups1 = transition._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+      for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group0[i] || group1[i]) {
+          merge[i] = node;
+        }
+      }
+    }
+
+    for (; j < m0; ++j) {
+      merges[j] = groups0[j];
+    }
+
+    return new Transition$1(merges, this._parents, this._name, this._id);
+  }
+
+  function start$1(name) {
+    return (name + "").trim().split(/^|\s+/).every(function(t) {
+      var i = t.indexOf(".");
+      if (i >= 0) t = t.slice(0, i);
+      return !t || t === "start";
+    });
+  }
+
+  function onFunction$1(id, name, listener) {
+    var on0, on1, sit = start$1(name) ? init$1 : set$3;
+    return function() {
+      var schedule = sit(this, id),
+          on = schedule.on;
+
+      // If this node shared a dispatch with the previous node,
+      // just assign the updated shared dispatch and we’re done!
+      // Otherwise, copy-on-write.
+      if (on !== on0) (on1 = (on0 = on).copy()).on(name, listener);
+
+      schedule.on = on1;
+    };
+  }
+
+  function transition_on$1(name, listener) {
+    var id = this._id;
+
+    return arguments.length < 2
+        ? get$3(this.node(), id).on.on(name)
+        : this.each(onFunction$1(id, name, listener));
+  }
+
+  function removeFunction$1(id) {
+    return function() {
+      var parent = this.parentNode;
+      for (var i in this.__transition) if (+i !== id) return;
+      if (parent) parent.removeChild(this);
+    };
+  }
+
+  function transition_remove$1() {
+    return this.on("end.remove", removeFunction$1(this._id));
+  }
+
+  function transition_select$1(select) {
+    var name = this._name,
+        id = this._id;
+
+    if (typeof select !== "function") select = selector$1(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+        if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
+          if ("__data__" in node) subnode.__data__ = node.__data__;
+          subgroup[i] = subnode;
+          schedule$1(subgroup[i], name, id, i, subgroup, get$3(node, id));
+        }
+      }
+    }
+
+    return new Transition$1(subgroups, this._parents, name, id);
+  }
+
+  function transition_selectAll$1(select) {
+    var name = this._name,
+        id = this._id;
+
+    if (typeof select !== "function") select = selectorAll$1(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          for (var children = select.call(node, node.__data__, i, group), child, inherit = get$3(node, id), k = 0, l = children.length; k < l; ++k) {
+            if (child = children[k]) {
+              schedule$1(child, name, id, k, children, inherit);
+            }
+          }
+          subgroups.push(children);
+          parents.push(node);
+        }
+      }
+    }
+
+    return new Transition$1(subgroups, parents, name, id);
+  }
+
+  var Selection$2 = selection$1.prototype.constructor;
+
+  function transition_selection$1() {
+    return new Selection$2(this._groups, this._parents);
+  }
+
+  function styleNull$1(name, interpolate) {
+    var string00,
+        string10,
+        interpolate0;
+    return function() {
+      var string0 = styleValue$1(this, name),
+          string1 = (this.style.removeProperty(name), styleValue$1(this, name));
+      return string0 === string1 ? null
+          : string0 === string00 && string1 === string10 ? interpolate0
+          : interpolate0 = interpolate(string00 = string0, string10 = string1);
+    };
+  }
+
+  function styleRemove$2(name) {
+    return function() {
+      this.style.removeProperty(name);
+    };
+  }
+
+  function styleConstant$2(name, interpolate, value1) {
+    var string00,
+        string1 = value1 + "",
+        interpolate0;
+    return function() {
+      var string0 = styleValue$1(this, name);
+      return string0 === string1 ? null
+          : string0 === string00 ? interpolate0
+          : interpolate0 = interpolate(string00 = string0, value1);
+    };
+  }
+
+  function styleFunction$2(name, interpolate, value) {
+    var string00,
+        string10,
+        interpolate0;
+    return function() {
+      var string0 = styleValue$1(this, name),
+          value1 = value(this),
+          string1 = value1 + "";
+      if (value1 == null) string1 = value1 = (this.style.removeProperty(name), styleValue$1(this, name));
+      return string0 === string1 ? null
+          : string0 === string00 && string1 === string10 ? interpolate0
+          : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
+    };
+  }
+
+  function styleMaybeRemove$1(id, name) {
+    var on0, on1, listener0, key = "style." + name, event = "end." + key, remove;
+    return function() {
+      var schedule = set$3(this, id),
+          on = schedule.on,
+          listener = schedule.value[key] == null ? remove || (remove = styleRemove$2(name)) : undefined;
+
+      // If this node shared a dispatch with the previous node,
+      // just assign the updated shared dispatch and we’re done!
+      // Otherwise, copy-on-write.
+      if (on !== on0 || listener0 !== listener) (on1 = (on0 = on).copy()).on(event, listener0 = listener);
+
+      schedule.on = on1;
+    };
+  }
+
+  function transition_style$1(name, value, priority) {
+    var i = (name += "") === "transform" ? interpolateTransformCss$1 : interpolate$1;
+    return value == null ? this
+        .styleTween(name, styleNull$1(name, i))
+        .on("end.style." + name, styleRemove$2(name))
+      : typeof value === "function" ? this
+        .styleTween(name, styleFunction$2(name, i, tweenValue$1(this, "style." + name, value)))
+        .each(styleMaybeRemove$1(this._id, name))
+      : this
+        .styleTween(name, styleConstant$2(name, i, value), priority)
+        .on("end.style." + name, null);
+  }
+
+  function styleInterpolate$1(name, i, priority) {
+    return function(t) {
+      this.style.setProperty(name, i.call(this, t), priority);
+    };
+  }
+
+  function styleTween$1(name, value, priority) {
+    var t, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0) t = (i0 = i) && styleInterpolate$1(name, i, priority);
+      return t;
+    }
+    tween._value = value;
+    return tween;
+  }
+
+  function transition_styleTween$1(name, value, priority) {
+    var key = "style." + (name += "");
+    if (arguments.length < 2) return (key = this.tween(key)) && key._value;
+    if (value == null) return this.tween(key, null);
+    if (typeof value !== "function") throw new Error;
+    return this.tween(key, styleTween$1(name, value, priority == null ? "" : priority));
+  }
+
+  function textConstant$2(value) {
+    return function() {
+      this.textContent = value;
+    };
+  }
+
+  function textFunction$2(value) {
+    return function() {
+      var value1 = value(this);
+      this.textContent = value1 == null ? "" : value1;
+    };
+  }
+
+  function transition_text$1(value) {
+    return this.tween("text", typeof value === "function"
+        ? textFunction$2(tweenValue$1(this, "text", value))
+        : textConstant$2(value == null ? "" : value + ""));
+  }
+
+  function textInterpolate$1(i) {
+    return function(t) {
+      this.textContent = i.call(this, t);
+    };
+  }
+
+  function textTween$1(value) {
+    var t0, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0) t0 = (i0 = i) && textInterpolate$1(i);
+      return t0;
+    }
+    tween._value = value;
+    return tween;
+  }
+
+  function transition_textTween$1(value) {
+    var key = "text";
+    if (arguments.length < 1) return (key = this.tween(key)) && key._value;
+    if (value == null) return this.tween(key, null);
+    if (typeof value !== "function") throw new Error;
+    return this.tween(key, textTween$1(value));
+  }
+
+  function transition_transition$1() {
+    var name = this._name,
+        id0 = this._id,
+        id1 = newId$1();
+
+    for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          var inherit = get$3(node, id0);
+          schedule$1(node, name, id1, i, group, {
+            time: inherit.time + inherit.delay + inherit.duration,
+            delay: 0,
+            duration: inherit.duration,
+            ease: inherit.ease
+          });
+        }
+      }
+    }
+
+    return new Transition$1(groups, this._parents, name, id1);
+  }
+
+  function transition_end$1() {
+    var on0, on1, that = this, id = that._id, size = that.size();
+    return new Promise(function(resolve, reject) {
+      var cancel = {value: reject},
+          end = {value: function() { if (--size === 0) resolve(); }};
+
+      that.each(function() {
+        var schedule = set$3(this, id),
+            on = schedule.on;
+
+        // If this node shared a dispatch with the previous node,
+        // just assign the updated shared dispatch and we’re done!
+        // Otherwise, copy-on-write.
+        if (on !== on0) {
+          on1 = (on0 = on).copy();
+          on1._.cancel.push(cancel);
+          on1._.interrupt.push(cancel);
+          on1._.end.push(end);
+        }
+
+        schedule.on = on1;
+      });
+    });
+  }
+
+  var id$1 = 0;
+
+  function Transition$1(groups, parents, name, id) {
+    this._groups = groups;
+    this._parents = parents;
+    this._name = name;
+    this._id = id;
+  }
+
+  function newId$1() {
+    return ++id$1;
+  }
+
+  var selection_prototype$1 = selection$1.prototype;
+
+  Transition$1.prototype = {
+    constructor: Transition$1,
+    select: transition_select$1,
+    selectAll: transition_selectAll$1,
+    filter: transition_filter$1,
+    merge: transition_merge$1,
+    selection: transition_selection$1,
+    transition: transition_transition$1,
+    call: selection_prototype$1.call,
+    nodes: selection_prototype$1.nodes,
+    node: selection_prototype$1.node,
+    size: selection_prototype$1.size,
+    empty: selection_prototype$1.empty,
+    each: selection_prototype$1.each,
+    on: transition_on$1,
+    attr: transition_attr$1,
+    attrTween: transition_attrTween$1,
+    style: transition_style$1,
+    styleTween: transition_styleTween$1,
+    text: transition_text$1,
+    textTween: transition_textTween$1,
+    remove: transition_remove$1,
+    tween: transition_tween$1,
+    delay: transition_delay$1,
+    duration: transition_duration$1,
+    ease: transition_ease$1,
+    end: transition_end$1
+  };
+
+  function cubicInOut$1(t) {
+    return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
+  }
+
+  var defaultTiming$1 = {
+    time: null, // Set on use.
+    delay: 0,
+    duration: 250,
+    ease: cubicInOut$1
+  };
+
+  function inherit$1(node, id) {
+    var timing;
+    while (!(timing = node.__transition) || !(timing = timing[id])) {
+      if (!(node = node.parentNode)) {
+        return defaultTiming$1.time = now$2(), defaultTiming$1;
+      }
+    }
+    return timing;
+  }
+
+  function selection_transition$1(name) {
+    var id,
+        timing;
+
+    if (name instanceof Transition$1) {
+      id = name._id, name = name._name;
+    } else {
+      id = newId$1(), (timing = defaultTiming$1).time = now$2(), name = name == null ? null : name + "";
+    }
+
+    for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          schedule$1(node, name, id, i, group, timing || inherit$1(node, id));
+        }
+      }
+    }
+
+    return new Transition$1(groups, this._parents, name, id);
+  }
+
+  selection$1.prototype.interrupt = selection_interrupt$1;
+  selection$1.prototype.transition = selection_transition$1;
+
+  var next_unique_id = 1;
+
+  var OPTIONS = {
+  	container: document.body,
+  	point: [window.innerWidth / 2, window.innerHeight / 2],
+  	html: "",
+  	open_duration: 250,
+  	close_duration: 250,
+  	popup_custom_template: "",
+  	position: "overlay",
+  	shadow: true,
+  	underlay_color: "rgba(255, 255, 255, 0.75)",
+
+  	width_side: 35,
+  	height_side: 35,
+  	width_overlay: 80,
+  	height_overlay: 80,
+  	vertical_position: "click",
+  	max_width: null,
+  	max_height: null,
+  	closeable: true,
+  };
+
+  function Panel() {
+  	var panel = this;
+  	panel.unique_id = next_unique_id++;
+  	panel._is_open = false;
+  	panel._onclose = null;
+  	for (var k in OPTIONS) panel["_" + k] = OPTIONS[k];
+  }
+
+  // Create accessor methods for all the options
+  function accessor(k) {
+  	Panel.prototype[k] = function (v) {
+  		if (typeof v == "undefined") return this["_" + k];
+  		this["_" + k] = v;
+  		return this;
+  	};
+  }
+  for (var k in OPTIONS) accessor(k);
+
+  // Custom accessor method for .point
+  Panel.prototype.point = function (arg1, arg2) {
+  	if (typeof arg1 == "undefined") return this._point;
+  	if (Array.isArray(arg1)) this._point = [arg1[0], arg1[1]];
+  	else if (typeof arg2 != "undefined") this._point = [arg1, arg2];
+  	else if (arg1 instanceof HTMLElement || arg1 instanceof SVGElement) {
+  		var r = arg1.getBoundingClientRect();
+  		this._point = [
+  			Math.floor(r.left + r.width / 2),
+  			Math.floor(r.top + r.height / 2),
+  		];
+  	} else {
+  		console.error("Panel: could not understand argument");
+  	}
+  	return this;
+  };
+
+  Panel.prototype.container = function (container) {
+  	if (container) this._container = container;
+  	return this;
+  };
+
+  function fadeOutPanel(panel) {
+  	panel._getElement().style.pointerEvents = "none";
+  	panel._is_open = false;
+  	var duration = panel._close_duration;
+  	select$1(panel._getElement())
+  		.transition()
+  		.duration(duration)
+  		.style("background", "rgba(255, 255, 255, 0)")
+  		.on("interrupt", function () {
+  			select$1(this).style("display", panel._is_open ? "block" : "none");
+  		})
+  		.on("end", function () {
+  			select$1(this).style("display", "none");
+  			select$1(panel._content).html("");
+  		})
+  		.select(".flourish-panel-close")
+  		.style("opacity", "0");
+
+  	select$1(panel._inner).transition().duration(duration).style("opacity", 0);
+
+  	select$1(panel._content)
+  		.transition()
+  		.duration(duration / 2)
+  		.style("opacity", 0);
+  }
+
+  Panel.prototype.hide = function () {
+  	var panel = this;
+  	if (!panel._is_open) return;
+  	fadeOutPanel(panel);
+  	panel._focusTrap.deactivate();
+  	return this;
+  };
+
+  Panel.prototype.close = Panel.prototype.hide;
+
+  function addCloseButton(panel) {
+  	select$1(panel._inner)
+  		.append("svg")
+  		.attr("class", "flourish-panel-close fl-ignore-svg-download")
+  		.attr("viewBox", "0 0 40 40")
+  		.style("width", "1.25rem")
+  		.style("height", "1.25rem")
+  		.style("position", "absolute")
+  		.style("right", "1rem")
+  		.style("top", "1rem")
+  		.style("cursor", "pointer")
+  		.style("opacity", 0)
+  		.attr("tabindex", "-1")
+  		.attr("role", "button")
+  		.attr("aria-label", "Close")
+  		.on("mouseover", function () {
+  			if (panel._closeable) this.style.opacity = 0.66;
+  		})
+  		.on("mouseout", function () {
+  			if (panel._closeable) this.style.opacity = 1;
+  		})
+  		.on("click", function () {
+  			event$1.stopPropagation();
+  			panel.hide();
+  			if (panel._onclose) panel._onclose();
+  		})
+  		.on("touch", function () {
+  			event$1.stopPropagation();
+  			panel.hide();
+  			if (panel._onclose) panel._onclose();
+  		})
+  		.on("keydown", function () {
+  			if (event$1.key == "Enter" || event$1.key == " ") {
+  				event$1.stopPropagation();
+  				event$1.preventDefault();
+  				panel.hide();
+  				if (panel._onclose) panel._onclose();
+  			}
+  		})
+  		.append("path")
+  		.attr("stroke", "#333333")
+  		.attr("stroke-width", "0.5rem")
+  		.attr("stroke-linecap", "round")
+  		.attr("d", "M 10,10 L 30,30 M 30,10 L 10,30");
+  }
+
+  function extractTitleFromContent(contentEl) {
+  	// Look for heading elements in order of priority
+  	var headings = contentEl.querySelectorAll("h1, h2, h3, h4, h5, h6");
+  	if (headings.length > 0) {
+  		return headings[0].textContent.trim();
+  	}
+
+  	// Look for elements with title-like classes
+  	var titleEl = contentEl.querySelector(
+  		".title, .heading, .panel-title, .popup-title",
+  	);
+  	if (titleEl) {
+  		return titleEl.textContent.trim();
+  	}
+
+  	return null;
+  }
+
+  Panel.prototype.draw = function () {
+  	var panel = this;
+  	panel._content.innerHTML = panel._html;
+
+  	openPanel(panel);
+  	return this;
+  };
+
+  Panel.prototype.on = function (event, callback) {
+  	if (event == "close") {
+  		if (callback) this._onclose = callback;
+  	} else console.error("Panel .on() method only supports 'close' events");
+  	return this;
+  };
+
+  function openPanel(panel) {
+  	var duration =
+  		panel._is_open || panel._html == panel._default ? 0 : panel._open_duration;
+
+  	var window_w = window.innerWidth,
+  		window_h = window.innerHeight;
+
+  	var overlay = panel._position == "overlay",
+  		full_width = panel._position == "top" || panel._position == "bottom",
+  		full_height = panel._position == "left" || panel._position == "right",
+  		max_w_percent = (100 * (panel._max_width || Infinity)) / window_w,
+  		max_h_percent = (100 * (panel._max_height || Infinity)) / window_h,
+  		y_percent = (100 * panel._point[1]) / window_h;
+
+  	var position_click =
+  		panel._vertical_position == "click" && !Flourish.fixed_height;
+
+  	var end_w_percent = overlay
+  			? Math.min(panel._width_overlay, max_w_percent)
+  			: full_width
+  				? 100
+  				: Math.min(panel._width_side, max_w_percent),
+  		end_h_percent = overlay
+  			? Math.min(panel._height_overlay, max_h_percent)
+  			: full_height
+  				? 100
+  				: Math.min(panel._height_side, max_h_percent);
+
+  	var end_l_percent = overlay
+  			? (100 - end_w_percent) / 2
+  			: panel._position == "right"
+  				? 100 - end_w_percent
+  				: 0,
+  		end_t_percent_overlay = position_click
+  			? Math.max(1, Math.min(y_percent - end_h_percent / 2, 99 - end_h_percent))
+  			: (100 - end_h_percent) / 2,
+  		end_t_percent = overlay
+  			? end_t_percent_overlay
+  			: panel._position == "bottom"
+  				? 100 - end_h_percent
+  				: 0;
+
+  	var start_w_percent = overlay ? 0 : end_w_percent,
+  		start_h_percent = overlay ? 0 : end_h_percent,
+  		start_l_percent = overlay
+  			? (100 * panel._point[0]) / window_w
+  			: panel._position == "right"
+  				? 100
+  				: panel._position == "left"
+  					? -end_w_percent
+  					: 0,
+  		start_t_percent = overlay
+  			? y_percent
+  			: panel._position == "bottom"
+  				? 100
+  				: panel._position == "top"
+  					? -end_h_percent
+  					: 0;
+
+  	var title = extractTitleFromContent(panel._content);
+  	var ariaLabel = title ? title + " dialog" : "Information dialog";
+
+  	select$1(panel._getElement())
+  		.style("display", "block")
+  		.transition()
+  		.duration(duration)
+  		.delay(duration * 0.25)
+  		.style(
+  			"background",
+  			overlay ? panel._underlay_color : "rgba(255, 255, 255, 0)",
+  		)
+  		.style("pointer-events", overlay ? null : "none")
+  		.attr("aria-label", ariaLabel);
+
+  	select$1(panel._inner)
+  		.style("opacity", 1)
+  		.style("display", "block")
+  		.style("pointer-events", "none")
+  		.style("width", start_w_percent + "%")
+  		.style("height", start_h_percent + "%")
+  		.style("left", start_l_percent + "%")
+  		.style("top", start_t_percent + "%")
+  		.transition()
+  		.duration(duration)
+  		.style("width", end_w_percent + "%")
+  		.style("height", end_h_percent + "%")
+  		.style("left", end_l_percent + "%")
+  		.style("top", end_t_percent + "%")
+  		.on("end", function () {
+  			select$1(panel._inner)
+  				.style("pointer-events", "all")
+  				.style("width", end_w_percent + "%")
+  				.style("height", end_h_percent + "%")
+  				.style("left", end_l_percent + "%")
+  				.style("top", end_t_percent + "%");
+  		})
+  		.on("interrupt", function () {
+  			select$1(panel._inner)
+  				.style("pointer-events", "all")
+  				.style("width", end_w_percent + "%")
+  				.style("height", end_h_percent + "%")
+  				.style("left", end_l_percent + "%")
+  				.style("top", end_t_percent + "%");
+  		});
+
+  	var offset_panel_content = full_height && position_click;
+
+  	select$1(panel._content)
+  		.transition()
+  		.duration(duration / 4)
+  		.delay(duration)
+  		.style("opacity", 1)
+  		.on("interrupt", function () {
+  			select$1(this).style("opacity", 1);
+  		});
+
+  	select$1(panel._content)
+  		.select(".flourish-panel-content-inner")
+  		.style("position", offset_panel_content ? "absolute" : null)
+  		.style("top", offset_panel_content ? y_percent + "%" : null)
+  		.style("transform", offset_panel_content ? "translateY(-50%)" : null);
+
+  	select$1(panel._inner)
+  		.select(".flourish-panel-close")
+  		.style("opacity", 0)
+  		.transition()
+  		.duration(duration / 4)
+  		.delay(duration)
+  		.style("opacity", panel._closeable ? 1 : 0)
+  		.attr("tabindex", panel._closeable ? "0" : "-1");
+
+  	if (!panel._focusTrap) {
+  		panel._focusTrap = createFocusTrap();
+  	}
+
+  	panel._focusTrap.activate();
+  	panel._is_open = true;
+
+  	timerFlush$2();
+  }
+
+  function createFocusTrap() {
+  	let previous_active_element = null;
+  	let first_focusable_element = null;
+  	let last_focusable_element = null;
+
+  	const panel_el = document.querySelector(".flourish-panel");
+  	const panel_inner_el = document.querySelector(".flourish-panel-inner");
+  	const focusable_els = panel_inner_el.querySelectorAll(
+  		'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), [role="button"]',
+  	);
+
+  	if (focusable_els.length) {
+  		first_focusable_element = focusable_els[0];
+  		last_focusable_element = focusable_els[focusable_els.length - 1];
+  	}
+
+  	function handle_key_down(event) {
+  		if (event.key === "Tab" || event.keyCode === 9) {
+  			// If shift + tab and on first element, move to last element
+  			if (focusable_els.length === 0) return; // No focusable elements
+  			if (
+  				event.shiftKey &&
+  				document.activeElement === first_focusable_element
+  			) {
+  				event.preventDefault();
+  				last_focusable_element.focus();
+  			}
+  			// If tab and on last element, cycle back to first element
+  			else if (
+  				!event.shiftKey &&
+  				document.activeElement === last_focusable_element
+  			) {
+  				event.preventDefault();
+  				first_focusable_element.focus();
+  			}
+  		}
+  	}
+
+  	return {
+  		activate: function () {
+  			previous_active_element = document.activeElement;
+  			panel_inner_el.addEventListener("keydown", handle_key_down);
+  			setTimeout(() => {
+  				// Focus the panel first to announce the aria-label
+  				panel_el.focus();
+  				// If there are focusable elements, don't auto-focus them initially
+  				// Let screen reader announce the panel label first
+  			}, 100);
+  		},
+  		deactivate: function () {
+  			panel_inner_el.removeEventListener("keydown", handle_key_down);
+  			const has_visible_focus = Boolean(
+  				document.querySelector(":focus-visible"),
+  			);
+  			if (has_visible_focus && previous_active_element) {
+  				previous_active_element.focus();
+  			}
+  		},
+  	};
+  }
+
+  Panel.prototype.margins = function () {
+  	var margins = { top: 0, right: 0, bottom: 0, left: 0 };
+  	if (this._is_open && this._position != "overlay") {
+  		var rect = this._getElement().getBoundingClientRect();
+  		if (this._position == "top") margins.top = rect.top + rect.height;
+  		if (this._position == "right") margins.right = rect.left;
+  		if (this._position == "bottom") margins.bottom = rect.top;
+  		if (this._position == "left") margins.left = rect.left + rect.width;
+  	}
+  	margins.css =
+  		margins.top +
+  		"px " +
+  		margins.right +
+  		"px " +
+  		margins.bottom +
+  		"px " +
+  		margins.left +
+  		"px";
+  	return margins;
+  };
+
+  Panel.prototype._getElement = function () {
+  	var panel = this;
+  	var id = "flourish-panel-" + panel.unique_id;
+  	var el = document.getElementById(id);
+  	if (!el) {
+  		el = document.createElement("div");
+  		el.className = "flourish-panel";
+  		el.role = "dialog";
+  		el.ariaModal = "true";
+  		el.tabIndex = "-1";
+  		el.id = id;
+  		el.addEventListener("click", function (e) {
+  			e.stopPropagation();
+  			closePanel();
+  		});
+
+  		window.addEventListener(
+  			"keydown",
+  			function (e) {
+  				if (!panel._is_open) return;
+  				if (e.key === "Escape") {
+  					e.stopPropagation();
+  					e.preventDefault();
+  					closePanel();
+  				}
+  			},
+  			false,
+  		);
+
+  		var s = el.style;
+  		s.position = "absolute";
+  		s.zIndex = "999999";
+  		s.pointerEvents = "none";
+  		s.width = "100%";
+  		s.height = "100%";
+  		s.top = "0";
+  		s.left = "0";
+  		s.background = "rgba(255, 255, 255, 0)";
+
+  		var inner = document.createElement("div");
+  		inner.className = "flourish-panel-inner";
+  		el.appendChild(inner);
+  		panel._inner = inner;
+
+  		addCloseButton(panel);
+
+  		s = inner.style;
+  		s.width = "0";
+  		s.height = "0";
+  		s.position = "absolute";
+  		s.boxSizing = "border-box";
+
+  		var shadow = document.createElement("div");
+  		shadow.className = "flourish-panel-shadow";
+  		inner.appendChild(shadow);
+
+  		var content = document.createElement("div");
+  		content.className = "flourish-panel-content";
+  		inner.appendChild(content);
+  		panel._content = content;
+
+  		s = content.style;
+  		s.opacity = "0";
+  		s.overflowY = "auto";
+  		s.height = "100%";
+
+  		panel._container.appendChild(el);
+  	}
+
+  	function closePanel() {
+  		panel.hide();
+  		if (panel._onclose) panel._onclose();
+  	}
+
+  	return el;
+  };
+
+  function initPanel() {
+  	return new Panel();
+  }
+
+  var DEFAULTS = {
+  	mode: "popup",
+
+  	// If truthy, means panel or popup are locked
+  	locked_id: null,
+
+  	// Popup content
+  	popup_is_custom: false,
+  	popup_custom_header: "Popup header",
+  	popup_custom_main:
+  		"Popup main content. Write your column names in between double curly brackets to display dynamic content.",
+  	popup_custom_accessible: "",
+  	popup_teaser_default: "Click to see more",
+
+  	// Popup styles
+  	popup_text_color: "#333333",
+  	popup_align: "start",
+  	popup_font_size: 1,
+  	popup_font_family: null,
+  	popup_width: 18,
+  	popup_background: "#ffffff",
+  	popup_background_opacity: 1,
+  	popup_padding: 0.5,
+  	popup_radius: 0.2,
+  	popup_shadow: true,
+  	popup_pointer: true,
+  	popup_header_background: "#333333",
+  	popup_header_text_color: "#ffffff",
+  	popup_header_type: "block",
+  	popup_list_type: "table",
+  	popup_list_label_weight: "normal",
+  	popup_list_separator: ": ",
+
+  	// Panel content
+  	panel_is_custom: false,
+  	panel_custom_header: "Custom panel header",
+  	panel_custom_main: "Custom panel main content",
+  	panel_side_default_content: "<h3>Tap or click to explore</h3>",
+  	panel_side_fixed: false,
+
+  	// Panel layout
+  	panel_position: "overlay",
+  	panel_width_overlay: 80,
+  	panel_height_overlay: 80,
+  	panel_vertical_position: "center",
+  	panel_width_side: 35,
+  	panel_height_side: 35,
+  	panel_max_width: null,
+  	panel_max_height: null,
+
+  	// Panel styles
+  	panel_text_color: "#333333",
+  	panel_align: "start",
+  	panel_font_size: 1.25,
+  	panel_font_family: null,
+  	panel_background: "#ffffff",
+  	panel_background_opacity: 0.9,
+  	panel_padding: 1.2,
+  	panel_radius: 0.2,
+  	panel_shadow: true,
+  	panel_open_duration: 250,
+  	panel_close_duration: 250,
+  	panel_list_type: "table",
+  	panel_list_label_weight: "normal",
+  	panel_list_separator: ": ",
+  };
+
+  const variable_regex = /\{\{((?:[^}]|\}[^}])*)\}\}/g; // This checks for {{ variable }} blocks
+
+  function isMissing(value) {
+  	if (
+  		value === "" ||
+  		Number.isNaN(value) ||
+  		value === null ||
+  		value === undefined
+  	)
+  		return true;
+  	return false;
+  }
+
+  // The default popup and accessible content should show the content of all
+  // bound columns. This function returns an object that:
+  // 1. If popup.setFormatters has been called, formats the values first
+  // 2. If titleKey and/or subtitleKey have been called, adds title/subtitle properties
+  // 3. Adds each column's formatted value to the main content (ensuring it's only
+  // added once even if a column is bound to more than one binding)
+  function getDefaultContent(instance, formatted_data) {
+  	let content = {
+  		title: null,
+  		subtitle: null,
+  		main: {},
+  	};
+  	var col_names_in_popup = {};
+  	const title = formatted_data[instance._title_key];
+  	const subtitle = formatted_data[instance._subtitle_key];
+  	if (title) {
+  		content.title = title;
+  		const col_name = instance._column_names[instance._title_key];
+  		col_names_in_popup[col_name] = true;
+  	}
+  	if (subtitle) {
+  		content.subtitle = subtitle;
+  		const col_name = instance._column_names[instance._subtitle_key];
+  		col_names_in_popup[col_name] = true;
+  	}
+  	// Move metadata to end of loop to prioritise other bindings
+  	const bindings = Object.keys(instance._column_names);
+  	if (bindings.includes("metadata")) {
+  		bindings.push(bindings.splice(bindings.indexOf("metadata"), 1)[0]);
+  	}
+
+  	for (let i = 0; i < bindings.length; i++) {
+  		const binding = bindings[i];
+  		if (instance._column_names_hidden.indexOf(binding) > -1) continue;
+  		if (binding == instance._title_key) continue;
+  		if (binding == instance._subtitle_key) continue;
+  		const col_name = instance._column_names[binding];
+  		if (Array.isArray(col_name)) {
+  			col_name.forEach(function (name, i) {
+  				if (col_names_in_popup[name] || isMissing(formatted_data[binding]))
+  					return;
+  				col_names_in_popup[name] = true;
+  				content.main[name] = formatted_data[binding][i];
+  			});
+  		} else {
+  			if (col_names_in_popup[col_name] || isMissing(formatted_data[binding]))
+  				continue;
+  			col_names_in_popup[col_name] = true;
+  			content.main[col_name] = formatted_data[binding];
+  		}
+  	}
+  	return content;
+  }
+
+  function getAccessiblePopupContent(instance, d) {
+  	let content = "";
+  	var custom_default = instance._popup_default_template;
+  	const formatted_data = formatValues(instance, d);
+  	if (
+  		instance._state.popup_is_custom &&
+  		instance._state.popup_custom_accessible
+  	) {
+  		const raw_content = instance._state.popup_custom_accessible;
+  		content = getParsedContent(raw_content, instance, formatted_data);
+  	} else if (!custom_default) {
+  		let formatted_content = getDefaultContent(instance, formatted_data);
+
+  		if (formatted_content.title) content += `${formatted_content.title}, `;
+  		if (formatted_content.subtitle)
+  			content += `${formatted_content.subtitle}, `;
+
+  		for (var col in formatted_content.main) {
+  			const col_value = formatted_content.main[col];
+  			if (!isMissing(col_value)) content += `${col}: ${col_value}, `;
+  		}
+  	} else {
+  		// For accessible content, just extract variables from template
+  		// and don't include URLs
+  		var col_names_in_popup = {};
+  		const variables = custom_default.match(variable_regex);
+  		variables.forEach((v) => {
+  			v.replace(variable_regex, function (_, target_binding) {
+  				var text;
+  				const col_name = instance._column_names[target_binding];
+  				if (Array.isArray(col_name)) {
+  					if (col_name.length == 0) return;
+  					col_name.forEach(function (name, i) {
+  						if (col_names_in_popup[name]) return;
+  						col_names_in_popup[name] = true;
+  						const value = formatted_data[target_binding][i];
+  						if (isUrl(value) || isMissing(value)) return;
+  						text = `${name}: ${value}, `;
+  					});
+  				} else {
+  					const value = formatted_data[target_binding];
+  					if (isUrl(value) || isMissing(value)) return;
+  					if (col_names_in_popup[col_name]) return;
+  					col_names_in_popup[col_name] = true;
+  					text = `${col_name}: ${value}, `;
+  				}
+  				if (text !== undefined) content += text;
+  			});
+  		});
+  	}
+
+  	content = content.replace(/, $/, "");
+  	return getInnerText(content);
+  }
+
+  function getInnerText(content) {
+  	const div = document.createElement("div");
+  	div.innerHTML = content;
+  	return div.innerText;
+  }
+
+  function getDefaultHTML(instance, formatted_data, mode) {
+  	var html = "<div class='flourish-panel-content-inner'>";
+  	var custom_default = instance["_" + mode + "_default_template"];
+  	var list_mode = instance._state[mode + "_list_type"];
+  	var separator = instance._state[mode + "_list_separator"];
+  	var separator_is_line_break = separator === "<br />";
+  	var character_separator = separator_is_line_break ? "" : separator;
+  	var line_break = separator_is_line_break ? separator : "";
+
+  	if (!custom_default) {
+  		let formatted_content = getDefaultContent(instance, formatted_data);
+
+  		// Header
+  		if (formatted_content.title || formatted_content.subtitle) {
+  			html += "<header>";
+  			if (formatted_content.title)
+  				html += `<h3>${formatted_content.title}</h3>`;
+  			if (formatted_content.subtitle)
+  				html += `<h4>${formatted_content.subtitle}</h4>`;
+  			html += "</header>";
+  		}
+
+  		// Main
+  		if (Object.keys(formatted_content.main).length) {
+  			let main_content = "";
+  			for (var col_name in formatted_content.main) {
+  				const col_value = formatted_content.main[col_name];
+  				if (list_mode == "table") {
+  					main_content +=
+  						"<tr><td class='table-col-label'><span class='data-heading'>";
+  					main_content += col_name + "</span></td><td class='table-col-value'>";
+  					main_content += col_value + "</td></tr>";
+  				} else if (list_mode == "ul") {
+  					main_content +=
+  						"<li><span class='data-heading'>" + col_name + character_separator;
+  					main_content += " </span> " + line_break + col_value + "</li>";
+  				}
+  			}
+
+  			html += "<div class='main-content'><" + list_mode + ">";
+  			html += main_content;
+  			html += "</" + list_mode + "></div></div>";
+  		}
+  	} else {
+  		html += custom_default.replace(
+  			variable_regex,
+  			function (_, target_binding) {
+  				var text;
+  				var col_name = instance._column_names[target_binding];
+  				if (Array.isArray(col_name)) {
+  					if (col_name.length == 0) return "";
+  					text = "<ul>";
+  					col_name.forEach(function (name, i) {
+  						text +=
+  							"<li>" +
+  							name +
+  							separator +
+  							formatted_data[target_binding][i] +
+  							"</li>";
+  					});
+  					text += "</ul>";
+  				} else {
+  					text = formatted_data[target_binding];
+  				}
+  				if (text !== undefined) return text;
+  				return "";
+  			},
+  		);
+  	}
+  	return html;
+  }
+
+  function getValueFromColumnName(instance, target_binding, formatted_data) {
+  	var value;
+  	Object.keys(instance._column_names).some(function (key) {
+  		if (Array.isArray(instance._column_names[key])) {
+  			var index = instance._column_names[key].indexOf(target_binding);
+  			if (index >= 0) {
+  				value = formatted_data[key][index];
+  				return true;
+  			}
+  		} else if (instance._column_names[key] == target_binding) {
+  			value = formatted_data[key];
+  			return true;
+  		}
+  	});
+  	if (value !== undefined) return value;
+  	return "";
+  }
+
+  function getCustomHTML(instance, formatted_data, mode) {
+  	var content = "";
+  	const content_header_raw =
+  		mode === "popup"
+  			? instance._state.popup_custom_header
+  			: instance._state.panel_custom_header;
+  	const content_main_raw =
+  		mode === "popup"
+  			? instance._state.popup_custom_main
+  			: instance._state.panel_custom_main;
+  	// TODO. Add handlebars proper to extend this to support else statements and nested conditions
+  	var content_header_parsed = getParsedContent(
+  		content_header_raw,
+  		instance,
+  		formatted_data,
+  	);
+  	var content_main_parsed = getParsedContent(
+  		content_main_raw,
+  		instance,
+  		formatted_data,
+  	);
+
+  	if (content_header_parsed)
+  		content += "<header>" + content_header_parsed + "</header>";
+  	if (content_main_parsed)
+  		content += "<div class='main-content'>" + content_main_parsed + "</div>";
+
+  	return content;
+  }
+
+  function getParsedContent(content_raw, instance, formatted_data) {
+  	var condition_regex = /\{\{#if ((?:[^}]|\}[^}])*)\}\}([\s\S]*?)\{\{\/if\}\}/g; // This checks for {{# if}} {{/ if}} blocks
+  	var flourish_regex = /\{\{(visualisation|story)\/(.*)\}\}/g; // This checks for {{ visualisation/123 }} Flourish blocks
+
+  	return content_raw
+  		.replace(condition_regex, function (_, target_binding, if_contents) {
+  			return getValueFromColumnName(instance, target_binding, formatted_data) ==
+  				""
+  				? ""
+  				: if_contents;
+  		})
+  		.replace(flourish_regex, function (original, type, opts) {
+  			var metadata = opts.split("/");
+  			if (metadata.length < 1 || !["visualisation", "story"].includes(type))
+  				return original;
+  			var embed_info = {
+  				id: metadata[0],
+  				w: metadata[1] || "100%",
+  				h: metadata[2] || "400px%",
+  			};
+  			var url = "https://flo.uri.sh/" + type + "/" + embed_info.id + "/embed?";
+  			var iframe = create$2("iframe")
+  				.attr("src", url)
+  				.attr("title", "Interactive or visual content")
+  				.attr("class", "flourish-embed-iframe")
+  				.attr("frameborder", "0")
+  				.attr("scrolling", "no")
+  				.attr(
+  					"sandbox",
+  					"allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation",
+  				)
+  				.style("width", embed_info.width)
+  				.style("height", embed_info.height);
+
+  			return iframe.node().outerHTML;
+  		})
+  		.replace(variable_regex, function (_, target_binding) {
+  			return getValueFromColumnName(instance, target_binding, formatted_data);
+  		})
+  		.trim();
+  }
+
+  function formatValues(instance, d) {
+  	var formatters = instance._formatters;
+
+  	var formatted_data = {};
+  	for (var binding in d) {
+  		if (formatters && formatters[binding]) {
+  			if (Array.isArray(formatters[binding])) {
+  				var formatted_array_of_values = [];
+  				for (var col = 0; col < formatters[binding].length; col++) {
+  					let formatted_value;
+  					if (isMissing(d[binding][col])) formatted_value = "";
+  					else formatted_value = formatters[binding][col](d[binding][col]);
+  					formatted_array_of_values.push(formatted_value);
+  				}
+  				formatted_data[binding] = formatted_array_of_values;
+  			} else {
+  				if (isMissing(d[binding])) continue;
+  				formatted_data[binding] = isMissing(d[binding])
+  					? ""
+  					: formatters[binding](d[binding]);
+  			}
+  		} else {
+  			formatted_data[binding] = isMissing(d[binding]) ? "" : d[binding];
+  		}
+  	}
+  	return formatted_data;
+  }
+
+  function getPopupHTML(instance, d, teaser) {
+  	var html = "";
+  	var formatted_data = formatValues(instance, d);
+  	if (teaser && !instance._state.popup_is_custom)
+  		html +=
+  			"<div class='main-content'>" +
+  			instance._state.popup_teaser_default +
+  			"</div>";
+  	else if (!teaser && !instance._state.popup_is_custom)
+  		html += getDefaultHTML(instance, formatted_data, "popup");
+  	else html += getCustomHTML(instance, formatted_data, "popup");
+  	return html;
+  }
+
+  function getPanelHTML(instance, d) {
+  	var html = "";
+  	var formatted_data = formatValues(instance, d);
+  	if (!instance._state.panel_is_custom)
+  		html += getDefaultHTML(instance, formatted_data, "panel");
+  	else html += getCustomHTML(instance, formatted_data, "panel");
+  	return html;
+  }
+
+  function appendStyles(instance) {
+  	if (!document.querySelector("#popup-styles")) {
+  		var css = document.createElement("style");
+  		css.id = "popup-styles";
+  		document.head.appendChild(css);
+  	}
+  	var styles = new Stylesheet();
+  	var header_block = instance._state.popup_header_type == "block";
+  	var header_background = color$3(
+  		instance._state.popup_header_background || "transparent",
+  	);
+  	header_background.opacity = instance._state.popup_header_background
+  		? instance._state.popup_background_opacity
+  		: 0;
+  	var panel_pos = instance._state.panel_position;
+  	styles
+  		.select(".flourish-panel .flourish-panel-shadow")
+  		.style("pointer-events", "none")
+  		.style("position", "absolute")
+  		.style(
+  			"display",
+  			panel_pos == "overlay" || !instance._state.panel_shadow
+  				? "none"
+  				: "block",
+  		)
+  		.style(
+  			"top",
+  			panel_pos == "bottom" ? "-3rem" : panel_pos == "top" ? "auto" : 0,
+  		)
+  		.style(
+  			"right",
+  			panel_pos == "left" ? "-3rem" : panel_pos == "right" ? "auto" : 0,
+  		)
+  		.style(
+  			"bottom",
+  			panel_pos == "top" ? "-3rem" : panel_pos == "bottom" ? "auto" : 0,
+  		)
+  		.style(
+  			"left",
+  			panel_pos == "right" ? "-3rem" : panel_pos == "left" ? "auto" : 0,
+  		)
+  		.style(
+  			"width",
+  			panel_pos == "left" || panel_pos == "right" ? "3rem" : "100%",
+  		)
+  		.style(
+  			"height",
+  			panel_pos == "top" || panel_pos == "bottom" ? "3rem" : "100%",
+  		)
+  		.style("z-index", "-1")
+  		.style("overflow", "hidden");
+
+  	styles
+  		.select(".flourish-panel .flourish-panel-shadow:before")
+  		.style("content", "''")
+  		.style("display", "block")
+  		.style("position", "absolute")
+  		.style(
+  			"width",
+  			panel_pos == "left" || panel_pos == "right" ? "1.5rem" : "100%",
+  		)
+  		.style(
+  			"height",
+  			panel_pos == "top" || panel_pos == "bottom" ? "1.5rem" : "100%",
+  		)
+  		.style("border-radius", "50%")
+  		.style("background", "rgba(0,0,0,0.3)")
+  		.style(
+  			"bottom",
+  			panel_pos == "bottom" ? "-50%" : panel_pos == "top" ? "auto" : 0,
+  		)
+  		.style(
+  			"left",
+  			panel_pos == "left" ? "-50%" : panel_pos == "right" ? "auto" : 0,
+  		)
+  		.style(
+  			"top",
+  			panel_pos == "top" ? "-50%" : panel_pos == "bottom" ? "auto" : 0,
+  		)
+  		.style(
+  			"right",
+  			panel_pos == "right" ? "-50%" : panel_pos == "left" ? "auto" : 0,
+  		)
+  		.style("filter", "blur(15px)");
+
+  	styles
+  		.select(".flourish-panel-inner:focus-visible")
+  		.style("outline", "none !important");
+
+  	styles
+  		.select(".flourish-panel:focus-visible")
+  		.style("outline", "none !important");
+
+  	styles.select(".flourish-panel-close:focus").style("outline", "none");
+
+  	styles
+  		.select(".flourish-panel-close:focus-visible")
+  		.style("outline", "-webkit-focus-ring-color auto 5px");
+
+  	styles
+  		.select(".flourish-popup")
+  		.style("pointer-events", "none")
+  		.select(".flourish-popup-content")
+  		.style("pointer-events", "auto")
+  		.style(
+  			"max-width",
+  			instance._state.popup_width == null
+  				? null
+  				: instance._state.popup_width + "rem !important",
+  		);
+
+  	styles
+  		.select(".flourish-popup header, .flourish-panel header")
+  		.style("margin", "0");
+
+  	styles
+  		.select(".flourish-popup header")
+  		.style("font-weight", "bold")
+  		.style(
+  			"color",
+  			header_block ? instance._state.popup_header_text_color : null,
+  		)
+  		.style("background", header_block ? header_background.rgb() : null)
+  		.style("padding", instance._state.popup_padding + "rem")
+  		.style(
+  			"border-radius",
+  			instance._state.popup_radius +
+  				"rem " +
+  				instance._state.popup_radius +
+  				"rem 0 0",
+  		);
+
+  	// If a header is not the last child that means the popup has content
+  	const headers_with_content = styles.select(
+  		".flourish-popup header:not(:last-child)",
+  	);
+  	// We want the padding bottom to be zero only when the popup has content and has an inline header
+  	headers_with_content.style("padding-bottom", header_block ? null : "0");
+
+  	// Header which isn't the last child has content following it. If it's an
+  	// inline header, there should be no extra padding between it and the content.
+  	styles
+  		.select(".flourish-popup header:not(:last-child)")
+  		.style("padding-bottom", header_block ? null : "0");
+
+  	styles
+  		.select(".flourish-panel .flourish-panel-content-inner")
+  		.style("overflow", "auto");
+
+  	styles
+  		.select(".flourish-panel header")
+  		.style("font-weight", "bold")
+  		.style("margin-bottom", "0.5em")
+  		.style("padding-right", "1rem");
+
+  	styles
+  		.select(".flourish-popup .main-content")
+  		.style("padding", instance._state.popup_padding + "rem");
+
+  	styles
+  		.select(".flourish-popup header + .main-content")
+  		.style("padding", instance._state.popup_padding + "rem")
+  		.style("padding-top", !header_block ? "0" : null);
+
+  	styles
+  		.select(".flourish-popup h3, .flourish-panel h3")
+  		.style("font-size", "1em")
+  		.style("margin", "0");
+
+  	styles
+  		.select(".flourish-popup h3, .flourish-popup h4, .flourish-popup ul li")
+  		.style("text-align", instance._state.popup_align);
+
+  	styles
+  		.select(".flourish-panel h3, .flourish-panel h4, .flourish-panel ul li")
+  		.style("text-align", instance._state.panel_align);
+
+  	styles
+  		.select(".flourish-popup h4, .flourish-panel h4")
+  		.style("font-size", "1em")
+  		.style("margin", header_block ? "0" : "0 0 0.25em")
+  		.style("opacity", "0.6")
+  		.style("font-weight", "normal");
+
+  	styles
+  		.select(
+  			".flourish-popup h4:empty, .flourish-panel h4:empty, .flourish-popup h3:empty, .flourish-panel h3:empty, .flourish-popup p:empty, .flourish-panel p:empty",
+  		)
+  		.style("display", "none");
+
+  	styles
+  		.select(".flourish-popup p, .flourish-panel p")
+  		.style("margin", "0")
+  		.style("font-size", "inherit")
+  		.style("font-weight", "normal");
+
+  	styles
+  		.select(".flourish-popup table, .flourish-panel table")
+  		.style("margin", "0")
+  		.style("width", "100%")
+  		.style("border-collapse", "collapse")
+  		.style("table-layout", "auto");
+
+  	styles
+  		.select(".flourish-popup table tr, .flourish-panel table tr")
+  		.style("border-top", "1px solid #eee");
+
+  	styles
+  		.select(
+  			".flourish-popup table tr:first-child, .flourish-panel table tr:first-child",
+  		)
+  		.style("border-top", "none");
+
+  	styles
+  		.select(".flourish-popup table tr td, .flourish-panel table tr td")
+  		.style("padding", "0.25em 0 0.25em 0")
+  		.style("padding-inline-end", "0.25em")
+  		.style("vertical-align", "top")
+  		.style("font-size", "inherit")
+  		.style("text-align", "start")
+  		.style("font-weight", "normal")
+  		.style("overflow", "hidden")
+  		.style("text-overflow", "ellipsis");
+
+  	styles
+  		.select(
+  			".flourish-popup table tr:last-child td, .flourish-panel table tr:last-child td",
+  		)
+  		.style("padding-bottom", "0");
+
+  	styles
+  		.select(".flourish-popup .data-heading")
+  		.style("font-weight", instance._state.popup_list_label_weight)
+  		.style("display", "inline-block");
+
+  	styles
+  		.select(".flourish-panel .data-heading")
+  		.style("font-weight", instance._state.panel_list_label_weight)
+  		.style("display", "inline-block");
+
+  	styles
+  		.select(
+  			".flourish-popup table tr td.table-col-value, .flourish-panel table tr td.table-col-value",
+  		)
+  		.style("text-align", "end")
+  		.style("padding", "0.25em 0 0.25em 0")
+  		.style("padding-inline-end", "0.25em");
+
+  	styles
+  		.select(
+  			".flourish-popup table tr:last-child td.table-col-value, .flourish-panel table tr:last-child td.table-col-value",
+  		)
+  		.style("padding-bottom", "0");
+
+  	styles
+  		.select(".flourish-popup ul, .flourish-panel ul")
+  		.style("padding", "0")
+  		.style("margin", "0");
+
+  	styles
+  		.select(".flourish-popup ul li, .flourish-panel ul li")
+  		.style("font-size", "inherit")
+  		.style("list-style-type", "none");
+
+  	if (instance._state.popup_is_custom) {
+  		console.log("is custom", instance._state.popup_is_custom);
+  		styles
+  			.select(".flourish-popup ul, .flourish-panel ul, .flourish-popup ol")
+  			.style("padding-inline-start", "1.5em")
+  			.style("padding-inline-end", "0.5em");
+
+  		styles
+  			.select(".flourish-popup ul li, .flourish-panel ul li")
+  			.style("list-style-type", "disc");
+
+  		styles
+  			.select(".flourish-popup ul li, .flourish-panel ul li")
+  			.style("font-size", "inherit")
+  			.style("list-style-position", "outside");
+
+  		styles
+  			.select(".flourish-popup ol li")
+  			.style("padding-inline-start", "0.5em");
+  	}
+
+  	document.head.querySelector("#popup-styles").innerHTML = styles.print();
+  }
+
+  function updateStyle(instance) {
+  	var popup_el = instance.popup._getElement();
+  	var popup_el_content = popup_el.querySelector(".flourish-popup-content");
+
+  	popup_el_content.style.padding = "0";
+  	popup_el_content.style.textAlign = instance._state.popup_align;
+  	popup_el_content.style.color = instance._state.popup_text_color;
+  	popup_el_content.style.fontSize = instance._state.popup_font_size + "rem";
+  	popup_el_content.style.fontFamily =
+  		instance._state.popup_font_family?.name || null;
+  	popup_el_content.style.borderRadius = instance._state.popup_radius + "rem";
+  	popup_el_content.addEventListener("click", function () {
+  		event.stopPropagation();
+  	});
+
+  	var panel_el = instance.panel._getElement();
+  	var panel_el_inner = panel_el.querySelector(".flourish-panel-inner");
+  	var panel_el_content = panel_el.querySelector(".flourish-panel-content");
+
+  	var rgba = color$3(instance._state.panel_background);
+  	panel_el_inner.style.background =
+  		"rgba(" +
+  		rgba.r +
+  		"," +
+  		rgba.g +
+  		"," +
+  		rgba.b +
+  		"," +
+  		instance._state.panel_background_opacity +
+  		")";
+  	panel_el_inner.style.borderRadius = instance._state.popup_radius + "rem";
+  	panel_el_inner.style.boxShadow =
+  		instance._state.panel_position == "overlay" && instance._state.panel_shadow
+  			? "0 0 1.5rem rgba(0,0,0,0.2)"
+  			: "";
+  	// panel_el_inner.style.focus = "outline: none;";
+  	// panel_el_inner.style.focusVisible = "outline: none;";
+  	panel_el_inner.addEventListener("click", function () {
+  		event.stopPropagation();
+  	});
+
+  	panel_el_content.style.padding = instance._state.panel_padding + "rem";
+  	panel_el_content.style.textAlign = instance._state.panel_align;
+  	panel_el_content.style.color = instance._state.panel_text_color;
+  	panel_el_content.style.fontSize = instance._state.panel_font_size + "rem";
+  	panel_el_content.style.fontFamily =
+  		instance._state.panel_font_family?.name || null;
+  	panel_el_content.style.boxSizing = "border-box";
+
+  	var g = popup_el.querySelector(".flourish-popup-svg g");
+  	g.style.fill = instance._state.popup_background;
+  	g.style.opacity = instance._state.popup_background_opacity;
+
+  	var closer = panel_el.querySelector(".flourish-panel-close path");
+  	if (closer) closer.style.stroke = instance._state.panel_text_color;
+
+  	if (instance._state.popup_shadow == false) g.removeAttribute("filter");
+  	else
+  		g.setAttribute(
+  			"filter",
+  			"url(#dropshadow-" + instance.popup.unique_id + ")",
+  		);
+  	g.querySelector("rect").setAttribute(
+  		"rx",
+  		instance._state.popup_radius + "rem",
+  	);
+  	g.querySelector("path").style.display = instance._state.popup_pointer
+  		? "block"
+  		: "none";
+
+  	appendStyles(instance);
+  }
+
+  function InfoPopup(state, panel_container, popup_container) {
+  	var instance = this;
+  	this._state = state;
+  	this._popup_default_template = null;
+  	this._panel_default_template = null;
+  	this._title_key = "name";
+  	this._subtitle_key = null;
+  	this._first_load = true;
+  	this._on_panel_close = null;
+  	this._show_default_content_timer = null;
+  	this._panel_container = panel_container || document.body;
+  	this._popup_container = popup_container || document.body;
+  	this._popup_directions = ["top", "bottom", "left", "right"];
+  	(this._column_names = []),
+  		(this._column_names_hidden = []),
+  		(this._formatters = null);
+  	this._getLockedPosition = function () {
+  		return null;
+  	};
+
+  	for (var key in DEFAULTS) {
+  		if (state[key] == undefined) state[key] = DEFAULTS[key];
+  	}
+
+  	this.panel = initPanel()
+  		.container(this._panel_container)
+  		.on("close", function () {
+  			instance._state.locked_id = null;
+  			instance.popup.hide();
+  			if (typeof instance._on_panel_close == "function")
+  				instance._on_panel_close();
+  		});
+  	this.popup = Flourish_popup()
+  		.container(this._popup_container)
+  		.point(0, 0)
+  		.draw()
+  		.hide();
+  }
+
+  // ============ //
+  // INIT METHODS //
+  // ============ //
+
+  InfoPopup.prototype.getLockedPosition = function (getLockedPositionFunction) {
+  	if (typeof getLockedPositionFunction != "function") {
+  		console.error(
+  			"Invalid function passed to @flourish/info-popup getLockedPosition",
+  		);
+  	} else this._getLockedPosition = getLockedPositionFunction;
+  	return this;
+  };
+
+  // ====== //
+  // UDPATE //
+  // ====== //
+
+  InfoPopup.prototype.update = function (callback) {
+  	if (this._state.locked_id !== null && this._state.mode != "none") {
+  		var selected = this._getLockedPosition(this._state.locked_id);
+  		if (selected)
+  			this.click(selected[0], selected[1], this._state.locked_id, callback);
+  		else
+  			console.warn(
+  				"@flourish/info-popup: failed to return value from getLockedPosition function",
+  			);
+  	} else this.clickout();
+  };
+
+  // ============= //
+  // EVENT METHODS //
+  // ============= //
+
+  function disablePopupPointerEvents(instance) {
+  	instance.popup
+  		._getElement()
+  		.querySelector(".flourish-popup-content").style.pointerEvents = "none";
+  }
+
+  function enablePopupPointerEvents(instance) {
+  	instance.popup
+  		._getElement()
+  		.querySelector(".flourish-popup-content").style.pointerEvents = "auto";
+  }
+
+  InfoPopup.prototype.click = function (coords_or_node, d, id, callback) {
+  	if (this._state.mode == "none") return;
+  	var target = this._state.mode == "popup" ? "popup" : "panel";
+  	if (this._checkIfPopupIsEmpty(d, target)) {
+  		target === "panel" ? this.hidePanel() : this.hidePopup();
+  		return;
+  	}
+  	// TODO: Check if popup content is empty
+  	this._point(coords_or_node);
+  	if (id != undefined) {
+  		this._state.locked_id = id;
+  		enablePopupPointerEvents(this);
+  	} else this._state.locked_id = null;
+  	if (target == "panel") {
+  		clearTimeout(this._show_default_content_timer);
+  		this.popup.hide();
+  		this._drawPanel(d, callback);
+  	} else if (target == "popup") {
+  		this.panel.hide();
+  		this._drawPopup(d, callback);
+  	}
+  };
+
+  InfoPopup.prototype.clickout = function () {
+  	this._state.locked_id = null;
+  	if (this._state.mode == "both" || this._state.mode == "panel") {
+  		this.popup.draw(); // call draw to resize constrainer, if necessary
+  		this.popup.hide();
+  		if (
+  			this._state.panel_position == "overlay" ||
+  			!this._state.panel_side_fixed
+  		) {
+  			this.panel.hide();
+  		} else this._showDefaultPanelContent();
+  	}
+  	if (this._state.mode == "popup") {
+  		this.panel.hide();
+  		this.popup.draw(); // call draw to resize constrainer, if necessary
+  		this.popup.hide();
+  	}
+
+  	// draw popup initially in "none" mode to resize constrainer & avoid whitespace around main graphic
+  	if (this._state.mode == "none") {
+  		this.panel.hide();
+  		this.popup.draw(); // call draw to resize constrainer, if necessary
+  		this.popup.hide();
+  	}
+  };
+
+  InfoPopup.prototype.touch = function (coords_or_node, d, id, callback) {
+  	this.mouseover(coords_or_node, d, callback, true, id);
+  };
+
+  InfoPopup.prototype.mouseover = function (
+  	coords_or_node,
+  	d,
+  	callback,
+  	touch,
+  	touch_id,
+  ) {
+  	var target = this._state.mode == "panel" ? "panel" : "popup";
+  	if (this._checkIfPopupIsEmpty(d, target, this._state.mode == "both")) {
+  		target === "panel" ? this.hidePanel() : this.hidePopup();
+  		return;
+  	}
+  	var instance = this;
+  	if (this._state.mode == "both") {
+  		this._point(coords_or_node);
+  		this._drawPopup(d, callback, true);
+  		touch ? enablePopupPointerEvents(this) : disablePopupPointerEvents(this);
+  		if (touch) {
+  			var popup_contents = instance.popup
+  				._getElement()
+  				.querySelector(".flourish-popup-content");
+  			popup_contents.onclick = function () {
+  				instance.click(coords_or_node, d, touch_id, callback);
+  			};
+  		}
+  	}
+  	if (this._state.mode == "popup") {
+  		if (this._state.locked_id !== null) return;
+  		disablePopupPointerEvents(this);
+  		this._point(coords_or_node);
+  		this._drawPopup(d, callback);
+  	}
+  	if (this._state.mode == "panel") {
+  		if (
+  			this._state.locked_id !== null ||
+  			this._state.panel_position == "overlay"
+  		)
+  			return;
+  		if (!this._state.panel_side_fixed) return;
+  		clearTimeout(this._show_default_content_timer);
+  		this._point(coords_or_node);
+  		this._drawPanel(d, callback);
+  	}
+  };
+
+  InfoPopup.prototype.mouseout = function () {
+  	if (this._state.mode == "both") {
+  		this.popup.hide();
+  	}
+  	if (this._state.mode == "popup") {
+  		if (this._state.locked_id !== null) return;
+  		this.popup.hide();
+  	}
+  	if (this._state.mode == "panel") {
+  		if (this._state.locked_id !== null) return;
+  		if (
+  			this._state.panel_position == "overlay" ||
+  			!this._state.panel_side_fixed
+  		)
+  			return;
+  		this._showDefaultPanelContent();
+  	}
+  };
+
+  // ======= //
+  // GETTERS //
+  // ======= //
+
+  InfoPopup.prototype.locked = function () {
+  	return this._state.locked_id;
+  };
+
+  InfoPopup.prototype.mode = function () {
+  	return this._state.mode;
+  };
+
+  // ====================== //
+  // DATA & CONTENT METHODS //
+  // ====================== //
+
+  InfoPopup.prototype.setColumnNames = function (column_names) {
+  	this._column_names = column_names;
+
+  	return this;
+  };
+
+  InfoPopup.prototype.hideColumnNames = function (column_names) {
+  	this._column_names_hidden = column_names;
+
+  	return this;
+  };
+
+  InfoPopup.prototype.setFormatters = function (metadata) {
+  	var formatters = {};
+  	for (var binding in metadata) {
+  		if (typeof metadata[binding] === "function") {
+  			formatters[binding] = metadata[binding];
+  		} else if (Array.isArray(metadata[binding])) {
+  			var array_of_formatters = [];
+  			for (var col = 0; col < metadata[binding].length; col++) {
+  				var formatter;
+  				if (typeof metadata[binding][col] === "function") {
+  					formatter = metadata[binding][col];
+  				} else {
+  					formatter = getFormatter(metadata[binding][col].output_format_id);
+  				}
+  				array_of_formatters.push(formatter);
+  			}
+  			formatters[binding] = array_of_formatters;
+  		} else {
+  			formatters[binding] = getFormatter(metadata[binding].output_format_id);
+  		}
+  	}
+  	this._formatters = formatters;
+
+  	return this;
+  };
+
+  InfoPopup.prototype._showDefaultPanelContent = function () {
+  	var instance = this;
+  	clearTimeout(this._show_default_content_timer);
+  	// This delays the return to the default content by 100ms, to avoid
+  	// a "strobe" effect if you are quickly moving in and out of data points
+  	// e.g. on a map
+  	this._show_default_content_timer = setTimeout(function () {
+  		instance.panel.html(instance._state.panel_side_default_content);
+  		instance._drawPanel();
+  	}, 100);
+  	// We do, however, immediately call the drawPanel function to make sure
+  	// the margins() measurement is correct, rather than stuck with the old
+  	// values at the time of being called.
+  	instance._drawPanel();
+  };
+
+  /**
+   * @param {any} d
+   * @param {"panel" | "popup" | "both"} target
+   * @param {boolean} teaser
+   */
+  InfoPopup.prototype._checkIfPopupIsEmpty = function (d, target, teaser) {
+  	if (this._state.popup_is_custom) {
+  		var popup_content =
+  			target === "panel"
+  				? getPanelHTML(this, d)
+  				: getPopupHTML(this, d, teaser);
+  		return popup_content.trim() === "";
+  	}
+
+  	if (isValueDisplayable(d[this._title_key])) return false;
+
+  	var binding_names = Object.keys(this._column_names);
+  	for (var i = 0; i < binding_names.length; i++) {
+  		var binding_name = binding_names[i];
+  		if (this._column_names_hidden.includes(binding_name)) continue;
+
+  		var value = d[binding_name];
+  		if (Array.isArray(value)) {
+  			for (let j = 0; j < value.length; j++) {
+  				if (isValueDisplayable(value[j])) return false;
+  			}
+  			continue;
+  		}
+
+  		if (isValueDisplayable(value)) return false;
+  	}
+
+  	return true;
+  };
+
+  function isValueDisplayable(value) {
+  	return value || value === 0;
+  }
+
+  InfoPopup.prototype.getAccessiblePopupContent = function (d) {
+  	return getAccessiblePopupContent(this, d);
+  };
+
+  // =================== //
+  // DRAW & HIDE METHODS //
+  // =================== //
+
+  InfoPopup.prototype.onPanelClose = function (f) {
+  	this._on_panel_close = f;
+  	return this;
+  };
+
+  InfoPopup.prototype._drawPopup = function (d, callback, teaser) {
+  	if (d) this.popup.html(getPopupHTML(this, d, teaser));
+  	updateStyle(this);
+  	this.popup.draw();
+  	if (callback) callback(this.popup._getElement(), d);
+  	return this;
+  };
+
+  InfoPopup.prototype._drawPanel = function (d, callback) {
+  	var instance = this;
+  	updateStyle(instance);
+  	this.panel
+  		.open_duration(this._state.panel_open_duration)
+  		.close_duration(this._state.panel_close_duration)
+  		.width_overlay(this._state.panel_width_overlay)
+  		.height_overlay(this._state.panel_height_overlay)
+  		.vertical_position(this._state.panel_vertical_position)
+  		.width_side(this._state.panel_width_side)
+  		.height_side(this._state.panel_height_side)
+  		.position(this._state.panel_position)
+  		.max_width(this._state.panel_max_width)
+  		.max_height(this._state.panel_max_height)
+  		.closeable(
+  			this._state.panel_position == "overlay" || !this._state.panel_side_fixed,
+  		);
+  	if (d === undefined) this.panel.draw();
+  	else this.panel.html(getPanelHTML(instance, d)).draw();
+  	if (callback) callback(this.panel._getElement(), d);
+  	return this;
+  };
+
+  InfoPopup.prototype.hidePanel = function () {
+  	this.panel.hide();
+  	return this;
+  };
+
+  InfoPopup.prototype.hidePopup = function () {
+  	this.popup.hide();
+  	return this;
+  };
+
+  // ================== //
+  // POSITIONAL METHODS //
+  // ================== //
+
+  InfoPopup.prototype.popupDirections = function (value) {
+  	if (!value) return this._popup_directions.slice();
+  	this._popup_directions = value;
+  	return this;
+  };
+
+  InfoPopup.prototype.margins = function () {
+  	return this.panel.margins();
+  };
+
+  InfoPopup.prototype._getBiggestGap = function (node_bbox) {
+  	var constrainer_bbox = this._popup_container.getBoundingClientRect();
+  	var best_side,
+  		biggest_gap = 0,
+  		arrow_directions;
+  	var gaps = {
+  		right:
+  			(constrainer_bbox.width +
+  				constrainer_bbox.left -
+  				(node_bbox.width + node_bbox.left)) /
+  			constrainer_bbox.width,
+  		bottom:
+  			(constrainer_bbox.height +
+  				constrainer_bbox.top -
+  				(node_bbox.height + node_bbox.top)) /
+  			constrainer_bbox.height,
+  		left: (node_bbox.left - constrainer_bbox.left) / constrainer_bbox.width,
+  		top: (node_bbox.top - constrainer_bbox.top) / constrainer_bbox.height,
+  	};
+
+  	var all_arrow_directions = {
+  		right: [
+  			"left",
+  			"leftFlexible",
+  			"topLeft",
+  			"bottomLeft",
+  			"bottomFlexible",
+  			"bottom",
+  			"topFlexible",
+  			"top",
+  			"bottomRight",
+  			"topRight",
+  			"rightFlexible",
+  			"right",
+  		],
+  		left: [
+  			"right",
+  			"rightFlexible",
+  			"topRight",
+  			"bottomRight",
+  			"top",
+  			"topFlexible",
+  			"bottom",
+  			"bottomFlexible",
+  			"bottomLeft",
+  			"topLeft",
+  			"leftFlexible",
+  			"left",
+  		],
+  		top: [
+  			"bottom",
+  			"bottomFlexible",
+  			"bottomRight",
+  			"bottomLeft",
+  			"rightFlexible",
+  			"leftFlexible",
+  			"right",
+  			"left",
+  			"topRight",
+  			"topLeft",
+  			"topFlexible",
+  			"top",
+  		],
+  		bottom: [
+  			"top",
+  			"topFlexible",
+  			"topLeft",
+  			"topRight",
+  			"left",
+  			"right",
+  			"leftFlexible",
+  			"rightFlexible",
+  			"bottomLeft",
+  			"bottomRight",
+  			"bottomFlexible",
+  			"bottom",
+  		],
+  	};
+
+  	for (var side in gaps) {
+  		if (this._popup_directions.indexOf(side) < 0) continue;
+  		if (gaps[side] > biggest_gap) {
+  			biggest_gap = gaps[side];
+  			best_side = side;
+  			arrow_directions = all_arrow_directions[side];
+  		}
+  	}
+
+  	var x = node_bbox.left,
+  		y = node_bbox.top;
+  	if (best_side == "left" || best_side == "right") y += node_bbox.height * 0.5;
+  	else if (best_side == "bottom") y += node_bbox.height;
+
+  	if (best_side == "top" || best_side == "bottom") x += node_bbox.width * 0.5;
+  	else if (best_side == "right") x += node_bbox.width;
+
+  	return {
+  		side: best_side,
+  		arrow_directions: arrow_directions,
+  		x: x,
+  		y: y,
+  	};
+  };
+
+  // Point should not often be required by template authors, who
+  // should generally use the click or mouseover methods
+  InfoPopup.prototype._point = function (coords_or_node) {
+  	var x,
+  		y,
+  		arrow_directions = this._popup_directions;
+  	if (Array.isArray(coords_or_node)) {
+  		x = coords_or_node[0];
+  		y = coords_or_node[1];
+  	} else if (coords_or_node && coords_or_node.getBoundingClientRect) {
+  		var node_rect = coords_or_node.getBoundingClientRect();
+  		var best_side = this._getBiggestGap(node_rect);
+  		x = best_side.x;
+  		y = best_side.y;
+  		arrow_directions = best_side.arrow_directions;
+  	} else {
+  		console.warn(
+  			"@flourish/info-popup: Invalid positional value passed in point function, should be a coordinates array, or a node. Current value is",
+  			coords_or_node,
+  		);
+  		return this;
+  	}
+  	this.panel.point(coords_or_node);
+  	this.popup.directions(arrow_directions).point(x, y);
+  	return this;
+  };
+
+  // ============== //
+  // CONFIG METHODS //
+  // ============== //
+
+  InfoPopup.prototype.popupDefaultTemplate = function (template) {
+  	if (template != undefined) {
+  		this._popup_default_template = template;
+  		return this;
+  	} else return this._popup_default_template;
+  };
+
+  InfoPopup.prototype.panelDefaultTemplate = function (template) {
+  	if (template != undefined) {
+  		this._panel_default_template = template;
+  		return this;
+  	} else return this._panel_default_template;
+  };
+
+  InfoPopup.prototype.titleKey = function (key) {
+  	if (key != undefined) {
+  		this._title_key = key;
+  		return this;
+  	} else return this._title_key;
+  };
+
+  InfoPopup.prototype.subtitleKey = function (key) {
+  	if (key != undefined) {
+  		this._subtitle_key = key;
+  		return this;
+  	} else return this._subtitle_key;
+  };
+
+  // ==== //
+  // INIT //
+  // ==== //
+
+  function createInfoPopup (state, panel_container, popup_container) {
+  	return new InfoPopup(state, panel_container, popup_container);
+  }
+
   var state = {
 
       // Voronoi chart specific settings
       voronoi_settings: {
 
-          border_color: "#fff",
+          border_color: "#ffffff",
           border_size: 1,
           clip_type: "rectangle",
           seed: 42,
@@ -11834,10 +17231,11 @@ var template = (function (exports) {
       popup: {}
   };
 
-  var layout = init$2(state.layout);
-  var colors = init$1(state.colors);
+  var layout = init$3(state.layout);
+  var colors = init$2(state.colors);
   var legend_container = createLegendContainer(state.legend_container);
   var legend_categorical = createDiscreteColorLegend(state.legend_categorical);
+  var popup = createInfoPopup(state.popup);
 
   var data = {};
 
@@ -12877,7 +18275,7 @@ var template = (function (exports) {
     var color = gamma(y);
 
     function rgb(start, end) {
-      var r = color((start = rgb$1(start)).r, (end = rgb$1(end)).r),
+      var r = color((start = rgb$3(start)).r, (end = rgb$3(end)).r),
           g = color(start.g, end.g),
           b = color(start.b, end.b),
           opacity = nogamma(start.opacity, end.opacity);
@@ -13453,8 +18851,8 @@ var template = (function (exports) {
   function interpolate(a, b) {
     var c;
     return (typeof b === "number" ? interpolateNumber
-        : b instanceof color$1 ? interpolateRgb
-        : (c = color$1(b)) ? (b = c, interpolateRgb)
+        : b instanceof color$3 ? interpolateRgb
+        : (c = color$3(b)) ? (b = c, interpolateRgb)
         : interpolateString)(a, b);
   }
 
@@ -16734,7 +22132,8 @@ var template = (function (exports) {
                   name: key,
                   children: grouped[key].map(d => ({
                       name: d.secondLevel,
-                      value: +d.values || 0
+                      value: +d.values || 0,
+                      _row: d
                   }))
               }))
           };
@@ -16743,7 +22142,8 @@ var template = (function (exports) {
               name: "root",
               children: rows.map(d => ({
                   name: d.firstLevel,
-                  value: +d.values || 0
+                  value: +d.values || 0,
+                  _row: d
               }))
           };
       }
@@ -16773,11 +22173,17 @@ var template = (function (exports) {
       return colors.getColor(firstLevel);
   }
 
-  function renderCells(svg, leaves, root, voronoi_settings, colors) {
+  function getPopupData(leaf) {
+      return { ...leaf.data._row };
+  }
+
+  function renderCells(svg, leaves, root, voronoi_settings, colors, popup) {
       const svgSel = select(svg);
 
       let g = svgSel.selectAll("g.cells").data([null]);
       g = g.enter().append("g").attr("class", "cells").merge(g);
+
+      popup.clickout();
 
       g.selectAll("path")
           .data(leaves, d => d.data.name)
@@ -16785,10 +22191,37 @@ var template = (function (exports) {
           .attr("d", d => polygonPath(d.polygon))
           .attr("fill", d => getCellColor(d, root, colors))
           .attr("stroke", voronoi_settings.border_color)
-          .attr("stroke-width", voronoi_settings.border_size);
+          .attr("stroke-width", voronoi_settings.border_size)
+          .on("mouseover", function(event, d) {
+              const popupData = getPopupData(d);
+              popup.mouseover(this, popupData);
+          })
+          .on("mouseout", function() {
+              popup.mouseout();
+          })
+          .on("click", function(event, d) {
+              event.stopPropagation();
+              popup.click(this, getPopupData(d), d.data.name);
+          });
+
+      svgSel.on("click", function() {
+          popup.clickout();
+      });
   }
 
-  function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors) {
+  function configurePopup(popup, leaves) {
+      const sampleRow = leaves[0] && leaves[0].data._row;
+      if (!sampleRow) return;
+
+      const columnNames = {};
+      Object.keys(sampleRow).forEach(key => {
+          columnNames[key] = key;
+      });
+
+      popup.setColumnNames(columnNames);
+  }
+
+  function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors, popup) {
       if (!hierarchy) return;
 
       computeLayout(hierarchy, voronoi_settings, height, width);
@@ -16797,7 +22230,8 @@ var template = (function (exports) {
       colors.updateColorScale(firstLevelNames);
 
       const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
-      renderCells(svg, leaves, hierarchy, voronoi_settings, colors);
+      configurePopup(popup, leaves);
+      renderCells(svg, leaves, hierarchy, voronoi_settings, colors, popup);
   }
 
   let svg;
@@ -16843,7 +22277,7 @@ var template = (function (exports) {
 
       const width = layout.getPrimaryWidth();
       const height = layout.getPrimaryHeight();
-      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors);
+      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup);
   }
 
   function update() {
@@ -16861,7 +22295,8 @@ var template = (function (exports) {
 
       const width = layout.getPrimaryWidth();
       const height = layout.getPrimaryHeight();
-      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors);
+      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup);
+      popup.update();
   }
 
   exports.data = data;

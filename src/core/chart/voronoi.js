@@ -6,7 +6,6 @@
 
 import * as d3 from "d3";
 import { voronoiTreemap } from "d3-voronoi-treemap";
-// import {rectangularClip, circularClip} from "./clip";
 import {clipVoronoi} from "./clip";
 
 // Simple seeded PRNG (mulberry32) to keep layout stable across redraws
@@ -41,7 +40,8 @@ export function processData(data) {
                 name: key,
                 children: grouped[key].map(d => ({
                     name: d.secondLevel,
-                    value: +d.values || 0
+                    value: +d.values || 0,
+                    _row: d
                 }))
             }))
         };
@@ -50,7 +50,8 @@ export function processData(data) {
             name: "root",
             children: rows.map(d => ({
                 name: d.firstLevel,
-                value: +d.values || 0
+                value: +d.values || 0,
+                _row: d
             }))
         };
     }
@@ -80,11 +81,17 @@ function getCellColor(leaf, root, colors) {
     return colors.getColor(firstLevel);
 }
 
-function renderCells(svg, leaves, root, voronoi_settings, colors) {
+function getPopupData(leaf) {
+    return { ...leaf.data._row };
+}
+
+function renderCells(svg, leaves, root, voronoi_settings, colors, popup) {
     const svgSel = d3.select(svg);
 
     let g = svgSel.selectAll("g.cells").data([null]);
     g = g.enter().append("g").attr("class", "cells").merge(g);
+
+    popup.clickout();
 
     g.selectAll("path")
         .data(leaves, d => d.data.name)
@@ -92,10 +99,37 @@ function renderCells(svg, leaves, root, voronoi_settings, colors) {
         .attr("d", d => polygonPath(d.polygon))
         .attr("fill", d => getCellColor(d, root, colors))
         .attr("stroke", voronoi_settings.border_color)
-        .attr("stroke-width", voronoi_settings.border_size);
+        .attr("stroke-width", voronoi_settings.border_size)
+        .on("mouseover", function(event, d) {
+            const popupData = getPopupData(d);
+            popup.mouseover(this, popupData);
+        })
+        .on("mouseout", function() {
+            popup.mouseout();
+        })
+        .on("click", function(event, d) {
+            event.stopPropagation();
+            popup.click(this, getPopupData(d), d.data.name);
+        });
+
+    svgSel.on("click", function() {
+        popup.clickout();
+    });
 }
 
-export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors) {
+function configurePopup(popup, leaves) {
+    const sampleRow = leaves[0] && leaves[0].data._row;
+    if (!sampleRow) return;
+
+    const columnNames = {};
+    Object.keys(sampleRow).forEach(key => {
+        columnNames[key] = key;
+    });
+
+    popup.setColumnNames(columnNames);
+}
+
+export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors, popup) {
     if (!hierarchy) return;
 
     computeLayout(hierarchy, voronoi_settings, height, width);
@@ -104,5 +138,6 @@ export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, col
     colors.updateColorScale(firstLevelNames);
 
     const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
-    renderCells(svg, leaves, hierarchy, voronoi_settings, colors);
+    configurePopup(popup, leaves);
+    renderCells(svg, leaves, hierarchy, voronoi_settings, colors, popup);
 }

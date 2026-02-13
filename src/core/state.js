@@ -3,7 +3,7 @@ export default {
     // Voronoi chart specific settings
     voronoi_settings: {
 
-        border_color: "#fff",
+        border_color: "#ffffff",
         border_size: 1,
         clip_type: "rectangle",
         seed: 42,
