@@ -2,7 +2,8 @@ import data from "./data";
 import state from "./state";
 import { layout, colors, legend_container, legend_categorical, popup, localization, number_format } from "../init";
 import { sizeSvg, svg, updateLegend } from "./draw";
-import { processData, drawVoronoi } from "./chart/voronoi";
+import { drawVoronoi } from "./chart/voronoi";
+import { processData } from "./chart/format"
 
 export default function() {
     const hierarchy = processData(data);

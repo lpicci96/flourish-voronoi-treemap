@@ -22223,32 +22223,8 @@ var template = (function (exports) {
       }
   }
 
-  function createValueFormatter(localization, number_format) {
-      return number_format(localization.getFormatterFunction());
-  }
-
-  function configurePopup(popup, leaves, localization, number_format) {
-      const sampleRow = leaves[0] && leaves[0].data._row;
-      if (!sampleRow) return;
-
-      const columnNames = {};
-      Object.keys(sampleRow).forEach(key => {
-          columnNames[key] = key;
-      });
-
-      const formatter = createValueFormatter(localization, number_format);
-      const formatters = { values: formatter };
-
-      popup.setColumnNames(columnNames);
-      popup.setFormatters(formatters);
-  }
-
-  // TODO: Additional advanced settings - handling small values
-  // TODO: Aggregation of values
-  // TODO: Align chart left, center or right within section
-
-
   // Simple seeded PRNG (mulberry32) to keep layout stable across redraws
+
   function seedrandom(seed) {
       return function() {
           seed |= 0; seed = seed + 0x6D2B79F5 | 0;
@@ -22258,7 +22234,6 @@ var template = (function (exports) {
       };
   }
 
-  const _voronoiTreemap = voronoiTreemap();
 
   function processData(data) {
       const rows = Array.isArray(data) ? data : data.data;
@@ -22299,6 +22274,29 @@ var template = (function (exports) {
       return hierarchy(rootData)
           .sum(d => d.value);
   }
+
+  function configurePopup(popup, leaves, localization, number_format) {
+      const sampleRow = leaves[0] && leaves[0].data._row;
+      if (!sampleRow) return;
+
+      const columnNames = {};
+      Object.keys(sampleRow).forEach(key => {
+          columnNames[key] = key;
+      });
+
+      const formatter = number_format(localization.getFormatterFunction());
+      const formatters = { values: formatter };
+
+      popup.setColumnNames(columnNames);
+      popup.setFormatters(formatters);
+  }
+
+  // TODO: Additional advanced settings - handling small values
+  // TODO: Aggregation of values
+  // TODO: Align chart left, center or right within section
+
+
+  const _voronoiTreemap = voronoiTreemap();
 
   function computeLayout(hierarchy, voronoi_settings, height, width) {
       const clip = clipVoronoi(voronoi_settings.clip_type, height, width);
