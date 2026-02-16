@@ -3,7 +3,7 @@ import state from "./state";
 import { layout, colors, legend_container, legend_categorical, popup, localization, number_format, controls_container, filter_control } from "../init";
 import { sizeSvg, svg, updateLegend, updateControlStyles } from "./draw";
 import { drawVoronoi } from "./chart/voronoi";
-import { processData, getFilterOptions } from "./chart/format"
+import { processData, getFilterOptions } from "./chart/data_formatting"
 
 export default function() {
     const rows = Array.isArray(data) ? data : data.data;

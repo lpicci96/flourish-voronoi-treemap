@@ -1,6 +1,7 @@
 import { layout, colors, legend_container, legend_categorical, controls_container, filter_control, controlsStyle, buttonStyle, dropdownStyle, sliderStyle } from "../init";
 import state from "./state";
 import update from "./update";
+import { getColorDomain } from "./chart/colors";
 
 export let svg;
 
@@ -15,10 +16,7 @@ export function sizeSvg() {
 export function updateLegend(hierarchy) {
     const legendSection = layout.getSection("legend");
     const leaves = hierarchy.leaves();
-    const hasColorCategory = leaves.some(d => d.data._row && d.data._row.color_category != null);
-    const colorDomain = hasColorCategory
-        ? [...new Set(leaves.map(d => String(d.data._row.color_category)))]
-        : (hierarchy.children || []).map(d => d.data.name);
+    const colorDomain = getColorDomain(leaves, hierarchy);
     colors.updateColorScale(colorDomain);
     legend_categorical.data(colorDomain, (v) => colors.getColor(v));
     legend_container.update();

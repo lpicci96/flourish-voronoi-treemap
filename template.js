@@ -24432,6 +24432,13 @@ var template = (function (exports) {
     return _voronoiTreemap;
   }
 
+  /**
+   * Generate a centered square clipping polygon that fits within the
+   * given dimensions, using the shorter side as the square's edge length.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Polygon vertices (counterclockwise).
+   */
   function squareClip(height, width) {
       const side = Math.min(height, width);
       const offsetX = (width - side) / 2;
@@ -24439,11 +24446,25 @@ var template = (function (exports) {
       return [[offsetX, offsetY], [offsetX, offsetY + side], [offsetX + side, offsetY + side], [offsetX + side, offsetY]];
   }
 
+  /**
+   * Generate a rectangular clipping polygon spanning the full available area.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Polygon vertices (counterclockwise).
+   */
   function rectangularClip(height, width) {
       // Clipping polygon (counterclockwise rectangle)
       return [[0, 0], [0, height], [width, height], [width, 0]];
   }
 
+  /**
+   * Generate a regular n-sided polygon centered and scaled to fit within
+   * the given dimensions. The first vertex is placed at the top.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @param {number} nSides - Number of polygon sides.
+   * @returns {Array<number[]>} Polygon vertices.
+   */
   function regularPolygonClip(height, width, nSides) {
       // Generate unit polygon (r=1) centered at origin, first vertex at top
       const unitPoints = [];
@@ -24469,26 +24490,65 @@ var template = (function (exports) {
       ]);
   }
 
+  /**
+   * Approximate a circle using a 64-sided regular polygon.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Polygon vertices.
+   */
   function circularClip(height, width) {
       return regularPolygonClip(height, width, 64);
   }
 
+  /**
+   * Generate an equilateral triangle clipping polygon.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Polygon vertices.
+   */
   function triangleClip(height, width) {
       return regularPolygonClip(height, width, 3);
   }
 
+  /**
+   * Generate a regular pentagon clipping polygon.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Polygon vertices.
+   */
   function pentagonClip(height, width) {
       return regularPolygonClip(height, width, 5);
   }
 
+  /**
+   * Generate a regular hexagon clipping polygon.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Polygon vertices.
+   */
   function hexagonClip(height, width) {
       return regularPolygonClip(height, width, 6);
   }
 
+  /**
+   * Generate a diamond (4-sided regular polygon / rotated square) clipping polygon.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Polygon vertices.
+   */
   function diamondClip(height, width) {
       return regularPolygonClip(height, width, 4);
   }
 
+  /**
+   * Return a clipping polygon for the requested shape, scaled to fit the
+   * given dimensions.
+   * @param {string} shape - Shape identifier (square, rectangle, circle, triangle, pentagon, hexagon, diamond).
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Clipping polygon vertices.
+   * @throws {Error} If the shape is not recognised.
+   */
   function clipVoronoi(shape, height, width) {
 
       if (shape === "square") {
@@ -24510,8 +24570,12 @@ var template = (function (exports) {
       }
   }
 
-  // Simple seeded PRNG (mulberry32) to keep layout stable across redraws
-
+  /**
+   * Create a seeded pseudo-random number generator (mulberry32).
+   * Keeps the Voronoi layout stable across redraws for a given seed.
+   * @param {number} seed - Integer seed value.
+   * @returns {Function} PRNG function returning values in [0, 1).
+   */
   function seedrandom(seed) {
       return function() {
           seed |= 0; seed = seed + 0x6D2B79F5 | 0;
@@ -24521,13 +24585,25 @@ var template = (function (exports) {
       };
   }
 
-
+  /**
+   * Extract unique filter option values from data rows.
+   * Returns an empty array when no `filter` column is present.
+   * @param {Array<object>} rows - Raw data rows.
+   * @returns {string[]} Unique, non-empty filter values.
+   */
   function getFilterOptions(rows) {
       if (!rows || rows.length === 0) return [];
       if (!rows[0].filter) return [];
       return [...new Set(rows.map(d => d.filter).filter(Boolean))];
   }
 
+  /**
+   * Convert flat data rows into a d3-hierarchy with summed values.
+   * Supports single-level (`firstLevel`) and two-level (`firstLevel` +
+   * `secondLevel`) hierarchies.
+   * @param {Array<object>|{data: Array<object>}} data - Input data (array or object with `.data`).
+   * @returns {object|null} d3-hierarchy root node, or null if input is empty.
+   */
   function processData(data) {
       const rows = Array.isArray(data) ? data : data.data;
       if (!rows || rows.length === 0) return null;
@@ -24568,45 +24644,12 @@ var template = (function (exports) {
           .sum(d => d.value);
   }
 
-  function configurePopup(popup, leaves, localization, number_format) {
-      const sampleRow = leaves[0] && leaves[0].data._row;
-      if (!sampleRow) return;
-
-      const columnNames = {};
-      Object.keys(sampleRow).forEach(key => {
-          columnNames[key] = key;
-      });
-
-      const formatter = number_format(localization.getFormatterFunction());
-      const formatters = { values: formatter };
-
-      popup.setColumnNames(columnNames);
-      popup.setFormatters(formatters);
-  }
-
-  // TODO: Additional advanced settings - handling small values
-  // TODO: Aggregation of values
-  // TODO: Align chart left, center or right within section
-
-
-  const _voronoiTreemap = voronoiTreemap();
-
-  function computeLayout(hierarchy, voronoi_settings, height, width) {
-      const clip = clipVoronoi(voronoi_settings.clip_type, height, width);
-
-      _voronoiTreemap
-          .clip(clip)
-          .convergenceRatio(voronoi_settings.convergence_ratio)
-          .maxIterationCount(voronoi_settings.max_iterations)
-          .prng(seedrandom(voronoi_settings.seed));
-
-      _voronoiTreemap(hierarchy);
-  }
-
-  function polygonPath(polygon) {
-      return "M" + polygon.map(pt => pt[0] + "," + pt[1]).join("L") + "Z";
-  }
-
+  /**
+   * Compute a deterministic 32-bit integer hash from a string.
+   * Used to produce stable per-leaf jitter values.
+   * @param {string} str - Input string to hash.
+   * @returns {number} 32-bit integer hash.
+   */
   function simpleHash(str) {
       let hash = 0;
       for (let i = 0; i < str.length; i++) {
@@ -24616,6 +24659,14 @@ var template = (function (exports) {
       return hash;
   }
 
+  /**
+   * Shift the lightness of a base color by a deterministic amount derived
+   * from the leaf name, producing a subtle per-cell color variation.
+   * @param {string} baseColor - CSS color string (hex, rgb, etc.).
+   * @param {string} leafName - Leaf identifier used to seed the jitter.
+   * @param {number} amount - Maximum lightness shift (0–1 range).
+   * @returns {string} Hex color string with adjusted lightness.
+   */
   function jitterColor(baseColor, leafName, amount) {
       if (!amount || Number(amount) === 0) return baseColor;
       const hsl = hsl$4(baseColor);
@@ -24626,6 +24677,17 @@ var template = (function (exports) {
       return hsl.formatHex();
   }
 
+  /**
+   * Resolve the fill color for a single Voronoi cell.
+   * Uses `color_category` when present, otherwise falls back to the
+   * first-level parent name. Optionally applies lightness jitter to
+   * second-level leaves that don't use `color_category`.
+   * @param {object} leaf - d3-hierarchy leaf node.
+   * @param {object} root - d3-hierarchy root node.
+   * @param {object} colors - Flourish color scale instance.
+   * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
+   * @returns {string} Resolved hex color string.
+   */
   function getCellColor(leaf, root, colors, colorSettings) {
       let baseColor;
       if (leaf.data._row && leaf.data._row.color_category != null) {
@@ -24643,10 +24705,102 @@ var template = (function (exports) {
       return baseColor;
   }
 
+  /**
+   * Derive the color domain from a set of hierarchy leaves.
+   * When any leaf carries a `color_category` value the domain is the set of
+   * unique category strings; otherwise it falls back to the names of the
+   * first-level children of the hierarchy.
+   * @param {Array} leaves - Array of d3-hierarchy leaf nodes.
+   * @param {object} hierarchy - d3-hierarchy root node.
+   * @returns {string[]} Ordered array of domain values.
+   */
+  function getColorDomain(leaves, hierarchy) {
+      const hasColorCategory = leaves.some(d => d.data._row && d.data._row.color_category != null);
+      return hasColorCategory
+          ? [...new Set(leaves.map(d => String(d.data._row.color_category)))]
+          : (hierarchy.children || []).map(d => d.data.name);
+  }
+
+  /**
+   * Configure a Flourish popup instance with column names and number
+   * formatters derived from the current set of leaves.
+   * @param {object} popup - Flourish popup instance.
+   * @param {Array} leaves - Array of d3-hierarchy leaf nodes.
+   * @param {object} localization - Flourish localization instance.
+   * @param {Function} number_format - Flourish number_format factory.
+   */
+  function configurePopup(popup, leaves, localization, number_format) {
+      const sampleRow = leaves[0] && leaves[0].data._row;
+      if (!sampleRow) return;
+
+      const columnNames = {};
+      Object.keys(sampleRow).forEach(key => {
+          columnNames[key] = key;
+      });
+
+      const formatter = number_format(localization.getFormatterFunction());
+      const formatters = { values: formatter };
+
+      popup.setColumnNames(columnNames);
+      popup.setFormatters(formatters);
+  }
+
+  /**
+   * Extract the raw data row from a hierarchy leaf for popup display.
+   * @param {object} leaf - d3-hierarchy leaf node.
+   * @returns {object} Shallow copy of the leaf's bound data row.
+   */
   function getPopupData(leaf) {
       return { ...leaf.data._row };
   }
 
+  // TODO: Additional advanced settings - handling small values
+  // TODO: Aggregation of values
+  // TODO: Align chart left, center or right within section
+
+
+  const _voronoiTreemap = voronoiTreemap();
+
+  /**
+   * Run the d3-voronoi-treemap layout algorithm on the given hierarchy.
+   * Mutates each node's `polygon` property in place.
+   * @param {object} hierarchy - d3-hierarchy root node with summed values.
+   * @param {object} voronoi_settings - Layout settings (clip_type, convergence_ratio, max_iterations, seed).
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   */
+  function computeLayout(hierarchy, voronoi_settings, height, width) {
+      const clip = clipVoronoi(voronoi_settings.clip_type, height, width);
+
+      _voronoiTreemap
+          .clip(clip)
+          .convergenceRatio(voronoi_settings.convergence_ratio)
+          .maxIterationCount(voronoi_settings.max_iterations)
+          .prng(seedrandom(voronoi_settings.seed));
+
+      _voronoiTreemap(hierarchy);
+  }
+
+  /**
+   * Convert a polygon (array of [x, y] points) to an SVG path `d` string.
+   * @param {Array<number[]>} polygon - Array of coordinate pairs.
+   * @returns {string} SVG path data string.
+   */
+  function polygonPath(polygon) {
+      return "M" + polygon.map(pt => pt[0] + "," + pt[1]).join("L") + "Z";
+  }
+
+  /**
+   * Render (or update) Voronoi cells inside the given SVG element.
+   * Binds leaf data, sets fill colors, and wires popup interactions.
+   * @param {SVGElement} svg - Target SVG DOM element.
+   * @param {Array} leaves - Filtered hierarchy leaves with valid polygons.
+   * @param {object} root - d3-hierarchy root node.
+   * @param {object} voronoi_settings - Border color/size settings.
+   * @param {object} colors - Flourish color scale instance.
+   * @param {object} popup - Flourish popup instance.
+   * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
+   */
   function renderCells(svg, leaves, root, voronoi_settings, colors, popup, colorSettings) {
       const svgSel = select(svg);
 
@@ -24679,6 +24833,20 @@ var template = (function (exports) {
       });
   }
 
+  /**
+   * Main entry point: compute the Voronoi treemap layout, configure colors
+   * and popups, and render cells into the SVG.
+   * @param {SVGElement} svg - Target SVG DOM element.
+   * @param {object} hierarchy - d3-hierarchy root node with summed values.
+   * @param {number} width - Available width in pixels.
+   * @param {number} height - Available height in pixels.
+   * @param {object} voronoi_settings - Layout and border settings.
+   * @param {object} colors - Flourish color scale instance.
+   * @param {object} popup - Flourish popup instance.
+   * @param {object} localization - Flourish localization instance.
+   * @param {Function} number_format - Flourish number_format factory.
+   * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
+   */
   function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings) {
       if (!hierarchy) return;
 
@@ -24686,11 +24854,7 @@ var template = (function (exports) {
 
       const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
 
-      // Use color_category column if available, otherwise fall back to first level names
-      const hasColorCategory = leaves.some(d => d.data._row && d.data._row.color_category != null);
-      const colorDomain = hasColorCategory
-          ? [...new Set(leaves.map(d => String(d.data._row.color_category)))]
-          : (hierarchy.children || []).map(d => d.data.name);
+      const colorDomain = getColorDomain(leaves, hierarchy);
       colors.updateColorScale(colorDomain);
       configurePopup(popup, leaves, localization, number_format);
       renderCells(svg, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings);
@@ -24750,10 +24914,7 @@ var template = (function (exports) {
   function updateLegend(hierarchy) {
       const legendSection = layout.getSection("legend");
       const leaves = hierarchy.leaves();
-      const hasColorCategory = leaves.some(d => d.data._row && d.data._row.color_category != null);
-      const colorDomain = hasColorCategory
-          ? [...new Set(leaves.map(d => String(d.data._row.color_category)))]
-          : (hierarchy.children || []).map(d => d.data.name);
+      const colorDomain = getColorDomain(leaves, hierarchy);
       colors.updateColorScale(colorDomain);
       legend_categorical.data(colorDomain, (v) => colors.getColor(v));
       legend_container.update();

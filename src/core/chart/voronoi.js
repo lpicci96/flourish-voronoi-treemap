@@ -6,11 +6,21 @@
 
 import * as d3 from "d3";
 import { voronoiTreemap } from "d3-voronoi-treemap";
-import {clipVoronoi} from "./clip";
-import {configurePopup, seedrandom} from "./format";
+import { clipVoronoi } from "./clip";
+import { seedrandom } from "./data_formatting";
+import { getCellColor, getColorDomain } from "./colors";
+import { configurePopup, getPopupData } from "./popup";
 
 const _voronoiTreemap = voronoiTreemap();
 
+/**
+ * Run the d3-voronoi-treemap layout algorithm on the given hierarchy.
+ * Mutates each node's `polygon` property in place.
+ * @param {object} hierarchy - d3-hierarchy root node with summed values.
+ * @param {object} voronoi_settings - Layout settings (clip_type, convergence_ratio, max_iterations, seed).
+ * @param {number} height - Available height in pixels.
+ * @param {number} width - Available width in pixels.
+ */
 function computeLayout(hierarchy, voronoi_settings, height, width) {
     const clip = clipVoronoi(voronoi_settings.clip_type, height, width);
 
@@ -23,50 +33,26 @@ function computeLayout(hierarchy, voronoi_settings, height, width) {
     _voronoiTreemap(hierarchy);
 }
 
+/**
+ * Convert a polygon (array of [x, y] points) to an SVG path `d` string.
+ * @param {Array<number[]>} polygon - Array of coordinate pairs.
+ * @returns {string} SVG path data string.
+ */
 function polygonPath(polygon) {
     return "M" + polygon.map(pt => pt[0] + "," + pt[1]).join("L") + "Z";
 }
 
-function simpleHash(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-        hash = ((hash << 5) - hash) + str.charCodeAt(i);
-        hash |= 0;
-    }
-    return hash;
-}
-
-function jitterColor(baseColor, leafName, amount) {
-    if (!amount || Number(amount) === 0) return baseColor;
-    const hsl = d3.hsl(baseColor);
-    // Use a deterministic hash to get a value centered between -0.5 and 0.5
-    const raw = Math.abs(simpleHash(leafName));
-    const hashVal = (raw % 1000) / 1000 - 0.5;
-    hsl.l = Math.max(0, Math.min(1, hsl.l + hashVal * amount));
-    return hsl.formatHex();
-}
-
-function getCellColor(leaf, root, colors, colorSettings) {
-    let baseColor;
-    if (leaf.data._row && leaf.data._row.color_category != null) {
-        baseColor = colors.getColor(String(leaf.data._row.color_category));
-    } else {
-        const firstLevel = leaf.parent === root ? leaf.data.name : leaf.parent.data.name;
-        baseColor = colors.getColor(firstLevel);
-    }
-
-    // Apply jitter to second-level leaves, but not when color_category is used
-    const hasColorCategory = leaf.data._row && leaf.data._row.color_category != null;
-    if (colorSettings && colorSettings.jitter_shade && leaf.parent !== root && !hasColorCategory) {
-        return jitterColor(baseColor, leaf.data.name, colorSettings.jitter_amount != null ? colorSettings.jitter_amount : 0.1);
-    }
-    return baseColor;
-}
-
-function getPopupData(leaf) {
-    return { ...leaf.data._row };
-}
-
+/**
+ * Render (or update) Voronoi cells inside the given SVG element.
+ * Binds leaf data, sets fill colors, and wires popup interactions.
+ * @param {SVGElement} svg - Target SVG DOM element.
+ * @param {Array} leaves - Filtered hierarchy leaves with valid polygons.
+ * @param {object} root - d3-hierarchy root node.
+ * @param {object} voronoi_settings - Border color/size settings.
+ * @param {object} colors - Flourish color scale instance.
+ * @param {object} popup - Flourish popup instance.
+ * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
+ */
 function renderCells(svg, leaves, root, voronoi_settings, colors, popup, colorSettings) {
     const svgSel = d3.select(svg);
 
@@ -99,6 +85,20 @@ function renderCells(svg, leaves, root, voronoi_settings, colors, popup, colorSe
     });
 }
 
+/**
+ * Main entry point: compute the Voronoi treemap layout, configure colors
+ * and popups, and render cells into the SVG.
+ * @param {SVGElement} svg - Target SVG DOM element.
+ * @param {object} hierarchy - d3-hierarchy root node with summed values.
+ * @param {number} width - Available width in pixels.
+ * @param {number} height - Available height in pixels.
+ * @param {object} voronoi_settings - Layout and border settings.
+ * @param {object} colors - Flourish color scale instance.
+ * @param {object} popup - Flourish popup instance.
+ * @param {object} localization - Flourish localization instance.
+ * @param {Function} number_format - Flourish number_format factory.
+ * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
+ */
 export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings) {
     if (!hierarchy) return;
 
@@ -106,11 +106,7 @@ export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, col
 
     const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
 
-    // Use color_category column if available, otherwise fall back to first level names
-    const hasColorCategory = leaves.some(d => d.data._row && d.data._row.color_category != null);
-    const colorDomain = hasColorCategory
-        ? [...new Set(leaves.map(d => String(d.data._row.color_category)))]
-        : (hierarchy.children || []).map(d => d.data.name);
+    const colorDomain = getColorDomain(leaves, hierarchy);
     colors.updateColorScale(colorDomain);
     configurePopup(popup, leaves, localization, number_format);
     renderCells(svg, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings);
