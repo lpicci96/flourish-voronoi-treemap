@@ -160,13 +160,11 @@ data:
 
   - key: color_category
     name: Color category
-    description: An optional column that specifies the category by which to color the Voronoi polygons. If not provided, the first level of the hierarchy will be used for coloring.
+    description: An optional string column that specifies the category by which to color the Voronoi polygons. If not provided, the first level of the hierarchy will be used for coloring.
     type: column
     dataset: data
-    column: "Data::C"
     data_type:
       - string
-      - number
     optional: true
 
 
