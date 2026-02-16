@@ -28,6 +28,9 @@ function polygonPath(polygon) {
 }
 
 function getCellColor(leaf, root, colors) {
+    if (leaf.data._row && leaf.data._row.color_category != null) {
+        return colors.getColor(String(leaf.data._row.color_category));
+    }
     const firstLevel = leaf.parent === root ? leaf.data.name : leaf.parent.data.name;
     return colors.getColor(firstLevel);
 }
@@ -73,10 +76,14 @@ export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, col
 
     computeLayout(hierarchy, voronoi_settings, height, width);
 
-    const firstLevelNames = (hierarchy.children || []).map(d => d.data.name);
-    colors.updateColorScale(firstLevelNames);
-
     const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
+
+    // Use color_category column if available, otherwise fall back to first level names
+    const hasColorCategory = leaves.some(d => d.data._row && d.data._row.color_category != null);
+    const colorDomain = hasColorCategory
+        ? [...new Set(leaves.map(d => String(d.data._row.color_category)))]
+        : (hierarchy.children || []).map(d => d.data.name);
+    colors.updateColorScale(colorDomain);
     configurePopup(popup, leaves, localization, number_format);
     renderCells(svg, leaves, hierarchy, voronoi_settings, colors, popup);
 }

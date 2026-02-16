@@ -14,9 +14,13 @@ export function sizeSvg() {
 
 export function updateLegend(hierarchy) {
     const legendSection = layout.getSection("legend");
-    const firstLevelNames = (hierarchy.children || []).map(d => d.data.name);
-    colors.updateColorScale(firstLevelNames);
-    legend_categorical.data(firstLevelNames, (v) => colors.getColor(v));
+    const leaves = hierarchy.leaves();
+    const hasColorCategory = leaves.some(d => d.data._row && d.data._row.color_category != null);
+    const colorDomain = hasColorCategory
+        ? [...new Set(leaves.map(d => String(d.data._row.color_category)))]
+        : (hierarchy.children || []).map(d => d.data.name);
+    colors.updateColorScale(colorDomain);
+    legend_categorical.data(colorDomain, (v) => colors.getColor(v));
     legend_container.update();
     legendSection.style.display = state.legend_categorical.show_legend ? "" : "none";
 }

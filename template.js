@@ -24604,6 +24604,9 @@ var template = (function (exports) {
   }
 
   function getCellColor(leaf, root, colors) {
+      if (leaf.data._row && leaf.data._row.color_category != null) {
+          return colors.getColor(String(leaf.data._row.color_category));
+      }
       const firstLevel = leaf.parent === root ? leaf.data.name : leaf.parent.data.name;
       return colors.getColor(firstLevel);
   }
@@ -24649,10 +24652,14 @@ var template = (function (exports) {
 
       computeLayout(hierarchy, voronoi_settings, height, width);
 
-      const firstLevelNames = (hierarchy.children || []).map(d => d.data.name);
-      colors.updateColorScale(firstLevelNames);
-
       const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
+
+      // Use color_category column if available, otherwise fall back to first level names
+      const hasColorCategory = leaves.some(d => d.data._row && d.data._row.color_category != null);
+      const colorDomain = hasColorCategory
+          ? [...new Set(leaves.map(d => String(d.data._row.color_category)))]
+          : (hierarchy.children || []).map(d => d.data.name);
+      colors.updateColorScale(colorDomain);
       configurePopup(popup, leaves, localization, number_format);
       renderCells(svg, leaves, hierarchy, voronoi_settings, colors, popup);
   }
@@ -24710,9 +24717,13 @@ var template = (function (exports) {
 
   function updateLegend(hierarchy) {
       const legendSection = layout.getSection("legend");
-      const firstLevelNames = (hierarchy.children || []).map(d => d.data.name);
-      colors.updateColorScale(firstLevelNames);
-      legend_categorical.data(firstLevelNames, (v) => colors.getColor(v));
+      const leaves = hierarchy.leaves();
+      const hasColorCategory = leaves.some(d => d.data._row && d.data._row.color_category != null);
+      const colorDomain = hasColorCategory
+          ? [...new Set(leaves.map(d => String(d.data._row.color_category)))]
+          : (hierarchy.children || []).map(d => d.data.name);
+      colors.updateColorScale(colorDomain);
+      legend_categorical.data(colorDomain, (v) => colors.getColor(v));
       legend_container.update();
       legendSection.style.display = state.legend_categorical.show_legend ? "" : "none";
   }
