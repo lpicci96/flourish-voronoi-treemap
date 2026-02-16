@@ -596,12 +596,12 @@ var template = (function (exports) {
     return map;
   }
 
-  function Set() {}
+  function Set$1() {}
 
   var proto = map$2.prototype;
 
-  Set.prototype = set$5.prototype = {
-    constructor: Set,
+  Set$1.prototype = set$5.prototype = {
+    constructor: Set$1,
     has: proto.has,
     add: function(value) {
       value += "";
@@ -617,10 +617,10 @@ var template = (function (exports) {
   };
 
   function set$5(object, f) {
-    var set = new Set;
+    var set = new Set$1;
 
     // Copy constructor.
-    if (object instanceof Set) object.each(function(value) { set.add(value); });
+    if (object instanceof Set$1) object.each(function(value) { set.add(value); });
 
     // Otherwise, assume it’s an array.
     else if (object) {
@@ -878,6 +878,23 @@ var template = (function (exports) {
   	document.body.appendChild(tnums_svg);
   }
   let is_browser_supporting_tnums_in_canvas = null;
+
+  function getTextDirection() {
+  	return window.getComputedStyle(document.body).direction || "ltr";
+  }
+
+  function hexToColor$1(hex_string, opacity) {
+  	if (typeof hex_string != "string") return false;
+  	var c = color$3(hex_string);
+  	c.opacity = opacity !== undefined ? opacity : 1;
+  	return c;
+  }
+
+  function hexToRgba(hex_string, opacity) {
+  	var c = hexToColor$1(hex_string, opacity);
+
+  	return c ? c.toString() : false;
+  }
 
   function checkBrowserTnumSupport() {
   	const test_tnum_string = "0123456789.,£";
@@ -1222,7 +1239,7 @@ var template = (function (exports) {
 
   var window_width, base_size;
 
-  function remToPx$1(rem) {
+  function remToPx$3(rem) {
   	if (window.innerWidth !== window_width) {
   		window_width = window.innerWidth;
   		base_size = parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -6197,7 +6214,7 @@ var template = (function (exports) {
   	document.body.style.backgroundPosition = state$1.background_image_position;
   }
 
-  var DEFAULTS$6 = Object.freeze({
+  var DEFAULTS$c = Object.freeze({
   	body_font: {
   		name: "Canva Sans Variable",
   		url: "https://public.flourish.studio/resources/fonts/canva-sans.css",
@@ -6681,7 +6698,7 @@ var template = (function (exports) {
   		margin = state$1.margin_left + state$1.margin_right;
   	else if (side == "vertical") margin = state$1.margin_top + state$1.margin_bottom;
 
-  	return remToPx$1(margin);
+  	return remToPx$3(margin);
   }
 
   function getBorderWidth(space) {
@@ -6756,8 +6773,8 @@ var template = (function (exports) {
   // Main init function ----------------------------------------
   function init$5(state_) {
   	state$1 = state_;
-  	for (var key in DEFAULTS$6) {
-  		if (state$1[key] === undefined) state$1[key] = DEFAULTS$6[key];
+  	for (var key in DEFAULTS$c) {
+  		if (state$1[key] === undefined) state$1[key] = DEFAULTS$c[key];
   	}
 
   	initFontStyles();
@@ -6785,7 +6802,7 @@ var template = (function (exports) {
   		getPrimaryScreenReadability: getPrimaryScreenReadability,
   		setHeight: setHeight,
   		showOverlay: showOverlay,
-  		remToPx: remToPx$1,
+  		remToPx: remToPx$3,
   		getOverlay: getOverlay,
   		awaitFonts: awaitFonts,
   		prepareScreenshotSVG: prepareScreenshotSVG,
@@ -6793,7 +6810,7 @@ var template = (function (exports) {
   	};
   }
 
-  var DEFAULTS$5 = Object.freeze({
+  var DEFAULTS$b = Object.freeze({
   	categorical_type: "palette",
   	categorical_palette: [
   		"#135ae1",
@@ -6893,7 +6910,7 @@ var template = (function (exports) {
   	var n = palette.length;
 
   	if (state.categorical_extend) {
-  		var angle = DEFAULTS$5.rotation_angle;
+  		var angle = DEFAULTS$b.rotation_angle;
   		var generator_name = "hcl";
   		var colorGenerator = color_generators[generator_name](palette, angle);
   		unique_domain.forEach(function (label, i) {
@@ -6932,7 +6949,7 @@ var template = (function (exports) {
   	return colorScale;
   }
 
-  function ascending$4(a, b) {
+  function ascending$6(a, b) {
     return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
   }
 
@@ -6964,11 +6981,11 @@ var template = (function (exports) {
 
   function ascendingComparator$1(f) {
     return function(d, x) {
-      return ascending$4(f(d), x);
+      return ascending$6(f(d), x);
     };
   }
 
-  var ascendingBisect = bisector$1(ascending$4);
+  var ascendingBisect = bisector$1(ascending$6);
   var bisectRight = ascendingBisect.right;
 
   function number$1(x) {
@@ -7675,7 +7692,7 @@ var template = (function (exports) {
     };
   }
 
-  function constant$6(x) {
+  function constant$7(x) {
     return function() {
       return x;
     };
@@ -7695,18 +7712,18 @@ var template = (function (exports) {
 
   function hue(a, b) {
     var d = b - a;
-    return d ? linear$3(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant$6(isNaN(a) ? b : a);
+    return d ? linear$3(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant$7(isNaN(a) ? b : a);
   }
 
   function gamma$2(y) {
     return (y = +y) === 1 ? nogamma$2 : function(a, b) {
-      return b - a ? exponential$2(a, b, y) : constant$6(isNaN(a) ? b : a);
+      return b - a ? exponential$2(a, b, y) : constant$7(isNaN(a) ? b : a);
     };
   }
 
   function nogamma$2(a, b) {
     var d = b - a;
-    return d ? linear$3(a, d) : constant$6(isNaN(a) ? b : a);
+    return d ? linear$3(a, d) : constant$7(isNaN(a) ? b : a);
   }
 
   var interpolateRgb$2 = (function rgbGamma(y) {
@@ -7890,7 +7907,7 @@ var template = (function (exports) {
 
   function interpolateValue(a, b) {
     var t = typeof b, c;
-    return b == null || t === "boolean" ? constant$6(b)
+    return b == null || t === "boolean" ? constant$7(b)
         : (t === "number" ? interpolateNumber$2
         : t === "string" ? ((c = color$2(b)) ? (b = c, interpolateRgb$2) : string)
         : b instanceof color$2 ? interpolateRgb$2
@@ -7993,7 +8010,7 @@ var template = (function (exports) {
     };
   }
 
-  function constant$5(x) {
+  function constant$6(x) {
     return function() {
       return x;
     };
@@ -8012,7 +8029,7 @@ var template = (function (exports) {
   function normalize(a, b) {
     return (b -= (a = +a))
         ? function(x) { return (x - a) / b; }
-        : constant$5(isNaN(b) ? NaN : 0.5);
+        : constant$6(isNaN(b) ? NaN : 0.5);
   }
 
   function clamper(domain) {
@@ -8246,7 +8263,7 @@ var template = (function (exports) {
       if (!arguments.length) return domain.slice();
       domain = [];
       for (var i = 0, n = _.length, d; i < n; ++i) if (d = _[i], d != null && !isNaN(d = +d)) domain.push(d);
-      domain.sort(ascending$4);
+      domain.sort(ascending$6);
       return rescale();
     };
 
@@ -10041,8 +10058,8 @@ var template = (function (exports) {
   function init$4(state) {
   	var colorFunction = null;
 
-  	for (var key in DEFAULTS$5) {
-  		if (state[key] === undefined) state[key] = DEFAULTS$5[key];
+  	for (var key in DEFAULTS$b) {
+  		if (state[key] === undefined) state[key] = DEFAULTS$b[key];
   	}
 
   	var fallback_value = DEFAULT_FALLBACK_VALUE;
@@ -10084,6 +10101,2418 @@ var template = (function (exports) {
   		fallback: fallback,
   	};
   }
+
+  var xhtml$3 = "http://www.w3.org/1999/xhtml";
+
+  var namespaces$3 = {
+    svg: "http://www.w3.org/2000/svg",
+    xhtml: xhtml$3,
+    xlink: "http://www.w3.org/1999/xlink",
+    xml: "http://www.w3.org/XML/1998/namespace",
+    xmlns: "http://www.w3.org/2000/xmlns/"
+  };
+
+  function namespace$3(name) {
+    var prefix = name += "", i = prefix.indexOf(":");
+    if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns") name = name.slice(i + 1);
+    return namespaces$3.hasOwnProperty(prefix) ? {space: namespaces$3[prefix], local: name} : name;
+  }
+
+  function creatorInherit$3(name) {
+    return function() {
+      var document = this.ownerDocument,
+          uri = this.namespaceURI;
+      return uri === xhtml$3 && document.documentElement.namespaceURI === xhtml$3
+          ? document.createElement(name)
+          : document.createElementNS(uri, name);
+    };
+  }
+
+  function creatorFixed$3(fullname) {
+    return function() {
+      return this.ownerDocument.createElementNS(fullname.space, fullname.local);
+    };
+  }
+
+  function creator$3(name) {
+    var fullname = namespace$3(name);
+    return (fullname.local
+        ? creatorFixed$3
+        : creatorInherit$3)(fullname);
+  }
+
+  function none$3() {}
+
+  function selector$3(selector) {
+    return selector == null ? none$3 : function() {
+      return this.querySelector(selector);
+    };
+  }
+
+  function selection_select$3(select) {
+    if (typeof select !== "function") select = selector$3(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+        if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
+          if ("__data__" in node) subnode.__data__ = node.__data__;
+          subgroup[i] = subnode;
+        }
+      }
+    }
+
+    return new Selection$5(subgroups, this._parents);
+  }
+
+  function empty$3() {
+    return [];
+  }
+
+  function selectorAll$3(selector) {
+    return selector == null ? empty$3 : function() {
+      return this.querySelectorAll(selector);
+    };
+  }
+
+  function selection_selectAll$3(select) {
+    if (typeof select !== "function") select = selectorAll$3(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          subgroups.push(select.call(node, node.__data__, i, group));
+          parents.push(node);
+        }
+      }
+    }
+
+    return new Selection$5(subgroups, parents);
+  }
+
+  function matcher$3(selector) {
+    return function() {
+      return this.matches(selector);
+    };
+  }
+
+  function selection_filter$3(match) {
+    if (typeof match !== "function") match = matcher$3(match);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+        if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
+          subgroup.push(node);
+        }
+      }
+    }
+
+    return new Selection$5(subgroups, this._parents);
+  }
+
+  function sparse$3(update) {
+    return new Array(update.length);
+  }
+
+  function selection_enter$3() {
+    return new Selection$5(this._enter || this._groups.map(sparse$3), this._parents);
+  }
+
+  function EnterNode$3(parent, datum) {
+    this.ownerDocument = parent.ownerDocument;
+    this.namespaceURI = parent.namespaceURI;
+    this._next = null;
+    this._parent = parent;
+    this.__data__ = datum;
+  }
+
+  EnterNode$3.prototype = {
+    constructor: EnterNode$3,
+    appendChild: function(child) { return this._parent.insertBefore(child, this._next); },
+    insertBefore: function(child, next) { return this._parent.insertBefore(child, next); },
+    querySelector: function(selector) { return this._parent.querySelector(selector); },
+    querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
+  };
+
+  function constant$5(x) {
+    return function() {
+      return x;
+    };
+  }
+
+  var keyPrefix$2 = "$"; // Protect against keys like “__proto__”.
+
+  function bindIndex$3(parent, group, enter, update, exit, data) {
+    var i = 0,
+        node,
+        groupLength = group.length,
+        dataLength = data.length;
+
+    // Put any non-null nodes that fit into update.
+    // Put any null nodes into enter.
+    // Put any remaining data into enter.
+    for (; i < dataLength; ++i) {
+      if (node = group[i]) {
+        node.__data__ = data[i];
+        update[i] = node;
+      } else {
+        enter[i] = new EnterNode$3(parent, data[i]);
+      }
+    }
+
+    // Put any non-null nodes that don’t fit into exit.
+    for (; i < groupLength; ++i) {
+      if (node = group[i]) {
+        exit[i] = node;
+      }
+    }
+  }
+
+  function bindKey$3(parent, group, enter, update, exit, data, key) {
+    var i,
+        node,
+        nodeByKeyValue = {},
+        groupLength = group.length,
+        dataLength = data.length,
+        keyValues = new Array(groupLength),
+        keyValue;
+
+    // Compute the key for each node.
+    // If multiple nodes have the same key, the duplicates are added to exit.
+    for (i = 0; i < groupLength; ++i) {
+      if (node = group[i]) {
+        keyValues[i] = keyValue = keyPrefix$2 + key.call(node, node.__data__, i, group);
+        if (keyValue in nodeByKeyValue) {
+          exit[i] = node;
+        } else {
+          nodeByKeyValue[keyValue] = node;
+        }
+      }
+    }
+
+    // Compute the key for each datum.
+    // If there a node associated with this key, join and add it to update.
+    // If there is not (or the key is a duplicate), add it to enter.
+    for (i = 0; i < dataLength; ++i) {
+      keyValue = keyPrefix$2 + key.call(parent, data[i], i, data);
+      if (node = nodeByKeyValue[keyValue]) {
+        update[i] = node;
+        node.__data__ = data[i];
+        nodeByKeyValue[keyValue] = null;
+      } else {
+        enter[i] = new EnterNode$3(parent, data[i]);
+      }
+    }
+
+    // Add any remaining nodes that were not bound to data to exit.
+    for (i = 0; i < groupLength; ++i) {
+      if ((node = group[i]) && (nodeByKeyValue[keyValues[i]] === node)) {
+        exit[i] = node;
+      }
+    }
+  }
+
+  function selection_data$3(value, key) {
+    if (!value) {
+      data = new Array(this.size()), j = -1;
+      this.each(function(d) { data[++j] = d; });
+      return data;
+    }
+
+    var bind = key ? bindKey$3 : bindIndex$3,
+        parents = this._parents,
+        groups = this._groups;
+
+    if (typeof value !== "function") value = constant$5(value);
+
+    for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
+      var parent = parents[j],
+          group = groups[j],
+          groupLength = group.length,
+          data = value.call(parent, parent && parent.__data__, j, parents),
+          dataLength = data.length,
+          enterGroup = enter[j] = new Array(dataLength),
+          updateGroup = update[j] = new Array(dataLength),
+          exitGroup = exit[j] = new Array(groupLength);
+
+      bind(parent, group, enterGroup, updateGroup, exitGroup, data, key);
+
+      // Now connect the enter nodes to their following update node, such that
+      // appendChild can insert the materialized enter node before this node,
+      // rather than at the end of the parent node.
+      for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
+        if (previous = enterGroup[i0]) {
+          if (i0 >= i1) i1 = i0 + 1;
+          while (!(next = updateGroup[i1]) && ++i1 < dataLength);
+          previous._next = next || null;
+        }
+      }
+    }
+
+    update = new Selection$5(update, parents);
+    update._enter = enter;
+    update._exit = exit;
+    return update;
+  }
+
+  function selection_exit$3() {
+    return new Selection$5(this._exit || this._groups.map(sparse$3), this._parents);
+  }
+
+  function selection_join$3(onenter, onupdate, onexit) {
+    var enter = this.enter(), update = this, exit = this.exit();
+    enter = typeof onenter === "function" ? onenter(enter) : enter.append(onenter + "");
+    if (onupdate != null) update = onupdate(update);
+    if (onexit == null) exit.remove(); else onexit(exit);
+    return enter && update ? enter.merge(update).order() : update;
+  }
+
+  function selection_merge$3(selection) {
+
+    for (var groups0 = this._groups, groups1 = selection._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+      for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group0[i] || group1[i]) {
+          merge[i] = node;
+        }
+      }
+    }
+
+    for (; j < m0; ++j) {
+      merges[j] = groups0[j];
+    }
+
+    return new Selection$5(merges, this._parents);
+  }
+
+  function selection_order$3() {
+
+    for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
+      for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
+        if (node = group[i]) {
+          if (next && node.compareDocumentPosition(next) ^ 4) next.parentNode.insertBefore(node, next);
+          next = node;
+        }
+      }
+    }
+
+    return this;
+  }
+
+  function selection_sort$3(compare) {
+    if (!compare) compare = ascending$5;
+
+    function compareNode(a, b) {
+      return a && b ? compare(a.__data__, b.__data__) : !a - !b;
+    }
+
+    for (var groups = this._groups, m = groups.length, sortgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, sortgroup = sortgroups[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          sortgroup[i] = node;
+        }
+      }
+      sortgroup.sort(compareNode);
+    }
+
+    return new Selection$5(sortgroups, this._parents).order();
+  }
+
+  function ascending$5(a, b) {
+    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+  }
+
+  function selection_call$3() {
+    var callback = arguments[0];
+    arguments[0] = this;
+    callback.apply(null, arguments);
+    return this;
+  }
+
+  function selection_nodes$3() {
+    var nodes = new Array(this.size()), i = -1;
+    this.each(function() { nodes[++i] = this; });
+    return nodes;
+  }
+
+  function selection_node$3() {
+
+    for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+      for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
+        var node = group[i];
+        if (node) return node;
+      }
+    }
+
+    return null;
+  }
+
+  function selection_size$3() {
+    var size = 0;
+    this.each(function() { ++size; });
+    return size;
+  }
+
+  function selection_empty$3() {
+    return !this.node();
+  }
+
+  function selection_each$3(callback) {
+
+    for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+      for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
+        if (node = group[i]) callback.call(node, node.__data__, i, group);
+      }
+    }
+
+    return this;
+  }
+
+  function attrRemove$5(name) {
+    return function() {
+      this.removeAttribute(name);
+    };
+  }
+
+  function attrRemoveNS$5(fullname) {
+    return function() {
+      this.removeAttributeNS(fullname.space, fullname.local);
+    };
+  }
+
+  function attrConstant$5(name, value) {
+    return function() {
+      this.setAttribute(name, value);
+    };
+  }
+
+  function attrConstantNS$5(fullname, value) {
+    return function() {
+      this.setAttributeNS(fullname.space, fullname.local, value);
+    };
+  }
+
+  function attrFunction$5(name, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.removeAttribute(name);
+      else this.setAttribute(name, v);
+    };
+  }
+
+  function attrFunctionNS$5(fullname, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
+      else this.setAttributeNS(fullname.space, fullname.local, v);
+    };
+  }
+
+  function selection_attr$3(name, value) {
+    var fullname = namespace$3(name);
+
+    if (arguments.length < 2) {
+      var node = this.node();
+      return fullname.local
+          ? node.getAttributeNS(fullname.space, fullname.local)
+          : node.getAttribute(fullname);
+    }
+
+    return this.each((value == null
+        ? (fullname.local ? attrRemoveNS$5 : attrRemove$5) : (typeof value === "function"
+        ? (fullname.local ? attrFunctionNS$5 : attrFunction$5)
+        : (fullname.local ? attrConstantNS$5 : attrConstant$5)))(fullname, value));
+  }
+
+  function defaultView$3(node) {
+    return (node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
+        || (node.document && node) // node is a Window
+        || node.defaultView; // node is a Document
+  }
+
+  function styleRemove$5(name) {
+    return function() {
+      this.style.removeProperty(name);
+    };
+  }
+
+  function styleConstant$5(name, value, priority) {
+    return function() {
+      this.style.setProperty(name, value, priority);
+    };
+  }
+
+  function styleFunction$5(name, value, priority) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.style.removeProperty(name);
+      else this.style.setProperty(name, v, priority);
+    };
+  }
+
+  function selection_style$3(name, value, priority) {
+    return arguments.length > 1
+        ? this.each((value == null
+              ? styleRemove$5 : typeof value === "function"
+              ? styleFunction$5
+              : styleConstant$5)(name, value, priority == null ? "" : priority))
+        : styleValue$3(this.node(), name);
+  }
+
+  function styleValue$3(node, name) {
+    return node.style.getPropertyValue(name)
+        || defaultView$3(node).getComputedStyle(node, null).getPropertyValue(name);
+  }
+
+  function propertyRemove$3(name) {
+    return function() {
+      delete this[name];
+    };
+  }
+
+  function propertyConstant$3(name, value) {
+    return function() {
+      this[name] = value;
+    };
+  }
+
+  function propertyFunction$3(name, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) delete this[name];
+      else this[name] = v;
+    };
+  }
+
+  function selection_property$3(name, value) {
+    return arguments.length > 1
+        ? this.each((value == null
+            ? propertyRemove$3 : typeof value === "function"
+            ? propertyFunction$3
+            : propertyConstant$3)(name, value))
+        : this.node()[name];
+  }
+
+  function classArray$3(string) {
+    return string.trim().split(/^|\s+/);
+  }
+
+  function classList$3(node) {
+    return node.classList || new ClassList$3(node);
+  }
+
+  function ClassList$3(node) {
+    this._node = node;
+    this._names = classArray$3(node.getAttribute("class") || "");
+  }
+
+  ClassList$3.prototype = {
+    add: function(name) {
+      var i = this._names.indexOf(name);
+      if (i < 0) {
+        this._names.push(name);
+        this._node.setAttribute("class", this._names.join(" "));
+      }
+    },
+    remove: function(name) {
+      var i = this._names.indexOf(name);
+      if (i >= 0) {
+        this._names.splice(i, 1);
+        this._node.setAttribute("class", this._names.join(" "));
+      }
+    },
+    contains: function(name) {
+      return this._names.indexOf(name) >= 0;
+    }
+  };
+
+  function classedAdd$3(node, names) {
+    var list = classList$3(node), i = -1, n = names.length;
+    while (++i < n) list.add(names[i]);
+  }
+
+  function classedRemove$3(node, names) {
+    var list = classList$3(node), i = -1, n = names.length;
+    while (++i < n) list.remove(names[i]);
+  }
+
+  function classedTrue$3(names) {
+    return function() {
+      classedAdd$3(this, names);
+    };
+  }
+
+  function classedFalse$3(names) {
+    return function() {
+      classedRemove$3(this, names);
+    };
+  }
+
+  function classedFunction$3(names, value) {
+    return function() {
+      (value.apply(this, arguments) ? classedAdd$3 : classedRemove$3)(this, names);
+    };
+  }
+
+  function selection_classed$3(name, value) {
+    var names = classArray$3(name + "");
+
+    if (arguments.length < 2) {
+      var list = classList$3(this.node()), i = -1, n = names.length;
+      while (++i < n) if (!list.contains(names[i])) return false;
+      return true;
+    }
+
+    return this.each((typeof value === "function"
+        ? classedFunction$3 : value
+        ? classedTrue$3
+        : classedFalse$3)(names, value));
+  }
+
+  function textRemove$3() {
+    this.textContent = "";
+  }
+
+  function textConstant$5(value) {
+    return function() {
+      this.textContent = value;
+    };
+  }
+
+  function textFunction$5(value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      this.textContent = v == null ? "" : v;
+    };
+  }
+
+  function selection_text$3(value) {
+    return arguments.length
+        ? this.each(value == null
+            ? textRemove$3 : (typeof value === "function"
+            ? textFunction$5
+            : textConstant$5)(value))
+        : this.node().textContent;
+  }
+
+  function htmlRemove$3() {
+    this.innerHTML = "";
+  }
+
+  function htmlConstant$3(value) {
+    return function() {
+      this.innerHTML = value;
+    };
+  }
+
+  function htmlFunction$3(value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      this.innerHTML = v == null ? "" : v;
+    };
+  }
+
+  function selection_html$3(value) {
+    return arguments.length
+        ? this.each(value == null
+            ? htmlRemove$3 : (typeof value === "function"
+            ? htmlFunction$3
+            : htmlConstant$3)(value))
+        : this.node().innerHTML;
+  }
+
+  function raise$3() {
+    if (this.nextSibling) this.parentNode.appendChild(this);
+  }
+
+  function selection_raise$3() {
+    return this.each(raise$3);
+  }
+
+  function lower$3() {
+    if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
+  }
+
+  function selection_lower$3() {
+    return this.each(lower$3);
+  }
+
+  function selection_append$3(name) {
+    var create = typeof name === "function" ? name : creator$3(name);
+    return this.select(function() {
+      return this.appendChild(create.apply(this, arguments));
+    });
+  }
+
+  function constantNull$3() {
+    return null;
+  }
+
+  function selection_insert$3(name, before) {
+    var create = typeof name === "function" ? name : creator$3(name),
+        select = before == null ? constantNull$3 : typeof before === "function" ? before : selector$3(before);
+    return this.select(function() {
+      return this.insertBefore(create.apply(this, arguments), select.apply(this, arguments) || null);
+    });
+  }
+
+  function remove$3() {
+    var parent = this.parentNode;
+    if (parent) parent.removeChild(this);
+  }
+
+  function selection_remove$3() {
+    return this.each(remove$3);
+  }
+
+  function selection_cloneShallow$3() {
+    var clone = this.cloneNode(false), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+  }
+
+  function selection_cloneDeep$3() {
+    var clone = this.cloneNode(true), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+  }
+
+  function selection_clone$3(deep) {
+    return this.select(deep ? selection_cloneDeep$3 : selection_cloneShallow$3);
+  }
+
+  function selection_datum$3(value) {
+    return arguments.length
+        ? this.property("__data__", value)
+        : this.node().__data__;
+  }
+
+  var filterEvents$2 = {};
+
+  var event$3 = null;
+
+  if (typeof document !== "undefined") {
+    var element$2 = document.documentElement;
+    if (!("onmouseenter" in element$2)) {
+      filterEvents$2 = {mouseenter: "mouseover", mouseleave: "mouseout"};
+    }
+  }
+
+  function filterContextListener$2(listener, index, group) {
+    listener = contextListener$3(listener, index, group);
+    return function(event) {
+      var related = event.relatedTarget;
+      if (!related || (related !== this && !(related.compareDocumentPosition(this) & 8))) {
+        listener.call(this, event);
+      }
+    };
+  }
+
+  function contextListener$3(listener, index, group) {
+    return function(event1) {
+      var event0 = event$3; // Events can be reentrant (e.g., focus).
+      event$3 = event1;
+      try {
+        listener.call(this, this.__data__, index, group);
+      } finally {
+        event$3 = event0;
+      }
+    };
+  }
+
+  function parseTypenames$6(typenames) {
+    return typenames.trim().split(/^|\s+/).map(function(t) {
+      var name = "", i = t.indexOf(".");
+      if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
+      return {type: t, name: name};
+    });
+  }
+
+  function onRemove$3(typename) {
+    return function() {
+      var on = this.__on;
+      if (!on) return;
+      for (var j = 0, i = -1, m = on.length, o; j < m; ++j) {
+        if (o = on[j], (!typename.type || o.type === typename.type) && o.name === typename.name) {
+          this.removeEventListener(o.type, o.listener, o.capture);
+        } else {
+          on[++i] = o;
+        }
+      }
+      if (++i) on.length = i;
+      else delete this.__on;
+    };
+  }
+
+  function onAdd$3(typename, value, capture) {
+    var wrap = filterEvents$2.hasOwnProperty(typename.type) ? filterContextListener$2 : contextListener$3;
+    return function(d, i, group) {
+      var on = this.__on, o, listener = wrap(value, i, group);
+      if (on) for (var j = 0, m = on.length; j < m; ++j) {
+        if ((o = on[j]).type === typename.type && o.name === typename.name) {
+          this.removeEventListener(o.type, o.listener, o.capture);
+          this.addEventListener(o.type, o.listener = listener, o.capture = capture);
+          o.value = value;
+          return;
+        }
+      }
+      this.addEventListener(typename.type, listener, capture);
+      o = {type: typename.type, name: typename.name, value: value, listener: listener, capture: capture};
+      if (!on) this.__on = [o];
+      else on.push(o);
+    };
+  }
+
+  function selection_on$3(typename, value, capture) {
+    var typenames = parseTypenames$6(typename + ""), i, n = typenames.length, t;
+
+    if (arguments.length < 2) {
+      var on = this.node().__on;
+      if (on) for (var j = 0, m = on.length, o; j < m; ++j) {
+        for (i = 0, o = on[j]; i < n; ++i) {
+          if ((t = typenames[i]).type === o.type && t.name === o.name) {
+            return o.value;
+          }
+        }
+      }
+      return;
+    }
+
+    on = value ? onAdd$3 : onRemove$3;
+    if (capture == null) capture = false;
+    for (i = 0; i < n; ++i) this.each(on(typenames[i], value, capture));
+    return this;
+  }
+
+  function dispatchEvent$3(node, type, params) {
+    var window = defaultView$3(node),
+        event = window.CustomEvent;
+
+    if (typeof event === "function") {
+      event = new event(type, params);
+    } else {
+      event = window.document.createEvent("Event");
+      if (params) event.initEvent(type, params.bubbles, params.cancelable), event.detail = params.detail;
+      else event.initEvent(type, false, false);
+    }
+
+    node.dispatchEvent(event);
+  }
+
+  function dispatchConstant$3(type, params) {
+    return function() {
+      return dispatchEvent$3(this, type, params);
+    };
+  }
+
+  function dispatchFunction$3(type, params) {
+    return function() {
+      return dispatchEvent$3(this, type, params.apply(this, arguments));
+    };
+  }
+
+  function selection_dispatch$3(type, params) {
+    return this.each((typeof params === "function"
+        ? dispatchFunction$3
+        : dispatchConstant$3)(type, params));
+  }
+
+  var root$3 = [null];
+
+  function Selection$5(groups, parents) {
+    this._groups = groups;
+    this._parents = parents;
+  }
+
+  Selection$5.prototype = {
+    constructor: Selection$5,
+    select: selection_select$3,
+    selectAll: selection_selectAll$3,
+    filter: selection_filter$3,
+    data: selection_data$3,
+    enter: selection_enter$3,
+    exit: selection_exit$3,
+    join: selection_join$3,
+    merge: selection_merge$3,
+    order: selection_order$3,
+    sort: selection_sort$3,
+    call: selection_call$3,
+    nodes: selection_nodes$3,
+    node: selection_node$3,
+    size: selection_size$3,
+    empty: selection_empty$3,
+    each: selection_each$3,
+    attr: selection_attr$3,
+    style: selection_style$3,
+    property: selection_property$3,
+    classed: selection_classed$3,
+    text: selection_text$3,
+    html: selection_html$3,
+    raise: selection_raise$3,
+    lower: selection_lower$3,
+    append: selection_append$3,
+    insert: selection_insert$3,
+    remove: selection_remove$3,
+    clone: selection_clone$3,
+    datum: selection_datum$3,
+    on: selection_on$3,
+    dispatch: selection_dispatch$3
+  };
+
+  function select$3(selector) {
+    return typeof selector === "string"
+        ? new Selection$5([[document.querySelector(selector)]], [document.documentElement])
+        : new Selection$5([[selector]], root$3);
+  }
+
+  function ascending$4(a, b) {
+    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+  }
+
+  function bisector(compare) {
+    if (compare.length === 1) compare = ascendingComparator(compare);
+    return {
+      left: function(a, x, lo, hi) {
+        if (lo == null) lo = 0;
+        if (hi == null) hi = a.length;
+        while (lo < hi) {
+          var mid = lo + hi >>> 1;
+          if (compare(a[mid], x) < 0) lo = mid + 1;
+          else hi = mid;
+        }
+        return lo;
+      },
+      right: function(a, x, lo, hi) {
+        if (lo == null) lo = 0;
+        if (hi == null) hi = a.length;
+        while (lo < hi) {
+          var mid = lo + hi >>> 1;
+          if (compare(a[mid], x) > 0) hi = mid;
+          else lo = mid + 1;
+        }
+        return lo;
+      }
+    };
+  }
+
+  function ascendingComparator(f) {
+    return function(d, x) {
+      return ascending$4(f(d), x);
+    };
+  }
+
+  bisector(ascending$4);
+
+  function Stylesheet$1() {
+  	this.declarations = [];
+  	return this;
+  }
+
+  Stylesheet$1.prototype.select = function(selector) {
+  	if (!selector) return this;
+  	var declaration = new Declaration$1(selector);
+  	declaration.parent = this;
+  	this.addDeclaration(declaration);
+
+  	return declaration;
+  };
+
+  Stylesheet$1.prototype.addDeclaration = function(declaration) {
+  	this.declarations.push(declaration);
+  	return this;
+  };
+
+  Stylesheet$1.prototype.print = function() {
+  	var text = "";
+  	this.declarations.forEach(function(declaration) {
+  		text += declaration.selector + " {\n";
+  		declaration.styles.forEach(function(style) {
+  			text += "\t" + style[0] + ": " + style[1] + ";\n";
+  		});
+  		text += "}\n\n";
+  	});
+  	return text;
+  };
+
+  Stylesheet$1.prototype.clear = function() {
+  	this.declarations = [];
+  	return this;
+  };
+
+  function Declaration$1(selector) {
+  	this.selector = selector;
+  	this.styles = [];
+  	return this;
+  }
+
+  Declaration$1.prototype.style = function(property, _value) {
+  	var value = typeof value_ == "function" ? _value() : _value;
+  	if (value !== "" && value !== null && value !== undefined) this.styles.push([property, value]);
+  	return this;
+  };
+
+  Declaration$1.prototype.select = function(selector) {
+  	return this.parent.select(this.selector + " " + selector);
+  };
+
+  var small_gap = "0.2em";
+
+  function appendTo(container) {
+  	container.appendChild(this._container.node());
+
+  	if (!document.querySelector("#legend-styles")) {
+  		var css = document.createElement("style");
+  		var styles = new Stylesheet$1();
+
+  		styles
+  			.select(".fl-legend-container.interactive .fl-legend-item")
+  			.style("cursor", "pointer");
+
+  		styles
+  			.select(".fl-legend-container.interactive .fl-legend-item:hover")
+  			.style("opacity", 0.75);
+
+  		styles
+  			.select(".fl-legend-container.interactive .fl-legend-item:focus-visible")
+  			.style("border-radius", "4px")
+  			.style("outline", "2.5px solid #4d90fe")
+  			.style("outline-offset", "-2.25px");
+
+  		styles
+  			.select(".fl-legend-sr-only")
+  			.style("position", "absolute")
+  			.style("width", "1px")
+  			.style("height", "1px")
+  			.style("padding", "0")
+  			.style("margin", "-1px")
+  			.style("overflow", "hidden")
+  			.style("clip", "rect(0, 0, 0, 0)")
+  			.style("white-space", "nowrap")
+  			.style("border", "0");
+
+  		css.id = "legend-styles";
+  		css.type = "text/css";
+
+  		css.innerHTML = styles.print();
+  		document.head.appendChild(css);
+  	}
+
+  	return this;
+  }
+
+  function format(formatFunction) {
+  	this._formatFunction = formatFunction;
+  	return this;
+  }
+
+  function getContainer() {
+  	return this._container;
+  }
+
+  function visible(visible_) {
+  	if (visible_ === undefined) return this._visible;
+  	this._visible = visible_;
+  	return this;
+  }
+
+  function allowSingleEntry(allow_single_entry) {
+  	if (allow_single_entry === undefined) return this._allow_single_entry;
+  	this._allow_single_entry = allow_single_entry;
+  	return this;
+  }
+
+  function autoTitle(value) {
+  	if (value === undefined) return this._auto_title;
+  	this._auto_title = value;
+  	return this;
+  }
+
+  function _updateTitle() {
+  	var _this = this;
+  	var title =
+  		_this._state.title_mode == "auto" ? _this.autoTitle() : _this._state.title;
+
+  	this._container
+  		.select(".fl-legend-title")
+  		.text(title)
+  		.style("display", function () {
+  			if (!title.trim()) return "none";
+  			else if (_this._state.orientation === undefined) return "inline-block";
+  			else
+  				return _this._state.orientation == "horizontal"
+  					? "inline-block"
+  					: "block";
+  		})
+  		.style("padding-inline-start", 0)
+  		.style("padding-inline-end", small_gap);
+  }
+
+  function remToPx$2(rem) {
+  	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+  }
+
+  var legend_count = 0;
+  var DEFAULTS$a = Object.freeze({
+  	show_legend: true,
+
+  	title_mode: "auto",
+  	title: "",
+
+  	max_width: 100,
+
+  	swatch_width: 0.75,
+  	swatch_height: 1,
+  	swatch_radius: 3,
+  	swatch_outline: false,
+  	swatch_outline_color: null,
+  	legend_items_padding: 0.5,
+
+  	icon_height: 1,
+  	icon_color: "#777777",
+  	icon_fill_opacity: 1,
+  	icon_stroke_opacity: 1,
+
+  	order_override: "",
+
+  	orientation: "horizontal",
+  });
+
+  function DiscreteColorLegend(state_) {
+  	this._state = state_;
+  	for (var key in DEFAULTS$a) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$a[key];
+  	}
+
+  	this._colorFunction = undefined;
+  	this._formatFunction = undefined;
+  	this._legend_items = [];
+  	this._filtered_items = [];
+  	this._eventListeners = [];
+  	this._id = "fl-legend-discrete-color-" + legend_count;
+  	this._visible = true;
+  	this._auto_title = "";
+  	this._last_clicked_item = null;
+
+  	this._container = select$3(document.createElement("div"))
+  		.attr("class", "fl-legend-container")
+  		.attr("id", this._id);
+  	this._container.append("p").attr("class", "fl-legend-title");
+  	legend_count++;
+
+  	return this;
+  }
+
+  // Common methods
+  DiscreteColorLegend.prototype.appendTo = appendTo;
+  DiscreteColorLegend.prototype.format = format;
+  DiscreteColorLegend.prototype.getContainer = getContainer;
+  DiscreteColorLegend.prototype.visible = visible;
+  DiscreteColorLegend.prototype.allowSingleEntry = allowSingleEntry;
+  DiscreteColorLegend.prototype.autoTitle = autoTitle;
+  DiscreteColorLegend.prototype._updateTitle = _updateTitle;
+
+  DiscreteColorLegend.prototype.data = function (items_, colorFunction_) {
+  	this._colorFunction = colorFunction_;
+  	if (!items_ && !colorFunction_) return this._legend_items.slice();
+
+  	if (!colorFunction_)
+  		this._legend_items = Array.isArray(items_) ? items_.slice() : [];
+  	else if (!Array.isArray(items_)) this._legend_items = [];
+  	else {
+  		this._legend_items = items_
+  			.slice()
+  			.map(function (legend_item, i) {
+  				var legend_item_label =
+  					typeof legend_item == "object"
+  						? legend_item?.label || ""
+  						: legend_item;
+  				return !legend_item_label
+  					? null
+  					: {
+  							label: legend_item_label,
+  							color: colorFunction_(legend_item_label),
+  							index: i,
+  						};
+  			})
+  			.filter(function (legend_item) {
+  				return legend_item !== null;
+  			});
+  	}
+  	return this;
+  };
+
+  DiscreteColorLegend.prototype.filtered = function (items_) {
+  	if (!items_) return this._filtered_items.slice();
+  	this._filtered_items = Array.isArray(items_) ? items_.slice() : [];
+  	return this;
+  };
+
+  DiscreteColorLegend.prototype._isFilteredItem = function (item_data) {
+  	return this._filtered_items.includes(item_data.label);
+  };
+
+  DiscreteColorLegend.prototype.on = function (type, callback) {
+  	if (!this._container) return this;
+
+  	// Update list of event listeners, so we know if there are any interactions going on
+  	if (callback && this._eventListeners.indexOf(type) < 0)
+  		this._eventListeners.push(type);
+  	else if (!callback)
+  		this._eventListeners.splice(this._eventListeners.indexOf[type], 1);
+  	this._container.classed("interactive", this._isInteractive());
+
+  	if (!callback) {
+  		// Remove event listeners if callback is empty
+  		this._container.on(type, null);
+  		if (type == "click") this._container.on("keydown", null);
+  	} else {
+  		const handleLegendInteraction = () => {
+  			if (
+  				event$3.type === "keydown" &&
+  				event$3.key !== "Enter" &&
+  				event$3.key !== " "
+  			)
+  				return;
+
+  			const t = event$3.target;
+  			const t_parent = t.parentNode;
+  			const item = t.classList.contains("fl-legend-item")
+  				? t
+  				: t_parent.classList.contains("fl-legend-item")
+  					? t_parent
+  					: null;
+  			if (item) {
+  				const item_data = select$3(item).datum();
+  				this._last_clicked_item = item_data;
+
+  				if (item.matches(":focus-visible")) {
+  					// Fixes lost focus in Safari + Voiceover for Ctrl+Option+Space initiated clicks
+  					// We force a re-focus on the clicked item if it was visibly focused before the click
+  					setTimeout(() => {
+  						item.blur();
+  						item.focus();
+  					}, 100);
+  				}
+
+  				callback.call(item, item_data, item_data.index);
+  			}
+  		};
+
+  		this._container.on(type, handleLegendInteraction);
+
+  		if (type == "click") {
+  			this._container.on("keydown", handleLegendInteraction);
+  		}
+  	}
+
+  	return this;
+  };
+
+  DiscreteColorLegend.prototype.update = function () {
+  	const minimum_legend_items_before_hide = this._allow_single_entry ? 1 : 2;
+  	const should_display =
+  		this._state.show_legend &&
+  		this._visible &&
+  		this._legend_items.length >= minimum_legend_items_before_hide;
+
+  	this._container.style("display", should_display ? "" : "none");
+  	if (!should_display) return this;
+
+  	this._updateTitle();
+  	this._updateLegend();
+
+  	return this;
+  };
+
+  function sortByOrderOverride(items, order_override_string) {
+  	// First build a lookup table from each of the overridden legend
+  	// labels to the index of its new position in the legend.
+  	var new_index_lookup = {};
+  	var overrides = order_override_string.split(/\s*\n\s*/);
+  	for (var i = 0; i < overrides.length; i++) {
+  		var override = overrides[i];
+  		new_index_lookup[override] = i;
+  	}
+  	// Now go through each of the original items and if it appears in
+  	// the lookup table, set it at its new position in sorted_items.
+  	var sorted_items = [];
+  	for (var old_index = 0; old_index < items.length; old_index++) {
+  		var item = items[old_index];
+  		var new_index = new_index_lookup[item.label];
+  		if (new_index === undefined) continue;
+  		sorted_items[new_index] = item;
+  	}
+  	// If there was any override that isn't a legend label (e.g. it's
+  	// mispelled), there'll be a "hole" in the sorted_items array, so
+  	// compact it before returning.
+  	return sorted_items.filter(function (item) {
+  		return item !== undefined;
+  	});
+  }
+
+  DiscreteColorLegend.prototype._isInteractive = function () {
+  	return this._eventListeners.length > 0;
+  };
+
+  DiscreteColorLegend.prototype._updateAnnouncements = function () {
+  	const is_interactive = this._isInteractive();
+
+  	const last_clicked_item = this._last_clicked_item;
+  	const last_clicked_hidden =
+  		last_clicked_item && this._isFilteredItem(last_clicked_item);
+
+  	const items_total_count = this._legend_items.length;
+  	const items_visible_count = this._legend_items.filter(
+  		(item) => !this._isFilteredItem(item),
+  	).length;
+
+  	this._container.attr(
+  		"aria-label",
+  		is_interactive && items_total_count > 0
+  			? this._state.screenreader_instructions ||
+  					"Select the legend items to toggle visibility of data series."
+  			: null,
+  	);
+
+  	const announce_count = `There are ${items_visible_count} of ${items_total_count} series visible.`;
+  	let announce_text;
+
+  	// The below cases are ordered to prefer the most specific announcement given the updated legend state
+  	if (!is_interactive || items_visible_count === items_total_count) {
+  		// If all series visible (the initial state in most cases)
+  		announce_text = "All series are visible.";
+  	} else if (items_visible_count === 0) {
+  		// If all series hidden
+  		announce_text = "All series are hidden.";
+  	} else if (items_visible_count === 1) {
+  		// If one series visible (e.g. in single select mode)
+  		const visible_item = this._legend_items.find(
+  			(item) => !this._isFilteredItem(item),
+  		);
+  		announce_text = `${visible_item.label} series is visible. All other series are hidden.`;
+  	} else if (last_clicked_item) {
+  		// If multiple series visible after clicking a legend item (e.g. in multi select mode)
+  		announce_text = `${last_clicked_item.label} series now ${last_clicked_hidden ? "hidden" : "visible"}. ${announce_count}`;
+  	} else {
+  		// For any other legend state e.g. after other filters or story data changes the legend
+  		announce_text = announce_count;
+  	}
+
+  	select$3("#fl-legend-announcement")
+  		.text(announce_text)
+  		.attr("aria-live", "assertive");
+  };
+
+  DiscreteColorLegend.prototype._updateLegend = function () {
+  	const _this = this;
+  	const format = this._formatFunction;
+  	const is_interactive = this._isInteractive();
+
+  	this._updateAnnouncements();
+
+  	this._container
+  		.style("max-width", remToPx$2(this._state.max_width) + "px")
+  		.style("display", "inline-flex")
+  		.style("flex-wrap", "wrap")
+  		.style(
+  			"align-items",
+  			this._state.orientation == "horizontal" ? "center" : "start",
+  		)
+  		.style(
+  			"align-content",
+  			this._state.orientation == "horizontal" ? "center" : null,
+  		)
+  		.style(
+  			"flex-direction",
+  			this._state.orientation == "horizontal" ? null : "column",
+  		)
+  		// Prevent legend from filling whole window when column with lots of
+  		// unique values is bound
+  		.style("max-height", `${window.innerHeight * 0.5}px`)
+  		.style("overflow-y", "auto")
+  		.attr("role", "group");
+
+  	var legend_item_data;
+  	if (this._state.order_override.trim()) {
+  		legend_item_data = sortByOrderOverride(
+  			this._legend_items,
+  			this._state.order_override,
+  		);
+  	} else {
+  		legend_item_data = this._legend_items;
+  	}
+
+  	var legend_items = this._container
+  		.selectAll(".fl-legend-item")
+  		.data(legend_item_data);
+
+  	var legend_items_enter = legend_items
+  		.enter()
+  		.append("div")
+  		.attr("class", "fl-legend-item");
+
+  	legend_items_enter.append("div").attr("class", "fl-legend-swatch");
+
+  	// Add icon elements
+  	let icon_container = legend_items_enter
+  		.append("div")
+  		.attr("class", "fl-legend-icon-container");
+
+  	icon_container
+  		.append("svg")
+  		.attr("class", "fl-legend-icon fl-ignore-svg-download")
+  		.append("path");
+
+  	icon_container.append("img").attr("class", "fl-legend-icon");
+
+  	icon_container.append("div").attr("class", "fl-legend-icon");
+
+  	legend_items_enter.append("p").attr("class", "fl-legend-label");
+
+  	var legend_items_update = legend_items.merge(legend_items_enter);
+
+  	legend_items_update
+  		.style(
+  			"display",
+  			this._state.orientation == "horizontal" ? "inline-flex" : "flex",
+  		)
+  		.style("flex-direction", function (d) {
+  			return d.reverse ? "row-reverse" : "row";
+  		})
+  		.style("opacity", function (d) {
+  			return _this._isFilteredItem(d) ? 0.2 : "";
+  		})
+  		.style("align-items", "center")
+  		.style(
+  			"padding-inline-end",
+  			this._state.orientation == "horizontal"
+  				? this._state.legend_items_padding + "rem"
+  				: 0,
+  		)
+  		.style("padding-inline-start", 0)
+  		.attr("tabindex", is_interactive ? "0" : null)
+  		.attr("role", is_interactive ? "button" : null)
+  		.attr("aria-pressed", function (d) {
+  			return is_interactive ? (!_this._isFilteredItem(d)).toString() : null;
+  		})
+  		.attr("aria-label", function (d) {
+  			return is_interactive
+  				? `Toggle ${d.label} series visibility, currently ${_this._isFilteredItem(d) ? "hidden" : "visible"}`
+  				: null;
+  		});
+
+  	// Swatch
+  	legend_items_update
+  		.select(".fl-legend-swatch")
+  		.style("height", this._state.swatch_height + "rem")
+  		.style("width", this._state.swatch_width + "rem")
+  		.style("border-radius", this._state.swatch_radius + "px")
+  		.style("background-color", function (d) {
+  			return d.color;
+  		})
+  		.style("border", () => {
+  			if (!this._state.swatch_outline) return "none";
+  			else if (!this._state.swatch_outline_color) return "1px solid";
+  			else return `1px solid ${this._state.swatch_outline_color}`;
+  		})
+  		.style(
+  			"box-sizing",
+  			this._state.swatch_outline ? "border-box" : "content-box",
+  		)
+  		.style("flex-shrink", "0")
+  		// Only display if icon not defined
+  		.style("display", function (d) {
+  			return d.icon ? "none" : null;
+  		});
+
+  	// Icons
+  	const legend_items_with_icons_update = legend_items_update.filter(
+  		(d) => d.icon,
+  	);
+
+  	// Style all icons
+  	legend_items_with_icons_update.each(function (d) {
+  		// Using Math.ceil on SVG width and height seems to prevent subtle cropping of the icon edges (particularly apparent in outline mode)
+  		let height = Math.ceil(remToPx$2(_this._state.icon_height));
+
+  		let width = "auto";
+  		if (d.icon.width) {
+  			let w = d.icon.width;
+  			let h = d.icon.height;
+  			let stroke_width = d.outline ? h * d.stroke_thickness : 0;
+  			w += stroke_width;
+  			h += stroke_width;
+
+  			let aspect_ratio = w / h;
+  			let width_px = remToPx$2(_this._state.icon_height * aspect_ratio);
+  			width = Math.ceil(width_px);
+  		}
+
+  		let margin_right = _this._state.text_size * 0.25 + "rem";
+
+  		select$3(this)
+  			.selectAll(".fl-legend-icon")
+  			.attr("height", height)
+  			.attr("width", width)
+  			.style("margin-right", margin_right);
+  	});
+
+  	// Icon visibility
+  	legend_items_update
+  		.select(".fl-legend-icon-container")
+  		.style("display", function (d) {
+  			return d.icon ? null : "none";
+  		});
+
+  	legend_items_with_icons_update.each(function (d) {
+  		select$3(this)
+  			.select("svg.fl-legend-icon")
+  			.style("display", d.icon.path_string ? "inline" : "none");
+  		select$3(this)
+  			.select("img.fl-legend-icon")
+  			.style("display", d.icon.url ? "inline" : "none");
+  		select$3(this)
+  			.select("div.fl-legend-icon")
+  			.style("display", d.icon.html ? "inline-block" : "none");
+  	});
+
+  	// Image icons
+  	legend_items_with_icons_update
+  		.filter((d) => d.icon.url)
+  		.select("img.fl-legend-icon")
+  		.attr("src", (d) => d.icon.url);
+
+  	// HTML icons (e.g. Font Awesome)
+  	legend_items_with_icons_update
+  		.filter((d) => d.icon.html)
+  		.select("div.fl-legend-icon")
+  		.html((d) => d.icon.html)
+  		.style("font-size", `${Math.ceil(remToPx$2(this._state.icon_height))}px`)
+  		.style("color", function (d) {
+  			if (d.outline) return "none";
+  			return d.fill || d.color || _this._state.icon_color;
+  		});
+
+  	// SVG icons
+  	legend_items_with_icons_update
+  		.filter((d) => d.icon.path_string)
+  		.select("svg.fl-legend-icon path")
+  		.attr("d", function (d) {
+  			return d.icon ? d.icon.path_string : null;
+  		})
+  		.attr("transform", function (d) {
+  			if (!d.icon) return null;
+
+  			var h = d.icon.height;
+  			var stroke_width = d.outline ? h * d.stroke_thickness : 0;
+  			h += stroke_width;
+
+  			var svg_height = remToPx$2(_this._state.icon_height);
+  			var scale_factor = svg_height / h;
+
+  			var transform = "scale(" + scale_factor + ")";
+  			transform +=
+  				"translate(" + 0.5 * stroke_width + "," + 0.5 * stroke_width + ")";
+
+  			return transform;
+  		})
+  		.style("fill", function (d) {
+  			if (d.outline) return "none";
+  			return d.fill || d.color || _this._state.icon_color;
+  		})
+  		.style("fill-opacity", function (d) {
+  			if (d.outline) return 0;
+  			return d.fill_opacity || _this._state.icon_fill_opacity;
+  		})
+  		.style("stroke", function (d) {
+  			if (!d.outline && !d.stroke) return "none";
+  			return d.stroke || d.color || _this._state.icon_color;
+  		})
+  		.style("stroke-width", function (d) {
+  			if (!d.outline && !d.stroke_width) return 0;
+  			var stroke_width = d.icon.height * d.stroke_thickness;
+  			return d.stroke_width || stroke_width;
+  		})
+  		.style("stroke-opacity", function (d) {
+  			if (!d.outline && !d.stroke_opacity) return 0;
+  			return d.stroke_opacity || _this._state.icon_stroke_opacity;
+  		});
+
+  	// Label
+  	legend_items_update
+  		.select(".fl-legend-label")
+  		.text(function (d) {
+  			return format ? format(d.label) : d.label;
+  		})
+  		.style("margin", 0)
+  		.style("user-select", "none")
+  		.style("-webkit-user-select", "none")
+  		.style("padding-inline-end", 0)
+  		.style("padding-inline-start", small_gap);
+
+  	legend_items.exit().remove();
+
+  	this._legend_item_els = legend_items_update;
+
+  	return this;
+  };
+
+  DiscreteColorLegend.prototype.prepareScreenshotSVG = function () {
+  	if (!this._state.show_legend || !this._visible || !this._legend_items.length)
+  		return;
+
+  	createScreenshotSVG(
+  		"#fl-layout-wrapper",
+  		this._id + "-svg-screenshot-container",
+  	)
+  		.addTextElements(".fl-legend-title")
+  		.addSwatchElements(".fl-legend-swatch", ".fl-legend-label")
+  		.addTextElements(".fl-legend-label");
+  };
+
+  DiscreteColorLegend.prototype.clearScreenshotSVG = function () {
+  	const container = document.getElementById(
+  		this._id + "-svg-screenshot-container",
+  	);
+  	if (container) container.remove();
+  };
+
+  var font_size,
+  	font_color,
+  	font_family,
+  	font_weight,
+  	default_text_size = 1;
+
+  var DEFAULTS$9 = Object.freeze({
+  	alignment: "start",
+  	orientation: "horizontal",
+  	text_color: null,
+  	title_weight: "bold",
+  	text_weight: "normal",
+  	text_size: default_text_size,
+  	screenreader_instructions: "",
+  });
+
+  function legendContainer(state_) {
+  	this._state = state_;
+  	for (var key in DEFAULTS$9) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$9[key];
+  	}
+
+  	return this;
+  }
+
+  legendContainer.prototype.appendTo = function (container_) {
+  	this._container = select$3(container_)
+  		.append("div")
+  		.classed("fl-legend-wrapper", true)
+  		.style("user-select", "none")
+  		.style("-webkit-user-select", "none")
+  		.node();
+
+  	select$3(this._container)
+  		.insert("p", ":first-child")
+  		.attr("class", "fl-legend-announcement fl-legend-sr-only")
+  		.attr("id", "fl-legend-announcement");
+
+  	return this;
+  };
+
+  legendContainer.prototype.add = function (legends) {
+  	this._legends = Array.isArray(legends) ? legends : [legends];
+  	var self = this;
+
+  	this._legends.forEach(function (legend) {
+  		if (legend && typeof legend.appendTo == "function")
+  			legend.appendTo(self._container);
+  		else console.warn("Please pass in valid legend instances into .add()");
+  	});
+
+  	return this;
+  };
+
+  legendContainer.prototype.update = function () {
+  	// Initialize some main style elements that can be imported by the individual legend containers
+  	var template = window.template || undefined;
+  	var layout = template ? template.state.layout : undefined;
+  	font_color =
+  		this._state.text_color ||
+  		(template && layout && layout.font_color) ||
+  		"#333333";
+  	font_family = layout
+  		? layout.body_font.name
+  		: window.getComputedStyle(document.body).fontFamily;
+  	font_size = this._state.text_size;
+  	font_weight = this._state.text_weight;
+
+  	var font = {
+  		family: font_family,
+  		weight: font_weight,
+  		size: font_size,
+  		color: font_color,
+  	};
+
+  	this._legends.forEach(function (legend) {
+  		if (legend && typeof legend.update == "function") legend.update(font);
+  	});
+
+  	var is_horizontal = this._state.orientation === "horizontal";
+  	var alignment = this._state.alignment;
+  	var flex_alignment = alignment == "center" ? alignment : "flex-" + alignment;
+
+  	// ================== //
+  	// MAIN LEGEND STYLES //
+  	// ================== //
+
+  	// Styles for main legend wrapper container
+  	select$3(this._container)
+  		.style("justify-content", is_horizontal ? flex_alignment : null)
+  		.style("align-items", is_horizontal ? null : flex_alignment)
+  		.style("display", "flex")
+  		.style("flex-direction", is_horizontal ? "row" : "column");
+
+  	var individual_legend_containers = select$3(this._container).selectAll(
+  		".fl-legend-container",
+  	);
+
+  	// This next section deals with the padding around the legends
+  	individual_legend_containers
+  		.style("padding-inline-end", function () {
+  			if (!is_horizontal) return 0;
+  			return "0.5rem";
+  		})
+  		.style("padding-bottom", function () {
+  			if (is_horizontal) return 0;
+  			return "0.25rem";
+  		})
+  		.style("justify-content", flex_alignment);
+
+  	// Styles for the titles of each legend
+  	select$3(this._container)
+  		.selectAll(".fl-legend-title")
+  		.style("color", this._state.text_color)
+  		.style("font-weight", this._state.title_weight)
+  		.style("font-size", font_size + "rem")
+  		.style("margin-right", font_size * 0.25 + "rem")
+  		.style("line-height", "1.25em")
+  		.style("margin-top", 0)
+  		.style("margin-bottom", 0)
+  		.style("text-align", alignment);
+
+  	// ============================ //
+  	// DISCRETE COLOR LEGEND STYLES //
+  	// ============================ //
+
+  	// Styles for discrete color legend items
+  	select$3(this._container)
+  		.selectAll(".fl-legend-item")
+  		.style("display", "inline-flex")
+  		.style("text-align", alignment);
+
+  	// Styles discrete color legend labels
+  	select$3(this._container)
+  		.selectAll(".fl-legend-label")
+  		.style("color", this._state.text_color)
+  		.style("font-weight", this._state.text_weight)
+  		.style("font-size", font_size + "rem");
+
+  	// ===================================== //
+  	// CONTINUOUS SIZE & COLOR LEGEND STYLES //
+  	// ===================================== //
+
+  	// Styles for continuous size and color legend labels
+  	select$3(this._container)
+  		.selectAll(".label")
+  		.style("color", this._state.text_color)
+  		.style("font-weight", this._state.text_weight)
+  		.style("font-size", font_size + "rem");
+
+  	return this;
+  };
+
+  function createLegendContainer(state) {
+  	return new legendContainer(state);
+  }
+
+  function createDiscreteColorLegend(state) {
+  	return new DiscreteColorLegend(state);
+  }
+
+  var BORDER = 25,
+  	CORNER_RADIUS = 5,
+  	TRIANGLE_HALFWIDTH = 10,
+  	TRIANGLE_HEIGHT = 10;
+
+  var locateTriangle = {};
+
+  locateTriangle.bottom = function locateTriangle_bottom(w, h) {
+  	return {
+  		shape: [
+  			-TRIANGLE_HALFWIDTH,
+  			-TRIANGLE_HEIGHT,
+  			TRIANGLE_HALFWIDTH,
+  			-TRIANGLE_HEIGHT,
+  		],
+  		pos: [w / 2, h + TRIANGLE_HEIGHT],
+  	};
+  };
+
+  locateTriangle.top = function locateTriangle_top(w, _h) {
+  	return {
+  		shape: [
+  			-TRIANGLE_HALFWIDTH,
+  			TRIANGLE_HEIGHT,
+  			TRIANGLE_HALFWIDTH,
+  			TRIANGLE_HEIGHT,
+  		],
+  		pos: [w / 2, -TRIANGLE_HEIGHT],
+  	};
+  };
+
+  locateTriangle.left = function locateTriangle_left(w, h) {
+  	return {
+  		shape: [
+  			TRIANGLE_HEIGHT,
+  			TRIANGLE_HALFWIDTH,
+  			TRIANGLE_HEIGHT,
+  			-TRIANGLE_HALFWIDTH,
+  		],
+  		pos: [-TRIANGLE_HEIGHT, h / 2],
+  	};
+  };
+
+  locateTriangle.right = function locateTriangle_right(w, h) {
+  	return {
+  		shape: [
+  			-TRIANGLE_HEIGHT,
+  			TRIANGLE_HALFWIDTH,
+  			-TRIANGLE_HEIGHT,
+  			-TRIANGLE_HALFWIDTH,
+  		],
+  		pos: [w + TRIANGLE_HEIGHT, h / 2],
+  	};
+  };
+
+  locateTriangle.topLeft = function locateTriangle_topLeft(_w, _h) {
+  	return {
+  		shape: [
+  			TRIANGLE_HEIGHT + CORNER_RADIUS,
+  			TRIANGLE_HEIGHT,
+  			TRIANGLE_HEIGHT,
+  			TRIANGLE_HEIGHT + CORNER_RADIUS,
+  		],
+  		pos: [-TRIANGLE_HEIGHT, -TRIANGLE_HEIGHT],
+  	};
+  };
+
+  locateTriangle.bottomLeft = function locateTriangle_bottomLeft(w, h) {
+  	return {
+  		shape: [
+  			TRIANGLE_HEIGHT + CORNER_RADIUS,
+  			-TRIANGLE_HEIGHT,
+  			TRIANGLE_HEIGHT,
+  			-TRIANGLE_HEIGHT - CORNER_RADIUS,
+  		],
+  		pos: [-TRIANGLE_HEIGHT, h + TRIANGLE_HEIGHT],
+  	};
+  };
+
+  locateTriangle.topRight = function locateTriangle_topRight(w, _h) {
+  	return {
+  		shape: [
+  			-TRIANGLE_HEIGHT - CORNER_RADIUS,
+  			TRIANGLE_HEIGHT,
+  			-TRIANGLE_HEIGHT,
+  			TRIANGLE_HEIGHT + CORNER_RADIUS,
+  		],
+  		pos: [w + TRIANGLE_HEIGHT, -TRIANGLE_HEIGHT],
+  	};
+  };
+
+  locateTriangle.bottomRight = function locateTriangle_bottomRight(w, h) {
+  	return {
+  		shape: [
+  			-TRIANGLE_HEIGHT - CORNER_RADIUS,
+  			-TRIANGLE_HEIGHT,
+  			-TRIANGLE_HEIGHT,
+  			-TRIANGLE_HEIGHT - CORNER_RADIUS,
+  		],
+  		pos: [w + TRIANGLE_HEIGHT, h + TRIANGLE_HEIGHT],
+  	};
+  };
+
+  function hFlexTriangle(w, h, x, y, cb, y_factor, y_pos) {
+  	var l = x - w / 2 - TRIANGLE_HEIGHT,
+  		r = x + w / 2 + TRIANGLE_HEIGHT,
+  		px = w / 2 + Math.min(0, l - cb.left) + Math.max(0, r - cb.right),
+  		shape;
+
+  	if (px - TRIANGLE_HALFWIDTH < CORNER_RADIUS) {
+  		shape = [
+  			-px,
+  			(-TRIANGLE_HEIGHT - CORNER_RADIUS) * y_factor,
+  			Math.max(TRIANGLE_HALFWIDTH, CORNER_RADIUS - px),
+  			-TRIANGLE_HEIGHT * y_factor,
+  		];
+  	} else if (px + TRIANGLE_HALFWIDTH > w - CORNER_RADIUS) {
+  		shape = [
+  			Math.min(-TRIANGLE_HALFWIDTH, w - px - CORNER_RADIUS),
+  			-TRIANGLE_HEIGHT * y_factor,
+  			Math.min(TRIANGLE_HALFWIDTH, w - px),
+  			(-TRIANGLE_HEIGHT - CORNER_RADIUS) * y_factor,
+  		];
+  	} else {
+  		shape = [
+  			-TRIANGLE_HALFWIDTH,
+  			-TRIANGLE_HEIGHT * y_factor,
+  			TRIANGLE_HALFWIDTH,
+  			-TRIANGLE_HEIGHT * y_factor,
+  		];
+  	}
+
+  	return { pos: [px, y_pos], shape: shape };
+  }
+
+  function vFlexTriangle(w, h, x, y, cb, x_factor, x_pos) {
+  	var t = y - h / 2 - TRIANGLE_HEIGHT,
+  		b = y + h / 2 + TRIANGLE_HEIGHT,
+  		py = h / 2 + Math.min(0, t - cb.top) + Math.max(0, b - cb.bottom),
+  		shape;
+
+  	if (py - TRIANGLE_HALFWIDTH < CORNER_RADIUS) {
+  		shape = [
+  			(-TRIANGLE_HEIGHT - CORNER_RADIUS) * x_factor,
+  			-py,
+  			-TRIANGLE_HEIGHT * x_factor,
+  			Math.max(TRIANGLE_HALFWIDTH, CORNER_RADIUS - py),
+  		];
+  	} else if (py + TRIANGLE_HALFWIDTH > h - CORNER_RADIUS) {
+  		shape = [
+  			-TRIANGLE_HEIGHT * x_factor,
+  			Math.min(-TRIANGLE_HALFWIDTH, h - py - CORNER_RADIUS),
+  			(-TRIANGLE_HEIGHT - CORNER_RADIUS) * x_factor,
+  			Math.min(TRIANGLE_HALFWIDTH, h - py),
+  		];
+  	} else {
+  		shape = [
+  			-TRIANGLE_HEIGHT * x_factor,
+  			-TRIANGLE_HALFWIDTH,
+  			-TRIANGLE_HEIGHT * x_factor,
+  			TRIANGLE_HALFWIDTH,
+  		];
+  	}
+
+  	return { pos: [x_pos, py], shape: shape };
+  }
+
+  locateTriangle.bottomFlexible = function locateTriangle_bottomFlexible(
+  	w,
+  	h,
+  	x,
+  	y,
+  	cb,
+  ) {
+  	return hFlexTriangle(w, h, x, y, cb, 1, h + TRIANGLE_HEIGHT);
+  };
+
+  locateTriangle.topFlexible = function locateTriangle_topFlexible(
+  	w,
+  	h,
+  	x,
+  	y,
+  	cb,
+  ) {
+  	return hFlexTriangle(w, h, x, y, cb, -1, -TRIANGLE_HEIGHT);
+  };
+
+  locateTriangle.rightFlexible = function locateTriangle_rightFlexible(
+  	w,
+  	h,
+  	x,
+  	y,
+  	cb,
+  ) {
+  	return vFlexTriangle(w, h, x, y, cb, 1, w + TRIANGLE_HEIGHT);
+  };
+
+  locateTriangle.leftFlexible = function locateTriangle_leftFlexible(
+  	w,
+  	h,
+  	x,
+  	y,
+  	cb,
+  ) {
+  	return vFlexTriangle(w, h, x, y, cb, -1, -TRIANGLE_HEIGHT);
+  };
+
+  /* eslint-disable @flourish/flourish/no-mixed-spaces-and-tabs */
+
+
+  function boxBounds(dir, w, h, x, y, cb) {
+  	var lt = locateTriangle[dir](w, h, x, y, cb),
+  		left = x - BORDER - lt.pos[0],
+  		top = y - BORDER - lt.pos[1];
+  	return {
+  		left: left,
+  		top: top,
+  		right: left + w + 2 * BORDER,
+  		bottom: top + h + 2 * BORDER,
+  	};
+  }
+
+  function positionBox(dir, s, path, w, h, x, y, clientX, clientY, cb) {
+  	var lt = locateTriangle[dir](w, h, clientX, clientY, cb);
+  	s.left = x - BORDER - lt.pos[0] + "px";
+  	s.top = y - BORDER - lt.pos[1] + "px";
+  	path.setAttribute("d", "M0,0L" + lt.shape.join(",") + "Z");
+  	path.setAttribute(
+  		"transform",
+  		"translate(" + (lt.pos[0] + BORDER) + "," + (lt.pos[1] + BORDER) + ")",
+  	);
+  }
+
+  function Popup_draw() {
+  	var popup = this;
+
+  	popup.is_visible = true;
+
+  	function maxContentWidth(cb) {
+  		if (popup._maxWidth.match(/^\d+(?:\.\d+)?%$/)) {
+  			return (cb.width * parseFloat(popup._maxWidth)) / 100;
+  		}
+  		if (popup._maxWidth.match(/^\d+(?:\.\d+)?(?:px)?$/)) {
+  			return parseFloat(popup._maxWidth);
+  		}
+  		if (popup._maxWidth != null) {
+  			console.error("Popup: Unknown value for maxWidth: " + popup._maxWidth);
+  		}
+  		return cb.width;
+  	}
+
+  	if (!popup._point) {
+  		console.error("Popup: cannot draw popup till point() has been specified");
+  		return;
+  	}
+
+  	var doc_rect = document.documentElement.getBoundingClientRect(),
+  		clientX = popup._point[0],
+  		clientY = popup._point[1],
+  		cb = popup._container.getBoundingClientRect();
+
+  	if (clientX < cb.left) clientX = cb.left;
+  	else if (clientX > cb.right) clientX = cb.right;
+  	if (clientY < cb.top) clientY = cb.top;
+  	else if (clientY > cb.bottom) clientY = cb.bottom;
+
+  	var x = clientX - doc_rect.left,
+  		y = clientY - doc_rect.top;
+
+  	var el = popup._getElement(),
+  		s = el.style,
+  		svg = el.querySelector(".flourish-popup-svg"),
+  		g = svg.querySelector("g"),
+  		rect = g.querySelector("rect"),
+  		path = g.querySelector("path"),
+  		content = el.querySelector(".flourish-popup-content");
+
+  	s.display = "block";
+  	content.style.maxWidth = maxContentWidth(cb) + "px";
+  	if (popup._inner_html != popup._html) {
+  		content.innerHTML = popup._inner_html = popup._html;
+  	}
+  	var content_box = content.getBoundingClientRect(),
+  		w,
+  		h;
+  	do {
+  		w = Math.ceil(content_box.width);
+  		h = Math.ceil(content_box.height);
+  		s.width = w + 2 * BORDER + "px";
+  		s.height = h + 2 * BORDER + "px";
+  		content_box = content.getBoundingClientRect();
+  	} while (
+  		w != Math.ceil(content_box.width) ||
+  		h != Math.ceil(content_box.height)
+  	);
+
+  	rect.setAttribute("width", w);
+  	rect.setAttribute("height", h);
+  	svg.setAttribute("width", w + 2 * BORDER);
+  	svg.setAttribute("height", h + 2 * BORDER);
+
+  	var overlap = BORDER - TRIANGLE_HEIGHT;
+  	var first_fit = null,
+  		best_horizontal_fit = null,
+  		best_vertical_fit = null,
+  		least_horizontal_protrusion = Infinity,
+  		least_vertical_protrusion = Infinity,
+  		vp_at_least_hp,
+  		hp_at_least_vp;
+  	for (var i = 0; i < popup._directions.length; i++) {
+  		var dir = popup._directions[i],
+  			b = boxBounds(dir, w, h, clientX, clientY, cb),
+  			horizontal_protrusion =
+  				Math.max(0, Math.floor(cb.left) - b.left - overlap) +
+  				Math.max(0, b.right - Math.ceil(cb.right) - overlap),
+  			vertical_protrusion =
+  				Math.max(0, Math.floor(cb.top) - b.top - overlap) +
+  				Math.max(0, b.bottom - Math.ceil(cb.bottom) - overlap);
+
+  		if (horizontal_protrusion == 0 && vertical_protrusion == 0) {
+  			first_fit = dir;
+  			break;
+  		}
+  		if (
+  			horizontal_protrusion < least_horizontal_protrusion ||
+  			(horizontal_protrusion == least_horizontal_protrusion &&
+  				vertical_protrusion < vp_at_least_hp)
+  		) {
+  			least_horizontal_protrusion = horizontal_protrusion;
+  			vp_at_least_hp = vertical_protrusion;
+  			best_horizontal_fit = dir;
+  		}
+  		if (
+  			vertical_protrusion < least_vertical_protrusion ||
+  			(vertical_protrusion == least_vertical_protrusion &&
+  				horizontal_protrusion < hp_at_least_vp)
+  		) {
+  			least_vertical_protrusion = vertical_protrusion;
+  			hp_at_least_vp = horizontal_protrusion;
+  			best_vertical_fit = dir;
+  		}
+  	}
+
+  	// If the box can be fit completely within the container, do that
+  	if (first_fit) {
+  		dir = first_fit;
+  	}
+  	// Otherwise use the fallback fit (horizontal or vertical) if specified
+  	else if (popup._fallbackFit == "horizontal") {
+  		dir = best_horizontal_fit;
+  	} else if (popup._fallbackFit == "vertical") {
+  		dir = best_vertical_fit;
+  	}
+  	// If all else fails, issue a warning and use the first specified direction.
+  	else {
+  		console.warn(
+  			"Popup: failed to point box of size (" +
+  				w +
+  				", " +
+  				h +
+  				")" +
+  				" at (" +
+  				clientX +
+  				", " +
+  				clientY +
+  				") within (" +
+  				cb.left +
+  				", " +
+  				cb.top +
+  				", " +
+  				cb.right +
+  				", " +
+  				cb.bottom +
+  				")",
+  		);
+  		dir = popup._directions[0];
+  	}
+
+  	// Position the box and return
+  	positionBox(dir, s, path, w, h, x, y, clientX, clientY, cb);
+  	return popup;
+  }
+
+  function svgElement(tagName, attrs, styles) {
+  	var element = document.createElementNS("http://www.w3.org/2000/svg", tagName);
+  	var k;
+  	if (attrs) for (k in attrs) element.setAttribute(k, attrs[k]);
+
+  	var s = element.style;
+  	if (styles) for (k in styles) s[k] = styles[k];
+
+  	return element;
+  }
+
+  function Popup__getElement() {
+  	var popup = this;
+  	var el = popup.element;
+
+  	if (!el) {
+  		el = popup.element = document.createElement("div");
+
+  		var id = "flourish-popup-" + popup.unique_id;
+  		el.className = "flourish-popup";
+  		el.id = id;
+
+  		var s = el.style;
+  		s.display = "none";
+  		s.margin = s.padding = 0;
+  		s.position = "absolute";
+  		s.width = "80px";
+  		s.height = "40px";
+  		s.boxSizing = "border-box";
+
+  		el.addEventListener(
+  			"click",
+  			function (e) {
+  				popup.fire("click", e);
+  			},
+  			false,
+  		);
+
+  		var svg = svgElement(
+  			"svg",
+  			{ class: "flourish-popup-svg" },
+  			{
+  				position: "absolute",
+  				top: 0,
+  				left: 0,
+  				bottom: 0,
+  				right: 0,
+  			},
+  		);
+
+  		var filter = svgElement("filter", {
+  			id: "dropshadow-" + popup.unique_id,
+  			height: "130%",
+  		});
+  		filter.appendChild(
+  			svgElement("feGaussianBlur", { in: "SourceAlpha", stdDeviation: 5 }),
+  		);
+  		filter.appendChild(
+  			svgElement("feOffset", { dx: 0, dy: 2, result: "offsetblur" }),
+  		);
+  		var fe_component_transfer = svgElement("feComponentTransfer");
+  		fe_component_transfer.appendChild(
+  			svgElement("feFuncA", { type: "linear", slope: 0.2 }),
+  		);
+  		filter.appendChild(fe_component_transfer);
+  		var fe_merge = svgElement("feMerge");
+  		filter.appendChild(fe_merge);
+  		fe_merge.appendChild(svgElement("feMergeNode"));
+  		fe_merge.appendChild(svgElement("feMergeNode", { in: "SourceGraphic" }));
+  		svg.appendChild(filter);
+
+  		var g = svgElement("g", {
+  			filter: "url(#dropshadow-" + popup.unique_id + ")",
+  			fill: "white",
+  			stroke: "none",
+  		});
+  		g.appendChild(
+  			svgElement("rect", { x: BORDER, y: BORDER, rx: CORNER_RADIUS }),
+  		);
+  		g.appendChild(svgElement("path"));
+  		svg.appendChild(g);
+  		el.appendChild(svg);
+
+  		var content = document.createElement("div");
+  		content.className = "flourish-popup-content";
+
+  		s = content.style;
+  		s.position = "absolute";
+  		s.top = s.left = BORDER + "px";
+  		s.padding = "10px";
+  		el.appendChild(content);
+
+  		popup._getConstrainer().appendChild(el);
+  	}
+
+  	popup._resizeConstrainer();
+  	return el;
+  }
+
+  /* The popup element can technically be partly outside the page, even though
+     visually it is not. This causes the page to become horizontally scrollable,
+     which can lead to problems like kiln/flourish#1267.
+
+     This code adds an absolutely-positioned “constrainer” element containing the
+     popup that has overlow:hidden, which covers the entire document.
+
+     It’s surprisingly hard to achieve that – or at least I failed to find an easy
+     way – and so we explicitly set the dimensions of the constrainer to match the
+     document, and recompute them when the popup is redrawn.
+  */
+
+  // There is one constrainer for the entire page, however many Popup instances
+  // there are, so these variables are global rather than properties of the instance.
+  var constrainer, style;
+
+  function Popup__getConstrainer() {
+  	if (constrainer) return constrainer;
+
+  	constrainer = document.createElement("div");
+  	constrainer.id = "flourish-popup-constrainer";
+  	constrainer.setAttribute("aria-hidden", true);
+  	style = constrainer.style;
+
+  	style.overflow = "hidden";
+  	style.pointerEvents = "none";
+  	style.position = "absolute";
+  	style.left = "0";
+  	style.top = "0";
+  	style.margin = "0";
+  	style.padding = "0";
+
+  	document.body.appendChild(constrainer);
+  	this._resizeConstrainer();
+
+  	return constrainer;
+  }
+
+  function Popup__resizeConstrainer() {
+  	if (!constrainer) Popup__getConstrainer.call(this);
+  	// The element must be hidden before we compute the dimensions, or
+  	// it will affect those dimensions itself, with the effect that the
+  	// constrainer can only grow and never shrink.
+  	var old_display = style.display;
+  	style.display = "none";
+  	style.width = document.documentElement.scrollWidth + "px";
+  	style.height = document.documentElement.scrollHeight + "px";
+  	style.display = old_display;
+  }
+
+  var VERSION = "2.1.5";
+
+  var OPTIONS$1 = {
+  	container: document.body,
+  	maxWidth: "70%",
+  	point: null,
+  	html: null,
+  	directions: [
+  		"bottom",
+  		"top",
+  		"left",
+  		"right",
+  		"topLeft",
+  		"bottomLeft",
+  		"topRight",
+  		"bottomRight",
+  		"bottomFlexible",
+  		"topFlexible",
+  		"leftFlexible",
+  		"rightFlexible",
+  	],
+  	fallbackFit: "horizontal", // or "vertical"
+  };
+
+  function getNextGlobalPopupId() {
+  	// We want globally unique IDs across all instances and versions of flourish-popup
+  	let global_popup_id_store;
+  	let global_popup_id_key;
+
+  	// Get the relevant global on which to share the popup ID counter
+  	if ("Flourish" in window) {
+  		global_popup_id_store = window.Flourish;
+  		global_popup_id_key = "__popup_next_unique_id";
+  	} else {
+  		global_popup_id_store = window;
+  		global_popup_id_key = "__flourish_popup_next_unique_id";
+  	}
+
+  	// Initialise the global ID counter
+  	if (!global_popup_id_store[global_popup_id_key]) {
+  		// Compatibility: popup IDs now start at 1000
+  		// to avoid DOM ID clashes when used along side older instances of flourish-popup
+  		return (global_popup_id_store[global_popup_id_key] = 1000);
+  	}
+
+  	// Increment the global ID counter
+  	global_popup_id_store[global_popup_id_key] += 1;
+
+  	// Return the new ID
+  	return global_popup_id_store[global_popup_id_key];
+  }
+
+  function Popup() {
+  	this.unique_id = getNextGlobalPopupId();
+  	this.is_visible = true;
+  	this.element = null;
+
+  	for (var k in OPTIONS$1) this["_" + k] = OPTIONS$1[k];
+
+  	this.handlers = {
+  		click: [],
+  	};
+  }
+
+  // Create accessor methods for all the options
+  function accessor$1(k) {
+  	Popup.prototype[k] = function (v) {
+  		if (typeof v == "undefined") return this["_" + k];
+  		this["_" + k] = v;
+  		return this;
+  	};
+  }
+  for (var k$1 in OPTIONS$1) accessor$1(k$1);
+
+  // Custom accessor method for .point
+  Popup.prototype.point = function (arg1, arg2) {
+  	if (typeof arg1 == "undefined") return this._point;
+  	if (Array.isArray(arg1)) this._point = [arg1[0], arg1[1]];
+  	else if (typeof arg2 != "undefined") this._point = [arg1, arg2];
+  	else if (arg1 instanceof HTMLElement || arg1 instanceof SVGElement) {
+  		var r = arg1.getBoundingClientRect();
+  		this._point = [
+  			Math.floor(r.left + r.width / 2),
+  			Math.floor(r.top + r.height / 2),
+  		];
+  	} else {
+  		console.error("Popup: could not understand argument");
+  	}
+
+  	return this;
+  };
+
+  Popup.prototype.directions = function (arg) {
+  	if (typeof arg === "undefined") return this._directions;
+  	if (typeof arg === "string") arg = [arg];
+  	this._directions = arg.slice();
+  	return this;
+  };
+
+  function textToHtml(text) {
+  	return text.replace(/[&<>]/g, function (s) {
+  		return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[s];
+  	});
+  }
+
+  // Accessor (setter only) for setting plain text
+  Popup.prototype.text = function Popup_text(t) {
+  	this._html = textToHtml(t);
+  	return this;
+  };
+
+  // Attach event handlers
+  Popup.prototype.on = function Popup_on(event, handler) {
+  	if (!(event in this.handlers))
+  		throw new Error("Popup.on: No such event: " + event);
+  	this.handlers[event].push(handler);
+  	return this;
+  };
+
+  // Fire event
+  Popup.prototype.fire = function Popup_fire(event, d) {
+  	if (!(event in this.handlers))
+  		throw new Error("Popup.fire: No such event: " + event);
+  	var handlers = this.handlers[event];
+  	for (var i = 0; i < handlers.length; i++) {
+  		handlers[i].call(this, d);
+  	}
+  	return this;
+  };
+
+  Popup.prototype._getElement = Popup__getElement;
+  Popup.prototype._getConstrainer = Popup__getConstrainer;
+  Popup.prototype._resizeConstrainer = Popup__resizeConstrainer;
+
+  Popup.prototype.draw = Popup_draw;
+
+  Popup.prototype.hide = function Popup_hide() {
+  	if (!this.is_visible) return this;
+  	this.is_visible = false;
+  	this._getElement().style.display = "none";
+  	return this;
+  };
+
+  function Flourish_popup() {
+  	return new Popup();
+  }
+  Flourish_popup.version = VERSION;
 
   var xhtml$2 = "http://www.w3.org/1999/xhtml";
 
@@ -10903,7 +13332,11 @@ var template = (function (exports) {
     this._parents = parents;
   }
 
-  Selection$4.prototype = {
+  function selection$1() {
+    return new Selection$4([[document.documentElement]], root$2);
+  }
+
+  Selection$4.prototype = selection$1.prototype = {
     constructor: Selection$4,
     select: selection_select$2,
     selectAll: selection_selectAll$2,
@@ -10944,2424 +13377,8 @@ var template = (function (exports) {
         : new Selection$4([[selector]], root$2);
   }
 
-  function ascending$2(a, b) {
-    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
-  }
-
-  function bisector(compare) {
-    if (compare.length === 1) compare = ascendingComparator(compare);
-    return {
-      left: function(a, x, lo, hi) {
-        if (lo == null) lo = 0;
-        if (hi == null) hi = a.length;
-        while (lo < hi) {
-          var mid = lo + hi >>> 1;
-          if (compare(a[mid], x) < 0) lo = mid + 1;
-          else hi = mid;
-        }
-        return lo;
-      },
-      right: function(a, x, lo, hi) {
-        if (lo == null) lo = 0;
-        if (hi == null) hi = a.length;
-        while (lo < hi) {
-          var mid = lo + hi >>> 1;
-          if (compare(a[mid], x) > 0) hi = mid;
-          else lo = mid + 1;
-        }
-        return lo;
-      }
-    };
-  }
-
-  function ascendingComparator(f) {
-    return function(d, x) {
-      return ascending$2(f(d), x);
-    };
-  }
-
-  bisector(ascending$2);
-
-  function Stylesheet() {
-  	this.declarations = [];
-  	return this;
-  }
-
-  Stylesheet.prototype.select = function(selector) {
-  	if (!selector) return this;
-  	var declaration = new Declaration(selector);
-  	declaration.parent = this;
-  	this.addDeclaration(declaration);
-
-  	return declaration;
-  };
-
-  Stylesheet.prototype.addDeclaration = function(declaration) {
-  	this.declarations.push(declaration);
-  	return this;
-  };
-
-  Stylesheet.prototype.print = function() {
-  	var text = "";
-  	this.declarations.forEach(function(declaration) {
-  		text += declaration.selector + " {\n";
-  		declaration.styles.forEach(function(style) {
-  			text += "\t" + style[0] + ": " + style[1] + ";\n";
-  		});
-  		text += "}\n\n";
-  	});
-  	return text;
-  };
-
-  Stylesheet.prototype.clear = function() {
-  	this.declarations = [];
-  	return this;
-  };
-
-  function Declaration(selector) {
-  	this.selector = selector;
-  	this.styles = [];
-  	return this;
-  }
-
-  Declaration.prototype.style = function(property, _value) {
-  	var value = typeof value_ == "function" ? _value() : _value;
-  	if (value !== "" && value !== null && value !== undefined) this.styles.push([property, value]);
-  	return this;
-  };
-
-  Declaration.prototype.select = function(selector) {
-  	return this.parent.select(this.selector + " " + selector);
-  };
-
-  var small_gap = "0.2em";
-
-  function appendTo(container) {
-  	container.appendChild(this._container.node());
-
-  	if (!document.querySelector("#legend-styles")) {
-  		var css = document.createElement("style");
-  		var styles = new Stylesheet();
-
-  		styles
-  			.select(".fl-legend-container.interactive .fl-legend-item")
-  			.style("cursor", "pointer");
-
-  		styles
-  			.select(".fl-legend-container.interactive .fl-legend-item:hover")
-  			.style("opacity", 0.75);
-
-  		styles
-  			.select(".fl-legend-container.interactive .fl-legend-item:focus-visible")
-  			.style("border-radius", "4px")
-  			.style("outline", "2.5px solid #4d90fe")
-  			.style("outline-offset", "-2.25px");
-
-  		styles
-  			.select(".fl-legend-sr-only")
-  			.style("position", "absolute")
-  			.style("width", "1px")
-  			.style("height", "1px")
-  			.style("padding", "0")
-  			.style("margin", "-1px")
-  			.style("overflow", "hidden")
-  			.style("clip", "rect(0, 0, 0, 0)")
-  			.style("white-space", "nowrap")
-  			.style("border", "0");
-
-  		css.id = "legend-styles";
-  		css.type = "text/css";
-
-  		css.innerHTML = styles.print();
-  		document.head.appendChild(css);
-  	}
-
-  	return this;
-  }
-
-  function format(formatFunction) {
-  	this._formatFunction = formatFunction;
-  	return this;
-  }
-
-  function getContainer() {
-  	return this._container;
-  }
-
-  function visible(visible_) {
-  	if (visible_ === undefined) return this._visible;
-  	this._visible = visible_;
-  	return this;
-  }
-
-  function allowSingleEntry(allow_single_entry) {
-  	if (allow_single_entry === undefined) return this._allow_single_entry;
-  	this._allow_single_entry = allow_single_entry;
-  	return this;
-  }
-
-  function autoTitle(value) {
-  	if (value === undefined) return this._auto_title;
-  	this._auto_title = value;
-  	return this;
-  }
-
-  function _updateTitle() {
-  	var _this = this;
-  	var title =
-  		_this._state.title_mode == "auto" ? _this.autoTitle() : _this._state.title;
-
-  	this._container
-  		.select(".fl-legend-title")
-  		.text(title)
-  		.style("display", function () {
-  			if (!title.trim()) return "none";
-  			else if (_this._state.orientation === undefined) return "inline-block";
-  			else
-  				return _this._state.orientation == "horizontal"
-  					? "inline-block"
-  					: "block";
-  		})
-  		.style("padding-inline-start", 0)
-  		.style("padding-inline-end", small_gap);
-  }
-
-  function remToPx(rem) {
-  	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
-  }
-
-  var legend_count = 0;
-  var DEFAULTS$4 = Object.freeze({
-  	show_legend: true,
-
-  	title_mode: "auto",
-  	title: "",
-
-  	max_width: 100,
-
-  	swatch_width: 0.75,
-  	swatch_height: 1,
-  	swatch_radius: 3,
-  	swatch_outline: false,
-  	swatch_outline_color: null,
-  	legend_items_padding: 0.5,
-
-  	icon_height: 1,
-  	icon_color: "#777777",
-  	icon_fill_opacity: 1,
-  	icon_stroke_opacity: 1,
-
-  	order_override: "",
-
-  	orientation: "horizontal",
-  });
-
-  function DiscreteColorLegend(state_) {
-  	this._state = state_;
-  	for (var key in DEFAULTS$4) {
-  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$4[key];
-  	}
-
-  	this._colorFunction = undefined;
-  	this._formatFunction = undefined;
-  	this._legend_items = [];
-  	this._filtered_items = [];
-  	this._eventListeners = [];
-  	this._id = "fl-legend-discrete-color-" + legend_count;
-  	this._visible = true;
-  	this._auto_title = "";
-  	this._last_clicked_item = null;
-
-  	this._container = select$2(document.createElement("div"))
-  		.attr("class", "fl-legend-container")
-  		.attr("id", this._id);
-  	this._container.append("p").attr("class", "fl-legend-title");
-  	legend_count++;
-
-  	return this;
-  }
-
-  // Common methods
-  DiscreteColorLegend.prototype.appendTo = appendTo;
-  DiscreteColorLegend.prototype.format = format;
-  DiscreteColorLegend.prototype.getContainer = getContainer;
-  DiscreteColorLegend.prototype.visible = visible;
-  DiscreteColorLegend.prototype.allowSingleEntry = allowSingleEntry;
-  DiscreteColorLegend.prototype.autoTitle = autoTitle;
-  DiscreteColorLegend.prototype._updateTitle = _updateTitle;
-
-  DiscreteColorLegend.prototype.data = function (items_, colorFunction_) {
-  	this._colorFunction = colorFunction_;
-  	if (!items_ && !colorFunction_) return this._legend_items.slice();
-
-  	if (!colorFunction_)
-  		this._legend_items = Array.isArray(items_) ? items_.slice() : [];
-  	else if (!Array.isArray(items_)) this._legend_items = [];
-  	else {
-  		this._legend_items = items_
-  			.slice()
-  			.map(function (legend_item, i) {
-  				var legend_item_label =
-  					typeof legend_item == "object"
-  						? legend_item?.label || ""
-  						: legend_item;
-  				return !legend_item_label
-  					? null
-  					: {
-  							label: legend_item_label,
-  							color: colorFunction_(legend_item_label),
-  							index: i,
-  						};
-  			})
-  			.filter(function (legend_item) {
-  				return legend_item !== null;
-  			});
-  	}
-  	return this;
-  };
-
-  DiscreteColorLegend.prototype.filtered = function (items_) {
-  	if (!items_) return this._filtered_items.slice();
-  	this._filtered_items = Array.isArray(items_) ? items_.slice() : [];
-  	return this;
-  };
-
-  DiscreteColorLegend.prototype._isFilteredItem = function (item_data) {
-  	return this._filtered_items.includes(item_data.label);
-  };
-
-  DiscreteColorLegend.prototype.on = function (type, callback) {
-  	if (!this._container) return this;
-
-  	// Update list of event listeners, so we know if there are any interactions going on
-  	if (callback && this._eventListeners.indexOf(type) < 0)
-  		this._eventListeners.push(type);
-  	else if (!callback)
-  		this._eventListeners.splice(this._eventListeners.indexOf[type], 1);
-  	this._container.classed("interactive", this._isInteractive());
-
-  	if (!callback) {
-  		// Remove event listeners if callback is empty
-  		this._container.on(type, null);
-  		if (type == "click") this._container.on("keydown", null);
-  	} else {
-  		const handleLegendInteraction = () => {
-  			if (
-  				event$2.type === "keydown" &&
-  				event$2.key !== "Enter" &&
-  				event$2.key !== " "
-  			)
-  				return;
-
-  			const t = event$2.target;
-  			const t_parent = t.parentNode;
-  			const item = t.classList.contains("fl-legend-item")
-  				? t
-  				: t_parent.classList.contains("fl-legend-item")
-  					? t_parent
-  					: null;
-  			if (item) {
-  				const item_data = select$2(item).datum();
-  				this._last_clicked_item = item_data;
-
-  				if (item.matches(":focus-visible")) {
-  					// Fixes lost focus in Safari + Voiceover for Ctrl+Option+Space initiated clicks
-  					// We force a re-focus on the clicked item if it was visibly focused before the click
-  					setTimeout(() => {
-  						item.blur();
-  						item.focus();
-  					}, 100);
-  				}
-
-  				callback.call(item, item_data, item_data.index);
-  			}
-  		};
-
-  		this._container.on(type, handleLegendInteraction);
-
-  		if (type == "click") {
-  			this._container.on("keydown", handleLegendInteraction);
-  		}
-  	}
-
-  	return this;
-  };
-
-  DiscreteColorLegend.prototype.update = function () {
-  	const minimum_legend_items_before_hide = this._allow_single_entry ? 1 : 2;
-  	const should_display =
-  		this._state.show_legend &&
-  		this._visible &&
-  		this._legend_items.length >= minimum_legend_items_before_hide;
-
-  	this._container.style("display", should_display ? "" : "none");
-  	if (!should_display) return this;
-
-  	this._updateTitle();
-  	this._updateLegend();
-
-  	return this;
-  };
-
-  function sortByOrderOverride(items, order_override_string) {
-  	// First build a lookup table from each of the overridden legend
-  	// labels to the index of its new position in the legend.
-  	var new_index_lookup = {};
-  	var overrides = order_override_string.split(/\s*\n\s*/);
-  	for (var i = 0; i < overrides.length; i++) {
-  		var override = overrides[i];
-  		new_index_lookup[override] = i;
-  	}
-  	// Now go through each of the original items and if it appears in
-  	// the lookup table, set it at its new position in sorted_items.
-  	var sorted_items = [];
-  	for (var old_index = 0; old_index < items.length; old_index++) {
-  		var item = items[old_index];
-  		var new_index = new_index_lookup[item.label];
-  		if (new_index === undefined) continue;
-  		sorted_items[new_index] = item;
-  	}
-  	// If there was any override that isn't a legend label (e.g. it's
-  	// mispelled), there'll be a "hole" in the sorted_items array, so
-  	// compact it before returning.
-  	return sorted_items.filter(function (item) {
-  		return item !== undefined;
-  	});
-  }
-
-  DiscreteColorLegend.prototype._isInteractive = function () {
-  	return this._eventListeners.length > 0;
-  };
-
-  DiscreteColorLegend.prototype._updateAnnouncements = function () {
-  	const is_interactive = this._isInteractive();
-
-  	const last_clicked_item = this._last_clicked_item;
-  	const last_clicked_hidden =
-  		last_clicked_item && this._isFilteredItem(last_clicked_item);
-
-  	const items_total_count = this._legend_items.length;
-  	const items_visible_count = this._legend_items.filter(
-  		(item) => !this._isFilteredItem(item),
-  	).length;
-
-  	this._container.attr(
-  		"aria-label",
-  		is_interactive && items_total_count > 0
-  			? this._state.screenreader_instructions ||
-  					"Select the legend items to toggle visibility of data series."
-  			: null,
-  	);
-
-  	const announce_count = `There are ${items_visible_count} of ${items_total_count} series visible.`;
-  	let announce_text;
-
-  	// The below cases are ordered to prefer the most specific announcement given the updated legend state
-  	if (!is_interactive || items_visible_count === items_total_count) {
-  		// If all series visible (the initial state in most cases)
-  		announce_text = "All series are visible.";
-  	} else if (items_visible_count === 0) {
-  		// If all series hidden
-  		announce_text = "All series are hidden.";
-  	} else if (items_visible_count === 1) {
-  		// If one series visible (e.g. in single select mode)
-  		const visible_item = this._legend_items.find(
-  			(item) => !this._isFilteredItem(item),
-  		);
-  		announce_text = `${visible_item.label} series is visible. All other series are hidden.`;
-  	} else if (last_clicked_item) {
-  		// If multiple series visible after clicking a legend item (e.g. in multi select mode)
-  		announce_text = `${last_clicked_item.label} series now ${last_clicked_hidden ? "hidden" : "visible"}. ${announce_count}`;
-  	} else {
-  		// For any other legend state e.g. after other filters or story data changes the legend
-  		announce_text = announce_count;
-  	}
-
-  	select$2("#fl-legend-announcement")
-  		.text(announce_text)
-  		.attr("aria-live", "assertive");
-  };
-
-  DiscreteColorLegend.prototype._updateLegend = function () {
-  	const _this = this;
-  	const format = this._formatFunction;
-  	const is_interactive = this._isInteractive();
-
-  	this._updateAnnouncements();
-
-  	this._container
-  		.style("max-width", remToPx(this._state.max_width) + "px")
-  		.style("display", "inline-flex")
-  		.style("flex-wrap", "wrap")
-  		.style(
-  			"align-items",
-  			this._state.orientation == "horizontal" ? "center" : "start",
-  		)
-  		.style(
-  			"align-content",
-  			this._state.orientation == "horizontal" ? "center" : null,
-  		)
-  		.style(
-  			"flex-direction",
-  			this._state.orientation == "horizontal" ? null : "column",
-  		)
-  		// Prevent legend from filling whole window when column with lots of
-  		// unique values is bound
-  		.style("max-height", `${window.innerHeight * 0.5}px`)
-  		.style("overflow-y", "auto")
-  		.attr("role", "group");
-
-  	var legend_item_data;
-  	if (this._state.order_override.trim()) {
-  		legend_item_data = sortByOrderOverride(
-  			this._legend_items,
-  			this._state.order_override,
-  		);
-  	} else {
-  		legend_item_data = this._legend_items;
-  	}
-
-  	var legend_items = this._container
-  		.selectAll(".fl-legend-item")
-  		.data(legend_item_data);
-
-  	var legend_items_enter = legend_items
-  		.enter()
-  		.append("div")
-  		.attr("class", "fl-legend-item");
-
-  	legend_items_enter.append("div").attr("class", "fl-legend-swatch");
-
-  	// Add icon elements
-  	let icon_container = legend_items_enter
-  		.append("div")
-  		.attr("class", "fl-legend-icon-container");
-
-  	icon_container
-  		.append("svg")
-  		.attr("class", "fl-legend-icon fl-ignore-svg-download")
-  		.append("path");
-
-  	icon_container.append("img").attr("class", "fl-legend-icon");
-
-  	icon_container.append("div").attr("class", "fl-legend-icon");
-
-  	legend_items_enter.append("p").attr("class", "fl-legend-label");
-
-  	var legend_items_update = legend_items.merge(legend_items_enter);
-
-  	legend_items_update
-  		.style(
-  			"display",
-  			this._state.orientation == "horizontal" ? "inline-flex" : "flex",
-  		)
-  		.style("flex-direction", function (d) {
-  			return d.reverse ? "row-reverse" : "row";
-  		})
-  		.style("opacity", function (d) {
-  			return _this._isFilteredItem(d) ? 0.2 : "";
-  		})
-  		.style("align-items", "center")
-  		.style(
-  			"padding-inline-end",
-  			this._state.orientation == "horizontal"
-  				? this._state.legend_items_padding + "rem"
-  				: 0,
-  		)
-  		.style("padding-inline-start", 0)
-  		.attr("tabindex", is_interactive ? "0" : null)
-  		.attr("role", is_interactive ? "button" : null)
-  		.attr("aria-pressed", function (d) {
-  			return is_interactive ? (!_this._isFilteredItem(d)).toString() : null;
-  		})
-  		.attr("aria-label", function (d) {
-  			return is_interactive
-  				? `Toggle ${d.label} series visibility, currently ${_this._isFilteredItem(d) ? "hidden" : "visible"}`
-  				: null;
-  		});
-
-  	// Swatch
-  	legend_items_update
-  		.select(".fl-legend-swatch")
-  		.style("height", this._state.swatch_height + "rem")
-  		.style("width", this._state.swatch_width + "rem")
-  		.style("border-radius", this._state.swatch_radius + "px")
-  		.style("background-color", function (d) {
-  			return d.color;
-  		})
-  		.style("border", () => {
-  			if (!this._state.swatch_outline) return "none";
-  			else if (!this._state.swatch_outline_color) return "1px solid";
-  			else return `1px solid ${this._state.swatch_outline_color}`;
-  		})
-  		.style(
-  			"box-sizing",
-  			this._state.swatch_outline ? "border-box" : "content-box",
-  		)
-  		.style("flex-shrink", "0")
-  		// Only display if icon not defined
-  		.style("display", function (d) {
-  			return d.icon ? "none" : null;
-  		});
-
-  	// Icons
-  	const legend_items_with_icons_update = legend_items_update.filter(
-  		(d) => d.icon,
-  	);
-
-  	// Style all icons
-  	legend_items_with_icons_update.each(function (d) {
-  		// Using Math.ceil on SVG width and height seems to prevent subtle cropping of the icon edges (particularly apparent in outline mode)
-  		let height = Math.ceil(remToPx(_this._state.icon_height));
-
-  		let width = "auto";
-  		if (d.icon.width) {
-  			let w = d.icon.width;
-  			let h = d.icon.height;
-  			let stroke_width = d.outline ? h * d.stroke_thickness : 0;
-  			w += stroke_width;
-  			h += stroke_width;
-
-  			let aspect_ratio = w / h;
-  			let width_px = remToPx(_this._state.icon_height * aspect_ratio);
-  			width = Math.ceil(width_px);
-  		}
-
-  		let margin_right = _this._state.text_size * 0.25 + "rem";
-
-  		select$2(this)
-  			.selectAll(".fl-legend-icon")
-  			.attr("height", height)
-  			.attr("width", width)
-  			.style("margin-right", margin_right);
-  	});
-
-  	// Icon visibility
-  	legend_items_update
-  		.select(".fl-legend-icon-container")
-  		.style("display", function (d) {
-  			return d.icon ? null : "none";
-  		});
-
-  	legend_items_with_icons_update.each(function (d) {
-  		select$2(this)
-  			.select("svg.fl-legend-icon")
-  			.style("display", d.icon.path_string ? "inline" : "none");
-  		select$2(this)
-  			.select("img.fl-legend-icon")
-  			.style("display", d.icon.url ? "inline" : "none");
-  		select$2(this)
-  			.select("div.fl-legend-icon")
-  			.style("display", d.icon.html ? "inline-block" : "none");
-  	});
-
-  	// Image icons
-  	legend_items_with_icons_update
-  		.filter((d) => d.icon.url)
-  		.select("img.fl-legend-icon")
-  		.attr("src", (d) => d.icon.url);
-
-  	// HTML icons (e.g. Font Awesome)
-  	legend_items_with_icons_update
-  		.filter((d) => d.icon.html)
-  		.select("div.fl-legend-icon")
-  		.html((d) => d.icon.html)
-  		.style("font-size", `${Math.ceil(remToPx(this._state.icon_height))}px`)
-  		.style("color", function (d) {
-  			if (d.outline) return "none";
-  			return d.fill || d.color || _this._state.icon_color;
-  		});
-
-  	// SVG icons
-  	legend_items_with_icons_update
-  		.filter((d) => d.icon.path_string)
-  		.select("svg.fl-legend-icon path")
-  		.attr("d", function (d) {
-  			return d.icon ? d.icon.path_string : null;
-  		})
-  		.attr("transform", function (d) {
-  			if (!d.icon) return null;
-
-  			var h = d.icon.height;
-  			var stroke_width = d.outline ? h * d.stroke_thickness : 0;
-  			h += stroke_width;
-
-  			var svg_height = remToPx(_this._state.icon_height);
-  			var scale_factor = svg_height / h;
-
-  			var transform = "scale(" + scale_factor + ")";
-  			transform +=
-  				"translate(" + 0.5 * stroke_width + "," + 0.5 * stroke_width + ")";
-
-  			return transform;
-  		})
-  		.style("fill", function (d) {
-  			if (d.outline) return "none";
-  			return d.fill || d.color || _this._state.icon_color;
-  		})
-  		.style("fill-opacity", function (d) {
-  			if (d.outline) return 0;
-  			return d.fill_opacity || _this._state.icon_fill_opacity;
-  		})
-  		.style("stroke", function (d) {
-  			if (!d.outline && !d.stroke) return "none";
-  			return d.stroke || d.color || _this._state.icon_color;
-  		})
-  		.style("stroke-width", function (d) {
-  			if (!d.outline && !d.stroke_width) return 0;
-  			var stroke_width = d.icon.height * d.stroke_thickness;
-  			return d.stroke_width || stroke_width;
-  		})
-  		.style("stroke-opacity", function (d) {
-  			if (!d.outline && !d.stroke_opacity) return 0;
-  			return d.stroke_opacity || _this._state.icon_stroke_opacity;
-  		});
-
-  	// Label
-  	legend_items_update
-  		.select(".fl-legend-label")
-  		.text(function (d) {
-  			return format ? format(d.label) : d.label;
-  		})
-  		.style("margin", 0)
-  		.style("user-select", "none")
-  		.style("-webkit-user-select", "none")
-  		.style("padding-inline-end", 0)
-  		.style("padding-inline-start", small_gap);
-
-  	legend_items.exit().remove();
-
-  	this._legend_item_els = legend_items_update;
-
-  	return this;
-  };
-
-  DiscreteColorLegend.prototype.prepareScreenshotSVG = function () {
-  	if (!this._state.show_legend || !this._visible || !this._legend_items.length)
-  		return;
-
-  	createScreenshotSVG(
-  		"#fl-layout-wrapper",
-  		this._id + "-svg-screenshot-container",
-  	)
-  		.addTextElements(".fl-legend-title")
-  		.addSwatchElements(".fl-legend-swatch", ".fl-legend-label")
-  		.addTextElements(".fl-legend-label");
-  };
-
-  DiscreteColorLegend.prototype.clearScreenshotSVG = function () {
-  	const container = document.getElementById(
-  		this._id + "-svg-screenshot-container",
-  	);
-  	if (container) container.remove();
-  };
-
-  var font_size,
-  	font_color,
-  	font_family,
-  	font_weight,
-  	default_text_size = 1;
-
-  var DEFAULTS$3 = Object.freeze({
-  	alignment: "start",
-  	orientation: "horizontal",
-  	text_color: null,
-  	title_weight: "bold",
-  	text_weight: "normal",
-  	text_size: default_text_size,
-  	screenreader_instructions: "",
-  });
-
-  function legendContainer(state_) {
-  	this._state = state_;
-  	for (var key in DEFAULTS$3) {
-  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$3[key];
-  	}
-
-  	return this;
-  }
-
-  legendContainer.prototype.appendTo = function (container_) {
-  	this._container = select$2(container_)
-  		.append("div")
-  		.classed("fl-legend-wrapper", true)
-  		.style("user-select", "none")
-  		.style("-webkit-user-select", "none")
-  		.node();
-
-  	select$2(this._container)
-  		.insert("p", ":first-child")
-  		.attr("class", "fl-legend-announcement fl-legend-sr-only")
-  		.attr("id", "fl-legend-announcement");
-
-  	return this;
-  };
-
-  legendContainer.prototype.add = function (legends) {
-  	this._legends = Array.isArray(legends) ? legends : [legends];
-  	var self = this;
-
-  	this._legends.forEach(function (legend) {
-  		if (legend && typeof legend.appendTo == "function")
-  			legend.appendTo(self._container);
-  		else console.warn("Please pass in valid legend instances into .add()");
-  	});
-
-  	return this;
-  };
-
-  legendContainer.prototype.update = function () {
-  	// Initialize some main style elements that can be imported by the individual legend containers
-  	var template = window.template || undefined;
-  	var layout = template ? template.state.layout : undefined;
-  	font_color =
-  		this._state.text_color ||
-  		(template && layout && layout.font_color) ||
-  		"#333333";
-  	font_family = layout
-  		? layout.body_font.name
-  		: window.getComputedStyle(document.body).fontFamily;
-  	font_size = this._state.text_size;
-  	font_weight = this._state.text_weight;
-
-  	var font = {
-  		family: font_family,
-  		weight: font_weight,
-  		size: font_size,
-  		color: font_color,
-  	};
-
-  	this._legends.forEach(function (legend) {
-  		if (legend && typeof legend.update == "function") legend.update(font);
-  	});
-
-  	var is_horizontal = this._state.orientation === "horizontal";
-  	var alignment = this._state.alignment;
-  	var flex_alignment = alignment == "center" ? alignment : "flex-" + alignment;
-
-  	// ================== //
-  	// MAIN LEGEND STYLES //
-  	// ================== //
-
-  	// Styles for main legend wrapper container
-  	select$2(this._container)
-  		.style("justify-content", is_horizontal ? flex_alignment : null)
-  		.style("align-items", is_horizontal ? null : flex_alignment)
-  		.style("display", "flex")
-  		.style("flex-direction", is_horizontal ? "row" : "column");
-
-  	var individual_legend_containers = select$2(this._container).selectAll(
-  		".fl-legend-container",
-  	);
-
-  	// This next section deals with the padding around the legends
-  	individual_legend_containers
-  		.style("padding-inline-end", function () {
-  			if (!is_horizontal) return 0;
-  			return "0.5rem";
-  		})
-  		.style("padding-bottom", function () {
-  			if (is_horizontal) return 0;
-  			return "0.25rem";
-  		})
-  		.style("justify-content", flex_alignment);
-
-  	// Styles for the titles of each legend
-  	select$2(this._container)
-  		.selectAll(".fl-legend-title")
-  		.style("color", this._state.text_color)
-  		.style("font-weight", this._state.title_weight)
-  		.style("font-size", font_size + "rem")
-  		.style("margin-right", font_size * 0.25 + "rem")
-  		.style("line-height", "1.25em")
-  		.style("margin-top", 0)
-  		.style("margin-bottom", 0)
-  		.style("text-align", alignment);
-
-  	// ============================ //
-  	// DISCRETE COLOR LEGEND STYLES //
-  	// ============================ //
-
-  	// Styles for discrete color legend items
-  	select$2(this._container)
-  		.selectAll(".fl-legend-item")
-  		.style("display", "inline-flex")
-  		.style("text-align", alignment);
-
-  	// Styles discrete color legend labels
-  	select$2(this._container)
-  		.selectAll(".fl-legend-label")
-  		.style("color", this._state.text_color)
-  		.style("font-weight", this._state.text_weight)
-  		.style("font-size", font_size + "rem");
-
-  	// ===================================== //
-  	// CONTINUOUS SIZE & COLOR LEGEND STYLES //
-  	// ===================================== //
-
-  	// Styles for continuous size and color legend labels
-  	select$2(this._container)
-  		.selectAll(".label")
-  		.style("color", this._state.text_color)
-  		.style("font-weight", this._state.text_weight)
-  		.style("font-size", font_size + "rem");
-
-  	return this;
-  };
-
-  function createLegendContainer(state) {
-  	return new legendContainer(state);
-  }
-
-  function createDiscreteColorLegend(state) {
-  	return new DiscreteColorLegend(state);
-  }
-
-  var BORDER = 25,
-  	CORNER_RADIUS = 5,
-  	TRIANGLE_HALFWIDTH = 10,
-  	TRIANGLE_HEIGHT = 10;
-
-  var locateTriangle = {};
-
-  locateTriangle.bottom = function locateTriangle_bottom(w, h) {
-  	return {
-  		shape: [
-  			-TRIANGLE_HALFWIDTH,
-  			-TRIANGLE_HEIGHT,
-  			TRIANGLE_HALFWIDTH,
-  			-TRIANGLE_HEIGHT,
-  		],
-  		pos: [w / 2, h + TRIANGLE_HEIGHT],
-  	};
-  };
-
-  locateTriangle.top = function locateTriangle_top(w, _h) {
-  	return {
-  		shape: [
-  			-TRIANGLE_HALFWIDTH,
-  			TRIANGLE_HEIGHT,
-  			TRIANGLE_HALFWIDTH,
-  			TRIANGLE_HEIGHT,
-  		],
-  		pos: [w / 2, -TRIANGLE_HEIGHT],
-  	};
-  };
-
-  locateTriangle.left = function locateTriangle_left(w, h) {
-  	return {
-  		shape: [
-  			TRIANGLE_HEIGHT,
-  			TRIANGLE_HALFWIDTH,
-  			TRIANGLE_HEIGHT,
-  			-TRIANGLE_HALFWIDTH,
-  		],
-  		pos: [-TRIANGLE_HEIGHT, h / 2],
-  	};
-  };
-
-  locateTriangle.right = function locateTriangle_right(w, h) {
-  	return {
-  		shape: [
-  			-TRIANGLE_HEIGHT,
-  			TRIANGLE_HALFWIDTH,
-  			-TRIANGLE_HEIGHT,
-  			-TRIANGLE_HALFWIDTH,
-  		],
-  		pos: [w + TRIANGLE_HEIGHT, h / 2],
-  	};
-  };
-
-  locateTriangle.topLeft = function locateTriangle_topLeft(_w, _h) {
-  	return {
-  		shape: [
-  			TRIANGLE_HEIGHT + CORNER_RADIUS,
-  			TRIANGLE_HEIGHT,
-  			TRIANGLE_HEIGHT,
-  			TRIANGLE_HEIGHT + CORNER_RADIUS,
-  		],
-  		pos: [-TRIANGLE_HEIGHT, -TRIANGLE_HEIGHT],
-  	};
-  };
-
-  locateTriangle.bottomLeft = function locateTriangle_bottomLeft(w, h) {
-  	return {
-  		shape: [
-  			TRIANGLE_HEIGHT + CORNER_RADIUS,
-  			-TRIANGLE_HEIGHT,
-  			TRIANGLE_HEIGHT,
-  			-TRIANGLE_HEIGHT - CORNER_RADIUS,
-  		],
-  		pos: [-TRIANGLE_HEIGHT, h + TRIANGLE_HEIGHT],
-  	};
-  };
-
-  locateTriangle.topRight = function locateTriangle_topRight(w, _h) {
-  	return {
-  		shape: [
-  			-TRIANGLE_HEIGHT - CORNER_RADIUS,
-  			TRIANGLE_HEIGHT,
-  			-TRIANGLE_HEIGHT,
-  			TRIANGLE_HEIGHT + CORNER_RADIUS,
-  		],
-  		pos: [w + TRIANGLE_HEIGHT, -TRIANGLE_HEIGHT],
-  	};
-  };
-
-  locateTriangle.bottomRight = function locateTriangle_bottomRight(w, h) {
-  	return {
-  		shape: [
-  			-TRIANGLE_HEIGHT - CORNER_RADIUS,
-  			-TRIANGLE_HEIGHT,
-  			-TRIANGLE_HEIGHT,
-  			-TRIANGLE_HEIGHT - CORNER_RADIUS,
-  		],
-  		pos: [w + TRIANGLE_HEIGHT, h + TRIANGLE_HEIGHT],
-  	};
-  };
-
-  function hFlexTriangle(w, h, x, y, cb, y_factor, y_pos) {
-  	var l = x - w / 2 - TRIANGLE_HEIGHT,
-  		r = x + w / 2 + TRIANGLE_HEIGHT,
-  		px = w / 2 + Math.min(0, l - cb.left) + Math.max(0, r - cb.right),
-  		shape;
-
-  	if (px - TRIANGLE_HALFWIDTH < CORNER_RADIUS) {
-  		shape = [
-  			-px,
-  			(-TRIANGLE_HEIGHT - CORNER_RADIUS) * y_factor,
-  			Math.max(TRIANGLE_HALFWIDTH, CORNER_RADIUS - px),
-  			-TRIANGLE_HEIGHT * y_factor,
-  		];
-  	} else if (px + TRIANGLE_HALFWIDTH > w - CORNER_RADIUS) {
-  		shape = [
-  			Math.min(-TRIANGLE_HALFWIDTH, w - px - CORNER_RADIUS),
-  			-TRIANGLE_HEIGHT * y_factor,
-  			Math.min(TRIANGLE_HALFWIDTH, w - px),
-  			(-TRIANGLE_HEIGHT - CORNER_RADIUS) * y_factor,
-  		];
-  	} else {
-  		shape = [
-  			-TRIANGLE_HALFWIDTH,
-  			-TRIANGLE_HEIGHT * y_factor,
-  			TRIANGLE_HALFWIDTH,
-  			-TRIANGLE_HEIGHT * y_factor,
-  		];
-  	}
-
-  	return { pos: [px, y_pos], shape: shape };
-  }
-
-  function vFlexTriangle(w, h, x, y, cb, x_factor, x_pos) {
-  	var t = y - h / 2 - TRIANGLE_HEIGHT,
-  		b = y + h / 2 + TRIANGLE_HEIGHT,
-  		py = h / 2 + Math.min(0, t - cb.top) + Math.max(0, b - cb.bottom),
-  		shape;
-
-  	if (py - TRIANGLE_HALFWIDTH < CORNER_RADIUS) {
-  		shape = [
-  			(-TRIANGLE_HEIGHT - CORNER_RADIUS) * x_factor,
-  			-py,
-  			-TRIANGLE_HEIGHT * x_factor,
-  			Math.max(TRIANGLE_HALFWIDTH, CORNER_RADIUS - py),
-  		];
-  	} else if (py + TRIANGLE_HALFWIDTH > h - CORNER_RADIUS) {
-  		shape = [
-  			-TRIANGLE_HEIGHT * x_factor,
-  			Math.min(-TRIANGLE_HALFWIDTH, h - py - CORNER_RADIUS),
-  			(-TRIANGLE_HEIGHT - CORNER_RADIUS) * x_factor,
-  			Math.min(TRIANGLE_HALFWIDTH, h - py),
-  		];
-  	} else {
-  		shape = [
-  			-TRIANGLE_HEIGHT * x_factor,
-  			-TRIANGLE_HALFWIDTH,
-  			-TRIANGLE_HEIGHT * x_factor,
-  			TRIANGLE_HALFWIDTH,
-  		];
-  	}
-
-  	return { pos: [x_pos, py], shape: shape };
-  }
-
-  locateTriangle.bottomFlexible = function locateTriangle_bottomFlexible(
-  	w,
-  	h,
-  	x,
-  	y,
-  	cb,
-  ) {
-  	return hFlexTriangle(w, h, x, y, cb, 1, h + TRIANGLE_HEIGHT);
-  };
-
-  locateTriangle.topFlexible = function locateTriangle_topFlexible(
-  	w,
-  	h,
-  	x,
-  	y,
-  	cb,
-  ) {
-  	return hFlexTriangle(w, h, x, y, cb, -1, -TRIANGLE_HEIGHT);
-  };
-
-  locateTriangle.rightFlexible = function locateTriangle_rightFlexible(
-  	w,
-  	h,
-  	x,
-  	y,
-  	cb,
-  ) {
-  	return vFlexTriangle(w, h, x, y, cb, 1, w + TRIANGLE_HEIGHT);
-  };
-
-  locateTriangle.leftFlexible = function locateTriangle_leftFlexible(
-  	w,
-  	h,
-  	x,
-  	y,
-  	cb,
-  ) {
-  	return vFlexTriangle(w, h, x, y, cb, -1, -TRIANGLE_HEIGHT);
-  };
-
-  /* eslint-disable @flourish/flourish/no-mixed-spaces-and-tabs */
-
-
-  function boxBounds(dir, w, h, x, y, cb) {
-  	var lt = locateTriangle[dir](w, h, x, y, cb),
-  		left = x - BORDER - lt.pos[0],
-  		top = y - BORDER - lt.pos[1];
-  	return {
-  		left: left,
-  		top: top,
-  		right: left + w + 2 * BORDER,
-  		bottom: top + h + 2 * BORDER,
-  	};
-  }
-
-  function positionBox(dir, s, path, w, h, x, y, clientX, clientY, cb) {
-  	var lt = locateTriangle[dir](w, h, clientX, clientY, cb);
-  	s.left = x - BORDER - lt.pos[0] + "px";
-  	s.top = y - BORDER - lt.pos[1] + "px";
-  	path.setAttribute("d", "M0,0L" + lt.shape.join(",") + "Z");
-  	path.setAttribute(
-  		"transform",
-  		"translate(" + (lt.pos[0] + BORDER) + "," + (lt.pos[1] + BORDER) + ")",
-  	);
-  }
-
-  function Popup_draw() {
-  	var popup = this;
-
-  	popup.is_visible = true;
-
-  	function maxContentWidth(cb) {
-  		if (popup._maxWidth.match(/^\d+(?:\.\d+)?%$/)) {
-  			return (cb.width * parseFloat(popup._maxWidth)) / 100;
-  		}
-  		if (popup._maxWidth.match(/^\d+(?:\.\d+)?(?:px)?$/)) {
-  			return parseFloat(popup._maxWidth);
-  		}
-  		if (popup._maxWidth != null) {
-  			console.error("Popup: Unknown value for maxWidth: " + popup._maxWidth);
-  		}
-  		return cb.width;
-  	}
-
-  	if (!popup._point) {
-  		console.error("Popup: cannot draw popup till point() has been specified");
-  		return;
-  	}
-
-  	var doc_rect = document.documentElement.getBoundingClientRect(),
-  		clientX = popup._point[0],
-  		clientY = popup._point[1],
-  		cb = popup._container.getBoundingClientRect();
-
-  	if (clientX < cb.left) clientX = cb.left;
-  	else if (clientX > cb.right) clientX = cb.right;
-  	if (clientY < cb.top) clientY = cb.top;
-  	else if (clientY > cb.bottom) clientY = cb.bottom;
-
-  	var x = clientX - doc_rect.left,
-  		y = clientY - doc_rect.top;
-
-  	var el = popup._getElement(),
-  		s = el.style,
-  		svg = el.querySelector(".flourish-popup-svg"),
-  		g = svg.querySelector("g"),
-  		rect = g.querySelector("rect"),
-  		path = g.querySelector("path"),
-  		content = el.querySelector(".flourish-popup-content");
-
-  	s.display = "block";
-  	content.style.maxWidth = maxContentWidth(cb) + "px";
-  	if (popup._inner_html != popup._html) {
-  		content.innerHTML = popup._inner_html = popup._html;
-  	}
-  	var content_box = content.getBoundingClientRect(),
-  		w,
-  		h;
-  	do {
-  		w = Math.ceil(content_box.width);
-  		h = Math.ceil(content_box.height);
-  		s.width = w + 2 * BORDER + "px";
-  		s.height = h + 2 * BORDER + "px";
-  		content_box = content.getBoundingClientRect();
-  	} while (
-  		w != Math.ceil(content_box.width) ||
-  		h != Math.ceil(content_box.height)
-  	);
-
-  	rect.setAttribute("width", w);
-  	rect.setAttribute("height", h);
-  	svg.setAttribute("width", w + 2 * BORDER);
-  	svg.setAttribute("height", h + 2 * BORDER);
-
-  	var overlap = BORDER - TRIANGLE_HEIGHT;
-  	var first_fit = null,
-  		best_horizontal_fit = null,
-  		best_vertical_fit = null,
-  		least_horizontal_protrusion = Infinity,
-  		least_vertical_protrusion = Infinity,
-  		vp_at_least_hp,
-  		hp_at_least_vp;
-  	for (var i = 0; i < popup._directions.length; i++) {
-  		var dir = popup._directions[i],
-  			b = boxBounds(dir, w, h, clientX, clientY, cb),
-  			horizontal_protrusion =
-  				Math.max(0, Math.floor(cb.left) - b.left - overlap) +
-  				Math.max(0, b.right - Math.ceil(cb.right) - overlap),
-  			vertical_protrusion =
-  				Math.max(0, Math.floor(cb.top) - b.top - overlap) +
-  				Math.max(0, b.bottom - Math.ceil(cb.bottom) - overlap);
-
-  		if (horizontal_protrusion == 0 && vertical_protrusion == 0) {
-  			first_fit = dir;
-  			break;
-  		}
-  		if (
-  			horizontal_protrusion < least_horizontal_protrusion ||
-  			(horizontal_protrusion == least_horizontal_protrusion &&
-  				vertical_protrusion < vp_at_least_hp)
-  		) {
-  			least_horizontal_protrusion = horizontal_protrusion;
-  			vp_at_least_hp = vertical_protrusion;
-  			best_horizontal_fit = dir;
-  		}
-  		if (
-  			vertical_protrusion < least_vertical_protrusion ||
-  			(vertical_protrusion == least_vertical_protrusion &&
-  				horizontal_protrusion < hp_at_least_vp)
-  		) {
-  			least_vertical_protrusion = vertical_protrusion;
-  			hp_at_least_vp = horizontal_protrusion;
-  			best_vertical_fit = dir;
-  		}
-  	}
-
-  	// If the box can be fit completely within the container, do that
-  	if (first_fit) {
-  		dir = first_fit;
-  	}
-  	// Otherwise use the fallback fit (horizontal or vertical) if specified
-  	else if (popup._fallbackFit == "horizontal") {
-  		dir = best_horizontal_fit;
-  	} else if (popup._fallbackFit == "vertical") {
-  		dir = best_vertical_fit;
-  	}
-  	// If all else fails, issue a warning and use the first specified direction.
-  	else {
-  		console.warn(
-  			"Popup: failed to point box of size (" +
-  				w +
-  				", " +
-  				h +
-  				")" +
-  				" at (" +
-  				clientX +
-  				", " +
-  				clientY +
-  				") within (" +
-  				cb.left +
-  				", " +
-  				cb.top +
-  				", " +
-  				cb.right +
-  				", " +
-  				cb.bottom +
-  				")",
-  		);
-  		dir = popup._directions[0];
-  	}
-
-  	// Position the box and return
-  	positionBox(dir, s, path, w, h, x, y, clientX, clientY, cb);
-  	return popup;
-  }
-
-  function svgElement(tagName, attrs, styles) {
-  	var element = document.createElementNS("http://www.w3.org/2000/svg", tagName);
-  	var k;
-  	if (attrs) for (k in attrs) element.setAttribute(k, attrs[k]);
-
-  	var s = element.style;
-  	if (styles) for (k in styles) s[k] = styles[k];
-
-  	return element;
-  }
-
-  function Popup__getElement() {
-  	var popup = this;
-  	var el = popup.element;
-
-  	if (!el) {
-  		el = popup.element = document.createElement("div");
-
-  		var id = "flourish-popup-" + popup.unique_id;
-  		el.className = "flourish-popup";
-  		el.id = id;
-
-  		var s = el.style;
-  		s.display = "none";
-  		s.margin = s.padding = 0;
-  		s.position = "absolute";
-  		s.width = "80px";
-  		s.height = "40px";
-  		s.boxSizing = "border-box";
-
-  		el.addEventListener(
-  			"click",
-  			function (e) {
-  				popup.fire("click", e);
-  			},
-  			false,
-  		);
-
-  		var svg = svgElement(
-  			"svg",
-  			{ class: "flourish-popup-svg" },
-  			{
-  				position: "absolute",
-  				top: 0,
-  				left: 0,
-  				bottom: 0,
-  				right: 0,
-  			},
-  		);
-
-  		var filter = svgElement("filter", {
-  			id: "dropshadow-" + popup.unique_id,
-  			height: "130%",
-  		});
-  		filter.appendChild(
-  			svgElement("feGaussianBlur", { in: "SourceAlpha", stdDeviation: 5 }),
-  		);
-  		filter.appendChild(
-  			svgElement("feOffset", { dx: 0, dy: 2, result: "offsetblur" }),
-  		);
-  		var fe_component_transfer = svgElement("feComponentTransfer");
-  		fe_component_transfer.appendChild(
-  			svgElement("feFuncA", { type: "linear", slope: 0.2 }),
-  		);
-  		filter.appendChild(fe_component_transfer);
-  		var fe_merge = svgElement("feMerge");
-  		filter.appendChild(fe_merge);
-  		fe_merge.appendChild(svgElement("feMergeNode"));
-  		fe_merge.appendChild(svgElement("feMergeNode", { in: "SourceGraphic" }));
-  		svg.appendChild(filter);
-
-  		var g = svgElement("g", {
-  			filter: "url(#dropshadow-" + popup.unique_id + ")",
-  			fill: "white",
-  			stroke: "none",
-  		});
-  		g.appendChild(
-  			svgElement("rect", { x: BORDER, y: BORDER, rx: CORNER_RADIUS }),
-  		);
-  		g.appendChild(svgElement("path"));
-  		svg.appendChild(g);
-  		el.appendChild(svg);
-
-  		var content = document.createElement("div");
-  		content.className = "flourish-popup-content";
-
-  		s = content.style;
-  		s.position = "absolute";
-  		s.top = s.left = BORDER + "px";
-  		s.padding = "10px";
-  		el.appendChild(content);
-
-  		popup._getConstrainer().appendChild(el);
-  	}
-
-  	popup._resizeConstrainer();
-  	return el;
-  }
-
-  /* The popup element can technically be partly outside the page, even though
-     visually it is not. This causes the page to become horizontally scrollable,
-     which can lead to problems like kiln/flourish#1267.
-
-     This code adds an absolutely-positioned “constrainer” element containing the
-     popup that has overlow:hidden, which covers the entire document.
-
-     It’s surprisingly hard to achieve that – or at least I failed to find an easy
-     way – and so we explicitly set the dimensions of the constrainer to match the
-     document, and recompute them when the popup is redrawn.
-  */
-
-  // There is one constrainer for the entire page, however many Popup instances
-  // there are, so these variables are global rather than properties of the instance.
-  var constrainer, style;
-
-  function Popup__getConstrainer() {
-  	if (constrainer) return constrainer;
-
-  	constrainer = document.createElement("div");
-  	constrainer.id = "flourish-popup-constrainer";
-  	constrainer.setAttribute("aria-hidden", true);
-  	style = constrainer.style;
-
-  	style.overflow = "hidden";
-  	style.pointerEvents = "none";
-  	style.position = "absolute";
-  	style.left = "0";
-  	style.top = "0";
-  	style.margin = "0";
-  	style.padding = "0";
-
-  	document.body.appendChild(constrainer);
-  	this._resizeConstrainer();
-
-  	return constrainer;
-  }
-
-  function Popup__resizeConstrainer() {
-  	if (!constrainer) Popup__getConstrainer.call(this);
-  	// The element must be hidden before we compute the dimensions, or
-  	// it will affect those dimensions itself, with the effect that the
-  	// constrainer can only grow and never shrink.
-  	var old_display = style.display;
-  	style.display = "none";
-  	style.width = document.documentElement.scrollWidth + "px";
-  	style.height = document.documentElement.scrollHeight + "px";
-  	style.display = old_display;
-  }
-
-  var VERSION = "2.1.5";
-
-  var OPTIONS$1 = {
-  	container: document.body,
-  	maxWidth: "70%",
-  	point: null,
-  	html: null,
-  	directions: [
-  		"bottom",
-  		"top",
-  		"left",
-  		"right",
-  		"topLeft",
-  		"bottomLeft",
-  		"topRight",
-  		"bottomRight",
-  		"bottomFlexible",
-  		"topFlexible",
-  		"leftFlexible",
-  		"rightFlexible",
-  	],
-  	fallbackFit: "horizontal", // or "vertical"
-  };
-
-  function getNextGlobalPopupId() {
-  	// We want globally unique IDs across all instances and versions of flourish-popup
-  	let global_popup_id_store;
-  	let global_popup_id_key;
-
-  	// Get the relevant global on which to share the popup ID counter
-  	if ("Flourish" in window) {
-  		global_popup_id_store = window.Flourish;
-  		global_popup_id_key = "__popup_next_unique_id";
-  	} else {
-  		global_popup_id_store = window;
-  		global_popup_id_key = "__flourish_popup_next_unique_id";
-  	}
-
-  	// Initialise the global ID counter
-  	if (!global_popup_id_store[global_popup_id_key]) {
-  		// Compatibility: popup IDs now start at 1000
-  		// to avoid DOM ID clashes when used along side older instances of flourish-popup
-  		return (global_popup_id_store[global_popup_id_key] = 1000);
-  	}
-
-  	// Increment the global ID counter
-  	global_popup_id_store[global_popup_id_key] += 1;
-
-  	// Return the new ID
-  	return global_popup_id_store[global_popup_id_key];
-  }
-
-  function Popup() {
-  	this.unique_id = getNextGlobalPopupId();
-  	this.is_visible = true;
-  	this.element = null;
-
-  	for (var k in OPTIONS$1) this["_" + k] = OPTIONS$1[k];
-
-  	this.handlers = {
-  		click: [],
-  	};
-  }
-
-  // Create accessor methods for all the options
-  function accessor$1(k) {
-  	Popup.prototype[k] = function (v) {
-  		if (typeof v == "undefined") return this["_" + k];
-  		this["_" + k] = v;
-  		return this;
-  	};
-  }
-  for (var k$1 in OPTIONS$1) accessor$1(k$1);
-
-  // Custom accessor method for .point
-  Popup.prototype.point = function (arg1, arg2) {
-  	if (typeof arg1 == "undefined") return this._point;
-  	if (Array.isArray(arg1)) this._point = [arg1[0], arg1[1]];
-  	else if (typeof arg2 != "undefined") this._point = [arg1, arg2];
-  	else if (arg1 instanceof HTMLElement || arg1 instanceof SVGElement) {
-  		var r = arg1.getBoundingClientRect();
-  		this._point = [
-  			Math.floor(r.left + r.width / 2),
-  			Math.floor(r.top + r.height / 2),
-  		];
-  	} else {
-  		console.error("Popup: could not understand argument");
-  	}
-
-  	return this;
-  };
-
-  Popup.prototype.directions = function (arg) {
-  	if (typeof arg === "undefined") return this._directions;
-  	if (typeof arg === "string") arg = [arg];
-  	this._directions = arg.slice();
-  	return this;
-  };
-
-  function textToHtml(text) {
-  	return text.replace(/[&<>]/g, function (s) {
-  		return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[s];
-  	});
-  }
-
-  // Accessor (setter only) for setting plain text
-  Popup.prototype.text = function Popup_text(t) {
-  	this._html = textToHtml(t);
-  	return this;
-  };
-
-  // Attach event handlers
-  Popup.prototype.on = function Popup_on(event, handler) {
-  	if (!(event in this.handlers))
-  		throw new Error("Popup.on: No such event: " + event);
-  	this.handlers[event].push(handler);
-  	return this;
-  };
-
-  // Fire event
-  Popup.prototype.fire = function Popup_fire(event, d) {
-  	if (!(event in this.handlers))
-  		throw new Error("Popup.fire: No such event: " + event);
-  	var handlers = this.handlers[event];
-  	for (var i = 0; i < handlers.length; i++) {
-  		handlers[i].call(this, d);
-  	}
-  	return this;
-  };
-
-  Popup.prototype._getElement = Popup__getElement;
-  Popup.prototype._getConstrainer = Popup__getConstrainer;
-  Popup.prototype._resizeConstrainer = Popup__resizeConstrainer;
-
-  Popup.prototype.draw = Popup_draw;
-
-  Popup.prototype.hide = function Popup_hide() {
-  	if (!this.is_visible) return this;
-  	this.is_visible = false;
-  	this._getElement().style.display = "none";
-  	return this;
-  };
-
-  function Flourish_popup() {
-  	return new Popup();
-  }
-  Flourish_popup.version = VERSION;
-
-  var xhtml$1 = "http://www.w3.org/1999/xhtml";
-
-  var namespaces$1 = {
-    svg: "http://www.w3.org/2000/svg",
-    xhtml: xhtml$1,
-    xlink: "http://www.w3.org/1999/xlink",
-    xml: "http://www.w3.org/XML/1998/namespace",
-    xmlns: "http://www.w3.org/2000/xmlns/"
-  };
-
-  function namespace$1(name) {
-    var prefix = name += "", i = prefix.indexOf(":");
-    if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns") name = name.slice(i + 1);
-    return namespaces$1.hasOwnProperty(prefix) ? {space: namespaces$1[prefix], local: name} : name;
-  }
-
-  function creatorInherit$1(name) {
-    return function() {
-      var document = this.ownerDocument,
-          uri = this.namespaceURI;
-      return uri === xhtml$1 && document.documentElement.namespaceURI === xhtml$1
-          ? document.createElement(name)
-          : document.createElementNS(uri, name);
-    };
-  }
-
-  function creatorFixed$1(fullname) {
-    return function() {
-      return this.ownerDocument.createElementNS(fullname.space, fullname.local);
-    };
-  }
-
-  function creator$1(name) {
-    var fullname = namespace$1(name);
-    return (fullname.local
-        ? creatorFixed$1
-        : creatorInherit$1)(fullname);
-  }
-
-  function none$1() {}
-
-  function selector$1(selector) {
-    return selector == null ? none$1 : function() {
-      return this.querySelector(selector);
-    };
-  }
-
-  function selection_select$1(select) {
-    if (typeof select !== "function") select = selector$1(select);
-
-    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
-      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
-        if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
-          if ("__data__" in node) subnode.__data__ = node.__data__;
-          subgroup[i] = subnode;
-        }
-      }
-    }
-
-    return new Selection$3(subgroups, this._parents);
-  }
-
-  function empty$1() {
-    return [];
-  }
-
-  function selectorAll$1(selector) {
-    return selector == null ? empty$1 : function() {
-      return this.querySelectorAll(selector);
-    };
-  }
-
-  function selection_selectAll$1(select) {
-    if (typeof select !== "function") select = selectorAll$1(select);
-
-    for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
-      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
-        if (node = group[i]) {
-          subgroups.push(select.call(node, node.__data__, i, group));
-          parents.push(node);
-        }
-      }
-    }
-
-    return new Selection$3(subgroups, parents);
-  }
-
-  function matcher$1(selector) {
-    return function() {
-      return this.matches(selector);
-    };
-  }
-
-  function selection_filter$1(match) {
-    if (typeof match !== "function") match = matcher$1(match);
-
-    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
-      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
-        if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
-          subgroup.push(node);
-        }
-      }
-    }
-
-    return new Selection$3(subgroups, this._parents);
-  }
-
-  function sparse$1(update) {
-    return new Array(update.length);
-  }
-
-  function selection_enter$1() {
-    return new Selection$3(this._enter || this._groups.map(sparse$1), this._parents);
-  }
-
-  function EnterNode$1(parent, datum) {
-    this.ownerDocument = parent.ownerDocument;
-    this.namespaceURI = parent.namespaceURI;
-    this._next = null;
-    this._parent = parent;
-    this.__data__ = datum;
-  }
-
-  EnterNode$1.prototype = {
-    constructor: EnterNode$1,
-    appendChild: function(child) { return this._parent.insertBefore(child, this._next); },
-    insertBefore: function(child, next) { return this._parent.insertBefore(child, next); },
-    querySelector: function(selector) { return this._parent.querySelector(selector); },
-    querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
-  };
-
-  function constant$3(x) {
-    return function() {
-      return x;
-    };
-  }
-
-  var keyPrefix = "$"; // Protect against keys like “__proto__”.
-
-  function bindIndex$1(parent, group, enter, update, exit, data) {
-    var i = 0,
-        node,
-        groupLength = group.length,
-        dataLength = data.length;
-
-    // Put any non-null nodes that fit into update.
-    // Put any null nodes into enter.
-    // Put any remaining data into enter.
-    for (; i < dataLength; ++i) {
-      if (node = group[i]) {
-        node.__data__ = data[i];
-        update[i] = node;
-      } else {
-        enter[i] = new EnterNode$1(parent, data[i]);
-      }
-    }
-
-    // Put any non-null nodes that don’t fit into exit.
-    for (; i < groupLength; ++i) {
-      if (node = group[i]) {
-        exit[i] = node;
-      }
-    }
-  }
-
-  function bindKey$1(parent, group, enter, update, exit, data, key) {
-    var i,
-        node,
-        nodeByKeyValue = {},
-        groupLength = group.length,
-        dataLength = data.length,
-        keyValues = new Array(groupLength),
-        keyValue;
-
-    // Compute the key for each node.
-    // If multiple nodes have the same key, the duplicates are added to exit.
-    for (i = 0; i < groupLength; ++i) {
-      if (node = group[i]) {
-        keyValues[i] = keyValue = keyPrefix + key.call(node, node.__data__, i, group);
-        if (keyValue in nodeByKeyValue) {
-          exit[i] = node;
-        } else {
-          nodeByKeyValue[keyValue] = node;
-        }
-      }
-    }
-
-    // Compute the key for each datum.
-    // If there a node associated with this key, join and add it to update.
-    // If there is not (or the key is a duplicate), add it to enter.
-    for (i = 0; i < dataLength; ++i) {
-      keyValue = keyPrefix + key.call(parent, data[i], i, data);
-      if (node = nodeByKeyValue[keyValue]) {
-        update[i] = node;
-        node.__data__ = data[i];
-        nodeByKeyValue[keyValue] = null;
-      } else {
-        enter[i] = new EnterNode$1(parent, data[i]);
-      }
-    }
-
-    // Add any remaining nodes that were not bound to data to exit.
-    for (i = 0; i < groupLength; ++i) {
-      if ((node = group[i]) && (nodeByKeyValue[keyValues[i]] === node)) {
-        exit[i] = node;
-      }
-    }
-  }
-
-  function selection_data$1(value, key) {
-    if (!value) {
-      data = new Array(this.size()), j = -1;
-      this.each(function(d) { data[++j] = d; });
-      return data;
-    }
-
-    var bind = key ? bindKey$1 : bindIndex$1,
-        parents = this._parents,
-        groups = this._groups;
-
-    if (typeof value !== "function") value = constant$3(value);
-
-    for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
-      var parent = parents[j],
-          group = groups[j],
-          groupLength = group.length,
-          data = value.call(parent, parent && parent.__data__, j, parents),
-          dataLength = data.length,
-          enterGroup = enter[j] = new Array(dataLength),
-          updateGroup = update[j] = new Array(dataLength),
-          exitGroup = exit[j] = new Array(groupLength);
-
-      bind(parent, group, enterGroup, updateGroup, exitGroup, data, key);
-
-      // Now connect the enter nodes to their following update node, such that
-      // appendChild can insert the materialized enter node before this node,
-      // rather than at the end of the parent node.
-      for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
-        if (previous = enterGroup[i0]) {
-          if (i0 >= i1) i1 = i0 + 1;
-          while (!(next = updateGroup[i1]) && ++i1 < dataLength);
-          previous._next = next || null;
-        }
-      }
-    }
-
-    update = new Selection$3(update, parents);
-    update._enter = enter;
-    update._exit = exit;
-    return update;
-  }
-
-  function selection_exit$1() {
-    return new Selection$3(this._exit || this._groups.map(sparse$1), this._parents);
-  }
-
-  function selection_join$1(onenter, onupdate, onexit) {
-    var enter = this.enter(), update = this, exit = this.exit();
-    enter = typeof onenter === "function" ? onenter(enter) : enter.append(onenter + "");
-    if (onupdate != null) update = onupdate(update);
-    if (onexit == null) exit.remove(); else onexit(exit);
-    return enter && update ? enter.merge(update).order() : update;
-  }
-
-  function selection_merge$1(selection) {
-
-    for (var groups0 = this._groups, groups1 = selection._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
-      for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
-        if (node = group0[i] || group1[i]) {
-          merge[i] = node;
-        }
-      }
-    }
-
-    for (; j < m0; ++j) {
-      merges[j] = groups0[j];
-    }
-
-    return new Selection$3(merges, this._parents);
-  }
-
-  function selection_order$1() {
-
-    for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
-      for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
-        if (node = group[i]) {
-          if (next && node.compareDocumentPosition(next) ^ 4) next.parentNode.insertBefore(node, next);
-          next = node;
-        }
-      }
-    }
-
-    return this;
-  }
-
-  function selection_sort$1(compare) {
-    if (!compare) compare = ascending$1;
-
-    function compareNode(a, b) {
-      return a && b ? compare(a.__data__, b.__data__) : !a - !b;
-    }
-
-    for (var groups = this._groups, m = groups.length, sortgroups = new Array(m), j = 0; j < m; ++j) {
-      for (var group = groups[j], n = group.length, sortgroup = sortgroups[j] = new Array(n), node, i = 0; i < n; ++i) {
-        if (node = group[i]) {
-          sortgroup[i] = node;
-        }
-      }
-      sortgroup.sort(compareNode);
-    }
-
-    return new Selection$3(sortgroups, this._parents).order();
-  }
-
-  function ascending$1(a, b) {
-    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
-  }
-
-  function selection_call$1() {
-    var callback = arguments[0];
-    arguments[0] = this;
-    callback.apply(null, arguments);
-    return this;
-  }
-
-  function selection_nodes$1() {
-    var nodes = new Array(this.size()), i = -1;
-    this.each(function() { nodes[++i] = this; });
-    return nodes;
-  }
-
-  function selection_node$1() {
-
-    for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
-      for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
-        var node = group[i];
-        if (node) return node;
-      }
-    }
-
-    return null;
-  }
-
-  function selection_size$1() {
-    var size = 0;
-    this.each(function() { ++size; });
-    return size;
-  }
-
-  function selection_empty$1() {
-    return !this.node();
-  }
-
-  function selection_each$1(callback) {
-
-    for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
-      for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
-        if (node = group[i]) callback.call(node, node.__data__, i, group);
-      }
-    }
-
-    return this;
-  }
-
-  function attrRemove$3(name) {
-    return function() {
-      this.removeAttribute(name);
-    };
-  }
-
-  function attrRemoveNS$3(fullname) {
-    return function() {
-      this.removeAttributeNS(fullname.space, fullname.local);
-    };
-  }
-
-  function attrConstant$3(name, value) {
-    return function() {
-      this.setAttribute(name, value);
-    };
-  }
-
-  function attrConstantNS$3(fullname, value) {
-    return function() {
-      this.setAttributeNS(fullname.space, fullname.local, value);
-    };
-  }
-
-  function attrFunction$3(name, value) {
-    return function() {
-      var v = value.apply(this, arguments);
-      if (v == null) this.removeAttribute(name);
-      else this.setAttribute(name, v);
-    };
-  }
-
-  function attrFunctionNS$3(fullname, value) {
-    return function() {
-      var v = value.apply(this, arguments);
-      if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
-      else this.setAttributeNS(fullname.space, fullname.local, v);
-    };
-  }
-
-  function selection_attr$1(name, value) {
-    var fullname = namespace$1(name);
-
-    if (arguments.length < 2) {
-      var node = this.node();
-      return fullname.local
-          ? node.getAttributeNS(fullname.space, fullname.local)
-          : node.getAttribute(fullname);
-    }
-
-    return this.each((value == null
-        ? (fullname.local ? attrRemoveNS$3 : attrRemove$3) : (typeof value === "function"
-        ? (fullname.local ? attrFunctionNS$3 : attrFunction$3)
-        : (fullname.local ? attrConstantNS$3 : attrConstant$3)))(fullname, value));
-  }
-
-  function defaultView$1(node) {
-    return (node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
-        || (node.document && node) // node is a Window
-        || node.defaultView; // node is a Document
-  }
-
-  function styleRemove$3(name) {
-    return function() {
-      this.style.removeProperty(name);
-    };
-  }
-
-  function styleConstant$3(name, value, priority) {
-    return function() {
-      this.style.setProperty(name, value, priority);
-    };
-  }
-
-  function styleFunction$3(name, value, priority) {
-    return function() {
-      var v = value.apply(this, arguments);
-      if (v == null) this.style.removeProperty(name);
-      else this.style.setProperty(name, v, priority);
-    };
-  }
-
-  function selection_style$1(name, value, priority) {
-    return arguments.length > 1
-        ? this.each((value == null
-              ? styleRemove$3 : typeof value === "function"
-              ? styleFunction$3
-              : styleConstant$3)(name, value, priority == null ? "" : priority))
-        : styleValue$1(this.node(), name);
-  }
-
-  function styleValue$1(node, name) {
-    return node.style.getPropertyValue(name)
-        || defaultView$1(node).getComputedStyle(node, null).getPropertyValue(name);
-  }
-
-  function propertyRemove$1(name) {
-    return function() {
-      delete this[name];
-    };
-  }
-
-  function propertyConstant$1(name, value) {
-    return function() {
-      this[name] = value;
-    };
-  }
-
-  function propertyFunction$1(name, value) {
-    return function() {
-      var v = value.apply(this, arguments);
-      if (v == null) delete this[name];
-      else this[name] = v;
-    };
-  }
-
-  function selection_property$1(name, value) {
-    return arguments.length > 1
-        ? this.each((value == null
-            ? propertyRemove$1 : typeof value === "function"
-            ? propertyFunction$1
-            : propertyConstant$1)(name, value))
-        : this.node()[name];
-  }
-
-  function classArray$1(string) {
-    return string.trim().split(/^|\s+/);
-  }
-
-  function classList$1(node) {
-    return node.classList || new ClassList$1(node);
-  }
-
-  function ClassList$1(node) {
-    this._node = node;
-    this._names = classArray$1(node.getAttribute("class") || "");
-  }
-
-  ClassList$1.prototype = {
-    add: function(name) {
-      var i = this._names.indexOf(name);
-      if (i < 0) {
-        this._names.push(name);
-        this._node.setAttribute("class", this._names.join(" "));
-      }
-    },
-    remove: function(name) {
-      var i = this._names.indexOf(name);
-      if (i >= 0) {
-        this._names.splice(i, 1);
-        this._node.setAttribute("class", this._names.join(" "));
-      }
-    },
-    contains: function(name) {
-      return this._names.indexOf(name) >= 0;
-    }
-  };
-
-  function classedAdd$1(node, names) {
-    var list = classList$1(node), i = -1, n = names.length;
-    while (++i < n) list.add(names[i]);
-  }
-
-  function classedRemove$1(node, names) {
-    var list = classList$1(node), i = -1, n = names.length;
-    while (++i < n) list.remove(names[i]);
-  }
-
-  function classedTrue$1(names) {
-    return function() {
-      classedAdd$1(this, names);
-    };
-  }
-
-  function classedFalse$1(names) {
-    return function() {
-      classedRemove$1(this, names);
-    };
-  }
-
-  function classedFunction$1(names, value) {
-    return function() {
-      (value.apply(this, arguments) ? classedAdd$1 : classedRemove$1)(this, names);
-    };
-  }
-
-  function selection_classed$1(name, value) {
-    var names = classArray$1(name + "");
-
-    if (arguments.length < 2) {
-      var list = classList$1(this.node()), i = -1, n = names.length;
-      while (++i < n) if (!list.contains(names[i])) return false;
-      return true;
-    }
-
-    return this.each((typeof value === "function"
-        ? classedFunction$1 : value
-        ? classedTrue$1
-        : classedFalse$1)(names, value));
-  }
-
-  function textRemove$1() {
-    this.textContent = "";
-  }
-
-  function textConstant$3(value) {
-    return function() {
-      this.textContent = value;
-    };
-  }
-
-  function textFunction$3(value) {
-    return function() {
-      var v = value.apply(this, arguments);
-      this.textContent = v == null ? "" : v;
-    };
-  }
-
-  function selection_text$1(value) {
-    return arguments.length
-        ? this.each(value == null
-            ? textRemove$1 : (typeof value === "function"
-            ? textFunction$3
-            : textConstant$3)(value))
-        : this.node().textContent;
-  }
-
-  function htmlRemove$1() {
-    this.innerHTML = "";
-  }
-
-  function htmlConstant$1(value) {
-    return function() {
-      this.innerHTML = value;
-    };
-  }
-
-  function htmlFunction$1(value) {
-    return function() {
-      var v = value.apply(this, arguments);
-      this.innerHTML = v == null ? "" : v;
-    };
-  }
-
-  function selection_html$1(value) {
-    return arguments.length
-        ? this.each(value == null
-            ? htmlRemove$1 : (typeof value === "function"
-            ? htmlFunction$1
-            : htmlConstant$1)(value))
-        : this.node().innerHTML;
-  }
-
-  function raise$1() {
-    if (this.nextSibling) this.parentNode.appendChild(this);
-  }
-
-  function selection_raise$1() {
-    return this.each(raise$1);
-  }
-
-  function lower$1() {
-    if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
-  }
-
-  function selection_lower$1() {
-    return this.each(lower$1);
-  }
-
-  function selection_append$1(name) {
-    var create = typeof name === "function" ? name : creator$1(name);
-    return this.select(function() {
-      return this.appendChild(create.apply(this, arguments));
-    });
-  }
-
-  function constantNull$1() {
-    return null;
-  }
-
-  function selection_insert$1(name, before) {
-    var create = typeof name === "function" ? name : creator$1(name),
-        select = before == null ? constantNull$1 : typeof before === "function" ? before : selector$1(before);
-    return this.select(function() {
-      return this.insertBefore(create.apply(this, arguments), select.apply(this, arguments) || null);
-    });
-  }
-
-  function remove$1() {
-    var parent = this.parentNode;
-    if (parent) parent.removeChild(this);
-  }
-
-  function selection_remove$1() {
-    return this.each(remove$1);
-  }
-
-  function selection_cloneShallow$1() {
-    var clone = this.cloneNode(false), parent = this.parentNode;
-    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
-  }
-
-  function selection_cloneDeep$1() {
-    var clone = this.cloneNode(true), parent = this.parentNode;
-    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
-  }
-
-  function selection_clone$1(deep) {
-    return this.select(deep ? selection_cloneDeep$1 : selection_cloneShallow$1);
-  }
-
-  function selection_datum$1(value) {
-    return arguments.length
-        ? this.property("__data__", value)
-        : this.node().__data__;
-  }
-
-  var filterEvents = {};
-
-  var event$1 = null;
-
-  if (typeof document !== "undefined") {
-    var element = document.documentElement;
-    if (!("onmouseenter" in element)) {
-      filterEvents = {mouseenter: "mouseover", mouseleave: "mouseout"};
-    }
-  }
-
-  function filterContextListener(listener, index, group) {
-    listener = contextListener$1(listener, index, group);
-    return function(event) {
-      var related = event.relatedTarget;
-      if (!related || (related !== this && !(related.compareDocumentPosition(this) & 8))) {
-        listener.call(this, event);
-      }
-    };
-  }
-
-  function contextListener$1(listener, index, group) {
-    return function(event1) {
-      var event0 = event$1; // Events can be reentrant (e.g., focus).
-      event$1 = event1;
-      try {
-        listener.call(this, this.__data__, index, group);
-      } finally {
-        event$1 = event0;
-      }
-    };
-  }
-
-  function parseTypenames$4(typenames) {
-    return typenames.trim().split(/^|\s+/).map(function(t) {
-      var name = "", i = t.indexOf(".");
-      if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
-      return {type: t, name: name};
-    });
-  }
-
-  function onRemove$1(typename) {
-    return function() {
-      var on = this.__on;
-      if (!on) return;
-      for (var j = 0, i = -1, m = on.length, o; j < m; ++j) {
-        if (o = on[j], (!typename.type || o.type === typename.type) && o.name === typename.name) {
-          this.removeEventListener(o.type, o.listener, o.capture);
-        } else {
-          on[++i] = o;
-        }
-      }
-      if (++i) on.length = i;
-      else delete this.__on;
-    };
-  }
-
-  function onAdd$1(typename, value, capture) {
-    var wrap = filterEvents.hasOwnProperty(typename.type) ? filterContextListener : contextListener$1;
-    return function(d, i, group) {
-      var on = this.__on, o, listener = wrap(value, i, group);
-      if (on) for (var j = 0, m = on.length; j < m; ++j) {
-        if ((o = on[j]).type === typename.type && o.name === typename.name) {
-          this.removeEventListener(o.type, o.listener, o.capture);
-          this.addEventListener(o.type, o.listener = listener, o.capture = capture);
-          o.value = value;
-          return;
-        }
-      }
-      this.addEventListener(typename.type, listener, capture);
-      o = {type: typename.type, name: typename.name, value: value, listener: listener, capture: capture};
-      if (!on) this.__on = [o];
-      else on.push(o);
-    };
-  }
-
-  function selection_on$1(typename, value, capture) {
-    var typenames = parseTypenames$4(typename + ""), i, n = typenames.length, t;
-
-    if (arguments.length < 2) {
-      var on = this.node().__on;
-      if (on) for (var j = 0, m = on.length, o; j < m; ++j) {
-        for (i = 0, o = on[j]; i < n; ++i) {
-          if ((t = typenames[i]).type === o.type && t.name === o.name) {
-            return o.value;
-          }
-        }
-      }
-      return;
-    }
-
-    on = value ? onAdd$1 : onRemove$1;
-    if (capture == null) capture = false;
-    for (i = 0; i < n; ++i) this.each(on(typenames[i], value, capture));
-    return this;
-  }
-
-  function dispatchEvent$1(node, type, params) {
-    var window = defaultView$1(node),
-        event = window.CustomEvent;
-
-    if (typeof event === "function") {
-      event = new event(type, params);
-    } else {
-      event = window.document.createEvent("Event");
-      if (params) event.initEvent(type, params.bubbles, params.cancelable), event.detail = params.detail;
-      else event.initEvent(type, false, false);
-    }
-
-    node.dispatchEvent(event);
-  }
-
-  function dispatchConstant$1(type, params) {
-    return function() {
-      return dispatchEvent$1(this, type, params);
-    };
-  }
-
-  function dispatchFunction$1(type, params) {
-    return function() {
-      return dispatchEvent$1(this, type, params.apply(this, arguments));
-    };
-  }
-
-  function selection_dispatch$1(type, params) {
-    return this.each((typeof params === "function"
-        ? dispatchFunction$1
-        : dispatchConstant$1)(type, params));
-  }
-
-  var root$1 = [null];
-
-  function Selection$3(groups, parents) {
-    this._groups = groups;
-    this._parents = parents;
-  }
-
-  function selection$1() {
-    return new Selection$3([[document.documentElement]], root$1);
-  }
-
-  Selection$3.prototype = selection$1.prototype = {
-    constructor: Selection$3,
-    select: selection_select$1,
-    selectAll: selection_selectAll$1,
-    filter: selection_filter$1,
-    data: selection_data$1,
-    enter: selection_enter$1,
-    exit: selection_exit$1,
-    join: selection_join$1,
-    merge: selection_merge$1,
-    order: selection_order$1,
-    sort: selection_sort$1,
-    call: selection_call$1,
-    nodes: selection_nodes$1,
-    node: selection_node$1,
-    size: selection_size$1,
-    empty: selection_empty$1,
-    each: selection_each$1,
-    attr: selection_attr$1,
-    style: selection_style$1,
-    property: selection_property$1,
-    classed: selection_classed$1,
-    text: selection_text$1,
-    html: selection_html$1,
-    raise: selection_raise$1,
-    lower: selection_lower$1,
-    append: selection_append$1,
-    insert: selection_insert$1,
-    remove: selection_remove$1,
-    clone: selection_clone$1,
-    datum: selection_datum$1,
-    on: selection_on$1,
-    dispatch: selection_dispatch$1
-  };
-
-  function select$1(selector) {
-    return typeof selector === "string"
-        ? new Selection$3([[document.querySelector(selector)]], [document.documentElement])
-        : new Selection$3([[selector]], root$1);
-  }
-
   function create$2(name) {
-    return select$1(creator$1(name).call(document.documentElement));
+    return select$2(creator$2(name).call(document.documentElement));
   }
 
   var frame$2 = 0, // is an animation frame pending?
@@ -13499,7 +13516,7 @@ var template = (function (exports) {
     this._ = _;
   }
 
-  function parseTypenames$3(typenames, types) {
+  function parseTypenames$4(typenames, types) {
     return typenames.trim().split(/^|\s+/).map(function(t) {
       var name = "", i = t.indexOf(".");
       if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
@@ -13512,7 +13529,7 @@ var template = (function (exports) {
     constructor: Dispatch$2,
     on: function(typename, callback) {
       var _ = this._,
-          T = parseTypenames$3(typename + "", _),
+          T = parseTypenames$4(typename + "", _),
           t,
           i = -1,
           n = T.length;
@@ -14129,7 +14146,7 @@ var template = (function (exports) {
         : m1) * 255;
   }
 
-  function constant$2(x) {
+  function constant$3(x) {
     return function() {
       return x;
     };
@@ -14149,13 +14166,13 @@ var template = (function (exports) {
 
   function gamma$1(y) {
     return (y = +y) === 1 ? nogamma$1 : function(a, b) {
-      return b - a ? exponential$1(a, b, y) : constant$2(isNaN(a) ? b : a);
+      return b - a ? exponential$1(a, b, y) : constant$3(isNaN(a) ? b : a);
     };
   }
 
   function nogamma$1(a, b) {
     var d = b - a;
-    return d ? linear$1(a, d) : constant$2(isNaN(a) ? b : a);
+    return d ? linear$1(a, d) : constant$3(isNaN(a) ? b : a);
   }
 
   var interpolateRgb$1 = (function rgbGamma(y) {
@@ -14830,19 +14847,19 @@ var template = (function (exports) {
         : interpolateString$1)(a, b);
   }
 
-  function attrRemove$2(name) {
+  function attrRemove$3(name) {
     return function() {
       this.removeAttribute(name);
     };
   }
 
-  function attrRemoveNS$2(fullname) {
+  function attrRemoveNS$3(fullname) {
     return function() {
       this.removeAttributeNS(fullname.space, fullname.local);
     };
   }
 
-  function attrConstant$2(name, interpolate, value1) {
+  function attrConstant$3(name, interpolate, value1) {
     var string00,
         string1 = value1 + "",
         interpolate0;
@@ -14854,7 +14871,7 @@ var template = (function (exports) {
     };
   }
 
-  function attrConstantNS$2(fullname, interpolate, value1) {
+  function attrConstantNS$3(fullname, interpolate, value1) {
     var string00,
         string1 = value1 + "",
         interpolate0;
@@ -14866,7 +14883,7 @@ var template = (function (exports) {
     };
   }
 
-  function attrFunction$2(name, interpolate, value) {
+  function attrFunction$3(name, interpolate, value) {
     var string00,
         string10,
         interpolate0;
@@ -14881,7 +14898,7 @@ var template = (function (exports) {
     };
   }
 
-  function attrFunctionNS$2(fullname, interpolate, value) {
+  function attrFunctionNS$3(fullname, interpolate, value) {
     var string00,
         string10,
         interpolate0;
@@ -14897,11 +14914,11 @@ var template = (function (exports) {
   }
 
   function transition_attr$1(name, value) {
-    var fullname = namespace$1(name), i = fullname === "transform" ? interpolateTransformSvg$1 : interpolate$1;
+    var fullname = namespace$2(name), i = fullname === "transform" ? interpolateTransformSvg$1 : interpolate$1;
     return this.attrTween(name, typeof value === "function"
-        ? (fullname.local ? attrFunctionNS$2 : attrFunction$2)(fullname, i, tweenValue$1(this, "attr." + name, value))
-        : value == null ? (fullname.local ? attrRemoveNS$2 : attrRemove$2)(fullname)
-        : (fullname.local ? attrConstantNS$2 : attrConstant$2)(fullname, i, value));
+        ? (fullname.local ? attrFunctionNS$3 : attrFunction$3)(fullname, i, tweenValue$1(this, "attr." + name, value))
+        : value == null ? (fullname.local ? attrRemoveNS$3 : attrRemove$3)(fullname)
+        : (fullname.local ? attrConstantNS$3 : attrConstant$3)(fullname, i, value));
   }
 
   function attrInterpolate$1(name, i) {
@@ -14943,7 +14960,7 @@ var template = (function (exports) {
     if (arguments.length < 2) return (key = this.tween(key)) && key._value;
     if (value == null) return this.tween(key, null);
     if (typeof value !== "function") throw new Error;
-    var fullname = namespace$1(name);
+    var fullname = namespace$2(name);
     return this.tween(key, (fullname.local ? attrTweenNS$1 : attrTween$1)(fullname, value));
   }
 
@@ -15007,7 +15024,7 @@ var template = (function (exports) {
   }
 
   function transition_filter$1(match) {
-    if (typeof match !== "function") match = matcher$1(match);
+    if (typeof match !== "function") match = matcher$2(match);
 
     for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
       for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
@@ -15085,7 +15102,7 @@ var template = (function (exports) {
     var name = this._name,
         id = this._id;
 
-    if (typeof select !== "function") select = selector$1(select);
+    if (typeof select !== "function") select = selector$2(select);
 
     for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
       for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
@@ -15104,7 +15121,7 @@ var template = (function (exports) {
     var name = this._name,
         id = this._id;
 
-    if (typeof select !== "function") select = selectorAll$1(select);
+    if (typeof select !== "function") select = selectorAll$2(select);
 
     for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
       for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
@@ -15123,10 +15140,10 @@ var template = (function (exports) {
     return new Transition$1(subgroups, parents, name, id);
   }
 
-  var Selection$2 = selection$1.prototype.constructor;
+  var Selection$3 = selection$1.prototype.constructor;
 
   function transition_selection$1() {
-    return new Selection$2(this._groups, this._parents);
+    return new Selection$3(this._groups, this._parents);
   }
 
   function styleNull$1(name, interpolate) {
@@ -15134,41 +15151,41 @@ var template = (function (exports) {
         string10,
         interpolate0;
     return function() {
-      var string0 = styleValue$1(this, name),
-          string1 = (this.style.removeProperty(name), styleValue$1(this, name));
+      var string0 = styleValue$2(this, name),
+          string1 = (this.style.removeProperty(name), styleValue$2(this, name));
       return string0 === string1 ? null
           : string0 === string00 && string1 === string10 ? interpolate0
           : interpolate0 = interpolate(string00 = string0, string10 = string1);
     };
   }
 
-  function styleRemove$2(name) {
+  function styleRemove$3(name) {
     return function() {
       this.style.removeProperty(name);
     };
   }
 
-  function styleConstant$2(name, interpolate, value1) {
+  function styleConstant$3(name, interpolate, value1) {
     var string00,
         string1 = value1 + "",
         interpolate0;
     return function() {
-      var string0 = styleValue$1(this, name);
+      var string0 = styleValue$2(this, name);
       return string0 === string1 ? null
           : string0 === string00 ? interpolate0
           : interpolate0 = interpolate(string00 = string0, value1);
     };
   }
 
-  function styleFunction$2(name, interpolate, value) {
+  function styleFunction$3(name, interpolate, value) {
     var string00,
         string10,
         interpolate0;
     return function() {
-      var string0 = styleValue$1(this, name),
+      var string0 = styleValue$2(this, name),
           value1 = value(this),
           string1 = value1 + "";
-      if (value1 == null) string1 = value1 = (this.style.removeProperty(name), styleValue$1(this, name));
+      if (value1 == null) string1 = value1 = (this.style.removeProperty(name), styleValue$2(this, name));
       return string0 === string1 ? null
           : string0 === string00 && string1 === string10 ? interpolate0
           : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
@@ -15180,7 +15197,7 @@ var template = (function (exports) {
     return function() {
       var schedule = set$3(this, id),
           on = schedule.on,
-          listener = schedule.value[key] == null ? remove || (remove = styleRemove$2(name)) : undefined;
+          listener = schedule.value[key] == null ? remove || (remove = styleRemove$3(name)) : undefined;
 
       // If this node shared a dispatch with the previous node,
       // just assign the updated shared dispatch and we’re done!
@@ -15195,12 +15212,12 @@ var template = (function (exports) {
     var i = (name += "") === "transform" ? interpolateTransformCss$1 : interpolate$1;
     return value == null ? this
         .styleTween(name, styleNull$1(name, i))
-        .on("end.style." + name, styleRemove$2(name))
+        .on("end.style." + name, styleRemove$3(name))
       : typeof value === "function" ? this
-        .styleTween(name, styleFunction$2(name, i, tweenValue$1(this, "style." + name, value)))
+        .styleTween(name, styleFunction$3(name, i, tweenValue$1(this, "style." + name, value)))
         .each(styleMaybeRemove$1(this._id, name))
       : this
-        .styleTween(name, styleConstant$2(name, i, value), priority)
+        .styleTween(name, styleConstant$3(name, i, value), priority)
         .on("end.style." + name, null);
   }
 
@@ -15229,13 +15246,13 @@ var template = (function (exports) {
     return this.tween(key, styleTween$1(name, value, priority == null ? "" : priority));
   }
 
-  function textConstant$2(value) {
+  function textConstant$3(value) {
     return function() {
       this.textContent = value;
     };
   }
 
-  function textFunction$2(value) {
+  function textFunction$3(value) {
     return function() {
       var value1 = value(this);
       this.textContent = value1 == null ? "" : value1;
@@ -15244,8 +15261,8 @@ var template = (function (exports) {
 
   function transition_text$1(value) {
     return this.tween("text", typeof value === "function"
-        ? textFunction$2(tweenValue$1(this, "text", value))
-        : textConstant$2(value == null ? "" : value + ""));
+        ? textFunction$3(tweenValue$1(this, "text", value))
+        : textConstant$3(value == null ? "" : value + ""));
   }
 
   function textInterpolate$1(i) {
@@ -15476,23 +15493,23 @@ var template = (function (exports) {
   	panel._getElement().style.pointerEvents = "none";
   	panel._is_open = false;
   	var duration = panel._close_duration;
-  	select$1(panel._getElement())
+  	select$2(panel._getElement())
   		.transition()
   		.duration(duration)
   		.style("background", "rgba(255, 255, 255, 0)")
   		.on("interrupt", function () {
-  			select$1(this).style("display", panel._is_open ? "block" : "none");
+  			select$2(this).style("display", panel._is_open ? "block" : "none");
   		})
   		.on("end", function () {
-  			select$1(this).style("display", "none");
-  			select$1(panel._content).html("");
+  			select$2(this).style("display", "none");
+  			select$2(panel._content).html("");
   		})
   		.select(".flourish-panel-close")
   		.style("opacity", "0");
 
-  	select$1(panel._inner).transition().duration(duration).style("opacity", 0);
+  	select$2(panel._inner).transition().duration(duration).style("opacity", 0);
 
-  	select$1(panel._content)
+  	select$2(panel._content)
   		.transition()
   		.duration(duration / 2)
   		.style("opacity", 0);
@@ -15509,7 +15526,7 @@ var template = (function (exports) {
   Panel.prototype.close = Panel.prototype.hide;
 
   function addCloseButton(panel) {
-  	select$1(panel._inner)
+  	select$2(panel._inner)
   		.append("svg")
   		.attr("class", "flourish-panel-close fl-ignore-svg-download")
   		.attr("viewBox", "0 0 40 40")
@@ -15530,19 +15547,19 @@ var template = (function (exports) {
   			if (panel._closeable) this.style.opacity = 1;
   		})
   		.on("click", function () {
-  			event$1.stopPropagation();
+  			event$2.stopPropagation();
   			panel.hide();
   			if (panel._onclose) panel._onclose();
   		})
   		.on("touch", function () {
-  			event$1.stopPropagation();
+  			event$2.stopPropagation();
   			panel.hide();
   			if (panel._onclose) panel._onclose();
   		})
   		.on("keydown", function () {
-  			if (event$1.key == "Enter" || event$1.key == " ") {
-  				event$1.stopPropagation();
-  				event$1.preventDefault();
+  			if (event$2.key == "Enter" || event$2.key == " ") {
+  				event$2.stopPropagation();
+  				event$2.preventDefault();
   				panel.hide();
   				if (panel._onclose) panel._onclose();
   			}
@@ -15649,7 +15666,7 @@ var template = (function (exports) {
   	var title = extractTitleFromContent(panel._content);
   	var ariaLabel = title ? title + " dialog" : "Information dialog";
 
-  	select$1(panel._getElement())
+  	select$2(panel._getElement())
   		.style("display", "block")
   		.transition()
   		.duration(duration)
@@ -15661,7 +15678,7 @@ var template = (function (exports) {
   		.style("pointer-events", overlay ? null : "none")
   		.attr("aria-label", ariaLabel);
 
-  	select$1(panel._inner)
+  	select$2(panel._inner)
   		.style("opacity", 1)
   		.style("display", "block")
   		.style("pointer-events", "none")
@@ -15676,7 +15693,7 @@ var template = (function (exports) {
   		.style("left", end_l_percent + "%")
   		.style("top", end_t_percent + "%")
   		.on("end", function () {
-  			select$1(panel._inner)
+  			select$2(panel._inner)
   				.style("pointer-events", "all")
   				.style("width", end_w_percent + "%")
   				.style("height", end_h_percent + "%")
@@ -15684,7 +15701,7 @@ var template = (function (exports) {
   				.style("top", end_t_percent + "%");
   		})
   		.on("interrupt", function () {
-  			select$1(panel._inner)
+  			select$2(panel._inner)
   				.style("pointer-events", "all")
   				.style("width", end_w_percent + "%")
   				.style("height", end_h_percent + "%")
@@ -15694,22 +15711,22 @@ var template = (function (exports) {
 
   	var offset_panel_content = full_height && position_click;
 
-  	select$1(panel._content)
+  	select$2(panel._content)
   		.transition()
   		.duration(duration / 4)
   		.delay(duration)
   		.style("opacity", 1)
   		.on("interrupt", function () {
-  			select$1(this).style("opacity", 1);
+  			select$2(this).style("opacity", 1);
   		});
 
-  	select$1(panel._content)
+  	select$2(panel._content)
   		.select(".flourish-panel-content-inner")
   		.style("position", offset_panel_content ? "absolute" : null)
   		.style("top", offset_panel_content ? y_percent + "%" : null)
   		.style("transform", offset_panel_content ? "translateY(-50%)" : null);
 
-  	select$1(panel._inner)
+  	select$2(panel._inner)
   		.select(".flourish-panel-close")
   		.style("opacity", 0)
   		.transition()
@@ -15891,7 +15908,7 @@ var template = (function (exports) {
   	return new Panel();
   }
 
-  var DEFAULTS$2 = {
+  var DEFAULTS$8 = {
   	mode: "popup",
 
   	// If truthy, means panel or popup are locked
@@ -16305,7 +16322,7 @@ var template = (function (exports) {
   		css.id = "popup-styles";
   		document.head.appendChild(css);
   	}
-  	var styles = new Stylesheet();
+  	var styles = new Stylesheet$1();
   	var header_block = instance._state.popup_header_type == "block";
   	var header_background = color$3(
   		instance._state.popup_header_background || "transparent",
@@ -16680,8 +16697,8 @@ var template = (function (exports) {
   		return null;
   	};
 
-  	for (var key in DEFAULTS$2) {
-  		if (state[key] == undefined) state[key] = DEFAULTS$2[key];
+  	for (var key in DEFAULTS$8) {
+  		if (state[key] == undefined) state[key] = DEFAULTS$8[key];
   	}
 
   	this.panel = initPanel()
@@ -17209,7 +17226,7 @@ var template = (function (exports) {
   	return new InfoPopup(state, panel_container, popup_container);
   }
 
-  var DEFAULTS$1 = Object.freeze({
+  var DEFAULTS$7 = Object.freeze({
   	input_decimal_separator: ".",
   	output_separators: ",.",
   });
@@ -17248,8 +17265,8 @@ var template = (function (exports) {
 
 
   function init$2(state) {
-  	for (var key in DEFAULTS$1) {
-  		if (state[key] === undefined) state[key] = DEFAULTS$1[key];
+  	for (var key in DEFAULTS$7) {
+  		if (state[key] === undefined) state[key] = DEFAULTS$7[key];
   	}
 
   	return {
@@ -17258,7 +17275,7 @@ var template = (function (exports) {
   	};
   }
 
-  var DEFAULTS = Object.freeze({
+  var DEFAULTS$6 = Object.freeze({
   	transform_labels: false,
   	transform: "multiply",
   	multiply_divide_constant: 1,
@@ -17316,13 +17333,2256 @@ var template = (function (exports) {
   }
 
   function init$1(state) {
-  	for (var key in DEFAULTS) {
-  		if (state[key] === undefined) state[key] = DEFAULTS[key];
+  	for (var key in DEFAULTS$6) {
+  		if (state[key] === undefined) state[key] = DEFAULTS$6[key];
   	}
 
   	return function(formatterFunction) {
   		return makeNumberFormatter(state, formatterFunction);
   	};
+  }
+
+  function Stylesheet() {
+  	this.declarations = [];
+  	return this;
+  }
+
+  Stylesheet.prototype.select = function (selector) {
+  	if (!selector) return this;
+  	var declaration = new Declaration(selector);
+  	declaration.parent = this;
+  	this.addDeclaration(declaration);
+
+  	return declaration;
+  };
+
+  Stylesheet.prototype.addDeclaration = function (declaration) {
+  	this.declarations.push(declaration);
+  	return this;
+  };
+
+  Stylesheet.prototype.print = function () {
+  	var text = "";
+  	this.declarations.forEach(function (declaration) {
+  		text += declaration.selector + " {\n";
+  		declaration.styles.forEach(function (style) {
+  			text += "\t" + style[0] + ": " + style[1] + ";\n";
+  		});
+  		text += "}\n\n";
+  	});
+  	return text;
+  };
+
+  Stylesheet.prototype.clear = function () {
+  	this.declarations = [];
+  	return this;
+  };
+
+  function Declaration(selector) {
+  	this.selector = selector;
+  	this.styles = [];
+  	return this;
+  }
+
+  Declaration.prototype.style = function (property, _value) {
+  	var value = typeof value_ == "function" ? _value() : _value;
+  	if (value !== "" && value !== null && value !== undefined)
+  		this.styles.push([property, value]);
+  	return this;
+  };
+
+  Declaration.prototype.select = function (selector) {
+  	return this.parent.select(this.selector + " " + selector);
+  };
+
+  var DEFAULTS$5 = Object.freeze({
+  	font_size: 1,
+  	font_weight: "bold",
+  	height: 2,
+  });
+
+  function GeneralControlsStyle(state_, selector_, layout_) {
+  	this._state = state_;
+  	for (var key in DEFAULTS$5) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$5[key];
+  	}
+
+  	this._layout = layout_ || {};
+
+  	this._styles = new Stylesheet();
+  	this._selector = selector_;
+  	this._createStylesheet();
+
+  	return this;
+  }
+
+  GeneralControlsStyle.prototype._createStylesheet = function () {
+  	this._stylesheet = document.createElement("style");
+  	this._stylesheet.className = "fl-ui-styles-controls";
+  	document.head.appendChild(this._stylesheet);
+  };
+
+  GeneralControlsStyle.prototype.update = function () {
+  	this._styles.clear();
+
+  	this._styles.select(this._selector + ".hidden").style("display", "none");
+
+  	this._styles
+  		.select(this._selector)
+  		.style("vertical-align", "middle")
+  		.style("position", "relative")
+  		.style("font-size", this._state.font_size + "rem")
+  		.style("font-weight", this._state.font_weight);
+
+  	this._styles
+  		.select(".fl-controls-title")
+  		.style("font-size", this._state.font_size + "rem")
+  		.style("font-weight", this._state.font_weight)
+  		.style("vertical-align", "middle");
+
+  	this._styles
+  		.select(this._selector + ".fl-control .button")
+  		.style("height", this._state.height + "rem")
+  		.style("padding", "0 0.5em");
+
+  	this._styles
+  		.select(this._selector + "-dropdown select")
+  		.style("height", this._state.height + "rem")
+  		.style("font-size", this._state.font_size + "rem")
+  		.style("font-weight", this._state.font_weight)
+  		.style("padding", 0 + " " + this._state.height * 0.1 + "rem");
+
+  	this._styles
+  		.select(this._selector + "-slider .slider-end-labels")
+  		.style("font-size", this._state.font_size + "rem")
+  		.style("font-weight", this._state.font_weight);
+
+  	this._styles
+  		.select(this._selector + "-slider")
+  		.style("height", this._state.height + "rem");
+
+  	// Some additional styling for slider controls
+  	// TODO: should move this somewhere else at some point
+
+  	this._stylesheet.innerHTML = this._styles.print();
+  };
+
+  var DEFAULTS$4 = Object.freeze({
+  	background: null,
+  	font_color: null,
+
+  	background_selected: "#333333",
+  	font_color_selected: "#ffffff",
+
+  	background_hover: null,
+  	font_color_hover: null,
+
+  	border_width: 1,
+  	border_transparency: 0.25,
+  	border_color: null,
+  	border_radius: 3,
+  });
+
+  function ButtonStyle(state_, selector_, layout_) {
+  	this._state = state_;
+  	for (var key in DEFAULTS$4) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$4[key];
+  	}
+
+  	this._layout = layout_ || {};
+
+  	this._styles = new Stylesheet();
+  	this._selector = selector_;
+  	this._createStylesheet();
+
+  	return this;
+  }
+
+  ButtonStyle.prototype._createStylesheet = function () {
+  	this._stylesheet = document.createElement("style");
+  	this._stylesheet.className = "fl-ui-styles-button";
+  	document.head.appendChild(this._stylesheet);
+  };
+
+  ButtonStyle.prototype.update = function () {
+  	this._styles.clear();
+
+  	var background_color =
+  		this._state.background ||
+  		(this._layout.background_color_enabled
+  			? this._layout.background_color || "#ffffff"
+  			: "#ffffff");
+  	var text_color =
+  		this._state.font_color || this._layout.font_color || "#333333";
+  	var border_color = hexToRgba(
+  		this._state.border_color || text_color,
+  		this._state.border_transparency,
+  	);
+  	var read_direction = getTextDirection();
+
+  	this._styles
+  		.select(this._selector + ".fl-control.hidden")
+  		.style("display", "none");
+
+  	this._styles
+  		.select(this._selector + ".fl-control .button")
+  		.style("overflow", "hidden")
+  		.style("white-space", "nowrap")
+  		.style("margin", "0 2px 0 0 !important")
+  		.style("background-color", background_color)
+  		.style("color", text_color)
+  		.style("border", this._state.border_width + "px solid " + border_color)
+  		.style("border-radius", this._state.border_radius + "px");
+
+  	this._styles
+  		.select(this._selector + ".fl-control .button:hover")
+  		.style("background-color", this._state.background_hover || background_color)
+  		.style("color", this._state.font_color_hover || text_color);
+
+  	this._styles
+  		.select(this._selector + ".fl-control .button.selected")
+  		.style("background-color", this._state.background_selected)
+  		.style("color", this._state.font_color_selected);
+
+  	this._styles
+  		.select(this._selector + ".grouped.fl-control .button")
+  		.style("border-right", "none")
+  		.style("border-radius", "0")
+  		.style("margin", "0");
+
+  	var is_rtl = read_direction === "rtl";
+  	var left_most_button_selector = is_rtl ? ":last-child" : ":first-child";
+  	var right_most_button_selector = is_rtl ? ":first-child" : ":last-child";
+
+  	this._styles
+  		.select(
+  			this._selector +
+  				".grouped.fl-control .button" +
+  				left_most_button_selector,
+  		)
+  		.style(
+  			"border-radius",
+  			this._state.border_radius + "px 0 0 " + this._state.border_radius + "px",
+  		);
+
+  	this._styles
+  		.select(
+  			this._selector +
+  				".grouped.fl-control .button" +
+  				right_most_button_selector,
+  		)
+  		.style(
+  			"border-radius",
+  			"0 " +
+  				this._state.border_radius +
+  				"px " +
+  				this._state.border_radius +
+  				"px 0",
+  		)
+  		.style(
+  			"border-right",
+  			this._state.border_width + "px solid " + border_color,
+  		);
+
+  	this._styles
+  		.select(this._selector + ".grouped.fl-control.fixed-width:not(.hidden)")
+  		.style("width", this._state.grouped_width + "%");
+
+  	this._stylesheet.innerHTML = this._styles.print();
+  };
+
+  var DEFAULTS$3 = Object.freeze({
+  	background: null,
+  	font_color: null,
+
+  	border_style: "bottom",
+  	border_width: 1,
+  	border_color: null,
+  	border_transparency: 0.25,
+  	border_radius: 3,
+  });
+
+  function DropdownStyle(state_, selector_, layout_) {
+  	this._state = state_;
+  	for (var key in DEFAULTS$3) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$3[key];
+  	}
+
+  	this._layout = layout_ || {};
+
+  	this._styles = new Stylesheet();
+  	this._selector = selector_;
+  	this._createStylesheet();
+
+  	return this;
+  }
+
+  DropdownStyle.prototype._createStylesheet = function () {
+  	this._stylesheet = document.createElement("style");
+  	this._stylesheet.className = "fl-ui-styles-dropdown";
+  	document.head.appendChild(this._stylesheet);
+  };
+
+  DropdownStyle.prototype.update = function () {
+  	this._styles.clear();
+
+  	const background_color = this._state.background || "transparent";
+  	const user_defined_text_color =
+  		this._state.font_color || this._layout.font_color;
+  	const text_color = user_defined_text_color || "inherit";
+  	let border_color;
+  	if (this._state.border_color) {
+  		border_color = hexToRgba(
+  			this._state.border_color,
+  			this._state.border_transparency,
+  		);
+  	} else if (user_defined_text_color) {
+  		border_color = hexToRgba(
+  			user_defined_text_color,
+  			this._state.border_transparency,
+  		);
+  	} else {
+  		border_color = "currentColor";
+  	}
+
+  	this._styles
+  		.select(this._selector + " .heading")
+  		.style("margin-bottom", "0.4em");
+
+  	this._styles.select(this._selector).style("pointer-events", "all");
+
+  	this._styles
+  		.select(this._selector + " select")
+  		.style("display", "inline-block")
+  		.style("cursor", "pointer")
+  		.style("overflow", "hidden")
+  		.style("white-space", "nowrap")
+  		.style("position", "relative")
+  		.style("font-family", "inherit")
+  		.style("background-color", background_color)
+  		.style("color", text_color)
+  		.style(
+  			"border",
+  			this._state.border_style == "bottom"
+  				? this._state.border_width + "px solid transparent"
+  				: this._state.border_width + "px solid " + border_color,
+  		)
+  		.style(
+  			"border-bottom",
+  			this._state.border_style == "bottom"
+  				? this._state.border_width + "px solid " + border_color
+  				: null,
+  		)
+  		.style(
+  			"border-radius",
+  			this._state.border_style == "bottom"
+  				? null
+  				: this._state.border_radius + "px",
+  		);
+
+  	this._styles
+  		.select(this._selector + ":after")
+  		.style(
+  			"right",
+  			this._state.border_style == "bottom"
+  				? null
+  				: this._state.border_width + 5 + "px",
+  		)
+  		.style("color", text_color);
+
+  	this._styles
+  		.select(this._selector + " .main .current")
+  		.style("line-height", "1em")
+  		.style("height", "100%")
+  		.style("max-width", "88%")
+  		.style("display", "inline-block")
+  		.style("overflow", "hidden")
+  		.style("vertical-align", "top");
+
+  	this._styles
+  		.select(this._selector + " .list")
+  		.style("top", "2px")
+  		.style("min-width", "100%")
+  		.style("padding", "2px")
+  		.style("display", "none")
+  		.style("max-height", "200px")
+  		.style("overflow-y", "auto")
+  		.style("box-shadow", "0 1px 4px rgba(0, 0, 0, .1)")
+  		.style("margin-top", "2px")
+  		.select(".list-item")
+  		.style("line-height", "1em")
+  		.style("cursor", "pointer")
+  		.style("font-weight", "normal")
+  		.style("color", text_color);
+
+  	this._styles
+  		.select(this._selector + ".open .list")
+  		.style("display", "block")
+  		.style("border", this._state.border_width + "px solid " + border_color)
+  		.style("background-color", background_color)
+  		.style("z-index", "1")
+  		.style("animation", "dropdown-out 200ms");
+
+  	this._styles
+  		.select(this._selector + " .list-item:hover")
+  		.style("opacity", "0.6");
+
+  	this._styles
+  		.select(
+  			this._selector +
+  				" .list-item.selected, " +
+  				this._selector +
+  				" .list-item.selected:hover",
+  		)
+  		.style("opacity", "1")
+  		.style("cursor", "default");
+
+  	if (this._state.border_style == "bottom") {
+  		this._styles
+  			.select(this._selector + " .main")
+  			.style("padding-left", 0)
+  			.style("padding-right", "0.1rem");
+  	}
+
+  	this._stylesheet.innerHTML = this._styles.print();
+  };
+
+  function remToPx$1(rem) {
+  	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+  }
+
+  var DEFAULTS$2 = Object.freeze({
+  	play_color: null,
+  	handle_color: null,
+  	font_color: null,
+  	track_color: null,
+
+  	handle_height: 1,
+  	track_height: 0.2,
+  	margin: 4.5,
+
+  	play_button: true,
+  });
+
+  function SliderStyle(state_, selector_, layout_) {
+  	this._state = state_;
+  	for (var key in DEFAULTS$2) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$2[key];
+  	}
+
+  	this._layout = layout_ || {};
+
+  	this._styles = new Stylesheet();
+  	this._selector = selector_;
+  	this._createStylesheet();
+
+  	return this;
+  }
+
+  SliderStyle.prototype._createStylesheet = function () {
+  	this._stylesheet = document.createElement("style");
+  	this._stylesheet.className = "fl-ui-styles-slider";
+  	document.head.appendChild(this._stylesheet);
+  };
+
+  SliderStyle.prototype.update = function () {
+  	this._styles.clear();
+
+  	var track_color = this._state.track_color || "#dddddd";
+  	var text_color =
+  		this._state.font_color || this._layout.font_color || "currentColor";
+  	var slider_color = "currentColor"; // So that handle can inherit layout text color via this parent
+  	var handle_color =
+  		this._state.handle_color || this._layout.font_color || "currentColor";
+  	var play_color =
+  		this._state.play_color || this._layout.font_color || "currentColor";
+
+  	var handle_radius = Math.round(remToPx$1(this._state.handle_height));
+  	var track_height = remToPx$1(this._state.track_height);
+
+  	this._styles
+  		.select(this._selector + " .fl-controls-slider")
+  		.style("height", handle_radius * 2 + "px");
+
+  	this._styles
+  		.select(this._selector + " .slider-play")
+  		.style("fill", play_color)
+  		.style("width", handle_radius + "px")
+  		.style("height", handle_radius + "px")
+  		.style("display", this._state.play_button ? null : "none");
+
+  	this._styles
+  		.select(this._selector + " .slider-label")
+  		.style("padding-inline-start", "0.3rem")
+  		.style("box-sizing", "content-box")
+  		.style("color", text_color);
+
+  	this._styles
+  		.select(this._selector + " input[type=range]")
+  		.style("-webkit-appearance", "none")
+  		.style("color", slider_color)
+  		.style("background-color", "transparent");
+
+  	// Chrome/Edge
+  	this._styles
+  		.select(
+  			this._selector + " input[type=range]::-webkit-slider-runnable-track",
+  		)
+  		.style("-webkit-appearance", "none")
+  		.style("background", track_color)
+  		.style("border-radius", "100px")
+  		.style("height", track_height + "px");
+
+  	this._styles
+  		.select(this._selector + " input[type=range]::-webkit-slider-thumb")
+  		.style("-webkit-appearance", "none")
+  		.style("width", handle_radius + "px")
+  		.style("height", handle_radius + "px")
+  		.style("border-radius", "100px")
+  		.style("background", handle_color)
+  		.style("margin-top", -handle_radius / 2 + track_height / 2 + "px");
+
+  	// Firefox
+  	this._styles
+  		.select(this._selector + " input[type=range]::-moz-range-track")
+  		.style("-webkit-appearance", "none")
+  		.style("background", track_color)
+  		.style("border-radius", "100px")
+  		.style("height", track_height + "px");
+
+  	this._styles
+  		.select(this._selector + " input[type=range]::-moz-range-thumb")
+  		.style("-webkit-appearance", "none")
+  		.style("width", handle_radius + "px")
+  		.style("height", handle_radius + "px")
+  		.style("border-radius", "100px")
+  		.style("border", "none")
+  		.style("background", handle_color);
+
+  	this._stylesheet.innerHTML = this._styles.print();
+  };
+
+  function createGeneralControlsStyle(state, selector, layout) {
+  	return new GeneralControlsStyle(state, selector, layout);
+  }
+
+  function createButtonStyle(state, selector, layout) {
+  	return new ButtonStyle(state, selector, layout);
+  }
+
+  function createDropdownStyle(state, selector, layout) {
+  	return new DropdownStyle(state, selector, layout);
+  }
+
+  function createSliderStyle(state, selector, layout) {
+  	return new SliderStyle(state, selector, layout);
+  }
+
+  var xhtml$1 = "http://www.w3.org/1999/xhtml";
+
+  var namespaces$1 = {
+    svg: "http://www.w3.org/2000/svg",
+    xhtml: xhtml$1,
+    xlink: "http://www.w3.org/1999/xlink",
+    xml: "http://www.w3.org/XML/1998/namespace",
+    xmlns: "http://www.w3.org/2000/xmlns/"
+  };
+
+  function namespace$1(name) {
+    var prefix = name += "", i = prefix.indexOf(":");
+    if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns") name = name.slice(i + 1);
+    return namespaces$1.hasOwnProperty(prefix) ? {space: namespaces$1[prefix], local: name} : name;
+  }
+
+  function creatorInherit$1(name) {
+    return function() {
+      var document = this.ownerDocument,
+          uri = this.namespaceURI;
+      return uri === xhtml$1 && document.documentElement.namespaceURI === xhtml$1
+          ? document.createElement(name)
+          : document.createElementNS(uri, name);
+    };
+  }
+
+  function creatorFixed$1(fullname) {
+    return function() {
+      return this.ownerDocument.createElementNS(fullname.space, fullname.local);
+    };
+  }
+
+  function creator$1(name) {
+    var fullname = namespace$1(name);
+    return (fullname.local
+        ? creatorFixed$1
+        : creatorInherit$1)(fullname);
+  }
+
+  function none$1() {}
+
+  function selector$1(selector) {
+    return selector == null ? none$1 : function() {
+      return this.querySelector(selector);
+    };
+  }
+
+  function selection_select$1(select) {
+    if (typeof select !== "function") select = selector$1(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+        if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
+          if ("__data__" in node) subnode.__data__ = node.__data__;
+          subgroup[i] = subnode;
+        }
+      }
+    }
+
+    return new Selection$2(subgroups, this._parents);
+  }
+
+  function empty$1() {
+    return [];
+  }
+
+  function selectorAll$1(selector) {
+    return selector == null ? empty$1 : function() {
+      return this.querySelectorAll(selector);
+    };
+  }
+
+  function selection_selectAll$1(select) {
+    if (typeof select !== "function") select = selectorAll$1(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          subgroups.push(select.call(node, node.__data__, i, group));
+          parents.push(node);
+        }
+      }
+    }
+
+    return new Selection$2(subgroups, parents);
+  }
+
+  function matcher$1(selector) {
+    return function() {
+      return this.matches(selector);
+    };
+  }
+
+  function selection_filter$1(match) {
+    if (typeof match !== "function") match = matcher$1(match);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+        if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
+          subgroup.push(node);
+        }
+      }
+    }
+
+    return new Selection$2(subgroups, this._parents);
+  }
+
+  function sparse$1(update) {
+    return new Array(update.length);
+  }
+
+  function selection_enter$1() {
+    return new Selection$2(this._enter || this._groups.map(sparse$1), this._parents);
+  }
+
+  function EnterNode$1(parent, datum) {
+    this.ownerDocument = parent.ownerDocument;
+    this.namespaceURI = parent.namespaceURI;
+    this._next = null;
+    this._parent = parent;
+    this.__data__ = datum;
+  }
+
+  EnterNode$1.prototype = {
+    constructor: EnterNode$1,
+    appendChild: function(child) { return this._parent.insertBefore(child, this._next); },
+    insertBefore: function(child, next) { return this._parent.insertBefore(child, next); },
+    querySelector: function(selector) { return this._parent.querySelector(selector); },
+    querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
+  };
+
+  function constant$2(x) {
+    return function() {
+      return x;
+    };
+  }
+
+  var keyPrefix = "$"; // Protect against keys like “__proto__”.
+
+  function bindIndex$1(parent, group, enter, update, exit, data) {
+    var i = 0,
+        node,
+        groupLength = group.length,
+        dataLength = data.length;
+
+    // Put any non-null nodes that fit into update.
+    // Put any null nodes into enter.
+    // Put any remaining data into enter.
+    for (; i < dataLength; ++i) {
+      if (node = group[i]) {
+        node.__data__ = data[i];
+        update[i] = node;
+      } else {
+        enter[i] = new EnterNode$1(parent, data[i]);
+      }
+    }
+
+    // Put any non-null nodes that don’t fit into exit.
+    for (; i < groupLength; ++i) {
+      if (node = group[i]) {
+        exit[i] = node;
+      }
+    }
+  }
+
+  function bindKey$1(parent, group, enter, update, exit, data, key) {
+    var i,
+        node,
+        nodeByKeyValue = {},
+        groupLength = group.length,
+        dataLength = data.length,
+        keyValues = new Array(groupLength),
+        keyValue;
+
+    // Compute the key for each node.
+    // If multiple nodes have the same key, the duplicates are added to exit.
+    for (i = 0; i < groupLength; ++i) {
+      if (node = group[i]) {
+        keyValues[i] = keyValue = keyPrefix + key.call(node, node.__data__, i, group);
+        if (keyValue in nodeByKeyValue) {
+          exit[i] = node;
+        } else {
+          nodeByKeyValue[keyValue] = node;
+        }
+      }
+    }
+
+    // Compute the key for each datum.
+    // If there a node associated with this key, join and add it to update.
+    // If there is not (or the key is a duplicate), add it to enter.
+    for (i = 0; i < dataLength; ++i) {
+      keyValue = keyPrefix + key.call(parent, data[i], i, data);
+      if (node = nodeByKeyValue[keyValue]) {
+        update[i] = node;
+        node.__data__ = data[i];
+        nodeByKeyValue[keyValue] = null;
+      } else {
+        enter[i] = new EnterNode$1(parent, data[i]);
+      }
+    }
+
+    // Add any remaining nodes that were not bound to data to exit.
+    for (i = 0; i < groupLength; ++i) {
+      if ((node = group[i]) && (nodeByKeyValue[keyValues[i]] === node)) {
+        exit[i] = node;
+      }
+    }
+  }
+
+  function selection_data$1(value, key) {
+    if (!value) {
+      data = new Array(this.size()), j = -1;
+      this.each(function(d) { data[++j] = d; });
+      return data;
+    }
+
+    var bind = key ? bindKey$1 : bindIndex$1,
+        parents = this._parents,
+        groups = this._groups;
+
+    if (typeof value !== "function") value = constant$2(value);
+
+    for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
+      var parent = parents[j],
+          group = groups[j],
+          groupLength = group.length,
+          data = value.call(parent, parent && parent.__data__, j, parents),
+          dataLength = data.length,
+          enterGroup = enter[j] = new Array(dataLength),
+          updateGroup = update[j] = new Array(dataLength),
+          exitGroup = exit[j] = new Array(groupLength);
+
+      bind(parent, group, enterGroup, updateGroup, exitGroup, data, key);
+
+      // Now connect the enter nodes to their following update node, such that
+      // appendChild can insert the materialized enter node before this node,
+      // rather than at the end of the parent node.
+      for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
+        if (previous = enterGroup[i0]) {
+          if (i0 >= i1) i1 = i0 + 1;
+          while (!(next = updateGroup[i1]) && ++i1 < dataLength);
+          previous._next = next || null;
+        }
+      }
+    }
+
+    update = new Selection$2(update, parents);
+    update._enter = enter;
+    update._exit = exit;
+    return update;
+  }
+
+  function selection_exit$1() {
+    return new Selection$2(this._exit || this._groups.map(sparse$1), this._parents);
+  }
+
+  function selection_join$1(onenter, onupdate, onexit) {
+    var enter = this.enter(), update = this, exit = this.exit();
+    enter = typeof onenter === "function" ? onenter(enter) : enter.append(onenter + "");
+    if (onupdate != null) update = onupdate(update);
+    if (onexit == null) exit.remove(); else onexit(exit);
+    return enter && update ? enter.merge(update).order() : update;
+  }
+
+  function selection_merge$1(selection) {
+
+    for (var groups0 = this._groups, groups1 = selection._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+      for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group0[i] || group1[i]) {
+          merge[i] = node;
+        }
+      }
+    }
+
+    for (; j < m0; ++j) {
+      merges[j] = groups0[j];
+    }
+
+    return new Selection$2(merges, this._parents);
+  }
+
+  function selection_order$1() {
+
+    for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
+      for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
+        if (node = group[i]) {
+          if (next && node.compareDocumentPosition(next) ^ 4) next.parentNode.insertBefore(node, next);
+          next = node;
+        }
+      }
+    }
+
+    return this;
+  }
+
+  function selection_sort$1(compare) {
+    if (!compare) compare = ascending$2;
+
+    function compareNode(a, b) {
+      return a && b ? compare(a.__data__, b.__data__) : !a - !b;
+    }
+
+    for (var groups = this._groups, m = groups.length, sortgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, sortgroup = sortgroups[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          sortgroup[i] = node;
+        }
+      }
+      sortgroup.sort(compareNode);
+    }
+
+    return new Selection$2(sortgroups, this._parents).order();
+  }
+
+  function ascending$2(a, b) {
+    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+  }
+
+  function selection_call$1() {
+    var callback = arguments[0];
+    arguments[0] = this;
+    callback.apply(null, arguments);
+    return this;
+  }
+
+  function selection_nodes$1() {
+    var nodes = new Array(this.size()), i = -1;
+    this.each(function() { nodes[++i] = this; });
+    return nodes;
+  }
+
+  function selection_node$1() {
+
+    for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+      for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
+        var node = group[i];
+        if (node) return node;
+      }
+    }
+
+    return null;
+  }
+
+  function selection_size$1() {
+    var size = 0;
+    this.each(function() { ++size; });
+    return size;
+  }
+
+  function selection_empty$1() {
+    return !this.node();
+  }
+
+  function selection_each$1(callback) {
+
+    for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+      for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
+        if (node = group[i]) callback.call(node, node.__data__, i, group);
+      }
+    }
+
+    return this;
+  }
+
+  function attrRemove$2(name) {
+    return function() {
+      this.removeAttribute(name);
+    };
+  }
+
+  function attrRemoveNS$2(fullname) {
+    return function() {
+      this.removeAttributeNS(fullname.space, fullname.local);
+    };
+  }
+
+  function attrConstant$2(name, value) {
+    return function() {
+      this.setAttribute(name, value);
+    };
+  }
+
+  function attrConstantNS$2(fullname, value) {
+    return function() {
+      this.setAttributeNS(fullname.space, fullname.local, value);
+    };
+  }
+
+  function attrFunction$2(name, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.removeAttribute(name);
+      else this.setAttribute(name, v);
+    };
+  }
+
+  function attrFunctionNS$2(fullname, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
+      else this.setAttributeNS(fullname.space, fullname.local, v);
+    };
+  }
+
+  function selection_attr$1(name, value) {
+    var fullname = namespace$1(name);
+
+    if (arguments.length < 2) {
+      var node = this.node();
+      return fullname.local
+          ? node.getAttributeNS(fullname.space, fullname.local)
+          : node.getAttribute(fullname);
+    }
+
+    return this.each((value == null
+        ? (fullname.local ? attrRemoveNS$2 : attrRemove$2) : (typeof value === "function"
+        ? (fullname.local ? attrFunctionNS$2 : attrFunction$2)
+        : (fullname.local ? attrConstantNS$2 : attrConstant$2)))(fullname, value));
+  }
+
+  function defaultView$1(node) {
+    return (node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
+        || (node.document && node) // node is a Window
+        || node.defaultView; // node is a Document
+  }
+
+  function styleRemove$2(name) {
+    return function() {
+      this.style.removeProperty(name);
+    };
+  }
+
+  function styleConstant$2(name, value, priority) {
+    return function() {
+      this.style.setProperty(name, value, priority);
+    };
+  }
+
+  function styleFunction$2(name, value, priority) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.style.removeProperty(name);
+      else this.style.setProperty(name, v, priority);
+    };
+  }
+
+  function selection_style$1(name, value, priority) {
+    return arguments.length > 1
+        ? this.each((value == null
+              ? styleRemove$2 : typeof value === "function"
+              ? styleFunction$2
+              : styleConstant$2)(name, value, priority == null ? "" : priority))
+        : styleValue$1(this.node(), name);
+  }
+
+  function styleValue$1(node, name) {
+    return node.style.getPropertyValue(name)
+        || defaultView$1(node).getComputedStyle(node, null).getPropertyValue(name);
+  }
+
+  function propertyRemove$1(name) {
+    return function() {
+      delete this[name];
+    };
+  }
+
+  function propertyConstant$1(name, value) {
+    return function() {
+      this[name] = value;
+    };
+  }
+
+  function propertyFunction$1(name, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) delete this[name];
+      else this[name] = v;
+    };
+  }
+
+  function selection_property$1(name, value) {
+    return arguments.length > 1
+        ? this.each((value == null
+            ? propertyRemove$1 : typeof value === "function"
+            ? propertyFunction$1
+            : propertyConstant$1)(name, value))
+        : this.node()[name];
+  }
+
+  function classArray$1(string) {
+    return string.trim().split(/^|\s+/);
+  }
+
+  function classList$1(node) {
+    return node.classList || new ClassList$1(node);
+  }
+
+  function ClassList$1(node) {
+    this._node = node;
+    this._names = classArray$1(node.getAttribute("class") || "");
+  }
+
+  ClassList$1.prototype = {
+    add: function(name) {
+      var i = this._names.indexOf(name);
+      if (i < 0) {
+        this._names.push(name);
+        this._node.setAttribute("class", this._names.join(" "));
+      }
+    },
+    remove: function(name) {
+      var i = this._names.indexOf(name);
+      if (i >= 0) {
+        this._names.splice(i, 1);
+        this._node.setAttribute("class", this._names.join(" "));
+      }
+    },
+    contains: function(name) {
+      return this._names.indexOf(name) >= 0;
+    }
+  };
+
+  function classedAdd$1(node, names) {
+    var list = classList$1(node), i = -1, n = names.length;
+    while (++i < n) list.add(names[i]);
+  }
+
+  function classedRemove$1(node, names) {
+    var list = classList$1(node), i = -1, n = names.length;
+    while (++i < n) list.remove(names[i]);
+  }
+
+  function classedTrue$1(names) {
+    return function() {
+      classedAdd$1(this, names);
+    };
+  }
+
+  function classedFalse$1(names) {
+    return function() {
+      classedRemove$1(this, names);
+    };
+  }
+
+  function classedFunction$1(names, value) {
+    return function() {
+      (value.apply(this, arguments) ? classedAdd$1 : classedRemove$1)(this, names);
+    };
+  }
+
+  function selection_classed$1(name, value) {
+    var names = classArray$1(name + "");
+
+    if (arguments.length < 2) {
+      var list = classList$1(this.node()), i = -1, n = names.length;
+      while (++i < n) if (!list.contains(names[i])) return false;
+      return true;
+    }
+
+    return this.each((typeof value === "function"
+        ? classedFunction$1 : value
+        ? classedTrue$1
+        : classedFalse$1)(names, value));
+  }
+
+  function textRemove$1() {
+    this.textContent = "";
+  }
+
+  function textConstant$2(value) {
+    return function() {
+      this.textContent = value;
+    };
+  }
+
+  function textFunction$2(value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      this.textContent = v == null ? "" : v;
+    };
+  }
+
+  function selection_text$1(value) {
+    return arguments.length
+        ? this.each(value == null
+            ? textRemove$1 : (typeof value === "function"
+            ? textFunction$2
+            : textConstant$2)(value))
+        : this.node().textContent;
+  }
+
+  function htmlRemove$1() {
+    this.innerHTML = "";
+  }
+
+  function htmlConstant$1(value) {
+    return function() {
+      this.innerHTML = value;
+    };
+  }
+
+  function htmlFunction$1(value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      this.innerHTML = v == null ? "" : v;
+    };
+  }
+
+  function selection_html$1(value) {
+    return arguments.length
+        ? this.each(value == null
+            ? htmlRemove$1 : (typeof value === "function"
+            ? htmlFunction$1
+            : htmlConstant$1)(value))
+        : this.node().innerHTML;
+  }
+
+  function raise$1() {
+    if (this.nextSibling) this.parentNode.appendChild(this);
+  }
+
+  function selection_raise$1() {
+    return this.each(raise$1);
+  }
+
+  function lower$1() {
+    if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
+  }
+
+  function selection_lower$1() {
+    return this.each(lower$1);
+  }
+
+  function selection_append$1(name) {
+    var create = typeof name === "function" ? name : creator$1(name);
+    return this.select(function() {
+      return this.appendChild(create.apply(this, arguments));
+    });
+  }
+
+  function constantNull$1() {
+    return null;
+  }
+
+  function selection_insert$1(name, before) {
+    var create = typeof name === "function" ? name : creator$1(name),
+        select = before == null ? constantNull$1 : typeof before === "function" ? before : selector$1(before);
+    return this.select(function() {
+      return this.insertBefore(create.apply(this, arguments), select.apply(this, arguments) || null);
+    });
+  }
+
+  function remove$1() {
+    var parent = this.parentNode;
+    if (parent) parent.removeChild(this);
+  }
+
+  function selection_remove$1() {
+    return this.each(remove$1);
+  }
+
+  function selection_cloneShallow$1() {
+    var clone = this.cloneNode(false), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+  }
+
+  function selection_cloneDeep$1() {
+    var clone = this.cloneNode(true), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+  }
+
+  function selection_clone$1(deep) {
+    return this.select(deep ? selection_cloneDeep$1 : selection_cloneShallow$1);
+  }
+
+  function selection_datum$1(value) {
+    return arguments.length
+        ? this.property("__data__", value)
+        : this.node().__data__;
+  }
+
+  var filterEvents = {};
+
+  var event$1 = null;
+
+  if (typeof document !== "undefined") {
+    var element = document.documentElement;
+    if (!("onmouseenter" in element)) {
+      filterEvents = {mouseenter: "mouseover", mouseleave: "mouseout"};
+    }
+  }
+
+  function filterContextListener(listener, index, group) {
+    listener = contextListener$1(listener, index, group);
+    return function(event) {
+      var related = event.relatedTarget;
+      if (!related || (related !== this && !(related.compareDocumentPosition(this) & 8))) {
+        listener.call(this, event);
+      }
+    };
+  }
+
+  function contextListener$1(listener, index, group) {
+    return function(event1) {
+      var event0 = event$1; // Events can be reentrant (e.g., focus).
+      event$1 = event1;
+      try {
+        listener.call(this, this.__data__, index, group);
+      } finally {
+        event$1 = event0;
+      }
+    };
+  }
+
+  function parseTypenames$3(typenames) {
+    return typenames.trim().split(/^|\s+/).map(function(t) {
+      var name = "", i = t.indexOf(".");
+      if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
+      return {type: t, name: name};
+    });
+  }
+
+  function onRemove$1(typename) {
+    return function() {
+      var on = this.__on;
+      if (!on) return;
+      for (var j = 0, i = -1, m = on.length, o; j < m; ++j) {
+        if (o = on[j], (!typename.type || o.type === typename.type) && o.name === typename.name) {
+          this.removeEventListener(o.type, o.listener, o.capture);
+        } else {
+          on[++i] = o;
+        }
+      }
+      if (++i) on.length = i;
+      else delete this.__on;
+    };
+  }
+
+  function onAdd$1(typename, value, capture) {
+    var wrap = filterEvents.hasOwnProperty(typename.type) ? filterContextListener : contextListener$1;
+    return function(d, i, group) {
+      var on = this.__on, o, listener = wrap(value, i, group);
+      if (on) for (var j = 0, m = on.length; j < m; ++j) {
+        if ((o = on[j]).type === typename.type && o.name === typename.name) {
+          this.removeEventListener(o.type, o.listener, o.capture);
+          this.addEventListener(o.type, o.listener = listener, o.capture = capture);
+          o.value = value;
+          return;
+        }
+      }
+      this.addEventListener(typename.type, listener, capture);
+      o = {type: typename.type, name: typename.name, value: value, listener: listener, capture: capture};
+      if (!on) this.__on = [o];
+      else on.push(o);
+    };
+  }
+
+  function selection_on$1(typename, value, capture) {
+    var typenames = parseTypenames$3(typename + ""), i, n = typenames.length, t;
+
+    if (arguments.length < 2) {
+      var on = this.node().__on;
+      if (on) for (var j = 0, m = on.length, o; j < m; ++j) {
+        for (i = 0, o = on[j]; i < n; ++i) {
+          if ((t = typenames[i]).type === o.type && t.name === o.name) {
+            return o.value;
+          }
+        }
+      }
+      return;
+    }
+
+    on = value ? onAdd$1 : onRemove$1;
+    if (capture == null) capture = false;
+    for (i = 0; i < n; ++i) this.each(on(typenames[i], value, capture));
+    return this;
+  }
+
+  function dispatchEvent$1(node, type, params) {
+    var window = defaultView$1(node),
+        event = window.CustomEvent;
+
+    if (typeof event === "function") {
+      event = new event(type, params);
+    } else {
+      event = window.document.createEvent("Event");
+      if (params) event.initEvent(type, params.bubbles, params.cancelable), event.detail = params.detail;
+      else event.initEvent(type, false, false);
+    }
+
+    node.dispatchEvent(event);
+  }
+
+  function dispatchConstant$1(type, params) {
+    return function() {
+      return dispatchEvent$1(this, type, params);
+    };
+  }
+
+  function dispatchFunction$1(type, params) {
+    return function() {
+      return dispatchEvent$1(this, type, params.apply(this, arguments));
+    };
+  }
+
+  function selection_dispatch$1(type, params) {
+    return this.each((typeof params === "function"
+        ? dispatchFunction$1
+        : dispatchConstant$1)(type, params));
+  }
+
+  var root$1 = [null];
+
+  function Selection$2(groups, parents) {
+    this._groups = groups;
+    this._parents = parents;
+  }
+
+  Selection$2.prototype = {
+    constructor: Selection$2,
+    select: selection_select$1,
+    selectAll: selection_selectAll$1,
+    filter: selection_filter$1,
+    data: selection_data$1,
+    enter: selection_enter$1,
+    exit: selection_exit$1,
+    join: selection_join$1,
+    merge: selection_merge$1,
+    order: selection_order$1,
+    sort: selection_sort$1,
+    call: selection_call$1,
+    nodes: selection_nodes$1,
+    node: selection_node$1,
+    size: selection_size$1,
+    empty: selection_empty$1,
+    each: selection_each$1,
+    attr: selection_attr$1,
+    style: selection_style$1,
+    property: selection_property$1,
+    classed: selection_classed$1,
+    text: selection_text$1,
+    html: selection_html$1,
+    raise: selection_raise$1,
+    lower: selection_lower$1,
+    append: selection_append$1,
+    insert: selection_insert$1,
+    remove: selection_remove$1,
+    clone: selection_clone$1,
+    datum: selection_datum$1,
+    on: selection_on$1,
+    dispatch: selection_dispatch$1
+  };
+
+  function select$1(selector) {
+    return typeof selector === "string"
+        ? new Selection$2([[document.querySelector(selector)]], [document.documentElement])
+        : new Selection$2([[selector]], root$1);
+  }
+
+  function ascending$1(a, b) {
+  	return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+  }
+
+  function sortArray(uarr, sort, parser, formatter, exclude_from_formatting) {
+  	var sarr = uarr.map(function (d, i) {
+  		var parsed_value = parser(d);
+  		var display_value;
+  		if (d === null) display_value = "";
+  		if (exclude_from_formatting.includes(d)) display_value = d;
+  		else display_value = formatter(d);
+  		return {
+  			value: d,
+  			options_index: i,
+  			parsed: parsed_value,
+  			display: display_value,
+  		};
+  	});
+
+  	if (!sort) return sarr;
+  	return sarr.sort(function (a, b) {
+  		return ascending$1(a.parsed, b.parsed);
+  	});
+  }
+
+  function createCssString() {
+  	var s = new Stylesheet$1();
+
+  	s.select(".fl-controls-container")
+  		.style("display", "inline-block")
+  		.style("line-height", "1em");
+
+  	s.select(".fl-controls-title")
+  		.style("display", "inline-block")
+  		.style("margin-inline-end", "0.5rem");
+
+  	s.select(".fl-controls-container, .fl-controls-container *").style(
+  		"box-sizing",
+  		"border-box",
+  	);
+
+  	s.select(".slider-holder").style("margin-bottom", "20px");
+
+  	s.select(".fl-controls-slider, .slider-play")
+  		.style("pointer-events", "all")
+  		.style("display", "inline-block")
+  		.style("vertical-align", "middle");
+
+  	s.select(".slider-play svg")
+  		.style("height", "100%")
+  		.style("width", "100%")
+  		.style("display", "block")
+  		.style("cursor", " pointer", "");
+
+  	s.select(".fl-controls-slider svg").style("display", "block");
+
+  	s.select(".slider-play:hover").style("opacity", "0.6");
+
+  	s.select(".fl-control-slider")
+  		.style("width", "100%")
+  		.style("bottom", "0")
+  		.style("align-items", "center");
+
+  	s.select(".fl-control").style("position", "relative");
+
+  	s.select(".fl-control.hidden").style("display", "none");
+
+  	s.select(".fl-control .button")
+  		.style("display", "inline-flex")
+  		.style("align-items", "center")
+  		.style("background", "#eee")
+  		.style("padding", "0 0.5em")
+  		.style("margin-right", "0.25em")
+  		.style("margin-bottom", "0.25em")
+  		.style("line-height", "1em")
+  		.style("box-sizing", "border-box");
+
+  	s.select(".fl-control.grouped:not(.hidden)")
+  		.style("display", "inline-table")
+  		.style("table-layout", "fixed")
+  		.select(".button")
+  		.style("display", "table-cell")
+  		.style("vertical-align", "middle")
+  		.style("margin", "0")
+  		.style("text-align", "center");
+
+  	s.select(".fl-control .button.selected").style("background", "#ddd");
+
+  	s.select(".fl-control-dropdown")
+  		.style("line-height", "1em")
+  		.style("position", "relative");
+
+  	s.select(".fl-control-dropdown::after")
+  		.style("display", "block")
+  		.style("content", "''")
+  		.style("width", "10px")
+  		.style("height", "10px")
+  		.style("background", "transparent")
+  		.style("position", "absolute")
+  		.style("right", "5px")
+  		.style("left", "auto")
+  		.style("top", "50%")
+  		.style("pointer-events", "none")
+  		.style("transform", "translateY(calc(-50% + 3px))")
+  		.style("border-left", "5px solid transparent")
+  		.style("border-right", "5px solid transparent")
+  		.style("border-top", "5px solid")
+  		.style("box-sizing", "border-box");
+
+  	s.select(".is-rtl .fl-control-dropdown::after")
+  		.style("left", "5px")
+  		.style("right", "auto");
+
+  	s.select(".fl-control-dropdown select")
+  		.style("-webkit-appearance", "none")
+  		.style("width", "100%");
+
+  	return s.print();
+  }
+
+  var css_injected = false;
+
+  function injectCSS() {
+  	if (css_injected || typeof document === "undefined") return;
+
+  	var css_string = createCssString();
+
+  	var head = document.head || document.getElementsByTagName("head")[0];
+  	var style = document.createElement("style");
+  	style.type = "text/css";
+  	style.className = "flourish-controls";
+  	head.appendChild(style);
+  	if (style.styleSheet) {
+  		style.styleSheet.cssText = css_string;
+  	} else {
+  		style.appendChild(document.createTextNode(css_string));
+  	}
+  	css_injected = true;
+  }
+
+  var getTextWidth = (function() {
+  	var context = document.createElement("canvas").getContext("2d");
+  	return function(text, font) {
+  		context.font = font || "10px sans-serif";
+  		var metrics = context.measureText(text);
+  		return metrics.width;
+  	};
+  })();
+
+  var remToPx;
+
+  function getRemToPx() {
+  	var font_size =
+  		parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+  	remToPx = function (rem) {
+  		return rem * font_size;
+  	};
+  }
+
+  function createDropdown(control_obj, state, container) {
+  	var dropdown_obj = {};
+
+  	// Add dropdown elements to container
+  	var dropdown_wrapper = select$1(container)
+  		.append("div")
+  		.attr("class", "fl-control fl-control-dropdown")
+  		.style("display", "none");
+
+  	const dropdown = dropdown_wrapper.append("select").on("change", function () {
+  		const data = dropdown.select("option:checked").datum();
+  		const index = data.options_index;
+  		control_obj.index(index);
+  		control_obj.trigger("change");
+  	});
+
+  	var showControl = function (longest_text_width) {
+  		var dropdown_width = "100%";
+
+  		if (state.dropdown_width_mode == "auto") {
+  			dropdown_width =
+  				Math.min(longest_text_width + 40, remToPx(20)) + remToPx(1) + "px";
+  		} else if (state.dropdown_width_mode == "fixed") {
+  			dropdown_width = remToPx(state.dropdown_width_fixed) + "px";
+  		}
+
+  		container.style.width =
+  			state.dropdown_width_mode == "full" ? dropdown_width : "";
+
+  		dropdown_wrapper
+  			.style("width", dropdown_width)
+  			.style(
+  				"display",
+  				state.dropdown_width_mode !== "full" ? "inline-table" : null,
+  			);
+  	};
+
+  	var hideControl = function () {
+  		dropdown_wrapper.style("display", "none");
+  	};
+
+  	dropdown_obj.show = showControl;
+  	dropdown_obj.hide = hideControl;
+
+  	dropdown_obj.update = function (sorted_options, visible) {
+  		var dropdown_font_size = window.getComputedStyle(dropdown.node()).fontSize;
+  		if (!control_obj.n_options || state.control_type !== "dropdown") {
+  			hideControl();
+  			return dropdown_obj;
+  		}
+
+  		const options = dropdown
+  			.selectAll("option")
+  			.data(sorted_options, (d) => d.value);
+  		options.exit().remove();
+
+  		var options_enter = options.enter().append("option");
+
+  		options
+  			.merge(options_enter)
+  			.text((d) => d.display)
+  			.attr("value", (d) => d.value);
+
+  		let longest_text_width = 0;
+  		const font = dropdown_font_size + " sans-serif";
+
+  		if (state.dropdown_width_mode === "auto") {
+  			options.merge(options_enter).each(function (d) {
+  				const text_width = getTextWidth(d.display, font);
+  				longest_text_width = Math.max(longest_text_width, text_width);
+  			});
+  		}
+
+  		dropdown.node().value = control_obj.value();
+
+  		if (visible) showControl(longest_text_width);
+  		else hideControl();
+
+  		return dropdown_obj;
+  	};
+
+  	return dropdown_obj;
+  }
+
+  function createButtons(control_obj, state, container) {
+  	var button_obj = {};
+  	var button_container = select$1(container)
+  		.append("div")
+  		.attr("class", "fl-control fl-control-buttons");
+
+  	var showControl = function () {
+  		button_container.classed("hidden", false);
+  	};
+
+  	var hideControl = function () {
+  		button_container.classed("hidden", true);
+  	};
+
+  	button_obj.show = showControl;
+  	button_obj.hide = hideControl;
+
+  	button_obj.update = function (sorted_options, visible) {
+  		if (!control_obj.n_options || state.control_type !== "buttons") {
+  			hideControl();
+  			return button_obj;
+  		}
+
+  		var index = control_obj.index();
+
+  		button_container.classed("grouped", state.button_group);
+  		button_container.classed(
+  			"fixed-width",
+  			state.button_group_width_mode == "fixed" ||
+  				state.button_group_width_mode == "full",
+  		);
+  		button_container.style(
+  			"width",
+  			state.button_group && state.button_group_width_mode == "fixed"
+  				? remToPx(state.button_group_width_fixed) + "px"
+  				: state.button_group_width_mode == "full"
+  					? "100%"
+  					: null,
+  		);
+
+  		var clickHandler = function (d) {
+  			var i = d.options_index;
+  			if (i === control_obj.index()) return;
+  			control_obj.index(i);
+  			control_obj.trigger("change");
+  		};
+
+  		var buttons = button_container
+  			.selectAll(".button")
+  			.data(sorted_options, function (d) {
+  				return d.display;
+  			});
+
+  		var buttons_enter = buttons
+  			.enter()
+  			.append("div")
+  			.attr("class", "button")
+  			.style("cursor", "pointer")
+  			.attr("role", "button")
+  			.attr("tabindex", 0)
+  			.on("click", function (d) {
+  				clickHandler(d);
+  			})
+  			.on("keyup", function (d) {
+  				if (event$1.code === "Space" || event$1.code === "Enter") {
+  					event$1.preventDefault();
+  					clickHandler(d);
+  				}
+  			});
+
+  		buttons_enter.append("span").text(function (d) {
+  			return d.display;
+  		});
+
+  		buttons
+  			.merge(buttons_enter)
+  			.classed("selected", function (d) {
+  				return d.options_index === index;
+  			})
+  			.attr("aria-pressed", function (d) {
+  				return d.options_index === index;
+  			});
+
+  		buttons.exit().remove();
+
+  		if (visible) showControl();
+  		else hideControl();
+  	};
+
+  	return button_obj;
+  }
+
+  function createPlayButton() {
+  	return '<svg aria-hidden="true" width="25px" height="30px" viewBox="0 0 25 30"> <polygon stroke="none" points="25 15 0 30 0 0"></polygon> </svg>';
+  }
+
+  function createPauseButton() {
+  	return '<svg aria-hidden="true" width="26px" height="30px" viewBox="0 0 26 30"> <g stroke="none" stroke-width="1"quarter><rect x="2" y="2" width="9" height="26"></rect> <rect x="15" y="2" width="9" height="26"></rect> </g> </svg>';
+  }
+
+  function createSlider(control_obj, state, container) {
+  	var slider_obj = {};
+  	var slider_holder = select$1(container)
+  		.append("div")
+  		.attr("class", "fl-control fl-control-slider")
+  		.style("flex", "1");
+  	var slider_play_button = slider_holder
+  		.append("div")
+  		.attr("class", "slider-play")
+  		.attr("role", "button")
+  		.attr("aria-label", "play-button")
+  		.attr("cursor", "pointer")
+  		.attr("tabindex", 0);
+  	var slider_div = slider_holder
+  		.append("div")
+  		.attr("class", "fl-controls-slider")
+  		.style("display", "none") // hide initially to avoid view of unstyled slider on load
+  		.style("align-items", "center");
+
+  	var play_string, pause_string;
+  	var sorted_options, timesteps, is_playing;
+  	var timer_id = null;
+
+  	const slider_range = slider_div
+  		.append("input")
+  		.attr("type", "range")
+  		.attr("id", "slider-range")
+  		.attr("name", "slider-range")
+  		.attr("value", 0);
+
+  	const slider_label = slider_div
+  		.append("label")
+  		.attr("class", "slider-label")
+  		.attr("for", "slider-range");
+
+  	var clearTimer = function () {
+  		clearTimeout(timer_id);
+  		timer_id = null;
+  	};
+
+  	var sliderChangeFunction = function (i) {
+  		var d = sorted_options[i];
+  		if (d.options_index === control_obj.index()) return;
+  		control_obj.index(d.options_index);
+  		control_obj.trigger("change");
+  	};
+
+  	var stopSliderPlayer = function () {
+  		clearTimer();
+  		slider_holder.classed("playing", false);
+  		slider_play_button.html(play_string).attr("aria-label", "play-button");
+  		control_obj._isPlaying_(false);
+  		is_playing = false;
+  	};
+
+  	var setNextTick = function () {
+  		var current_index = control_obj.getSortedIndex();
+  		var current_delay = timesteps[current_index];
+  		var final_index = control_obj.n_options - 1;
+  		var next_index = current_index < final_index ? current_index + 1 : 0;
+
+  		timer_id = setTimeout(function () {
+  			sliderChangeFunction(next_index);
+  			if (state.slider_loop || next_index < final_index) setNextTick();
+  			else stopSliderPlayer();
+  		}, current_delay);
+  	};
+
+  	var startSliderPlayer = function () {
+  		slider_holder.classed("playing", true);
+  		slider_play_button.html(pause_string).attr("aria-label", "pause-button");
+  		setNextTick();
+  		control_obj._isPlaying_(true);
+  		is_playing = true;
+  	};
+
+  	slider_play_button
+  		.on("click", function () {
+  			if (timer_id === null) startSliderPlayer();
+  			else stopSliderPlayer();
+  		})
+  		.on("keyup", function () {
+  			if (event$1.code === "Space" || event$1.code === "Enter") {
+  				event$1.preventDefault();
+  				if (timer_id === null) startSliderPlayer();
+  				else stopSliderPlayer();
+  			}
+  		});
+
+  	var setHandles = function () {
+  		play_string = createPlayButton();
+  		pause_string = createPauseButton();
+  		slider_play_button.html(timer_id ? pause_string : play_string);
+  	};
+
+  	var showControl = function (longest_text_width) {
+  		const label_width =
+  			Math.min(
+  				Math.ceil(longest_text_width),
+  				remToPx(state.slider_max_label_width),
+  			) + "px";
+  		slider_label.style("width", label_width).style("flex-shrink", 0);
+
+  		slider_holder.style("display", "inline-flex");
+
+  		slider_range.style("width", remToPx(state.slider_width) + "px");
+
+  		setHandles();
+  		return slider_obj;
+  	};
+
+  	var hideControl = function () {
+  		stopSliderPlayer();
+  		slider_holder.style("display", "none");
+  		return slider_obj;
+  	};
+
+  	slider_obj.show = showControl;
+  	slider_obj.hide = hideControl;
+
+  	slider_obj.update = function (_sorted_options, visible) {
+  		slider_div.style("display", "flex");
+
+  		sorted_options = _sorted_options;
+  		if (!control_obj.n_options || state.control_type !== "slider") {
+  			hideControl();
+  			return slider_obj;
+  		}
+
+  		var slider_font_size = window.getComputedStyle(
+  			slider_label.node(),
+  		).fontSize;
+  		var slider_font_family = window.getComputedStyle(
+  			slider_label.node(),
+  		).fontFamily;
+  		var slider_font_weight = window.getComputedStyle(
+  			slider_holder.node(),
+  		).fontWeight;
+  		let longest_text_width = 0;
+  		const font =
+  			slider_font_weight +
+  			" " +
+  			slider_font_size +
+  			" " +
+  			slider_font_family +
+  			", sans-serif";
+  		sorted_options.forEach(function (d) {
+  			const text_width = getTextWidth(d.display, font);
+  			longest_text_width = Math.max(longest_text_width, text_width);
+  		});
+
+  		if (visible) showControl(longest_text_width);
+  		else hideControl();
+
+  		var n_options = control_obj.n_options;
+  		var loop = state.slider_loop;
+
+  		timesteps = sorted_options.map(function (d, i) {
+  			var dur_in_seconds =
+  				state.slider_step_time +
+  				(loop && i === n_options - 1 ? state.slider_restart_pause : 0);
+  			return dur_in_seconds * 1000;
+  		});
+
+  		var sorted_index = control_obj.getSortedIndex();
+  		var d = sorted_options[sorted_index];
+
+  		var min_display_value = sorted_options[0].display;
+  		var max_display_value = sorted_options[sorted_options.length - 1].display;
+
+  		slider_range
+  			.attr("min", 0)
+  			.attr("max", n_options - 1)
+  			.attr("step", 1)
+  			.attr("aria-valuenow", d.display)
+  			.attr("aria-valuemin", min_display_value)
+  			.attr("aria-valuemax", max_display_value)
+  			.on("input", function () {
+  				var is_playing = timer_id !== null;
+  				if (is_playing) clearTimer();
+  				sliderChangeFunction(this.value);
+  				if (is_playing) setNextTick();
+  			});
+
+  		slider_range.node().value = sorted_index;
+
+  		slider_label.html(d.display);
+
+  		if (control_obj._isPlaying_() && !is_playing) startSliderPlayer();
+  		else if (!control_obj._isPlaying_() && is_playing) stopSliderPlayer();
+
+  		return slider_obj;
+  	};
+
+  	return slider_obj;
+  }
+
+  var DEFAULTS$1 = Object.freeze({
+  	alignment: "start",
+  	controls_spacing: 1,
+  });
+
+  function controlsContainer(state_) {
+  	this._state = state_;
+  	for (var key in DEFAULTS$1) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$1[key];
+  	}
+  	return this;
+  }
+
+  controlsContainer.prototype.appendTo = function (container_) {
+  	this._container = select$1(container_).append("div").node();
+  	return this;
+  };
+
+  controlsContainer.prototype.add = function (controls) {
+  	this._controls = Array.isArray(controls) ? controls : [controls];
+
+  	this._controls.forEach(function (control) {
+  		if (control && typeof control.appendTo === "function")
+  			control.appendTo(this._container);
+  		else console.warn("Please pass valid controls instances to .add()");
+  	}, this);
+
+  	return this;
+  };
+
+  controlsContainer.prototype.update = function () {
+  	this._controls.forEach(function (control) {
+  		if (control && typeof control.update == "function") control.update();
+  	});
+
+  	var alignment = this._state.alignment;
+  	var flex_alignment = alignment == "center" ? alignment : "flex-" + alignment;
+
+  	var template = window.template || undefined;
+  	var layout = template ? template.state.layout : undefined;
+  	var read_direction =
+  		(layout && layout.read_direction) || select$1("body").node().dir || "ltr";
+  	// This flips the controls container margins if read direction is set to right-to-left
+  	// Flex alignment is not flipped in order to match the behaviour of the legend
+  	var alignment_for_margins = alignment;
+  	if (read_direction === "rtl" && alignment !== "center") {
+  		alignment_for_margins = alignment === "start" ? "end" : "start";
+  	}
+
+  	select$1(this._container)
+  		.classed("is-rtl", read_direction == "rtl")
+  		.style("display", "flex")
+  		.style("flex-wrap", "wrap")
+  		.style("justify-content", flex_alignment);
+
+  	var individual_controls_container = select$1(this._container).selectAll(
+  		".fl-controls-container",
+  	);
+
+  	var controls_spacing = this._state.controls_spacing;
+  	var margin_left;
+  	var margin_right;
+  	switch (alignment_for_margins) {
+  		case "end":
+  			margin_left = controls_spacing + "em";
+  			margin_right = 0;
+  			break;
+  		case "center":
+  			margin_left = controls_spacing * 0.5 + "em";
+  			margin_right = controls_spacing * 0.5 + "em";
+  			break;
+  		case "start":
+  		default:
+  			margin_left = 0;
+  			margin_right = controls_spacing + "em";
+  			break;
+  	}
+
+  	individual_controls_container
+  		.style("margin-left", margin_left)
+  		.style("margin-right", margin_right);
+
+  	return this;
+  };
+
+  var DEFAULTS = Object.freeze({
+  	control_type: "dropdown",
+  	control_title: "",
+
+  	// Dropdown
+  	dropdown_width_mode: "auto",
+  	dropdown_width_fixed: 20,
+
+  	// Buttons
+  	button_group: true,
+  	button_group_width_mode: "auto",
+  	button_group_width_fixed: 20,
+
+  	// Slider
+  	slider_width: 15,
+  	slider_max_label_width: 20,
+  	slider_handle_height: 1,
+  	slider_track_height: 0.2,
+  	slider_margin: 4.5,
+
+  	slider_play_button: true,
+  	slider_step_time: 2,
+  	slider_loop: true,
+  	slider_restart_pause: 0,
+
+  	// Data typing
+  	sort: false,
+
+  	_index_: null,
+  	_is_playing_: false,
+  });
+
+  function defaultParser(x) {
+  	return x;
+  }
+
+  function defaultFormatter(x) {
+  	return x == null ? "" : x.toString();
+  }
+
+  function createControls(state, id) {
+  	var control_obj = {};
+  	var parser = defaultParser;
+  	var formatter = defaultFormatter;
+  	var exclude_from_formatting = [];
+  	var visible = true;
+  	var options = [];
+  	var sorted_options = [];
+  	var changeHandlers = [];
+  	var container = document.createElement("div");
+  	container.setAttribute("class", "fl-controls-container");
+  	var container_title = select$1(container)
+  		.append("div")
+  		.attr("class", "fl-controls-title");
+  	var dropdown_obj = createDropdown(control_obj, state, container);
+  	var buttons_obj = createButtons(control_obj, state, container);
+  	var slider_obj = createSlider(control_obj, state, container);
+
+  	for (var key in DEFAULTS) {
+  		if (state[key] === undefined) state[key] = DEFAULTS[key];
+  	}
+
+  	var current_index = state._index_;
+
+  	var checkValidIndex = function (i) {
+  		return options.length && i >= 0 && i < options.length;
+  	};
+
+  	var updateControls = function (sorted_options) {
+  		container.style.display = sorted_options.length > 1 ? "flex" : "none";
+  		container.style.width = "";
+  		container.style.alignItems = "center";
+  		container_title.node().innerHTML = state.control_title;
+  		container_title.node().style.display =
+  			state.control_title === "" ? "none" : "inline-block";
+  		slider_obj.update(sorted_options, visible); // Do slider first in case we're stopping playing
+  		dropdown_obj.update(sorted_options, visible);
+  		buttons_obj.update(sorted_options, visible);
+  	};
+
+  	control_obj.appendTo = function (parent_container) {
+  		injectCSS();
+  		select$1(parent_container).node().appendChild(container);
+  		return control_obj;
+  	};
+
+  	var callOnChangeCallbacks = function () {
+  		var index = indexFunction();
+  		var value = options[index];
+  		changeHandlers.forEach(function (func) {
+  			func(value, index);
+  		});
+  		return control_obj;
+  	};
+
+  	control_obj.remove = function () {
+  		if (container.parentElement) container.parentElement.removeChild(container);
+  		return control_obj;
+  	};
+
+  	control_obj.options = function (arr) {
+  		if (arr === undefined) return options.slice();
+  		if (!Array.isArray(arr)) return control_obj;
+  		options = arr.slice();
+  		var n = options.length;
+  		var i = indexFunction();
+  		if (!n) indexFunction(null);
+  		else if (i === null || i >= n) indexFunction(0);
+  		return control_obj;
+  	};
+
+  	Object.defineProperty(control_obj, "n_options", {
+  		get: function () {
+  			return options.length;
+  		},
+  	});
+
+  	var indexFunction = function (i) {
+  		if (i === undefined) {
+  			if (!state._is_playing_) current_index = state._index_;
+  			return current_index;
+  		}
+  		if (i === null || checkValidIndex(i)) {
+  			current_index = i;
+  			if (!state._is_playing_) state._index_ = current_index;
+  		} else console.warn("Invalid index, ignoring update call");
+  		return control_obj;
+  	};
+  	control_obj.index = indexFunction;
+
+  	control_obj.getSortedIndex = function () {
+  		var options_index = indexFunction();
+  		if (state.sort == "unsorted") return options_index;
+  		var sorted_index;
+  		sorted_options.some(function (d, i) {
+  			if (d.options_index === options_index) {
+  				sorted_index = i;
+  				return true;
+  			}
+  		});
+  		return sorted_index;
+  	};
+
+  	control_obj.value = function (value) {
+  		if (value === undefined) return options[indexFunction()];
+  		var index = options.indexOf(value);
+  		if (index !== -1) indexFunction(index);
+  		return control_obj;
+  	};
+
+  	control_obj.on = function (event, callback) {
+  		if (event === "change") changeHandlers.push(callback.bind(control_obj));
+  		return control_obj;
+  	};
+
+  	control_obj.parse = function (value) {
+  		if (value === undefined) return parser;
+  		if (value === null) parser = defaultParser;
+  		else parser = value;
+  		return control_obj;
+  	};
+
+  	control_obj.format = function (value, exclude) {
+  		if (value === undefined) return formatter;
+  		if (value === null) formatter = defaultFormatter;
+  		if (typeof value === "string") {
+  			try {
+  				formatter = getFormatter(value);
+  			} catch (err) {
+  				formatter = defaultFormatter;
+  				console.warn(err.message);
+  			}
+  		} else {
+  			formatter = value;
+  		}
+  		if (exclude && Array.isArray(exclude)) exclude_from_formatting = exclude;
+  		return control_obj;
+  	};
+
+  	control_obj.visible = function (value) {
+  		if (value === undefined) return visible;
+  		if (value === null) visible = true;
+  		else visible = value;
+  		return control_obj;
+  	};
+
+  	control_obj.update = function () {
+  		getRemToPx();
+  		sorted_options = sortArray(
+  			options,
+  			state.sort,
+  			parser,
+  			formatter,
+  			exclude_from_formatting,
+  		);
+  		updateControls(sorted_options);
+  		return control_obj;
+  	};
+
+  	control_obj.trigger = function (event) {
+  		if (event === "change") callOnChangeCallbacks();
+  		return control_obj;
+  	};
+
+  	control_obj.getNode = function () {
+  		return container;
+  	};
+
+  	var isPlaying = function (is_playing) {
+  		if (is_playing === undefined) return state._is_playing_;
+  		state._is_playing_ = !!is_playing;
+  		if (!is_playing) indexFunction(current_index); // Force _index_ to match current index
+  	};
+
+  	control_obj._isPlaying_ = isPlaying;
+
+  	return control_obj;
+  }
+
+  function createControlsContainer(state) {
+  	return new controlsContainer(state);
   }
 
   var state = {
@@ -17352,6 +19612,18 @@ var template = (function (exports) {
 
       localization: {}, // localization module state properties
       number_format: {}, // number format module state properties
+
+      // UI controls state properties
+      controls_style: {},
+      button_style: {},
+      dropdown_style: {},
+      slider_style: {},
+
+      // Controls state properties
+      controls_container: {},
+      filter: {
+          control_type: "buttons"
+      },
   };
 
   var layout = init$5(state.layout);
@@ -17361,6 +19633,13 @@ var template = (function (exports) {
   var popup = createInfoPopup(state.popup);
   var localization = init$2(state.localization);
   var number_format = init$1(state.number_format);
+
+  var controlsStyle = createGeneralControlsStyle(state.controls_style, ".fl-control");
+  var buttonStyle = createButtonStyle(state.button_style, ".fl-control-buttons");
+  var dropdownStyle = createDropdownStyle(state.dropdown_style, ".fl-control-dropdown");
+  var sliderStyle = createSliderStyle(state.slider_style, ".fl-control-slider");
+  var controls_container = createControlsContainer(state.controls_container);
+  var filter_control = createControls(state.filter);
 
   var data = {};
 
@@ -22239,6 +24518,12 @@ var template = (function (exports) {
   }
 
 
+  function getFilterOptions(rows) {
+      if (!rows || rows.length === 0) return [];
+      if (!rows[0].filter) return [];
+      return [...new Set(rows.map(d => d.filter).filter(Boolean))];
+  }
+
   function processData(data) {
       const rows = Array.isArray(data) ? data : data.data;
       if (!rows || rows.length === 0) return null;
@@ -22373,7 +24658,29 @@ var template = (function (exports) {
   }
 
   function update() {
-      const hierarchy = processData(data);
+      const rows = Array.isArray(data) ? data : data.data;
+
+      // Update filter control with unique values from the filter column
+      const filterOptions = getFilterOptions(rows);
+      const hasFilter = filterOptions.length > 0;
+
+      if (hasFilter) {
+          filter_control.options(filterOptions);
+      }
+
+      // Update control styles before container update
+      updateControlStyles();
+      controls_container.update();
+
+      // Get the currently selected filter value
+      const selectedFilter = hasFilter ? filter_control.value() : null;
+
+      // Filter the data based on the selected value
+      const filteredRows = hasFilter && selectedFilter
+          ? rows.filter(d => d.filter === selectedFilter)
+          : rows;
+
+      const hierarchy = processData({ data: filteredRows });
       if (!hierarchy) {
           layout.update();
           sizeSvg();
@@ -22410,12 +24717,27 @@ var template = (function (exports) {
       legendSection.style.display = state.legend_categorical.show_legend ? "" : "none";
   }
 
+  function updateControlStyles() {
+      controlsStyle.update();
+      buttonStyle.update();
+      dropdownStyle.update();
+      sliderStyle.update();
+  }
+
   function draw() {
       const container = layout.getSection("primary");
       const legendSection = layout.getSection("legend");
+      const controlsSection = layout.getSection("controls");
 
       // Append legend to DOM
       legend_container.appendTo(legendSection).add(legend_categorical);
+
+      // Append controls to DOM
+      controls_container
+          .appendTo(controlsSection)
+          .add(filter_control);
+
+      filter_control.on("change", function() { update(); });
 
       svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       container.appendChild(svg);

@@ -109,6 +109,20 @@ settings:
   - property: layout
     import: "@flourish/layout"
 
+  - Controls
+  - property: controls_style
+    import: "@flourish/ui-styles/controls-style"
+  - property: dropdown_style
+    import: "@flourish/ui-styles/dropdown-style"
+  - property: button_style
+    import: "@flourish/ui-styles/button-style"
+  - property: slider_style
+    import: "@flourish/ui-styles/slider-style"
+  - property: controls_container
+    import: "@flourish/controls/container"
+  - property: filter
+    import: "@flourish/controls"
+
 
 data:
   - key: firstLevel
@@ -135,5 +149,13 @@ data:
     column: "Data::C"
     data_type:
       - string
+
+  - key: filter
+    name: Filter
+    type: column
+    dataset: data
+    data_type:
+      - string
+    optional: true
 
 

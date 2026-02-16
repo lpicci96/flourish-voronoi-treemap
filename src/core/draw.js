@@ -1,4 +1,4 @@
-import { layout, colors, legend_container, legend_categorical } from "../init";
+import { layout, colors, legend_container, legend_categorical, controls_container, filter_control, controlsStyle, buttonStyle, dropdownStyle, sliderStyle } from "../init";
 import state from "./state";
 import update from "./update";
 
@@ -21,12 +21,27 @@ export function updateLegend(hierarchy) {
     legendSection.style.display = state.legend_categorical.show_legend ? "" : "none";
 }
 
+export function updateControlStyles() {
+    controlsStyle.update();
+    buttonStyle.update();
+    dropdownStyle.update();
+    sliderStyle.update();
+}
+
 export default function() {
     const container = layout.getSection("primary");
     const legendSection = layout.getSection("legend");
+    const controlsSection = layout.getSection("controls");
 
     // Append legend to DOM
     legend_container.appendTo(legendSection).add(legend_categorical);
+
+    // Append controls to DOM
+    controls_container
+        .appendTo(controlsSection)
+        .add(filter_control);
+
+    filter_control.on("change", function() { update(); });
 
     svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     container.appendChild(svg);

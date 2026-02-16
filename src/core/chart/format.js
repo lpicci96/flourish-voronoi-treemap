@@ -11,6 +11,12 @@ export function seedrandom(seed) {
 }
 
 
+export function getFilterOptions(rows) {
+    if (!rows || rows.length === 0) return [];
+    if (!rows[0].filter) return [];
+    return [...new Set(rows.map(d => d.filter).filter(Boolean))];
+}
+
 export function processData(data) {
     const rows = Array.isArray(data) ? data : data.data;
     if (!rows || rows.length === 0) return null;

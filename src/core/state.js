@@ -25,4 +25,16 @@ export default {
 
     localization: {}, // localization module state properties
     number_format: {}, // number format module state properties
+
+    // UI controls state properties
+    controls_style: {},
+    button_style: {},
+    dropdown_style: {},
+    slider_style: {},
+
+    // Controls state properties
+    controls_container: {},
+    filter: {
+        control_type: "buttons"
+    },
 }
