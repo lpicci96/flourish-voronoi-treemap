@@ -19607,7 +19607,11 @@ var template = (function (exports) {
       layout: {
           footer_note: `Flourish template by <a href="https://lpicci96.github.io/LucaPicci/" Luca Picci" target="_blank">Luca Picci</a>`,
       },
-      colors: {}, // color module state properties
+      // color module state properties
+      colors: {
+          jitter_shade: true, // custom property to jitter shade
+          jitter_amount: 0.1, // amount to jitter shade by (0 to 1)
+      },
       popup: {}, // popup module state properties
 
       localization: {}, // localization module state properties
@@ -24603,19 +24607,47 @@ var template = (function (exports) {
       return "M" + polygon.map(pt => pt[0] + "," + pt[1]).join("L") + "Z";
   }
 
-  function getCellColor(leaf, root, colors) {
-      if (leaf.data._row && leaf.data._row.color_category != null) {
-          return colors.getColor(String(leaf.data._row.color_category));
+  function simpleHash(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+          hash = ((hash << 5) - hash) + str.charCodeAt(i);
+          hash |= 0;
       }
-      const firstLevel = leaf.parent === root ? leaf.data.name : leaf.parent.data.name;
-      return colors.getColor(firstLevel);
+      return hash;
+  }
+
+  function jitterColor(baseColor, leafName, amount) {
+      if (!amount || Number(amount) === 0) return baseColor;
+      const hsl = hsl$4(baseColor);
+      // Use a deterministic hash to get a value centered between -0.5 and 0.5
+      const raw = Math.abs(simpleHash(leafName));
+      const hashVal = (raw % 1000) / 1000 - 0.5;
+      hsl.l = Math.max(0, Math.min(1, hsl.l + hashVal * amount));
+      return hsl.formatHex();
+  }
+
+  function getCellColor(leaf, root, colors, colorSettings) {
+      let baseColor;
+      if (leaf.data._row && leaf.data._row.color_category != null) {
+          baseColor = colors.getColor(String(leaf.data._row.color_category));
+      } else {
+          const firstLevel = leaf.parent === root ? leaf.data.name : leaf.parent.data.name;
+          baseColor = colors.getColor(firstLevel);
+      }
+
+      // Apply jitter to second-level leaves, but not when color_category is used
+      const hasColorCategory = leaf.data._row && leaf.data._row.color_category != null;
+      if (colorSettings && colorSettings.jitter_shade && leaf.parent !== root && !hasColorCategory) {
+          return jitterColor(baseColor, leaf.data.name, colorSettings.jitter_amount != null ? colorSettings.jitter_amount : 0.1);
+      }
+      return baseColor;
   }
 
   function getPopupData(leaf) {
       return { ...leaf.data._row };
   }
 
-  function renderCells(svg, leaves, root, voronoi_settings, colors, popup) {
+  function renderCells(svg, leaves, root, voronoi_settings, colors, popup, colorSettings) {
       const svgSel = select(svg);
 
       let g = svgSel.selectAll("g.cells").data([null]);
@@ -24627,7 +24659,7 @@ var template = (function (exports) {
           .data(leaves, d => d.data.name)
           .join("path")
           .attr("d", d => polygonPath(d.polygon))
-          .attr("fill", d => getCellColor(d, root, colors))
+          .attr("fill", d => getCellColor(d, root, colors, colorSettings))
           .attr("stroke", voronoi_settings.border_color)
           .attr("stroke-width", voronoi_settings.border_size)
           .on("mouseover", function(event, d) {
@@ -24647,7 +24679,7 @@ var template = (function (exports) {
       });
   }
 
-  function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format) {
+  function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings) {
       if (!hierarchy) return;
 
       computeLayout(hierarchy, voronoi_settings, height, width);
@@ -24661,7 +24693,7 @@ var template = (function (exports) {
           : (hierarchy.children || []).map(d => d.data.name);
       colors.updateColorScale(colorDomain);
       configurePopup(popup, leaves, localization, number_format);
-      renderCells(svg, leaves, hierarchy, voronoi_settings, colors, popup);
+      renderCells(svg, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings);
   }
 
   function update() {
@@ -24701,7 +24733,7 @@ var template = (function (exports) {
 
       const width = layout.getPrimaryWidth();
       const height = layout.getPrimaryHeight();
-      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup, localization, number_format);
+      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup, localization, number_format, state.colors);
       popup.update();
   }
 

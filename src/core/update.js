@@ -42,6 +42,6 @@ export default function() {
 
     const width = layout.getPrimaryWidth();
     const height = layout.getPrimaryHeight();
-    drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup, localization, number_format);
+    drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup, localization, number_format, state.colors);
     popup.update();
 }

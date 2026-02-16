@@ -88,6 +88,19 @@ settings:
   - Colours
   - property: colors
     import: "@flourish/colors"
+  - property: colors.jitter_shade
+    name: Jitter shade
+    description: Jitter the shade of the second level hierarchy. This only applies if a second level column is provided and a colour category column is not provided. Jittering the shade can help to distinguish each polygon in the level and add visual appeal to the chart, but it may also make the colours less consistent across the hierarchy.
+    type: boolean
+    new_section: Advanced
+  - property: colors.jitter_amount
+    name: Jitter amount
+    description: The amount by which to jitter the shade of the second level hierarchy. The recommended value is 0.1
+    type: number
+    min: 0
+    max: 0.5
+    step: 0.05
+    show_if: colors.jitter_shade
 
   - Legend
   - property: legend_container

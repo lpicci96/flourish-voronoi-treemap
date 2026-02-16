@@ -20,7 +20,11 @@ export default {
     layout: {
         footer_note: `Flourish template by <a href="https://lpicci96.github.io/LucaPicci/" Luca Picci" target="_blank">Luca Picci</a>`,
     },
-    colors: {}, // color module state properties
+    // color module state properties
+    colors: {
+        jitter_shade: true, // custom property to jitter shade
+        jitter_amount: 0.1, // amount to jitter shade by (0 to 1)
+    },
     popup: {}, // popup module state properties
 
     localization: {}, // localization module state properties
