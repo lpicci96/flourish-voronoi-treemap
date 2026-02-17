@@ -136,6 +136,10 @@ settings:
   - property: filter
     import: "@flourish/controls"
 
+  - Grid of charts
+  - property: facets
+    import: "@flourish/facets"
+
 
 data:
   - key: firstLevel
@@ -179,5 +183,16 @@ data:
     data_type:
       - string
     optional: true
+
+  - key: facet
+    name: Grid of charts
+    type: column
+    dataset: data
+    column: 'Data::B'
+    data_type:
+      - string
+    optional: true
+
+
 
 

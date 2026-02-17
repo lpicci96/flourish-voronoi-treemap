@@ -8,7 +8,7 @@ import * as d3 from "d3";
 import { voronoiTreemap } from "d3-voronoi-treemap";
 import { clipVoronoi } from "./clip";
 import { seedrandom } from "./data_formatting";
-import { getCellColor, getColorDomain } from "./colors";
+import { getCellColor } from "./colors";
 import { configurePopup, getPopupData } from "./popup";
 
 const _voronoiTreemap = voronoiTreemap();
@@ -43,9 +43,9 @@ function polygonPath(polygon) {
 }
 
 /**
- * Render (or update) Voronoi cells inside the given SVG element.
+ * Render (or update) Voronoi cells inside the given SVG container element.
  * Binds leaf data, sets fill colors, and wires popup interactions.
- * @param {SVGElement} svg - Target SVG DOM element.
+ * @param {SVGElement} container - Target SVG DOM element (svg or g).
  * @param {Array} leaves - Filtered hierarchy leaves with valid polygons.
  * @param {object} root - d3-hierarchy root node.
  * @param {object} voronoi_settings - Border color/size settings.
@@ -53,10 +53,10 @@ function polygonPath(polygon) {
  * @param {object} popup - Flourish popup instance.
  * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
  */
-function renderCells(svg, leaves, root, voronoi_settings, colors, popup, colorSettings) {
-    const svgSel = d3.select(svg);
+function renderCells(container, leaves, root, voronoi_settings, colors, popup, colorSettings) {
+    const sel = d3.select(container);
 
-    let g = svgSel.selectAll("g.cells").data([null]);
+    let g = sel.selectAll("g.cells").data([null]);
     g = g.enter().append("g").attr("class", "cells").merge(g);
 
     popup.clickout();
@@ -80,15 +80,19 @@ function renderCells(svg, leaves, root, voronoi_settings, colors, popup, colorSe
             popup.click(this, getPopupData(d), d.data.name);
         });
 
-    svgSel.on("click", function() {
+    sel.on("click", function() {
+        popup.clickout();
+    });
+
+    d3.select(document).on("click.voronoi-popup", function() {
         popup.clickout();
     });
 }
 
 /**
- * Main entry point: compute the Voronoi treemap layout, configure colors
- * and popups, and render cells into the SVG.
- * @param {SVGElement} svg - Target SVG DOM element.
+ * Main entry point: compute the Voronoi treemap layout, configure popups,
+ * and render cells into the given SVG container.
+ * @param {SVGElement} container - Target SVG DOM element (svg or g).
  * @param {object} hierarchy - d3-hierarchy root node with summed values.
  * @param {number} width - Available width in pixels.
  * @param {number} height - Available height in pixels.
@@ -99,15 +103,13 @@ function renderCells(svg, leaves, root, voronoi_settings, colors, popup, colorSe
  * @param {Function} number_format - Flourish number_format factory.
  * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
  */
-export function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings) {
+export function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings) {
     if (!hierarchy) return;
 
     computeLayout(hierarchy, voronoi_settings, height, width);
 
     const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
 
-    const colorDomain = getColorDomain(leaves, hierarchy);
-    colors.updateColorScale(colorDomain);
     configurePopup(popup, leaves, localization, number_format);
-    renderCells(svg, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings);
+    renderCells(container, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings);
 }

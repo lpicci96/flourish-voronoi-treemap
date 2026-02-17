@@ -41,4 +41,6 @@ export default {
     filter: {
         control_type: "buttons"
     },
+
+    facets: {}, // facet module state properties
 }

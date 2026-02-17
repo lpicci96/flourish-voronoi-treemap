@@ -18,6 +18,7 @@
   "dependencies": {
     "@flourish/colors": "^8.0.0",
     "@flourish/controls": "^9.0.1",
+    "@flourish/facets": "^4.2.1",
     "@flourish/info-popup": "^8.2.0",
     "@flourish/layout": "^8.7.3",
     "@flourish/legend": "^8.1.0",

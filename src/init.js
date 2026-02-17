@@ -6,6 +6,7 @@ import initLocalization from "@flourish/number-localization";
 import initNumberFormatter from "@flourish/number-formatter";
 import { createGeneralControlsStyle, createButtonStyle, createDropdownStyle, createSliderStyle } from "@flourish/ui-styles";
 import { createControlsContainer, createControls } from "@flourish/controls";
+import initFacets from "@flourish/facets";
 
 import state from "./core/state";
 
@@ -23,3 +24,4 @@ export var dropdownStyle = createDropdownStyle(state.dropdown_style, ".fl-contro
 export var sliderStyle = createSliderStyle(state.slider_style, ".fl-control-slider");
 export var controls_container = createControlsContainer(state.controls_container);
 export var filter_control = createControls(state.filter);
+export var facets = initFacets(state.facets);
