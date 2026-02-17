@@ -85,6 +85,12 @@ settings:
     step: 0.001
     show_if: voronoi_settings.advanced_settings
 
+  - Grid of charts
+  - property: facets
+    import: "@flourish/facets"
+    show_if:
+      data.data.facet: true
+
   - Colours
   - property: colors
     import: "@flourish/colors"
@@ -136,10 +142,6 @@ settings:
   - property: filter
     import: "@flourish/controls"
 
-  - Grid of charts
-  - property: facets
-    import: "@flourish/facets"
-
 
 data:
   - key: firstLevel
@@ -190,6 +192,16 @@ data:
     dataset: data
     data_type:
       - string
+    optional: true
+
+  - key: custom_tooltip
+    name: Custom tooltip
+    description: Custom tooltip content. This column can contain a number or string, including HTML. It will be displayed on the popup when hovering or in the panel when clicked. Recommended use is to include HTML string in combination with setting custom popups in the settings.
+    type: column
+    dataset: data
+    data_type:
+      - string
+      - number
     optional: true
 
 
