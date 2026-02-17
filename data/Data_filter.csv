@@ -1,0 +1,643 @@
+entity_name,region,value,gender
+Afghanistan,Asia,21532540,male
+Afghanistan,Asia,21114952,female
+Afghanistan,Asia,42647492,total
+Albania,Europe,1175059,male
+Albania,Europe,1202069,female
+Albania,Europe,2377128,total
+Algeria,Africa,23874384,male
+Algeria,Africa,22939924,female
+Algeria,Africa,46814308,total
+American Samoa,Oceania,23602,male
+American Samoa,Oceania,23163,female
+American Samoa,Oceania,46765,total
+Andorra,Europe,41884,male
+Andorra,Europe,40054,female
+Andorra,Europe,81938,total
+Angola,Africa,18747466,male
+Angola,Africa,19138383,female
+Angola,Africa,37885849,total
+Antigua and Barbuda,Americas,44633,male
+Antigua and Barbuda,Americas,49139,female
+Antigua and Barbuda,Americas,93772,total
+Argentina,Americas,22680713,male
+Argentina,Americas,23015446,female
+Argentina,Americas,45696159,total
+Armenia,Asia,1408477,male
+Armenia,Asia,1625023,female
+Armenia,Asia,3033500,total
+Aruba,Americas,51015,male
+Aruba,Americas,56980,female
+Aruba,Americas,107995,total
+Australia,Oceania,13494616,male
+Australia,Oceania,13702196,female
+Australia,Oceania,27196812,total
+Austria,Europe,4518761,male
+Austria,Europe,4659221,female
+Austria,Europe,9177982,total
+Azerbaijan,Asia,5001264,male
+Azerbaijan,Asia,5201566,female
+Azerbaijan,Asia,10202830,total
+"Bahamas, The",Americas,191597,male
+"Bahamas, The",Americas,209686,female
+"Bahamas, The",Americas,401283,total
+Bahrain,Asia,985627,male
+Bahrain,Asia,603043,female
+Bahrain,Asia,1588670,total
+Bangladesh,Asia,85343656,male
+Bangladesh,Asia,88218708,female
+Bangladesh,Asia,173562364,total
+Barbados,Americas,135423,male
+Barbados,Americas,147044,female
+Barbados,Americas,282467,total
+Belarus,Europe,4255811,male
+Belarus,Europe,4876818,female
+Belarus,Europe,9132629,total
+Belgium,Europe,5847551,male
+Belgium,Europe,6011059,female
+Belgium,Europe,11858610,total
+Belize,Americas,210442,male
+Belize,Americas,206630,female
+Belize,Americas,417072,total
+Benin,Africa,7252565,male
+Benin,Africa,7210159,female
+Benin,Africa,14462724,total
+Bermuda,Americas,31619,male
+Bermuda,Americas,33017,female
+Bermuda,Americas,64636,total
+Bhutan,Asia,423047,male
+Bhutan,Asia,368477,female
+Bhutan,Asia,791524,total
+Bolivia,Americas,6219215,male
+Bolivia,Americas,6194100,female
+Bolivia,Americas,12413315,total
+Bosnia and Herzegovina,Europe,1505794,male
+Bosnia and Herzegovina,Europe,1658459,female
+Bosnia and Herzegovina,Europe,3164253,total
+Botswana,Africa,1256565,male
+Botswana,Africa,1264574,female
+Botswana,Africa,2521139,total
+Brazil,Americas,104295118,male
+Brazil,Americas,107703455,female
+Brazil,Americas,211998573,total
+British Virgin Islands,Americas,18692,male
+British Virgin Islands,Americas,20779,female
+British Virgin Islands,Americas,39471,total
+Brunei Darussalam,Asia,245699,male
+Brunei Darussalam,Asia,217022,female
+Brunei Darussalam,Asia,462721,total
+Bulgaria,Europe,3117026,male
+Bulgaria,Europe,3324395,female
+Bulgaria,Europe,6441421,total
+Burkina Faso,Africa,11730086,male
+Burkina Faso,Africa,11818695,female
+Burkina Faso,Africa,23548781,total
+Burundi,Africa,6978594,male
+Burundi,Africa,7069192,female
+Burundi,Africa,14047786,total
+Cabo Verde,Africa,266947,male
+Cabo Verde,Africa,257930,female
+Cabo Verde,Africa,524877,total
+Cambodia,Asia,8642987,male
+Cambodia,Asia,8995814,female
+Cambodia,Asia,17638801,total
+Cameroon,Africa,14514341,male
+Cameroon,Africa,14609403,female
+Cameroon,Africa,29123744,total
+Canada,Americas,20502744,male
+Canada,Americas,20785855,female
+Canada,Americas,41288599,total
+Cayman Islands,Americas,37375,male
+Cayman Islands,Americas,37082,female
+Cayman Islands,Americas,74457,total
+Central African Republic,Africa,2557962,male
+Central African Republic,Africa,2772728,female
+Central African Republic,Africa,5330690,total
+Chad,Africa,10181358,male
+Chad,Africa,10117765,female
+Chad,Africa,20299123,total
+Chile,Americas,9823449,male
+Chile,Americas,9941322,female
+Chile,Americas,19764771,total
+China,Asia,717753173,male
+China,Asia,691221827,female
+China,Asia,1408975000,total
+Colombia,Americas,26095271,male
+Colombia,Americas,26791092,female
+Colombia,Americas,52886363,total
+Comoros,Africa,435815,male
+Comoros,Africa,430813,female
+Comoros,Africa,866628,total
+"Congo, Dem. Rep.",Africa,54216832,male
+"Congo, Dem. Rep.",Africa,55059433,female
+"Congo, Dem. Rep.",Africa,109276265,total
+"Congo, Rep.",Africa,3166095,male
+"Congo, Rep.",Africa,3166866,female
+"Congo, Rep.",Africa,6332961,total
+Costa Rica,Americas,2534728,male
+Costa Rica,Americas,2595182,female
+Costa Rica,Americas,5129910,total
+Cote d'Ivoire,Africa,16246681,male
+Cote d'Ivoire,Africa,15687549,female
+Cote d'Ivoire,Africa,31934230,total
+Croatia,Europe,1864999,male
+Croatia,Europe,2001201,female
+Croatia,Europe,3866200,total
+Cuba,Americas,5416880,male
+Cuba,Americas,5562903,female
+Cuba,Americas,10979783,total
+Curacao,Americas,74232,male
+Curacao,Americas,81735,female
+Curacao,Americas,155967,total
+Cyprus,Asia,684248,male
+Cyprus,Asia,674034,female
+Cyprus,Asia,1358282,total
+Czechia,Europe,5377468,male
+Czechia,Europe,5527560,female
+Czechia,Europe,10905028,total
+Denmark,Europe,2970888,male
+Denmark,Europe,3006104,female
+Denmark,Europe,5976992,total
+Djibouti,Africa,579313,male
+Djibouti,Africa,589409,female
+Djibouti,Africa,1168722,total
+Dominica,Americas,33102,male
+Dominica,Americas,33103,female
+Dominica,Americas,66205,total
+Dominican Republic,Americas,5681194,male
+Dominican Republic,Americas,5746363,female
+Dominican Republic,Americas,11427557,total
+Ecuador,Americas,9041130,male
+Ecuador,Americas,9094348,female
+Ecuador,Americas,18135478,total
+"Egypt, Arab Rep.",Africa,58840145,male
+"Egypt, Arab Rep.",Africa,57698113,female
+"Egypt, Arab Rep.",Africa,116538258,total
+El Salvador,Americas,3010733,male
+El Salvador,Americas,3327460,female
+El Salvador,Americas,6338193,total
+Equatorial Guinea,Africa,997748,male
+Equatorial Guinea,Africa,894768,female
+Equatorial Guinea,Africa,1892516,total
+Eritrea,Africa,1745353,male
+Eritrea,Africa,1790250,female
+Eritrea,Africa,3535603,total
+Estonia,Europe,652502,male
+Estonia,Europe,719839,female
+Estonia,Europe,1372341,total
+Eswatini,Africa,610191,male
+Eswatini,Africa,632631,female
+Eswatini,Africa,1242822,total
+Ethiopia,Africa,66167290,male
+Ethiopia,Africa,65892477,female
+Ethiopia,Africa,132059767,total
+Faroe Islands,Europe,28253,male
+Faroe Islands,Europe,26428,female
+Faroe Islands,Europe,54681,total
+Fiji,Oceania,460973,male
+Fiji,Oceania,467811,female
+Fiji,Oceania,928784,total
+Finland,Europe,2777737,male
+Finland,Europe,2842174,female
+Finland,Europe,5619911,total
+France,Europe,33232759,male
+France,Europe,35318894,female
+France,Europe,68551653,total
+French Polynesia,Oceania,142530,male
+French Polynesia,Oceania,139277,female
+French Polynesia,Oceania,281807,total
+Gabon,Africa,1288745,male
+Gabon,Africa,1250207,female
+Gabon,Africa,2538952,total
+"Gambia, The",Africa,1374334,male
+"Gambia, The",Africa,1385654,female
+"Gambia, The",Africa,2759988,total
+Georgia,Asia,1724496,male
+Georgia,Asia,1975061,female
+Georgia,Asia,3699557,total
+Germany,Europe,41241620,male
+Germany,Europe,42274973,female
+Germany,Europe,83516593,total
+Ghana,Africa,17194242,male
+Ghana,Africa,17233172,female
+Ghana,Africa,34427414,total
+Gibraltar,Europe,19575,male
+Gibraltar,Europe,19754,female
+Gibraltar,Europe,39329,total
+Greece,Europe,5040124,male
+Greece,Europe,5365010,female
+Greece,Europe,10405134,total
+Greenland,Americas,29884,male
+Greenland,Americas,26952,female
+Greenland,Americas,56836,total
+Grenada,Americas,58755,male
+Grenada,Americas,58452,female
+Grenada,Americas,117207,total
+Guam,Oceania,84988,male
+Guam,Oceania,82789,female
+Guam,Oceania,167777,total
+Guatemala,Americas,9129191,male
+Guatemala,Americas,9277168,female
+Guatemala,Americas,18406359,total
+Guinea,Africa,7301267,male
+Guinea,Africa,7453518,female
+Guinea,Africa,14754785,total
+Guinea-Bissau,Africa,1088010,male
+Guinea-Bissau,Africa,1113342,female
+Guinea-Bissau,Africa,2201352,total
+Guyana,Americas,404584,male
+Guyana,Americas,426503,female
+Guyana,Americas,831087,total
+Haiti,Americas,5825356,male
+Haiti,Americas,5947201,female
+Haiti,Americas,11772557,total
+Honduras,Americas,5449967,male
+Honduras,Americas,5375736,female
+Honduras,Americas,10825703,total
+"Hong Kong SAR, China",Asia,3389467,male
+"Hong Kong SAR, China",Asia,4134633,female
+"Hong Kong SAR, China",Asia,7524100,total
+Hungary,Europe,4591499,male
+Hungary,Europe,4970566,female
+Hungary,Europe,9562065,total
+Iceland,Europe,197910,male
+Iceland,Europe,188596,female
+Iceland,Europe,386506,total
+India,Asia,748323427,male
+India,Asia,702612364,female
+India,Asia,1450935791,total
+Indonesia,Asia,142407916,male
+Indonesia,Asia,141080015,female
+Indonesia,Asia,283487931,total
+"Iran, Islamic Rep.",Asia,46532057,male
+"Iran, Islamic Rep.",Asia,45035681,female
+"Iran, Islamic Rep.",Asia,91567738,total
+Iraq,Asia,23111081,male
+Iraq,Asia,22930934,female
+Iraq,Asia,46042015,total
+Ireland,Europe,2671018,male
+Ireland,Europe,2724772,female
+Ireland,Europe,5395790,total
+Isle of Man,Europe,41666,male
+Isle of Man,Europe,42494,female
+Isle of Man,Europe,84160,total
+Israel,Asia,4966369,male
+Israel,Asia,5008031,female
+Israel,Asia,9974400,total
+Italy,Europe,28813102,male
+Italy,Europe,30139602,female
+Italy,Europe,58952704,total
+Jamaica,Americas,1403966,male
+Jamaica,Americas,1435209,female
+Jamaica,Americas,2839175,total
+Japan,Asia,60480020,male
+Japan,Asia,63495351,female
+Japan,Asia,123975371,total
+Jordan,Asia,5957377,male
+Jordan,Asia,5595499,female
+Jordan,Asia,11552876,total
+Kazakhstan,Asia,10029906,male
+Kazakhstan,Asia,10562665,female
+Kazakhstan,Asia,20592571,total
+Kenya,Africa,28056072,male
+Kenya,Africa,28376872,female
+Kenya,Africa,56432944,total
+Kiribati,Oceania,65279,male
+Kiribati,Oceania,69239,female
+Kiribati,Oceania,134518,total
+"Korea, Dem. People's Rep.",Asia,13108717,male
+"Korea, Dem. People's Rep.",Asia,13390106,female
+"Korea, Dem. People's Rep.",Asia,26498823,total
+"Korea, Rep.",Asia,25830846,male
+"Korea, Rep.",Asia,25920219,female
+"Korea, Rep.",Asia,51751065,total
+Kosovo,Europe,784197,male
+Kosovo,Europe,810156,female
+Kosovo,Europe,1594353,total
+Kuwait,Asia,2992868,male
+Kuwait,Asia,1904395,female
+Kuwait,Asia,4897263,total
+Kyrgyz Republic,Asia,3570063,male
+Kyrgyz Republic,Asia,3651805,female
+Kyrgyz Republic,Asia,7221868,total
+Lao PDR,Asia,3904034,male
+Lao PDR,Asia,3865785,female
+Lao PDR,Asia,7769819,total
+Latvia,Europe,865141,male
+Latvia,Europe,1000983,female
+Latvia,Europe,1866124,total
+Lebanon,Asia,2823634,male
+Lebanon,Asia,2982328,female
+Lebanon,Asia,5805962,total
+Lesotho,Africa,1138892,male
+Lesotho,Africa,1198531,female
+Lesotho,Africa,2337423,total
+Liberia,Africa,2801892,male
+Liberia,Africa,2810925,female
+Liberia,Africa,5612817,total
+Libya,Africa,3752970,male
+Libya,Africa,3628053,female
+Libya,Africa,7381023,total
+Liechtenstein,Europe,20097,male
+Liechtenstein,Europe,20353,female
+Liechtenstein,Europe,40450,total
+Lithuania,Europe,1363259,male
+Lithuania,Europe,1525019,female
+Lithuania,Europe,2888278,total
+Luxembourg,Europe,340763,male
+Luxembourg,Europe,336249,female
+Luxembourg,Europe,677012,total
+"Macao SAR, China",Asia,316372,male
+"Macao SAR, China",Asia,370628,female
+"Macao SAR, China",Asia,687000,total
+Madagascar,Africa,16032529,male
+Madagascar,Africa,15932427,female
+Madagascar,Africa,31964956,total
+Malawi,Africa,10567044,male
+Malawi,Africa,11088242,female
+Malawi,Africa,21655286,total
+Malaysia,Asia,18617794,male
+Malaysia,Asia,16939879,female
+Malaysia,Asia,35557673,total
+Maldives,Asia,326805,male
+Maldives,Asia,200994,female
+Maldives,Asia,527799,total
+Mali,Africa,12350772,male
+Mali,Africa,12127823,female
+Mali,Africa,24478595,total
+Malta,Europe,295225,male
+Malta,Europe,273622,female
+Malta,Europe,568847,total
+Marshall Islands,Oceania,19237,male
+Marshall Islands,Oceania,18311,female
+Marshall Islands,Oceania,37548,total
+Mauritania,Africa,2535726,male
+Mauritania,Africa,2633669,female
+Mauritania,Africa,5169395,total
+Mauritius,Africa,621840,male
+Mauritius,Africa,623939,female
+Mauritius,Africa,1245779,total
+Mexico,Americas,63459580,male
+Mexico,Americas,67401427,female
+Mexico,Americas,130861007,total
+"Micronesia, Fed. Sts.",Oceania,56217,male
+"Micronesia, Fed. Sts.",Oceania,56943,female
+"Micronesia, Fed. Sts.",Oceania,113160,total
+Moldova,Europe,1105338,male
+Moldova,Europe,1296968,female
+Moldova,Europe,2402306,total
+Monaco,Europe,18900,male
+Monaco,Europe,19731,female
+Monaco,Europe,38631,total
+Mongolia,Asia,1757365,male
+Mongolia,Asia,1767423,female
+Mongolia,Asia,3524788,total
+Montenegro,Europe,300103,male
+Montenegro,Europe,323422,female
+Montenegro,Europe,623525,total
+Morocco,Africa,19202022,male
+Morocco,Africa,18879151,female
+Morocco,Africa,38081173,total
+Mozambique,Africa,16802082,male
+Mozambique,Africa,17829684,female
+Mozambique,Africa,34631766,total
+Myanmar,Asia,27128841,male
+Myanmar,Asia,27371250,female
+Myanmar,Asia,54500091,total
+Namibia,Africa,1479806,male
+Namibia,Africa,1550325,female
+Namibia,Africa,3030131,total
+Nauru,Oceania,6083,male
+Nauru,Oceania,5864,female
+Nauru,Oceania,11947,total
+Nepal,Asia,14200276,male
+Nepal,Asia,15450778,female
+Nepal,Asia,29651054,total
+Netherlands,Europe,8939104,male
+Netherlands,Europe,9054381,female
+Netherlands,Europe,17993485,total
+New Caledonia,Oceania,144353,male
+New Caledonia,Oceania,148286,female
+New Caledonia,Oceania,292639,total
+New Zealand,Oceania,2627144,male
+New Zealand,Oceania,2660356,female
+New Zealand,Oceania,5287500,total
+Nicaragua,Americas,3401957,male
+Nicaragua,Americas,3514183,female
+Nicaragua,Americas,6916140,total
+Niger,Africa,13725328,male
+Niger,Africa,13307084,female
+Niger,Africa,27032412,total
+Nigeria,Africa,117673771,male
+Nigeria,Africa,115005707,female
+Nigeria,Africa,232679478,total
+North Macedonia,Europe,887506,male
+North Macedonia,Europe,936853,female
+North Macedonia,Europe,1824359,total
+Northern Mariana Islands,Oceania,23379,male
+Northern Mariana Islands,Oceania,20899,female
+Northern Mariana Islands,Oceania,44278,total
+Norway,Europe,2808199,male
+Norway,Europe,2764080,female
+Norway,Europe,5572279,total
+Oman,Asia,3285829,male
+Oman,Asia,1995709,female
+Oman,Asia,5281538,total
+Pakistan,Asia,127433406,male
+Pakistan,Asia,123835758,female
+Pakistan,Asia,251269164,total
+Palau,Oceania,9530,male
+Palau,Oceania,8165,female
+Palau,Oceania,17695,total
+Panama,Americas,2258004,male
+Panama,Americas,2257573,female
+Panama,Americas,4515577,total
+Papua New Guinea,Oceania,5439223,male
+Papua New Guinea,Oceania,5137279,female
+Papua New Guinea,Oceania,10576502,total
+Paraguay,Americas,3474116,male
+Paraguay,Americas,3455037,female
+Paraguay,Americas,6929153,total
+Peru,Americas,17017564,male
+Peru,Americas,17200284,female
+Peru,Americas,34217848,total
+Philippines,Asia,57784107,male
+Philippines,Asia,58059563,female
+Philippines,Asia,115843670,total
+Poland,Europe,17712630,male
+Poland,Europe,18846603,female
+Poland,Europe,36559233,total
+Portugal,Europe,5094260,male
+Portugal,Europe,5600421,female
+Portugal,Europe,10694681,total
+Qatar,Asia,2037072,male
+Qatar,Asia,820750,female
+Qatar,Asia,2857822,total
+Romania,Europe,9227499,male
+Romania,Europe,9824305,female
+Romania,Europe,19051804,total
+Russian Federation,Europe,66607914,male
+Russian Federation,Europe,76925937,female
+Russian Federation,Europe,143533851,total
+Rwanda,Africa,6954758,male
+Rwanda,Africa,7301809,female
+Rwanda,Africa,14256567,total
+Samoa,Oceania,109794,male
+Samoa,Oceania,108225,female
+Samoa,Oceania,218019,total
+San Marino,Europe,16707,male
+San Marino,Europe,17270,female
+San Marino,Europe,33977,total
+Sao Tome and Principe,Africa,117078,male
+Sao Tome and Principe,Africa,118458,female
+Sao Tome and Principe,Africa,235536,total
+Saudi Arabia,Asia,21369165,male
+Saudi Arabia,Asia,13931115,female
+Saudi Arabia,Asia,35300280,total
+Senegal,Africa,9405151,male
+Senegal,Africa,9096833,female
+Senegal,Africa,18501984,total
+Serbia,Europe,3124778,male
+Serbia,Europe,3461698,female
+Serbia,Europe,6586476,total
+Seychelles,Africa,66944,male
+Seychelles,Africa,54410,female
+Seychelles,Africa,121354,total
+Sierra Leone,Africa,4309971,male
+Sierra Leone,Africa,4332051,female
+Sierra Leone,Africa,8642022,total
+Singapore,Asia,3119075,male
+Singapore,Asia,2917785,female
+Singapore,Asia,6036860,total
+Sint Maarten (Dutch part),Americas,21096,male
+Sint Maarten (Dutch part),Americas,22254,female
+Sint Maarten (Dutch part),Americas,43350,total
+Slovak Republic,Europe,2647061,male
+Slovak Republic,Europe,2775008,female
+Slovak Republic,Europe,5422069,total
+Slovenia,Europe,1068933,male
+Slovenia,Europe,1058467,female
+Slovenia,Europe,2127400,total
+Solomon Islands,Oceania,418847,male
+Solomon Islands,Oceania,400351,female
+Solomon Islands,Oceania,819198,total
+"Somalia, Fed. Rep.",Africa,9522790,male
+"Somalia, Fed. Rep.",Africa,9486361,female
+"Somalia, Fed. Rep.",Africa,19009151,total
+South Africa,Africa,31152952,male
+South Africa,Africa,32854235,female
+South Africa,Africa,64007187,total
+South Sudan,Africa,5874364,male
+South Sudan,Africa,6069044,female
+South Sudan,Africa,11943408,total
+Spain,Europe,23982590,male
+Spain,Europe,24866250,female
+Spain,Europe,48848840,total
+Sri Lanka,Asia,10603008,male
+Sri Lanka,Asia,11312992,female
+Sri Lanka,Asia,21916000,total
+St. Kitts and Nevis,Americas,22423,male
+St. Kitts and Nevis,Americas,24420,female
+St. Kitts and Nevis,Americas,46843,total
+St. Lucia,Americas,88743,male
+St. Lucia,Americas,91001,female
+St. Lucia,Americas,179744,total
+St. Martin (French part),Americas,12150,male
+St. Martin (French part),Americas,13979,female
+St. Martin (French part),Americas,26129,total
+St. Vincent and the Grenadines,Americas,51236,male
+St. Vincent and the Grenadines,Americas,49380,female
+St. Vincent and the Grenadines,Americas,100616,total
+Sudan,Africa,25012749,male
+Sudan,Africa,25436214,female
+Sudan,Africa,50448963,total
+Suriname,Americas,316926,male
+Suriname,Americas,317505,female
+Suriname,Americas,634431,total
+Sweden,Europe,5323555,male
+Sweden,Europe,5246154,female
+Sweden,Europe,10569709,total
+Switzerland,Europe,4473753,male
+Switzerland,Europe,4531829,female
+Switzerland,Europe,9005582,total
+Syrian Arab Republic,Asia,12341170,male
+Syrian Arab Republic,Asia,12331590,female
+Syrian Arab Republic,Asia,24672760,total
+Tajikistan,Asia,5203997,male
+Tajikistan,Asia,5386930,female
+Tajikistan,Asia,10590927,total
+Tanzania,Africa,33983247,male
+Tanzania,Africa,34576910,female
+Tanzania,Africa,68560157,total
+Thailand,Asia,34895390,male
+Thailand,Asia,36772621,female
+Thailand,Asia,71668011,total
+Timor-Leste,Asia,706128,male
+Timor-Leste,Asia,694510,female
+Timor-Leste,Asia,1400638,total
+Togo,Africa,4789204,male
+Togo,Africa,4726032,female
+Togo,Africa,9515236,total
+Tonga,Oceania,49213,male
+Tonga,Oceania,54962,female
+Tonga,Oceania,104175,total
+Trinidad and Tobago,Americas,676429,male
+Trinidad and Tobago,Americas,691904,female
+Trinidad and Tobago,Americas,1368333,total
+Tunisia,Africa,6068423,male
+Tunisia,Africa,6208686,female
+Tunisia,Africa,12277109,total
+Turkiye,Asia,42685629,male
+Turkiye,Asia,42833032,female
+Turkiye,Asia,85518661,total
+Turkmenistan,Asia,3678122,male
+Turkmenistan,Asia,3816376,female
+Turkmenistan,Asia,7494498,total
+Turks and Caicos Islands,Americas,23291,male
+Turks and Caicos Islands,Americas,23244,female
+Turks and Caicos Islands,Americas,46535,total
+Tuvalu,Oceania,4936,male
+Tuvalu,Oceania,4710,female
+Tuvalu,Oceania,9646,total
+Uganda,Africa,24805126,male
+Uganda,Africa,25209966,female
+Uganda,Africa,50015092,total
+Ukraine,Europe,17598051,male
+Ukraine,Europe,20262170,female
+Ukraine,Europe,37860221,total
+United Arab Emirates,Asia,7020466,male
+United Arab Emirates,Asia,3965934,female
+United Arab Emirates,Asia,10986400,total
+United Kingdom,Europe,34087728,male
+United Kingdom,Europe,35138272,female
+United Kingdom,Europe,69226000,total
+United States,Americas,170880836,male
+United States,Americas,169230152,female
+United States,Americas,340110988,total
+Uruguay,Americas,1642560,male
+Uruguay,Americas,1744028,female
+Uruguay,Americas,3386588,total
+Uzbekistan,Asia,18343712,male
+Uzbekistan,Asia,18018147,female
+Uzbekistan,Asia,36361859,total
+Vanuatu,Oceania,165465,male
+Vanuatu,Oceania,162312,female
+Vanuatu,Oceania,327777,total
+"Venezuela, RB",Americas,14033859,male
+"Venezuela, RB",Americas,14371684,female
+"Venezuela, RB",Americas,28405543,total
+Viet Nam,Asia,49461399,male
+Viet Nam,Asia,51526287,female
+Viet Nam,Asia,100987686,total
+Virgin Islands (U.S.),Americas,49687,male
+Virgin Islands (U.S.),Americas,54690,female
+Virgin Islands (U.S.),Americas,104377,total
+"Yemen, Rep.",Asia,20558038,male
+"Yemen, Rep.",Asia,20025126,female
+"Yemen, Rep.",Asia,40583164,total
+Zambia,Africa,10550240,male
+Zambia,Africa,10764716,female
+Zambia,Africa,21314956,total
+Zimbabwe,Africa,7929088,male
+Zimbabwe,Africa,8705285,female
+Zimbabwe,Africa,16634373,total

@@ -1,35 +1,57 @@
-import { layout, colors, legend_container, legend_categorical } from "../init";
+import { layout, colors, legend_container, legend_categorical, controls_container, filter_control, facets, controlsStyle, buttonStyle, dropdownStyle, sliderStyle } from "../init";
 import state from "./state";
 import update from "./update";
 
 export let svg;
+export let chartGroup;
 
 export function sizeSvg() {
     const width = layout.getPrimaryWidth();
-    const height = layout.getPrimaryHeight();
+    const computedHeight = facets.height();
+    const height = computedHeight || layout.getPrimaryHeight();
     svg.setAttribute("width", width);
     svg.setAttribute("height", height);
     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
 }
 
-export function updateLegend(hierarchy) {
+export function updateLegend(colorDomain) {
     const legendSection = layout.getSection("legend");
-    const firstLevelNames = (hierarchy.children || []).map(d => d.data.name);
-    colors.updateColorScale(firstLevelNames);
-    legend_categorical.data(firstLevelNames, (v) => colors.getColor(v));
+    colors.updateColorScale(colorDomain);
+    legend_categorical.data(colorDomain, (v) => colors.getColor(v));
     legend_container.update();
     legendSection.style.display = state.legend_categorical.show_legend ? "" : "none";
+}
+
+export function updateControlStyles() {
+    controlsStyle.update();
+    buttonStyle.update();
+    dropdownStyle.update();
+    sliderStyle.update();
 }
 
 export default function() {
     const container = layout.getSection("primary");
     const legendSection = layout.getSection("legend");
+    const controlsSection = layout.getSection("controls");
 
     // Append legend to DOM
     legend_container.appendTo(legendSection).add(legend_categorical);
 
+    // Append controls to DOM
+    controls_container
+        .appendTo(controlsSection)
+        .add(filter_control);
+
+    filter_control.on("change", function() { update(); });
+
     svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     container.appendChild(svg);
+
+    chartGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    chartGroup.setAttribute("class", "chart-container");
+    svg.appendChild(chartGroup);
+
+    facets.appendTo(chartGroup);
 
     update();
     window.onresize = function () { update(); };

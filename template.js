@@ -1,34 +1,34 @@
 var template = (function (exports) {
   'use strict';
 
-  function define$3(constructor, factory, prototype) {
+  function define$4(constructor, factory, prototype) {
     constructor.prototype = factory.prototype = prototype;
     prototype.constructor = constructor;
   }
 
-  function extend$3(parent, definition) {
+  function extend$4(parent, definition) {
     var prototype = Object.create(parent.prototype);
     for (var key in definition) prototype[key] = definition[key];
     return prototype;
   }
 
-  function Color$3() {}
+  function Color$4() {}
 
-  var darker$3 = 0.7;
-  var brighter$3 = 1 / darker$3;
+  var darker$4 = 0.7;
+  var brighter$4 = 1 / darker$4;
 
-  var reI$3 = "\\s*([+-]?\\d+)\\s*",
-      reN$3 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-      reP$3 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-      reHex$3 = /^#([0-9a-f]{3,8})$/,
-      reRgbInteger$3 = new RegExp(`^rgb\\(${reI$3},${reI$3},${reI$3}\\)$`),
-      reRgbPercent$3 = new RegExp(`^rgb\\(${reP$3},${reP$3},${reP$3}\\)$`),
-      reRgbaInteger$3 = new RegExp(`^rgba\\(${reI$3},${reI$3},${reI$3},${reN$3}\\)$`),
-      reRgbaPercent$3 = new RegExp(`^rgba\\(${reP$3},${reP$3},${reP$3},${reN$3}\\)$`),
-      reHslPercent$3 = new RegExp(`^hsl\\(${reN$3},${reP$3},${reP$3}\\)$`),
-      reHslaPercent$3 = new RegExp(`^hsla\\(${reN$3},${reP$3},${reP$3},${reN$3}\\)$`);
+  var reI$4 = "\\s*([+-]?\\d+)\\s*",
+      reN$4 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+      reP$4 = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+      reHex$4 = /^#([0-9a-f]{3,8})$/,
+      reRgbInteger$4 = new RegExp(`^rgb\\(${reI$4},${reI$4},${reI$4}\\)$`),
+      reRgbPercent$4 = new RegExp(`^rgb\\(${reP$4},${reP$4},${reP$4}\\)$`),
+      reRgbaInteger$4 = new RegExp(`^rgba\\(${reI$4},${reI$4},${reI$4},${reN$4}\\)$`),
+      reRgbaPercent$4 = new RegExp(`^rgba\\(${reP$4},${reP$4},${reP$4},${reN$4}\\)$`),
+      reHslPercent$4 = new RegExp(`^hsl\\(${reN$4},${reP$4},${reP$4}\\)$`),
+      reHslaPercent$4 = new RegExp(`^hsla\\(${reN$4},${reP$4},${reP$4},${reN$4}\\)$`);
 
-  var named$3 = {
+  var named$4 = {
     aliceblue: 0xf0f8ff,
     antiquewhite: 0xfaebd7,
     aqua: 0x00ffff,
@@ -179,22 +179,22 @@ var template = (function (exports) {
     yellowgreen: 0x9acd32
   };
 
-  define$3(Color$3, color$3, {
+  define$4(Color$4, color$4, {
     copy(channels) {
       return Object.assign(new this.constructor, this, channels);
     },
     displayable() {
       return this.rgb().displayable();
     },
-    hex: color_formatHex$3, // Deprecated! Use color.formatHex.
-    formatHex: color_formatHex$3,
+    hex: color_formatHex$4, // Deprecated! Use color.formatHex.
+    formatHex: color_formatHex$4,
     formatHex8: color_formatHex8,
-    formatHsl: color_formatHsl$3,
-    formatRgb: color_formatRgb$3,
-    toString: color_formatRgb$3
+    formatHsl: color_formatHsl$4,
+    formatRgb: color_formatRgb$4,
+    toString: color_formatRgb$4
   });
 
-  function color_formatHex$3() {
+  function color_formatHex$4() {
     return this.rgb().formatHex();
   }
 
@@ -202,74 +202,74 @@ var template = (function (exports) {
     return this.rgb().formatHex8();
   }
 
-  function color_formatHsl$3() {
-    return hslConvert$3(this).formatHsl();
+  function color_formatHsl$4() {
+    return hslConvert$4(this).formatHsl();
   }
 
-  function color_formatRgb$3() {
+  function color_formatRgb$4() {
     return this.rgb().formatRgb();
   }
 
-  function color$3(format) {
+  function color$4(format) {
     var m, l;
     format = (format + "").trim().toLowerCase();
-    return (m = reHex$3.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$3(m) // #ff0000
-        : l === 3 ? new Rgb$3((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-        : l === 8 ? rgba$3(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-        : l === 4 ? rgba$3((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+    return (m = reHex$4.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$4(m) // #ff0000
+        : l === 3 ? new Rgb$4((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+        : l === 8 ? rgba$4(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+        : l === 4 ? rgba$4((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
         : null) // invalid hex
-        : (m = reRgbInteger$3.exec(format)) ? new Rgb$3(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-        : (m = reRgbPercent$3.exec(format)) ? new Rgb$3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-        : (m = reRgbaInteger$3.exec(format)) ? rgba$3(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-        : (m = reRgbaPercent$3.exec(format)) ? rgba$3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-        : (m = reHslPercent$3.exec(format)) ? hsla$3(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-        : (m = reHslaPercent$3.exec(format)) ? hsla$3(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-        : named$3.hasOwnProperty(format) ? rgbn$3(named$3[format]) // eslint-disable-line no-prototype-builtins
-        : format === "transparent" ? new Rgb$3(NaN, NaN, NaN, 0)
+        : (m = reRgbInteger$4.exec(format)) ? new Rgb$4(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+        : (m = reRgbPercent$4.exec(format)) ? new Rgb$4(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+        : (m = reRgbaInteger$4.exec(format)) ? rgba$4(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+        : (m = reRgbaPercent$4.exec(format)) ? rgba$4(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+        : (m = reHslPercent$4.exec(format)) ? hsla$4(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+        : (m = reHslaPercent$4.exec(format)) ? hsla$4(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+        : named$4.hasOwnProperty(format) ? rgbn$4(named$4[format]) // eslint-disable-line no-prototype-builtins
+        : format === "transparent" ? new Rgb$4(NaN, NaN, NaN, 0)
         : null;
   }
 
-  function rgbn$3(n) {
-    return new Rgb$3(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+  function rgbn$4(n) {
+    return new Rgb$4(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
   }
 
-  function rgba$3(r, g, b, a) {
+  function rgba$4(r, g, b, a) {
     if (a <= 0) r = g = b = NaN;
-    return new Rgb$3(r, g, b, a);
+    return new Rgb$4(r, g, b, a);
   }
 
-  function rgbConvert$3(o) {
-    if (!(o instanceof Color$3)) o = color$3(o);
-    if (!o) return new Rgb$3;
+  function rgbConvert$4(o) {
+    if (!(o instanceof Color$4)) o = color$4(o);
+    if (!o) return new Rgb$4;
     o = o.rgb();
-    return new Rgb$3(o.r, o.g, o.b, o.opacity);
+    return new Rgb$4(o.r, o.g, o.b, o.opacity);
   }
 
-  function rgb$3(r, g, b, opacity) {
-    return arguments.length === 1 ? rgbConvert$3(r) : new Rgb$3(r, g, b, opacity == null ? 1 : opacity);
+  function rgb$4(r, g, b, opacity) {
+    return arguments.length === 1 ? rgbConvert$4(r) : new Rgb$4(r, g, b, opacity == null ? 1 : opacity);
   }
 
-  function Rgb$3(r, g, b, opacity) {
+  function Rgb$4(r, g, b, opacity) {
     this.r = +r;
     this.g = +g;
     this.b = +b;
     this.opacity = +opacity;
   }
 
-  define$3(Rgb$3, rgb$3, extend$3(Color$3, {
+  define$4(Rgb$4, rgb$4, extend$4(Color$4, {
     brighter(k) {
-      k = k == null ? brighter$3 : Math.pow(brighter$3, k);
-      return new Rgb$3(this.r * k, this.g * k, this.b * k, this.opacity);
+      k = k == null ? brighter$4 : Math.pow(brighter$4, k);
+      return new Rgb$4(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     darker(k) {
-      k = k == null ? darker$3 : Math.pow(darker$3, k);
-      return new Rgb$3(this.r * k, this.g * k, this.b * k, this.opacity);
+      k = k == null ? darker$4 : Math.pow(darker$4, k);
+      return new Rgb$4(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     rgb() {
       return this;
     },
     clamp() {
-      return new Rgb$3(clampi(this.r), clampi(this.g), clampi(this.b), clampa(this.opacity));
+      return new Rgb$4(clampi(this.r), clampi(this.g), clampi(this.b), clampa(this.opacity));
     },
     displayable() {
       return (-0.5 <= this.r && this.r < 255.5)
@@ -277,22 +277,22 @@ var template = (function (exports) {
           && (-0.5 <= this.b && this.b < 255.5)
           && (0 <= this.opacity && this.opacity <= 1);
     },
-    hex: rgb_formatHex$3, // Deprecated! Use color.formatHex.
-    formatHex: rgb_formatHex$3,
+    hex: rgb_formatHex$4, // Deprecated! Use color.formatHex.
+    formatHex: rgb_formatHex$4,
     formatHex8: rgb_formatHex8,
-    formatRgb: rgb_formatRgb$3,
-    toString: rgb_formatRgb$3
+    formatRgb: rgb_formatRgb$4,
+    toString: rgb_formatRgb$4
   }));
 
-  function rgb_formatHex$3() {
-    return `#${hex$3(this.r)}${hex$3(this.g)}${hex$3(this.b)}`;
+  function rgb_formatHex$4() {
+    return `#${hex$4(this.r)}${hex$4(this.g)}${hex$4(this.b)}`;
   }
 
   function rgb_formatHex8() {
-    return `#${hex$3(this.r)}${hex$3(this.g)}${hex$3(this.b)}${hex$3((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
+    return `#${hex$4(this.r)}${hex$4(this.g)}${hex$4(this.b)}${hex$4((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
   }
 
-  function rgb_formatRgb$3() {
+  function rgb_formatRgb$4() {
     const a = clampa(this.opacity);
     return `${a === 1 ? "rgb(" : "rgba("}${clampi(this.r)}, ${clampi(this.g)}, ${clampi(this.b)}${a === 1 ? ")" : `, ${a})`}`;
   }
@@ -305,23 +305,23 @@ var template = (function (exports) {
     return Math.max(0, Math.min(255, Math.round(value) || 0));
   }
 
-  function hex$3(value) {
+  function hex$4(value) {
     value = clampi(value);
     return (value < 16 ? "0" : "") + value.toString(16);
   }
 
-  function hsla$3(h, s, l, a) {
+  function hsla$4(h, s, l, a) {
     if (a <= 0) h = s = l = NaN;
     else if (l <= 0 || l >= 1) h = s = NaN;
     else if (s <= 0) h = NaN;
-    return new Hsl$3(h, s, l, a);
+    return new Hsl$4(h, s, l, a);
   }
 
-  function hslConvert$3(o) {
-    if (o instanceof Hsl$3) return new Hsl$3(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof Color$3)) o = color$3(o);
-    if (!o) return new Hsl$3;
-    if (o instanceof Hsl$3) return o;
+  function hslConvert$4(o) {
+    if (o instanceof Hsl$4) return new Hsl$4(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color$4)) o = color$4(o);
+    if (!o) return new Hsl$4;
+    if (o instanceof Hsl$4) return o;
     o = o.rgb();
     var r = o.r / 255,
         g = o.g / 255,
@@ -340,28 +340,28 @@ var template = (function (exports) {
     } else {
       s = l > 0 && l < 1 ? 0 : h;
     }
-    return new Hsl$3(h, s, l, o.opacity);
+    return new Hsl$4(h, s, l, o.opacity);
   }
 
-  function hsl$4(h, s, l, opacity) {
-    return arguments.length === 1 ? hslConvert$3(h) : new Hsl$3(h, s, l, opacity == null ? 1 : opacity);
+  function hsl$5(h, s, l, opacity) {
+    return arguments.length === 1 ? hslConvert$4(h) : new Hsl$4(h, s, l, opacity == null ? 1 : opacity);
   }
 
-  function Hsl$3(h, s, l, opacity) {
+  function Hsl$4(h, s, l, opacity) {
     this.h = +h;
     this.s = +s;
     this.l = +l;
     this.opacity = +opacity;
   }
 
-  define$3(Hsl$3, hsl$4, extend$3(Color$3, {
+  define$4(Hsl$4, hsl$5, extend$4(Color$4, {
     brighter(k) {
-      k = k == null ? brighter$3 : Math.pow(brighter$3, k);
-      return new Hsl$3(this.h, this.s, this.l * k, this.opacity);
+      k = k == null ? brighter$4 : Math.pow(brighter$4, k);
+      return new Hsl$4(this.h, this.s, this.l * k, this.opacity);
     },
     darker(k) {
-      k = k == null ? darker$3 : Math.pow(darker$3, k);
-      return new Hsl$3(this.h, this.s, this.l * k, this.opacity);
+      k = k == null ? darker$4 : Math.pow(darker$4, k);
+      return new Hsl$4(this.h, this.s, this.l * k, this.opacity);
     },
     rgb() {
       var h = this.h % 360 + (this.h < 0) * 360,
@@ -369,15 +369,15 @@ var template = (function (exports) {
           l = this.l,
           m2 = l + (l < 0.5 ? l : 1 - l) * s,
           m1 = 2 * l - m2;
-      return new Rgb$3(
-        hsl2rgb$3(h >= 240 ? h - 240 : h + 120, m1, m2),
-        hsl2rgb$3(h, m1, m2),
-        hsl2rgb$3(h < 120 ? h + 240 : h - 120, m1, m2),
+      return new Rgb$4(
+        hsl2rgb$4(h >= 240 ? h - 240 : h + 120, m1, m2),
+        hsl2rgb$4(h, m1, m2),
+        hsl2rgb$4(h < 120 ? h + 240 : h - 120, m1, m2),
         this.opacity
       );
     },
     clamp() {
-      return new Hsl$3(clamph(this.h), clampt(this.s), clampt(this.l), clampa(this.opacity));
+      return new Hsl$4(clamph(this.h), clampt(this.s), clampt(this.l), clampa(this.opacity));
     },
     displayable() {
       return (0 <= this.s && this.s <= 1 || isNaN(this.s))
@@ -400,7 +400,7 @@ var template = (function (exports) {
   }
 
   /* From FvD 13.37, CSS Color Module Level 3 */
-  function hsl2rgb$3(h, m1, m2) {
+  function hsl2rgb$4(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60
         : h < 180 ? m2
         : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
@@ -408,7 +408,7 @@ var template = (function (exports) {
   }
 
   const radians = Math.PI / 180;
-  const degrees$2 = 180 / Math.PI;
+  const degrees$3 = 180 / Math.PI;
 
   // https://observablehq.com/@mbostock/lab-and-rgb
   const K$1 = 18,
@@ -423,7 +423,7 @@ var template = (function (exports) {
   function labConvert$1(o) {
     if (o instanceof Lab$1) return new Lab$1(o.l, o.a, o.b, o.opacity);
     if (o instanceof Hcl$1) return hcl2lab$1(o);
-    if (!(o instanceof Rgb$3)) o = rgbConvert$3(o);
+    if (!(o instanceof Rgb$4)) o = rgbConvert$4(o);
     var r = rgb2lrgb$1(o.r),
         g = rgb2lrgb$1(o.g),
         b = rgb2lrgb$1(o.b),
@@ -446,7 +446,7 @@ var template = (function (exports) {
     this.opacity = +opacity;
   }
 
-  define$3(Lab$1, lab$2, extend$3(Color$3, {
+  define$4(Lab$1, lab$2, extend$4(Color$4, {
     brighter(k) {
       return new Lab$1(this.l + K$1 * (k == null ? 1 : k), this.a, this.b, this.opacity);
     },
@@ -460,7 +460,7 @@ var template = (function (exports) {
       x = Xn$1 * lab2xyz$1(x);
       y = Yn$1 * lab2xyz$1(y);
       z = Zn$1 * lab2xyz$1(z);
-      return new Rgb$3(
+      return new Rgb$4(
         lrgb2rgb$1( 3.1338561 * x - 1.6168667 * y - 0.4906146 * z),
         lrgb2rgb$1(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z),
         lrgb2rgb$1( 0.0719453 * x - 0.2289914 * y + 1.4052427 * z),
@@ -489,7 +489,7 @@ var template = (function (exports) {
     if (o instanceof Hcl$1) return new Hcl$1(o.h, o.c, o.l, o.opacity);
     if (!(o instanceof Lab$1)) o = labConvert$1(o);
     if (o.a === 0 && o.b === 0) return new Hcl$1(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
-    var h = Math.atan2(o.b, o.a) * degrees$2;
+    var h = Math.atan2(o.b, o.a) * degrees$3;
     return new Hcl$1(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
   }
 
@@ -510,7 +510,7 @@ var template = (function (exports) {
     return new Lab$1(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
   }
 
-  define$3(Hcl$1, hcl$2, extend$3(Color$3, {
+  define$4(Hcl$1, hcl$2, extend$4(Color$4, {
     brighter(k) {
       return new Hcl$1(this.h, this.c, this.l + K$1 * (k == null ? 1 : k), this.opacity);
     },
@@ -596,12 +596,12 @@ var template = (function (exports) {
     return map;
   }
 
-  function Set() {}
+  function Set$1() {}
 
   var proto = map$2.prototype;
 
-  Set.prototype = set$5.prototype = {
-    constructor: Set,
+  Set$1.prototype = set$7.prototype = {
+    constructor: Set$1,
     has: proto.has,
     add: function(value) {
       value += "";
@@ -616,11 +616,11 @@ var template = (function (exports) {
     each: proto.each
   };
 
-  function set$5(object, f) {
-    var set = new Set;
+  function set$7(object, f) {
+    var set = new Set$1;
 
     // Copy constructor.
-    if (object instanceof Set) object.each(function(value) { set.add(value); });
+    if (object instanceof Set$1) object.each(function(value) { set.add(value); });
 
     // Otherwise, assume it’s an array.
     else if (object) {
@@ -878,6 +878,23 @@ var template = (function (exports) {
   	document.body.appendChild(tnums_svg);
   }
   let is_browser_supporting_tnums_in_canvas = null;
+
+  function getTextDirection() {
+  	return window.getComputedStyle(document.body).direction || "ltr";
+  }
+
+  function hexToColor$1(hex_string, opacity) {
+  	if (typeof hex_string != "string") return false;
+  	var c = color$4(hex_string);
+  	c.opacity = opacity !== undefined ? opacity : 1;
+  	return c;
+  }
+
+  function hexToRgba(hex_string, opacity) {
+  	var c = hexToColor$1(hex_string, opacity);
+
+  	return c ? c.toString() : false;
+  }
 
   function checkBrowserTnumSupport() {
   	const test_tnum_string = "0123456789.,£";
@@ -1220,14 +1237,14 @@ var template = (function (exports) {
   	},
   });
 
-  var window_width, base_size;
+  var window_width$1, base_size$1;
 
-  function remToPx$1(rem) {
-  	if (window.innerWidth !== window_width) {
-  		window_width = window.innerWidth;
-  		base_size = parseFloat(getComputedStyle(document.documentElement).fontSize);
+  function remToPx$4(rem) {
+  	if (window.innerWidth !== window_width$1) {
+  		window_width$1 = window.innerWidth;
+  		base_size$1 = parseFloat(getComputedStyle(document.documentElement).fontSize);
   	}
-  	return rem * base_size;
+  	return rem * base_size$1;
   }
 
   // these two functions are hacky way to avoid breaking themes.
@@ -1315,7 +1332,7 @@ var template = (function (exports) {
   	}
   }
 
-  function init$7() {
+  function init$8() {
   	header_el = document.createElement("header");
   	header_el.className = "flourish-header";
 
@@ -1651,7 +1668,7 @@ var template = (function (exports) {
 
   function hexToColor(hex_string, opacity) {
   	if (typeof hex_string != "string") return false;
-  	var c = color$3(hex_string);
+  	var c = color$4(hex_string);
   	c.opacity = 1;
 
   	return c;
@@ -4815,7 +4832,7 @@ var template = (function (exports) {
     "x": function(x) { return Math.round(x).toString(16); }
   };
 
-  function identity$3(x) {
+  function identity$4(x) {
     return x;
   }
 
@@ -4823,11 +4840,11 @@ var template = (function (exports) {
       prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
 
   function formatLocale(locale) {
-    var group = locale.grouping === undefined || locale.thousands === undefined ? identity$3 : formatGroup(map$1.call(locale.grouping, Number), locale.thousands + ""),
+    var group = locale.grouping === undefined || locale.thousands === undefined ? identity$4 : formatGroup(map$1.call(locale.grouping, Number), locale.thousands + ""),
         currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
         currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
         decimal = locale.decimal === undefined ? "." : locale.decimal + "",
-        numerals = locale.numerals === undefined ? identity$3 : formatNumerals(map$1.call(locale.numerals, String)),
+        numerals = locale.numerals === undefined ? identity$4 : formatNumerals(map$1.call(locale.numerals, String)),
         percent = locale.percent === undefined ? "%" : locale.percent + "",
         minus = locale.minus === undefined ? "-" : locale.minus + "",
         nan = locale.nan === undefined ? "NaN" : locale.nan + "";
@@ -5777,7 +5794,7 @@ var template = (function (exports) {
   	}
   }
 
-  function init$6() {
+  function init$7() {
   	appendStyles$1();
 
   	footer_el = document.createElement("footer");
@@ -6197,7 +6214,7 @@ var template = (function (exports) {
   	document.body.style.backgroundPosition = state$1.background_image_position;
   }
 
-  var DEFAULTS$6 = Object.freeze({
+  var DEFAULTS$d = Object.freeze({
   	body_font: {
   		name: "Canva Sans Variable",
   		url: "https://public.flourish.studio/resources/fonts/canva-sans.css",
@@ -6681,7 +6698,7 @@ var template = (function (exports) {
   		margin = state$1.margin_left + state$1.margin_right;
   	else if (side == "vertical") margin = state$1.margin_top + state$1.margin_bottom;
 
-  	return remToPx$1(margin);
+  	return remToPx$4(margin);
   }
 
   function getBorderWidth(space) {
@@ -6754,10 +6771,10 @@ var template = (function (exports) {
   }
 
   // Main init function ----------------------------------------
-  function init$5(state_) {
+  function init$6(state_) {
   	state$1 = state_;
-  	for (var key in DEFAULTS$6) {
-  		if (state$1[key] === undefined) state$1[key] = DEFAULTS$6[key];
+  	for (var key in DEFAULTS$d) {
+  		if (state$1[key] === undefined) state$1[key] = DEFAULTS$d[key];
   	}
 
   	initFontStyles();
@@ -6765,8 +6782,8 @@ var template = (function (exports) {
   	SECTIONS.forEach(function (section, i) {
   		elements[section] = addElement(section, i);
   	});
-  	getSection("header").appendChild(init$7());
-  	getSection("footer").appendChild(init$6());
+  	getSection("header").appendChild(init$8());
+  	getSection("footer").appendChild(init$7());
   	elements.primary.outer.style.overflow = "hidden";
   	createOverlay();
 
@@ -6785,7 +6802,7 @@ var template = (function (exports) {
   		getPrimaryScreenReadability: getPrimaryScreenReadability,
   		setHeight: setHeight,
   		showOverlay: showOverlay,
-  		remToPx: remToPx$1,
+  		remToPx: remToPx$4,
   		getOverlay: getOverlay,
   		awaitFonts: awaitFonts,
   		prepareScreenshotSVG: prepareScreenshotSVG,
@@ -6793,7 +6810,7 @@ var template = (function (exports) {
   	};
   }
 
-  var DEFAULTS$5 = Object.freeze({
+  var DEFAULTS$c = Object.freeze({
   	categorical_type: "palette",
   	categorical_palette: [
   		"#135ae1",
@@ -6871,14 +6888,14 @@ var template = (function (exports) {
   		return function nextColor() {
   			var rotation = ++i * angle;
   			var h = (h_init + rotation) % 360;
-  			return color$3(colorSpace(h, second_channel, third_channel)).hex();
+  			return color$4(colorSpace(h, second_channel, third_channel)).hex();
   		};
   	};
   }
 
   var hclGenerator = hueRotationGenerator(hcl$2, "c", "l");
 
-  var hslGenerator = hueRotationGenerator(hsl$4, "s", "l");
+  var hslGenerator = hueRotationGenerator(hsl$5, "s", "l");
 
   var color_generators = {
   	hcl: hclGenerator,
@@ -6888,12 +6905,12 @@ var template = (function (exports) {
   function getCategoricalFunction(state, domain) {
   	var lookup = {};
 
-  	var unique_domain = set$5(domain).values();
+  	var unique_domain = set$7(domain).values();
   	var palette = state.categorical_palette;
   	var n = palette.length;
 
   	if (state.categorical_extend) {
-  		var angle = DEFAULTS$5.rotation_angle;
+  		var angle = DEFAULTS$c.rotation_angle;
   		var generator_name = "hcl";
   		var colorGenerator = color_generators[generator_name](palette, angle);
   		unique_domain.forEach(function (label, i) {
@@ -6932,7 +6949,7 @@ var template = (function (exports) {
   	return colorScale;
   }
 
-  function ascending$4(a, b) {
+  function ascending$7(a, b) {
     return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
   }
 
@@ -6964,11 +6981,11 @@ var template = (function (exports) {
 
   function ascendingComparator$1(f) {
     return function(d, x) {
-      return ascending$4(f(d), x);
+      return ascending$7(f(d), x);
     };
   }
 
-  var ascendingBisect = bisector$1(ascending$4);
+  var ascendingBisect = bisector$1(ascending$7);
   var bisectRight = ascendingBisect.right;
 
   function number$1(x) {
@@ -7101,34 +7118,34 @@ var template = (function (exports) {
   var map = array$1.map;
   var slice = array$1.slice;
 
-  function define$2(constructor, factory, prototype) {
+  function define$3(constructor, factory, prototype) {
     constructor.prototype = factory.prototype = prototype;
     prototype.constructor = constructor;
   }
 
-  function extend$2(parent, definition) {
+  function extend$3(parent, definition) {
     var prototype = Object.create(parent.prototype);
     for (var key in definition) prototype[key] = definition[key];
     return prototype;
   }
 
-  function Color$2() {}
+  function Color$3() {}
 
-  var darker$2 = 0.7;
-  var brighter$2 = 1 / darker$2;
+  var darker$3 = 0.7;
+  var brighter$3 = 1 / darker$3;
 
-  var reI$2 = "\\s*([+-]?\\d+)\\s*",
-      reN$2 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-      reP$2 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-      reHex$2 = /^#([0-9a-f]{3,8})$/,
-      reRgbInteger$2 = new RegExp("^rgb\\(" + [reI$2, reI$2, reI$2] + "\\)$"),
-      reRgbPercent$2 = new RegExp("^rgb\\(" + [reP$2, reP$2, reP$2] + "\\)$"),
-      reRgbaInteger$2 = new RegExp("^rgba\\(" + [reI$2, reI$2, reI$2, reN$2] + "\\)$"),
-      reRgbaPercent$2 = new RegExp("^rgba\\(" + [reP$2, reP$2, reP$2, reN$2] + "\\)$"),
-      reHslPercent$2 = new RegExp("^hsl\\(" + [reN$2, reP$2, reP$2] + "\\)$"),
-      reHslaPercent$2 = new RegExp("^hsla\\(" + [reN$2, reP$2, reP$2, reN$2] + "\\)$");
+  var reI$3 = "\\s*([+-]?\\d+)\\s*",
+      reN$3 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+      reP$3 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+      reHex$3 = /^#([0-9a-f]{3,8})$/,
+      reRgbInteger$3 = new RegExp("^rgb\\(" + [reI$3, reI$3, reI$3] + "\\)$"),
+      reRgbPercent$3 = new RegExp("^rgb\\(" + [reP$3, reP$3, reP$3] + "\\)$"),
+      reRgbaInteger$3 = new RegExp("^rgba\\(" + [reI$3, reI$3, reI$3, reN$3] + "\\)$"),
+      reRgbaPercent$3 = new RegExp("^rgba\\(" + [reP$3, reP$3, reP$3, reN$3] + "\\)$"),
+      reHslPercent$3 = new RegExp("^hsl\\(" + [reN$3, reP$3, reP$3] + "\\)$"),
+      reHslaPercent$3 = new RegExp("^hsla\\(" + [reN$3, reP$3, reP$3, reN$3] + "\\)$");
 
-  var named$2 = {
+  var named$3 = {
     aliceblue: 0xf0f8ff,
     antiquewhite: 0xfaebd7,
     aqua: 0x00ffff,
@@ -7279,86 +7296,86 @@ var template = (function (exports) {
     yellowgreen: 0x9acd32
   };
 
-  define$2(Color$2, color$2, {
+  define$3(Color$3, color$3, {
     copy: function(channels) {
       return Object.assign(new this.constructor, this, channels);
     },
     displayable: function() {
       return this.rgb().displayable();
     },
-    hex: color_formatHex$2, // Deprecated! Use color.formatHex.
-    formatHex: color_formatHex$2,
-    formatHsl: color_formatHsl$2,
-    formatRgb: color_formatRgb$2,
-    toString: color_formatRgb$2
+    hex: color_formatHex$3, // Deprecated! Use color.formatHex.
+    formatHex: color_formatHex$3,
+    formatHsl: color_formatHsl$3,
+    formatRgb: color_formatRgb$3,
+    toString: color_formatRgb$3
   });
 
-  function color_formatHex$2() {
+  function color_formatHex$3() {
     return this.rgb().formatHex();
   }
 
-  function color_formatHsl$2() {
-    return hslConvert$2(this).formatHsl();
+  function color_formatHsl$3() {
+    return hslConvert$3(this).formatHsl();
   }
 
-  function color_formatRgb$2() {
+  function color_formatRgb$3() {
     return this.rgb().formatRgb();
   }
 
-  function color$2(format) {
+  function color$3(format) {
     var m, l;
     format = (format + "").trim().toLowerCase();
-    return (m = reHex$2.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$2(m) // #ff0000
-        : l === 3 ? new Rgb$2((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-        : l === 8 ? rgba$2(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-        : l === 4 ? rgba$2((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+    return (m = reHex$3.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$3(m) // #ff0000
+        : l === 3 ? new Rgb$3((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+        : l === 8 ? rgba$3(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+        : l === 4 ? rgba$3((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
         : null) // invalid hex
-        : (m = reRgbInteger$2.exec(format)) ? new Rgb$2(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-        : (m = reRgbPercent$2.exec(format)) ? new Rgb$2(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-        : (m = reRgbaInteger$2.exec(format)) ? rgba$2(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-        : (m = reRgbaPercent$2.exec(format)) ? rgba$2(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-        : (m = reHslPercent$2.exec(format)) ? hsla$2(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-        : (m = reHslaPercent$2.exec(format)) ? hsla$2(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-        : named$2.hasOwnProperty(format) ? rgbn$2(named$2[format]) // eslint-disable-line no-prototype-builtins
-        : format === "transparent" ? new Rgb$2(NaN, NaN, NaN, 0)
+        : (m = reRgbInteger$3.exec(format)) ? new Rgb$3(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+        : (m = reRgbPercent$3.exec(format)) ? new Rgb$3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+        : (m = reRgbaInteger$3.exec(format)) ? rgba$3(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+        : (m = reRgbaPercent$3.exec(format)) ? rgba$3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+        : (m = reHslPercent$3.exec(format)) ? hsla$3(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+        : (m = reHslaPercent$3.exec(format)) ? hsla$3(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+        : named$3.hasOwnProperty(format) ? rgbn$3(named$3[format]) // eslint-disable-line no-prototype-builtins
+        : format === "transparent" ? new Rgb$3(NaN, NaN, NaN, 0)
         : null;
   }
 
-  function rgbn$2(n) {
-    return new Rgb$2(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+  function rgbn$3(n) {
+    return new Rgb$3(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
   }
 
-  function rgba$2(r, g, b, a) {
+  function rgba$3(r, g, b, a) {
     if (a <= 0) r = g = b = NaN;
-    return new Rgb$2(r, g, b, a);
+    return new Rgb$3(r, g, b, a);
   }
 
-  function rgbConvert$2(o) {
-    if (!(o instanceof Color$2)) o = color$2(o);
-    if (!o) return new Rgb$2;
+  function rgbConvert$3(o) {
+    if (!(o instanceof Color$3)) o = color$3(o);
+    if (!o) return new Rgb$3;
     o = o.rgb();
-    return new Rgb$2(o.r, o.g, o.b, o.opacity);
+    return new Rgb$3(o.r, o.g, o.b, o.opacity);
   }
 
-  function rgb$2(r, g, b, opacity) {
-    return arguments.length === 1 ? rgbConvert$2(r) : new Rgb$2(r, g, b, opacity == null ? 1 : opacity);
+  function rgb$3(r, g, b, opacity) {
+    return arguments.length === 1 ? rgbConvert$3(r) : new Rgb$3(r, g, b, opacity == null ? 1 : opacity);
   }
 
-  function Rgb$2(r, g, b, opacity) {
+  function Rgb$3(r, g, b, opacity) {
     this.r = +r;
     this.g = +g;
     this.b = +b;
     this.opacity = +opacity;
   }
 
-  define$2(Rgb$2, rgb$2, extend$2(Color$2, {
+  define$3(Rgb$3, rgb$3, extend$3(Color$3, {
     brighter: function(k) {
-      k = k == null ? brighter$2 : Math.pow(brighter$2, k);
-      return new Rgb$2(this.r * k, this.g * k, this.b * k, this.opacity);
+      k = k == null ? brighter$3 : Math.pow(brighter$3, k);
+      return new Rgb$3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     darker: function(k) {
-      k = k == null ? darker$2 : Math.pow(darker$2, k);
-      return new Rgb$2(this.r * k, this.g * k, this.b * k, this.opacity);
+      k = k == null ? darker$3 : Math.pow(darker$3, k);
+      return new Rgb$3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     rgb: function() {
       return this;
@@ -7369,17 +7386,17 @@ var template = (function (exports) {
           && (-0.5 <= this.b && this.b < 255.5)
           && (0 <= this.opacity && this.opacity <= 1);
     },
-    hex: rgb_formatHex$2, // Deprecated! Use color.formatHex.
-    formatHex: rgb_formatHex$2,
-    formatRgb: rgb_formatRgb$2,
-    toString: rgb_formatRgb$2
+    hex: rgb_formatHex$3, // Deprecated! Use color.formatHex.
+    formatHex: rgb_formatHex$3,
+    formatRgb: rgb_formatRgb$3,
+    toString: rgb_formatRgb$3
   }));
 
-  function rgb_formatHex$2() {
-    return "#" + hex$2(this.r) + hex$2(this.g) + hex$2(this.b);
+  function rgb_formatHex$3() {
+    return "#" + hex$3(this.r) + hex$3(this.g) + hex$3(this.b);
   }
 
-  function rgb_formatRgb$2() {
+  function rgb_formatRgb$3() {
     var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
     return (a === 1 ? "rgb(" : "rgba(")
         + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
@@ -7388,23 +7405,23 @@ var template = (function (exports) {
         + (a === 1 ? ")" : ", " + a + ")");
   }
 
-  function hex$2(value) {
+  function hex$3(value) {
     value = Math.max(0, Math.min(255, Math.round(value) || 0));
     return (value < 16 ? "0" : "") + value.toString(16);
   }
 
-  function hsla$2(h, s, l, a) {
+  function hsla$3(h, s, l, a) {
     if (a <= 0) h = s = l = NaN;
     else if (l <= 0 || l >= 1) h = s = NaN;
     else if (s <= 0) h = NaN;
-    return new Hsl$2(h, s, l, a);
+    return new Hsl$3(h, s, l, a);
   }
 
-  function hslConvert$2(o) {
-    if (o instanceof Hsl$2) return new Hsl$2(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof Color$2)) o = color$2(o);
-    if (!o) return new Hsl$2;
-    if (o instanceof Hsl$2) return o;
+  function hslConvert$3(o) {
+    if (o instanceof Hsl$3) return new Hsl$3(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color$3)) o = color$3(o);
+    if (!o) return new Hsl$3;
+    if (o instanceof Hsl$3) return o;
     o = o.rgb();
     var r = o.r / 255,
         g = o.g / 255,
@@ -7423,28 +7440,28 @@ var template = (function (exports) {
     } else {
       s = l > 0 && l < 1 ? 0 : h;
     }
-    return new Hsl$2(h, s, l, o.opacity);
+    return new Hsl$3(h, s, l, o.opacity);
   }
 
-  function hsl$3(h, s, l, opacity) {
-    return arguments.length === 1 ? hslConvert$2(h) : new Hsl$2(h, s, l, opacity == null ? 1 : opacity);
+  function hsl$4(h, s, l, opacity) {
+    return arguments.length === 1 ? hslConvert$3(h) : new Hsl$3(h, s, l, opacity == null ? 1 : opacity);
   }
 
-  function Hsl$2(h, s, l, opacity) {
+  function Hsl$3(h, s, l, opacity) {
     this.h = +h;
     this.s = +s;
     this.l = +l;
     this.opacity = +opacity;
   }
 
-  define$2(Hsl$2, hsl$3, extend$2(Color$2, {
+  define$3(Hsl$3, hsl$4, extend$3(Color$3, {
     brighter: function(k) {
-      k = k == null ? brighter$2 : Math.pow(brighter$2, k);
-      return new Hsl$2(this.h, this.s, this.l * k, this.opacity);
+      k = k == null ? brighter$3 : Math.pow(brighter$3, k);
+      return new Hsl$3(this.h, this.s, this.l * k, this.opacity);
     },
     darker: function(k) {
-      k = k == null ? darker$2 : Math.pow(darker$2, k);
-      return new Hsl$2(this.h, this.s, this.l * k, this.opacity);
+      k = k == null ? darker$3 : Math.pow(darker$3, k);
+      return new Hsl$3(this.h, this.s, this.l * k, this.opacity);
     },
     rgb: function() {
       var h = this.h % 360 + (this.h < 0) * 360,
@@ -7452,10 +7469,10 @@ var template = (function (exports) {
           l = this.l,
           m2 = l + (l < 0.5 ? l : 1 - l) * s,
           m1 = 2 * l - m2;
-      return new Rgb$2(
-        hsl2rgb$2(h >= 240 ? h - 240 : h + 120, m1, m2),
-        hsl2rgb$2(h, m1, m2),
-        hsl2rgb$2(h < 120 ? h + 240 : h - 120, m1, m2),
+      return new Rgb$3(
+        hsl2rgb$3(h >= 240 ? h - 240 : h + 120, m1, m2),
+        hsl2rgb$3(h, m1, m2),
+        hsl2rgb$3(h < 120 ? h + 240 : h - 120, m1, m2),
         this.opacity
       );
     },
@@ -7475,7 +7492,7 @@ var template = (function (exports) {
   }));
 
   /* From FvD 13.37, CSS Color Module Level 3 */
-  function hsl2rgb$2(h, m1, m2) {
+  function hsl2rgb$3(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60
         : h < 180 ? m2
         : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
@@ -7498,7 +7515,7 @@ var template = (function (exports) {
   function labConvert(o) {
     if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
     if (o instanceof Hcl) return hcl2lab(o);
-    if (!(o instanceof Rgb$2)) o = rgbConvert$2(o);
+    if (!(o instanceof Rgb$3)) o = rgbConvert$3(o);
     var r = rgb2lrgb(o.r),
         g = rgb2lrgb(o.g),
         b = rgb2lrgb(o.b),
@@ -7521,7 +7538,7 @@ var template = (function (exports) {
     this.opacity = +opacity;
   }
 
-  define$2(Lab, lab$1, extend$2(Color$2, {
+  define$3(Lab, lab$1, extend$3(Color$3, {
     brighter: function(k) {
       return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
     },
@@ -7535,7 +7552,7 @@ var template = (function (exports) {
       x = Xn * lab2xyz(x);
       y = Yn * lab2xyz(y);
       z = Zn * lab2xyz(z);
-      return new Rgb$2(
+      return new Rgb$3(
         lrgb2rgb( 3.1338561 * x - 1.6168667 * y - 0.4906146 * z),
         lrgb2rgb(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z),
         lrgb2rgb( 0.0719453 * x - 0.2289914 * y + 1.4052427 * z),
@@ -7585,7 +7602,7 @@ var template = (function (exports) {
     return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
   }
 
-  define$2(Hcl, hcl$1, extend$2(Color$2, {
+  define$3(Hcl, hcl$1, extend$3(Color$3, {
     brighter: function(k) {
       return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
     },
@@ -7608,7 +7625,7 @@ var template = (function (exports) {
 
   function cubehelixConvert(o) {
     if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof Rgb$2)) o = rgbConvert$2(o);
+    if (!(o instanceof Rgb$3)) o = rgbConvert$3(o);
     var r = o.r / 255,
         g = o.g / 255,
         b = o.b / 255,
@@ -7631,13 +7648,13 @@ var template = (function (exports) {
     this.opacity = +opacity;
   }
 
-  define$2(Cubehelix, cubehelix$1, extend$2(Color$2, {
+  define$3(Cubehelix, cubehelix$1, extend$3(Color$3, {
     brighter: function(k) {
-      k = k == null ? brighter$2 : Math.pow(brighter$2, k);
+      k = k == null ? brighter$3 : Math.pow(brighter$3, k);
       return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
     },
     darker: function(k) {
-      k = k == null ? darker$2 : Math.pow(darker$2, k);
+      k = k == null ? darker$3 : Math.pow(darker$3, k);
       return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
     },
     rgb: function() {
@@ -7646,7 +7663,7 @@ var template = (function (exports) {
           a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
           cosh = Math.cos(h),
           sinh = Math.sin(h);
-      return new Rgb$2(
+      return new Rgb$3(
         255 * (l + a * (A * cosh + B * sinh)),
         255 * (l + a * (C * cosh + D * sinh)),
         255 * (l + a * (E * cosh)),
@@ -7675,19 +7692,19 @@ var template = (function (exports) {
     };
   }
 
-  function constant$6(x) {
+  function constant$9(x) {
     return function() {
       return x;
     };
   }
 
-  function linear$3(a, d) {
+  function linear$4(a, d) {
     return function(t) {
       return a + t * d;
     };
   }
 
-  function exponential$2(a, b, y) {
+  function exponential$3(a, b, y) {
     return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
       return Math.pow(a + t * b, y);
     };
@@ -7695,28 +7712,28 @@ var template = (function (exports) {
 
   function hue(a, b) {
     var d = b - a;
-    return d ? linear$3(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant$6(isNaN(a) ? b : a);
+    return d ? linear$4(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant$9(isNaN(a) ? b : a);
   }
 
-  function gamma$2(y) {
-    return (y = +y) === 1 ? nogamma$2 : function(a, b) {
-      return b - a ? exponential$2(a, b, y) : constant$6(isNaN(a) ? b : a);
+  function gamma$3(y) {
+    return (y = +y) === 1 ? nogamma$3 : function(a, b) {
+      return b - a ? exponential$3(a, b, y) : constant$9(isNaN(a) ? b : a);
     };
   }
 
-  function nogamma$2(a, b) {
+  function nogamma$3(a, b) {
     var d = b - a;
-    return d ? linear$3(a, d) : constant$6(isNaN(a) ? b : a);
+    return d ? linear$4(a, d) : constant$9(isNaN(a) ? b : a);
   }
 
-  var interpolateRgb$2 = (function rgbGamma(y) {
-    var color = gamma$2(y);
+  var interpolateRgb$3 = (function rgbGamma(y) {
+    var color = gamma$3(y);
 
     function rgb(start, end) {
-      var r = color((start = rgb$2(start)).r, (end = rgb$2(end)).r),
+      var r = color((start = rgb$3(start)).r, (end = rgb$3(end)).r),
           g = color(start.g, end.g),
           b = color(start.b, end.b),
-          opacity = nogamma$2(start.opacity, end.opacity);
+          opacity = nogamma$3(start.opacity, end.opacity);
       return function(t) {
         start.r = r(t);
         start.g = g(t);
@@ -7739,7 +7756,7 @@ var template = (function (exports) {
           b = new Array(n),
           i, color;
       for (i = 0; i < n; ++i) {
-        color = rgb$2(colors[i]);
+        color = rgb$3(colors[i]);
         r[i] = color.r || 0;
         g[i] = color.g || 0;
         b[i] = color.b || 0;
@@ -7797,7 +7814,7 @@ var template = (function (exports) {
     };
   }
 
-  function interpolateNumber$2(a, b) {
+  function interpolateNumber$3(a, b) {
     return a = +a, b = +b, function(t) {
       return a * (1 - t) + b * t;
     };
@@ -7825,23 +7842,23 @@ var template = (function (exports) {
     };
   }
 
-  var reA$2 = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
-      reB$2 = new RegExp(reA$2.source, "g");
+  var reA$3 = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
+      reB$3 = new RegExp(reA$3.source, "g");
 
-  function zero$2(b) {
+  function zero$3(b) {
     return function() {
       return b;
     };
   }
 
-  function one$2(b) {
+  function one$3(b) {
     return function(t) {
       return b(t) + "";
     };
   }
 
   function string(a, b) {
-    var bi = reA$2.lastIndex = reB$2.lastIndex = 0, // scan index for next number in b
+    var bi = reA$3.lastIndex = reB$3.lastIndex = 0, // scan index for next number in b
         am, // current match in a
         bm, // current match in b
         bs, // string preceding current number in b, if any
@@ -7853,8 +7870,8 @@ var template = (function (exports) {
     a = a + "", b = b + "";
 
     // Interpolate pairs of numbers in a & b.
-    while ((am = reA$2.exec(a))
-        && (bm = reB$2.exec(b))) {
+    while ((am = reA$3.exec(a))
+        && (bm = reB$3.exec(b))) {
       if ((bs = bm.index) > bi) { // a string precedes the next number in b
         bs = b.slice(bi, bs);
         if (s[i]) s[i] += bs; // coalesce with previous string
@@ -7865,9 +7882,9 @@ var template = (function (exports) {
         else s[++i] = bm;
       } else { // interpolate non-matching numbers
         s[++i] = null;
-        q.push({i: i, x: interpolateNumber$2(am, bm)});
+        q.push({i: i, x: interpolateNumber$3(am, bm)});
       }
-      bi = reB$2.lastIndex;
+      bi = reB$3.lastIndex;
     }
 
     // Add remains of b.
@@ -7880,8 +7897,8 @@ var template = (function (exports) {
     // Special optimization for only a single match.
     // Otherwise, interpolate each of the numbers and rejoin the string.
     return s.length < 2 ? (q[0]
-        ? one$2(q[0].x)
-        : zero$2(b))
+        ? one$3(q[0].x)
+        : zero$3(b))
         : (b = q.length, function(t) {
             for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
             return s.join("");
@@ -7890,15 +7907,15 @@ var template = (function (exports) {
 
   function interpolateValue(a, b) {
     var t = typeof b, c;
-    return b == null || t === "boolean" ? constant$6(b)
-        : (t === "number" ? interpolateNumber$2
-        : t === "string" ? ((c = color$2(b)) ? (b = c, interpolateRgb$2) : string)
-        : b instanceof color$2 ? interpolateRgb$2
+    return b == null || t === "boolean" ? constant$9(b)
+        : (t === "number" ? interpolateNumber$3
+        : t === "string" ? ((c = color$3(b)) ? (b = c, interpolateRgb$3) : string)
+        : b instanceof color$3 ? interpolateRgb$3
         : b instanceof Date ? date
         : isNumberArray(b) ? numberArray
         : Array.isArray(b) ? genericArray
         : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
-        : interpolateNumber$2)(a, b);
+        : interpolateNumber$3)(a, b);
   }
 
   function interpolateRound(a, b) {
@@ -7907,12 +7924,12 @@ var template = (function (exports) {
     };
   }
 
-  function hsl$2(hue) {
+  function hsl$3(hue) {
     return function(start, end) {
-      var h = hue((start = hsl$3(start)).h, (end = hsl$3(end)).h),
-          s = nogamma$2(start.s, end.s),
-          l = nogamma$2(start.l, end.l),
-          opacity = nogamma$2(start.opacity, end.opacity);
+      var h = hue((start = hsl$4(start)).h, (end = hsl$4(end)).h),
+          s = nogamma$3(start.s, end.s),
+          l = nogamma$3(start.l, end.l),
+          opacity = nogamma$3(start.opacity, end.opacity);
       return function(t) {
         start.h = h(t);
         start.s = s(t);
@@ -7923,13 +7940,13 @@ var template = (function (exports) {
     }
   }
 
-  var interpolateHsl = hsl$2(hue);
+  var interpolateHsl = hsl$3(hue);
 
   function lab(start, end) {
-    var l = nogamma$2((start = lab$1(start)).l, (end = lab$1(end)).l),
-        a = nogamma$2(start.a, end.a),
-        b = nogamma$2(start.b, end.b),
-        opacity = nogamma$2(start.opacity, end.opacity);
+    var l = nogamma$3((start = lab$1(start)).l, (end = lab$1(end)).l),
+        a = nogamma$3(start.a, end.a),
+        b = nogamma$3(start.b, end.b),
+        opacity = nogamma$3(start.opacity, end.opacity);
     return function(t) {
       start.l = l(t);
       start.a = a(t);
@@ -7942,9 +7959,9 @@ var template = (function (exports) {
   function hcl(hue) {
     return function(start, end) {
       var h = hue((start = hcl$1(start)).h, (end = hcl$1(end)).h),
-          c = nogamma$2(start.c, end.c),
-          l = nogamma$2(start.l, end.l),
-          opacity = nogamma$2(start.opacity, end.opacity);
+          c = nogamma$3(start.c, end.c),
+          l = nogamma$3(start.l, end.l),
+          opacity = nogamma$3(start.opacity, end.opacity);
       return function(t) {
         start.h = h(t);
         start.c = c(t);
@@ -7963,9 +7980,9 @@ var template = (function (exports) {
 
       function cubehelix(start, end) {
         var h = hue((start = cubehelix$1(start)).h, (end = cubehelix$1(end)).h),
-            s = nogamma$2(start.s, end.s),
-            l = nogamma$2(start.l, end.l),
-            opacity = nogamma$2(start.opacity, end.opacity);
+            s = nogamma$3(start.s, end.s),
+            l = nogamma$3(start.l, end.l),
+            opacity = nogamma$3(start.opacity, end.opacity);
         return function(t) {
           start.h = h(t);
           start.s = s(t);
@@ -7982,7 +7999,7 @@ var template = (function (exports) {
   }
 
   cubehelix(hue);
-  var cubehelixLong = cubehelix(nogamma$2);
+  var cubehelixLong = cubehelix(nogamma$3);
 
   function piecewise(interpolate, values) {
     var i = 0, n = values.length - 1, v = values[0], I = new Array(n < 0 ? 0 : n);
@@ -7993,7 +8010,7 @@ var template = (function (exports) {
     };
   }
 
-  function constant$5(x) {
+  function constant$8(x) {
     return function() {
       return x;
     };
@@ -8005,14 +8022,14 @@ var template = (function (exports) {
 
   var unit = [0, 1];
 
-  function identity$2(x) {
+  function identity$3(x) {
     return x;
   }
 
   function normalize(a, b) {
     return (b -= (a = +a))
         ? function(x) { return (x - a) / b; }
-        : constant$5(isNaN(b) ? NaN : 0.5);
+        : constant$8(isNaN(b) ? NaN : 0.5);
   }
 
   function clamper(domain) {
@@ -8069,7 +8086,7 @@ var template = (function (exports) {
         transform,
         untransform,
         unknown,
-        clamp = identity$2,
+        clamp = identity$3,
         piecewise,
         output,
         input;
@@ -8085,11 +8102,11 @@ var template = (function (exports) {
     }
 
     scale.invert = function(y) {
-      return clamp(untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber$2)))(y)));
+      return clamp(untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber$3)))(y)));
     };
 
     scale.domain = function(_) {
-      return arguments.length ? (domain = map.call(_, number), clamp === identity$2 || (clamp = clamper(domain)), rescale()) : domain.slice();
+      return arguments.length ? (domain = map.call(_, number), clamp === identity$3 || (clamp = clamper(domain)), rescale()) : domain.slice();
     };
 
     scale.range = function(_) {
@@ -8101,7 +8118,7 @@ var template = (function (exports) {
     };
 
     scale.clamp = function(_) {
-      return arguments.length ? (clamp = _ ? clamper(domain) : identity$2, scale) : clamp !== identity$2;
+      return arguments.length ? (clamp = _ ? clamper(domain) : identity$3, scale) : clamp !== identity$3;
     };
 
     scale.interpolate = function(_) {
@@ -8205,11 +8222,11 @@ var template = (function (exports) {
     return scale;
   }
 
-  function linear$2() {
-    var scale = continuous(identity$2, identity$2);
+  function linear$3() {
+    var scale = continuous(identity$3, identity$3);
 
     scale.copy = function() {
-      return copy$1(scale, linear$2());
+      return copy$1(scale, linear$3());
     };
 
     initRange.apply(scale, arguments);
@@ -8246,7 +8263,7 @@ var template = (function (exports) {
       if (!arguments.length) return domain.slice();
       domain = [];
       for (var i = 0, n = _.length, d; i < n; ++i) if (d = _[i], d != null && !isNaN(d = +d)) domain.push(d);
-      domain.sort(ascending$4);
+      domain.sort(ascending$7);
       return rescale();
     };
 
@@ -8369,7 +8386,7 @@ var template = (function (exports) {
         t1,
         k10,
         transform,
-        interpolator = identity$2,
+        interpolator = identity$3,
         clamp = false,
         unknown;
 
@@ -8408,7 +8425,7 @@ var template = (function (exports) {
   }
 
   function sequential() {
-    var scale = linearish(transformer$1()(identity$2));
+    var scale = linearish(transformer$1()(identity$3));
 
     scale.copy = function() {
       return copy(scale, sequential());
@@ -8426,7 +8443,7 @@ var template = (function (exports) {
         t2,
         k10,
         k21,
-        interpolator = identity$2,
+        interpolator = identity$3,
         transform,
         clamp = false,
         unknown;
@@ -8458,7 +8475,7 @@ var template = (function (exports) {
   }
 
   function diverging() {
-    var scale = linearish(transformer()(identity$2));
+    var scale = linearish(transformer()(identity$3));
 
     scale.copy = function() {
       return copy(scale, diverging());
@@ -8866,7 +8883,7 @@ var template = (function (exports) {
 
   	var n_bins = bin_centers.length;
 
-  	var sample_scale = linear$2(); // sample_scale is used to evenly sample colors across a domain
+  	var sample_scale = linear$3(); // sample_scale is used to evenly sample colors across a domain
   	var colors = [];
 
   	if (n_bins === 1) {
@@ -9941,7 +9958,7 @@ var template = (function (exports) {
   	hcl: interpolateHcl,
   	hsl: interpolateHsl,
   	lab: lab,
-  	rgb: interpolateRgb$2,
+  	rgb: interpolateRgb$3,
   };
 
   function getCustomInterpolator$1(state) {
@@ -9990,7 +10007,7 @@ var template = (function (exports) {
   	hcl: interpolateHcl,
   	hsl: interpolateHsl,
   	lab: lab,
-  	rgb: interpolateRgb$2,
+  	rgb: interpolateRgb$3,
   };
 
   function getCustomInterpolator(state) {
@@ -10038,11 +10055,11 @@ var template = (function (exports) {
   	return colorScale;
   }
 
-  function init$4(state) {
+  function init$5(state) {
   	var colorFunction = null;
 
-  	for (var key in DEFAULTS$5) {
-  		if (state[key] === undefined) state[key] = DEFAULTS$5[key];
+  	for (var key in DEFAULTS$c) {
+  		if (state[key] === undefined) state[key] = DEFAULTS$c[key];
   	}
 
   	var fallback_value = DEFAULT_FALLBACK_VALUE;
@@ -10085,55 +10102,55 @@ var template = (function (exports) {
   	};
   }
 
-  var xhtml$2 = "http://www.w3.org/1999/xhtml";
+  var xhtml$4 = "http://www.w3.org/1999/xhtml";
 
-  var namespaces$2 = {
+  var namespaces$4 = {
     svg: "http://www.w3.org/2000/svg",
-    xhtml: xhtml$2,
+    xhtml: xhtml$4,
     xlink: "http://www.w3.org/1999/xlink",
     xml: "http://www.w3.org/XML/1998/namespace",
     xmlns: "http://www.w3.org/2000/xmlns/"
   };
 
-  function namespace$2(name) {
+  function namespace$4(name) {
     var prefix = name += "", i = prefix.indexOf(":");
     if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns") name = name.slice(i + 1);
-    return namespaces$2.hasOwnProperty(prefix) ? {space: namespaces$2[prefix], local: name} : name;
+    return namespaces$4.hasOwnProperty(prefix) ? {space: namespaces$4[prefix], local: name} : name;
   }
 
-  function creatorInherit$2(name) {
+  function creatorInherit$4(name) {
     return function() {
       var document = this.ownerDocument,
           uri = this.namespaceURI;
-      return uri === xhtml$2 && document.documentElement.namespaceURI === xhtml$2
+      return uri === xhtml$4 && document.documentElement.namespaceURI === xhtml$4
           ? document.createElement(name)
           : document.createElementNS(uri, name);
     };
   }
 
-  function creatorFixed$2(fullname) {
+  function creatorFixed$4(fullname) {
     return function() {
       return this.ownerDocument.createElementNS(fullname.space, fullname.local);
     };
   }
 
-  function creator$2(name) {
-    var fullname = namespace$2(name);
+  function creator$4(name) {
+    var fullname = namespace$4(name);
     return (fullname.local
-        ? creatorFixed$2
-        : creatorInherit$2)(fullname);
+        ? creatorFixed$4
+        : creatorInherit$4)(fullname);
   }
 
-  function none$2() {}
+  function none$4() {}
 
-  function selector$2(selector) {
-    return selector == null ? none$2 : function() {
+  function selector$4(selector) {
+    return selector == null ? none$4 : function() {
       return this.querySelector(selector);
     };
   }
 
-  function selection_select$2(select) {
-    if (typeof select !== "function") select = selector$2(select);
+  function selection_select$4(select) {
+    if (typeof select !== "function") select = selector$4(select);
 
     for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
       for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
@@ -10144,21 +10161,21 @@ var template = (function (exports) {
       }
     }
 
-    return new Selection$4(subgroups, this._parents);
+    return new Selection$7(subgroups, this._parents);
   }
 
-  function empty$2() {
+  function empty$4() {
     return [];
   }
 
-  function selectorAll$2(selector) {
-    return selector == null ? empty$2 : function() {
+  function selectorAll$4(selector) {
+    return selector == null ? empty$4 : function() {
       return this.querySelectorAll(selector);
     };
   }
 
-  function selection_selectAll$2(select) {
-    if (typeof select !== "function") select = selectorAll$2(select);
+  function selection_selectAll$4(select) {
+    if (typeof select !== "function") select = selectorAll$4(select);
 
     for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
       for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
@@ -10169,17 +10186,17 @@ var template = (function (exports) {
       }
     }
 
-    return new Selection$4(subgroups, parents);
+    return new Selection$7(subgroups, parents);
   }
 
-  function matcher$2(selector) {
+  function matcher$4(selector) {
     return function() {
       return this.matches(selector);
     };
   }
 
-  function selection_filter$2(match) {
-    if (typeof match !== "function") match = matcher$2(match);
+  function selection_filter$4(match) {
+    if (typeof match !== "function") match = matcher$4(match);
 
     for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
       for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
@@ -10189,18 +10206,18 @@ var template = (function (exports) {
       }
     }
 
-    return new Selection$4(subgroups, this._parents);
+    return new Selection$7(subgroups, this._parents);
   }
 
-  function sparse$2(update) {
+  function sparse$4(update) {
     return new Array(update.length);
   }
 
-  function selection_enter$2() {
-    return new Selection$4(this._enter || this._groups.map(sparse$2), this._parents);
+  function selection_enter$4() {
+    return new Selection$7(this._enter || this._groups.map(sparse$4), this._parents);
   }
 
-  function EnterNode$2(parent, datum) {
+  function EnterNode$4(parent, datum) {
     this.ownerDocument = parent.ownerDocument;
     this.namespaceURI = parent.namespaceURI;
     this._next = null;
@@ -10208,23 +10225,23 @@ var template = (function (exports) {
     this.__data__ = datum;
   }
 
-  EnterNode$2.prototype = {
-    constructor: EnterNode$2,
+  EnterNode$4.prototype = {
+    constructor: EnterNode$4,
     appendChild: function(child) { return this._parent.insertBefore(child, this._next); },
     insertBefore: function(child, next) { return this._parent.insertBefore(child, next); },
     querySelector: function(selector) { return this._parent.querySelector(selector); },
     querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
   };
 
-  function constant$4(x) {
+  function constant$7(x) {
     return function() {
       return x;
     };
   }
 
-  var keyPrefix$1 = "$"; // Protect against keys like “__proto__”.
+  var keyPrefix$3 = "$"; // Protect against keys like “__proto__”.
 
-  function bindIndex$2(parent, group, enter, update, exit, data) {
+  function bindIndex$4(parent, group, enter, update, exit, data) {
     var i = 0,
         node,
         groupLength = group.length,
@@ -10238,7 +10255,7 @@ var template = (function (exports) {
         node.__data__ = data[i];
         update[i] = node;
       } else {
-        enter[i] = new EnterNode$2(parent, data[i]);
+        enter[i] = new EnterNode$4(parent, data[i]);
       }
     }
 
@@ -10250,7 +10267,7 @@ var template = (function (exports) {
     }
   }
 
-  function bindKey$2(parent, group, enter, update, exit, data, key) {
+  function bindKey$4(parent, group, enter, update, exit, data, key) {
     var i,
         node,
         nodeByKeyValue = {},
@@ -10263,7 +10280,7 @@ var template = (function (exports) {
     // If multiple nodes have the same key, the duplicates are added to exit.
     for (i = 0; i < groupLength; ++i) {
       if (node = group[i]) {
-        keyValues[i] = keyValue = keyPrefix$1 + key.call(node, node.__data__, i, group);
+        keyValues[i] = keyValue = keyPrefix$3 + key.call(node, node.__data__, i, group);
         if (keyValue in nodeByKeyValue) {
           exit[i] = node;
         } else {
@@ -10276,13 +10293,13 @@ var template = (function (exports) {
     // If there a node associated with this key, join and add it to update.
     // If there is not (or the key is a duplicate), add it to enter.
     for (i = 0; i < dataLength; ++i) {
-      keyValue = keyPrefix$1 + key.call(parent, data[i], i, data);
+      keyValue = keyPrefix$3 + key.call(parent, data[i], i, data);
       if (node = nodeByKeyValue[keyValue]) {
         update[i] = node;
         node.__data__ = data[i];
         nodeByKeyValue[keyValue] = null;
       } else {
-        enter[i] = new EnterNode$2(parent, data[i]);
+        enter[i] = new EnterNode$4(parent, data[i]);
       }
     }
 
@@ -10294,18 +10311,18 @@ var template = (function (exports) {
     }
   }
 
-  function selection_data$2(value, key) {
+  function selection_data$4(value, key) {
     if (!value) {
       data = new Array(this.size()), j = -1;
       this.each(function(d) { data[++j] = d; });
       return data;
     }
 
-    var bind = key ? bindKey$2 : bindIndex$2,
+    var bind = key ? bindKey$4 : bindIndex$4,
         parents = this._parents,
         groups = this._groups;
 
-    if (typeof value !== "function") value = constant$4(value);
+    if (typeof value !== "function") value = constant$7(value);
 
     for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
       var parent = parents[j],
@@ -10331,17 +10348,17 @@ var template = (function (exports) {
       }
     }
 
-    update = new Selection$4(update, parents);
+    update = new Selection$7(update, parents);
     update._enter = enter;
     update._exit = exit;
     return update;
   }
 
-  function selection_exit$2() {
-    return new Selection$4(this._exit || this._groups.map(sparse$2), this._parents);
+  function selection_exit$4() {
+    return new Selection$7(this._exit || this._groups.map(sparse$4), this._parents);
   }
 
-  function selection_join$2(onenter, onupdate, onexit) {
+  function selection_join$4(onenter, onupdate, onexit) {
     var enter = this.enter(), update = this, exit = this.exit();
     enter = typeof onenter === "function" ? onenter(enter) : enter.append(onenter + "");
     if (onupdate != null) update = onupdate(update);
@@ -10349,7 +10366,7 @@ var template = (function (exports) {
     return enter && update ? enter.merge(update).order() : update;
   }
 
-  function selection_merge$2(selection) {
+  function selection_merge$4(selection) {
 
     for (var groups0 = this._groups, groups1 = selection._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
       for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
@@ -10363,10 +10380,10 @@ var template = (function (exports) {
       merges[j] = groups0[j];
     }
 
-    return new Selection$4(merges, this._parents);
+    return new Selection$7(merges, this._parents);
   }
 
-  function selection_order$2() {
+  function selection_order$4() {
 
     for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
       for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
@@ -10380,8 +10397,8 @@ var template = (function (exports) {
     return this;
   }
 
-  function selection_sort$2(compare) {
-    if (!compare) compare = ascending$3;
+  function selection_sort$4(compare) {
+    if (!compare) compare = ascending$6;
 
     function compareNode(a, b) {
       return a && b ? compare(a.__data__, b.__data__) : !a - !b;
@@ -10396,27 +10413,27 @@ var template = (function (exports) {
       sortgroup.sort(compareNode);
     }
 
-    return new Selection$4(sortgroups, this._parents).order();
+    return new Selection$7(sortgroups, this._parents).order();
   }
 
-  function ascending$3(a, b) {
+  function ascending$6(a, b) {
     return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
   }
 
-  function selection_call$2() {
+  function selection_call$4() {
     var callback = arguments[0];
     arguments[0] = this;
     callback.apply(null, arguments);
     return this;
   }
 
-  function selection_nodes$2() {
+  function selection_nodes$4() {
     var nodes = new Array(this.size()), i = -1;
     this.each(function() { nodes[++i] = this; });
     return nodes;
   }
 
-  function selection_node$2() {
+  function selection_node$4() {
 
     for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
       for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
@@ -10428,17 +10445,17 @@ var template = (function (exports) {
     return null;
   }
 
-  function selection_size$2() {
+  function selection_size$4() {
     var size = 0;
     this.each(function() { ++size; });
     return size;
   }
 
-  function selection_empty$2() {
+  function selection_empty$4() {
     return !this.node();
   }
 
-  function selection_each$2(callback) {
+  function selection_each$4(callback) {
 
     for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
       for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
@@ -10449,31 +10466,31 @@ var template = (function (exports) {
     return this;
   }
 
-  function attrRemove$4(name) {
+  function attrRemove$7(name) {
     return function() {
       this.removeAttribute(name);
     };
   }
 
-  function attrRemoveNS$4(fullname) {
+  function attrRemoveNS$7(fullname) {
     return function() {
       this.removeAttributeNS(fullname.space, fullname.local);
     };
   }
 
-  function attrConstant$4(name, value) {
+  function attrConstant$7(name, value) {
     return function() {
       this.setAttribute(name, value);
     };
   }
 
-  function attrConstantNS$4(fullname, value) {
+  function attrConstantNS$7(fullname, value) {
     return function() {
       this.setAttributeNS(fullname.space, fullname.local, value);
     };
   }
 
-  function attrFunction$4(name, value) {
+  function attrFunction$7(name, value) {
     return function() {
       var v = value.apply(this, arguments);
       if (v == null) this.removeAttribute(name);
@@ -10481,7 +10498,7 @@ var template = (function (exports) {
     };
   }
 
-  function attrFunctionNS$4(fullname, value) {
+  function attrFunctionNS$7(fullname, value) {
     return function() {
       var v = value.apply(this, arguments);
       if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
@@ -10489,8 +10506,8 @@ var template = (function (exports) {
     };
   }
 
-  function selection_attr$2(name, value) {
-    var fullname = namespace$2(name);
+  function selection_attr$4(name, value) {
+    var fullname = namespace$4(name);
 
     if (arguments.length < 2) {
       var node = this.node();
@@ -10500,30 +10517,30 @@ var template = (function (exports) {
     }
 
     return this.each((value == null
-        ? (fullname.local ? attrRemoveNS$4 : attrRemove$4) : (typeof value === "function"
-        ? (fullname.local ? attrFunctionNS$4 : attrFunction$4)
-        : (fullname.local ? attrConstantNS$4 : attrConstant$4)))(fullname, value));
+        ? (fullname.local ? attrRemoveNS$7 : attrRemove$7) : (typeof value === "function"
+        ? (fullname.local ? attrFunctionNS$7 : attrFunction$7)
+        : (fullname.local ? attrConstantNS$7 : attrConstant$7)))(fullname, value));
   }
 
-  function defaultView$2(node) {
+  function defaultView$4(node) {
     return (node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
         || (node.document && node) // node is a Window
         || node.defaultView; // node is a Document
   }
 
-  function styleRemove$4(name) {
+  function styleRemove$7(name) {
     return function() {
       this.style.removeProperty(name);
     };
   }
 
-  function styleConstant$4(name, value, priority) {
+  function styleConstant$7(name, value, priority) {
     return function() {
       this.style.setProperty(name, value, priority);
     };
   }
 
-  function styleFunction$4(name, value, priority) {
+  function styleFunction$7(name, value, priority) {
     return function() {
       var v = value.apply(this, arguments);
       if (v == null) this.style.removeProperty(name);
@@ -10531,33 +10548,33 @@ var template = (function (exports) {
     };
   }
 
-  function selection_style$2(name, value, priority) {
+  function selection_style$4(name, value, priority) {
     return arguments.length > 1
         ? this.each((value == null
-              ? styleRemove$4 : typeof value === "function"
-              ? styleFunction$4
-              : styleConstant$4)(name, value, priority == null ? "" : priority))
-        : styleValue$2(this.node(), name);
+              ? styleRemove$7 : typeof value === "function"
+              ? styleFunction$7
+              : styleConstant$7)(name, value, priority == null ? "" : priority))
+        : styleValue$4(this.node(), name);
   }
 
-  function styleValue$2(node, name) {
+  function styleValue$4(node, name) {
     return node.style.getPropertyValue(name)
-        || defaultView$2(node).getComputedStyle(node, null).getPropertyValue(name);
+        || defaultView$4(node).getComputedStyle(node, null).getPropertyValue(name);
   }
 
-  function propertyRemove$2(name) {
+  function propertyRemove$4(name) {
     return function() {
       delete this[name];
     };
   }
 
-  function propertyConstant$2(name, value) {
+  function propertyConstant$4(name, value) {
     return function() {
       this[name] = value;
     };
   }
 
-  function propertyFunction$2(name, value) {
+  function propertyFunction$4(name, value) {
     return function() {
       var v = value.apply(this, arguments);
       if (v == null) delete this[name];
@@ -10565,29 +10582,29 @@ var template = (function (exports) {
     };
   }
 
-  function selection_property$2(name, value) {
+  function selection_property$4(name, value) {
     return arguments.length > 1
         ? this.each((value == null
-            ? propertyRemove$2 : typeof value === "function"
-            ? propertyFunction$2
-            : propertyConstant$2)(name, value))
+            ? propertyRemove$4 : typeof value === "function"
+            ? propertyFunction$4
+            : propertyConstant$4)(name, value))
         : this.node()[name];
   }
 
-  function classArray$2(string) {
+  function classArray$4(string) {
     return string.trim().split(/^|\s+/);
   }
 
-  function classList$2(node) {
-    return node.classList || new ClassList$2(node);
+  function classList$4(node) {
+    return node.classList || new ClassList$4(node);
   }
 
-  function ClassList$2(node) {
+  function ClassList$4(node) {
     this._node = node;
-    this._names = classArray$2(node.getAttribute("class") || "");
+    this._names = classArray$4(node.getAttribute("class") || "");
   }
 
-  ClassList$2.prototype = {
+  ClassList$4.prototype = {
     add: function(name) {
       var i = this._names.indexOf(name);
       if (i < 0) {
@@ -10607,178 +10624,178 @@ var template = (function (exports) {
     }
   };
 
-  function classedAdd$2(node, names) {
-    var list = classList$2(node), i = -1, n = names.length;
+  function classedAdd$4(node, names) {
+    var list = classList$4(node), i = -1, n = names.length;
     while (++i < n) list.add(names[i]);
   }
 
-  function classedRemove$2(node, names) {
-    var list = classList$2(node), i = -1, n = names.length;
+  function classedRemove$4(node, names) {
+    var list = classList$4(node), i = -1, n = names.length;
     while (++i < n) list.remove(names[i]);
   }
 
-  function classedTrue$2(names) {
+  function classedTrue$4(names) {
     return function() {
-      classedAdd$2(this, names);
+      classedAdd$4(this, names);
     };
   }
 
-  function classedFalse$2(names) {
+  function classedFalse$4(names) {
     return function() {
-      classedRemove$2(this, names);
+      classedRemove$4(this, names);
     };
   }
 
-  function classedFunction$2(names, value) {
+  function classedFunction$4(names, value) {
     return function() {
-      (value.apply(this, arguments) ? classedAdd$2 : classedRemove$2)(this, names);
+      (value.apply(this, arguments) ? classedAdd$4 : classedRemove$4)(this, names);
     };
   }
 
-  function selection_classed$2(name, value) {
-    var names = classArray$2(name + "");
+  function selection_classed$4(name, value) {
+    var names = classArray$4(name + "");
 
     if (arguments.length < 2) {
-      var list = classList$2(this.node()), i = -1, n = names.length;
+      var list = classList$4(this.node()), i = -1, n = names.length;
       while (++i < n) if (!list.contains(names[i])) return false;
       return true;
     }
 
     return this.each((typeof value === "function"
-        ? classedFunction$2 : value
-        ? classedTrue$2
-        : classedFalse$2)(names, value));
+        ? classedFunction$4 : value
+        ? classedTrue$4
+        : classedFalse$4)(names, value));
   }
 
-  function textRemove$2() {
+  function textRemove$4() {
     this.textContent = "";
   }
 
-  function textConstant$4(value) {
+  function textConstant$7(value) {
     return function() {
       this.textContent = value;
     };
   }
 
-  function textFunction$4(value) {
+  function textFunction$7(value) {
     return function() {
       var v = value.apply(this, arguments);
       this.textContent = v == null ? "" : v;
     };
   }
 
-  function selection_text$2(value) {
+  function selection_text$4(value) {
     return arguments.length
         ? this.each(value == null
-            ? textRemove$2 : (typeof value === "function"
-            ? textFunction$4
-            : textConstant$4)(value))
+            ? textRemove$4 : (typeof value === "function"
+            ? textFunction$7
+            : textConstant$7)(value))
         : this.node().textContent;
   }
 
-  function htmlRemove$2() {
+  function htmlRemove$4() {
     this.innerHTML = "";
   }
 
-  function htmlConstant$2(value) {
+  function htmlConstant$4(value) {
     return function() {
       this.innerHTML = value;
     };
   }
 
-  function htmlFunction$2(value) {
+  function htmlFunction$4(value) {
     return function() {
       var v = value.apply(this, arguments);
       this.innerHTML = v == null ? "" : v;
     };
   }
 
-  function selection_html$2(value) {
+  function selection_html$4(value) {
     return arguments.length
         ? this.each(value == null
-            ? htmlRemove$2 : (typeof value === "function"
-            ? htmlFunction$2
-            : htmlConstant$2)(value))
+            ? htmlRemove$4 : (typeof value === "function"
+            ? htmlFunction$4
+            : htmlConstant$4)(value))
         : this.node().innerHTML;
   }
 
-  function raise$2() {
+  function raise$4() {
     if (this.nextSibling) this.parentNode.appendChild(this);
   }
 
-  function selection_raise$2() {
-    return this.each(raise$2);
+  function selection_raise$4() {
+    return this.each(raise$4);
   }
 
-  function lower$2() {
+  function lower$4() {
     if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
   }
 
-  function selection_lower$2() {
-    return this.each(lower$2);
+  function selection_lower$4() {
+    return this.each(lower$4);
   }
 
-  function selection_append$2(name) {
-    var create = typeof name === "function" ? name : creator$2(name);
+  function selection_append$4(name) {
+    var create = typeof name === "function" ? name : creator$4(name);
     return this.select(function() {
       return this.appendChild(create.apply(this, arguments));
     });
   }
 
-  function constantNull$2() {
+  function constantNull$4() {
     return null;
   }
 
-  function selection_insert$2(name, before) {
-    var create = typeof name === "function" ? name : creator$2(name),
-        select = before == null ? constantNull$2 : typeof before === "function" ? before : selector$2(before);
+  function selection_insert$4(name, before) {
+    var create = typeof name === "function" ? name : creator$4(name),
+        select = before == null ? constantNull$4 : typeof before === "function" ? before : selector$4(before);
     return this.select(function() {
       return this.insertBefore(create.apply(this, arguments), select.apply(this, arguments) || null);
     });
   }
 
-  function remove$2() {
+  function remove$4() {
     var parent = this.parentNode;
     if (parent) parent.removeChild(this);
   }
 
-  function selection_remove$2() {
-    return this.each(remove$2);
+  function selection_remove$4() {
+    return this.each(remove$4);
   }
 
-  function selection_cloneShallow$2() {
+  function selection_cloneShallow$4() {
     var clone = this.cloneNode(false), parent = this.parentNode;
     return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
   }
 
-  function selection_cloneDeep$2() {
+  function selection_cloneDeep$4() {
     var clone = this.cloneNode(true), parent = this.parentNode;
     return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
   }
 
-  function selection_clone$2(deep) {
-    return this.select(deep ? selection_cloneDeep$2 : selection_cloneShallow$2);
+  function selection_clone$4(deep) {
+    return this.select(deep ? selection_cloneDeep$4 : selection_cloneShallow$4);
   }
 
-  function selection_datum$2(value) {
+  function selection_datum$4(value) {
     return arguments.length
         ? this.property("__data__", value)
         : this.node().__data__;
   }
 
-  var filterEvents$1 = {};
+  var filterEvents$3 = {};
 
-  var event$2 = null;
+  var event$3 = null;
 
   if (typeof document !== "undefined") {
-    var element$1 = document.documentElement;
-    if (!("onmouseenter" in element$1)) {
-      filterEvents$1 = {mouseenter: "mouseover", mouseleave: "mouseout"};
+    var element$3 = document.documentElement;
+    if (!("onmouseenter" in element$3)) {
+      filterEvents$3 = {mouseenter: "mouseover", mouseleave: "mouseout"};
     }
   }
 
-  function filterContextListener$1(listener, index, group) {
-    listener = contextListener$2(listener, index, group);
+  function filterContextListener$3(listener, index, group) {
+    listener = contextListener$4(listener, index, group);
     return function(event) {
       var related = event.relatedTarget;
       if (!related || (related !== this && !(related.compareDocumentPosition(this) & 8))) {
@@ -10787,19 +10804,19 @@ var template = (function (exports) {
     };
   }
 
-  function contextListener$2(listener, index, group) {
+  function contextListener$4(listener, index, group) {
     return function(event1) {
-      var event0 = event$2; // Events can be reentrant (e.g., focus).
-      event$2 = event1;
+      var event0 = event$3; // Events can be reentrant (e.g., focus).
+      event$3 = event1;
       try {
         listener.call(this, this.__data__, index, group);
       } finally {
-        event$2 = event0;
+        event$3 = event0;
       }
     };
   }
 
-  function parseTypenames$5(typenames) {
+  function parseTypenames$8(typenames) {
     return typenames.trim().split(/^|\s+/).map(function(t) {
       var name = "", i = t.indexOf(".");
       if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
@@ -10807,7 +10824,7 @@ var template = (function (exports) {
     });
   }
 
-  function onRemove$2(typename) {
+  function onRemove$4(typename) {
     return function() {
       var on = this.__on;
       if (!on) return;
@@ -10823,8 +10840,8 @@ var template = (function (exports) {
     };
   }
 
-  function onAdd$2(typename, value, capture) {
-    var wrap = filterEvents$1.hasOwnProperty(typename.type) ? filterContextListener$1 : contextListener$2;
+  function onAdd$4(typename, value, capture) {
+    var wrap = filterEvents$3.hasOwnProperty(typename.type) ? filterContextListener$3 : contextListener$4;
     return function(d, i, group) {
       var on = this.__on, o, listener = wrap(value, i, group);
       if (on) for (var j = 0, m = on.length; j < m; ++j) {
@@ -10842,8 +10859,8 @@ var template = (function (exports) {
     };
   }
 
-  function selection_on$2(typename, value, capture) {
-    var typenames = parseTypenames$5(typename + ""), i, n = typenames.length, t;
+  function selection_on$4(typename, value, capture) {
+    var typenames = parseTypenames$8(typename + ""), i, n = typenames.length, t;
 
     if (arguments.length < 2) {
       var on = this.node().__on;
@@ -10857,14 +10874,14 @@ var template = (function (exports) {
       return;
     }
 
-    on = value ? onAdd$2 : onRemove$2;
+    on = value ? onAdd$4 : onRemove$4;
     if (capture == null) capture = false;
     for (i = 0; i < n; ++i) this.each(on(typenames[i], value, capture));
     return this;
   }
 
-  function dispatchEvent$2(node, type, params) {
-    var window = defaultView$2(node),
+  function dispatchEvent$4(node, type, params) {
+    var window = defaultView$4(node),
         event = window.CustomEvent;
 
     if (typeof event === "function") {
@@ -10878,73 +10895,73 @@ var template = (function (exports) {
     node.dispatchEvent(event);
   }
 
-  function dispatchConstant$2(type, params) {
+  function dispatchConstant$4(type, params) {
     return function() {
-      return dispatchEvent$2(this, type, params);
+      return dispatchEvent$4(this, type, params);
     };
   }
 
-  function dispatchFunction$2(type, params) {
+  function dispatchFunction$4(type, params) {
     return function() {
-      return dispatchEvent$2(this, type, params.apply(this, arguments));
+      return dispatchEvent$4(this, type, params.apply(this, arguments));
     };
   }
 
-  function selection_dispatch$2(type, params) {
+  function selection_dispatch$4(type, params) {
     return this.each((typeof params === "function"
-        ? dispatchFunction$2
-        : dispatchConstant$2)(type, params));
+        ? dispatchFunction$4
+        : dispatchConstant$4)(type, params));
   }
 
-  var root$2 = [null];
+  var root$4 = [null];
 
-  function Selection$4(groups, parents) {
+  function Selection$7(groups, parents) {
     this._groups = groups;
     this._parents = parents;
   }
 
-  Selection$4.prototype = {
-    constructor: Selection$4,
-    select: selection_select$2,
-    selectAll: selection_selectAll$2,
-    filter: selection_filter$2,
-    data: selection_data$2,
-    enter: selection_enter$2,
-    exit: selection_exit$2,
-    join: selection_join$2,
-    merge: selection_merge$2,
-    order: selection_order$2,
-    sort: selection_sort$2,
-    call: selection_call$2,
-    nodes: selection_nodes$2,
-    node: selection_node$2,
-    size: selection_size$2,
-    empty: selection_empty$2,
-    each: selection_each$2,
-    attr: selection_attr$2,
-    style: selection_style$2,
-    property: selection_property$2,
-    classed: selection_classed$2,
-    text: selection_text$2,
-    html: selection_html$2,
-    raise: selection_raise$2,
-    lower: selection_lower$2,
-    append: selection_append$2,
-    insert: selection_insert$2,
-    remove: selection_remove$2,
-    clone: selection_clone$2,
-    datum: selection_datum$2,
-    on: selection_on$2,
-    dispatch: selection_dispatch$2
+  Selection$7.prototype = {
+    constructor: Selection$7,
+    select: selection_select$4,
+    selectAll: selection_selectAll$4,
+    filter: selection_filter$4,
+    data: selection_data$4,
+    enter: selection_enter$4,
+    exit: selection_exit$4,
+    join: selection_join$4,
+    merge: selection_merge$4,
+    order: selection_order$4,
+    sort: selection_sort$4,
+    call: selection_call$4,
+    nodes: selection_nodes$4,
+    node: selection_node$4,
+    size: selection_size$4,
+    empty: selection_empty$4,
+    each: selection_each$4,
+    attr: selection_attr$4,
+    style: selection_style$4,
+    property: selection_property$4,
+    classed: selection_classed$4,
+    text: selection_text$4,
+    html: selection_html$4,
+    raise: selection_raise$4,
+    lower: selection_lower$4,
+    append: selection_append$4,
+    insert: selection_insert$4,
+    remove: selection_remove$4,
+    clone: selection_clone$4,
+    datum: selection_datum$4,
+    on: selection_on$4,
+    dispatch: selection_dispatch$4
   };
 
-  function select$2(selector) {
+  function select$4(selector) {
     return typeof selector === "string"
-        ? new Selection$4([[document.querySelector(selector)]], [document.documentElement])
-        : new Selection$4([[selector]], root$2);
+        ? new Selection$7([[document.querySelector(selector)]], [document.documentElement])
+        : new Selection$7([[selector]], root$4);
   }
 
-  function ascending$2(a, b) {
+  function ascending$5(a, b) {
     return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
   }
 
@@ -10976,32 +10993,32 @@ var template = (function (exports) {
 
   function ascendingComparator(f) {
     return function(d, x) {
-      return ascending$2(f(d), x);
+      return ascending$5(f(d), x);
     };
   }
 
-  bisector(ascending$2);
+  bisector(ascending$5);
 
-  function Stylesheet() {
+  function Stylesheet$1() {
   	this.declarations = [];
   	return this;
   }
 
-  Stylesheet.prototype.select = function(selector) {
+  Stylesheet$1.prototype.select = function(selector) {
   	if (!selector) return this;
-  	var declaration = new Declaration(selector);
+  	var declaration = new Declaration$1(selector);
   	declaration.parent = this;
   	this.addDeclaration(declaration);
 
   	return declaration;
   };
 
-  Stylesheet.prototype.addDeclaration = function(declaration) {
+  Stylesheet$1.prototype.addDeclaration = function(declaration) {
   	this.declarations.push(declaration);
   	return this;
   };
 
-  Stylesheet.prototype.print = function() {
+  Stylesheet$1.prototype.print = function() {
   	var text = "";
   	this.declarations.forEach(function(declaration) {
   		text += declaration.selector + " {\n";
@@ -11013,24 +11030,24 @@ var template = (function (exports) {
   	return text;
   };
 
-  Stylesheet.prototype.clear = function() {
+  Stylesheet$1.prototype.clear = function() {
   	this.declarations = [];
   	return this;
   };
 
-  function Declaration(selector) {
+  function Declaration$1(selector) {
   	this.selector = selector;
   	this.styles = [];
   	return this;
   }
 
-  Declaration.prototype.style = function(property, _value) {
+  Declaration$1.prototype.style = function(property, _value) {
   	var value = typeof value_ == "function" ? _value() : _value;
   	if (value !== "" && value !== null && value !== undefined) this.styles.push([property, value]);
   	return this;
   };
 
-  Declaration.prototype.select = function(selector) {
+  Declaration$1.prototype.select = function(selector) {
   	return this.parent.select(this.selector + " " + selector);
   };
 
@@ -11041,7 +11058,7 @@ var template = (function (exports) {
 
   	if (!document.querySelector("#legend-styles")) {
   		var css = document.createElement("style");
-  		var styles = new Stylesheet();
+  		var styles = new Stylesheet$1();
 
   		styles
   			.select(".fl-legend-container.interactive .fl-legend-item")
@@ -11126,12 +11143,12 @@ var template = (function (exports) {
   		.style("padding-inline-end", small_gap);
   }
 
-  function remToPx(rem) {
+  function remToPx$3(rem) {
   	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
   }
 
   var legend_count = 0;
-  var DEFAULTS$4 = Object.freeze({
+  var DEFAULTS$b = Object.freeze({
   	show_legend: true,
 
   	title_mode: "auto",
@@ -11158,8 +11175,8 @@ var template = (function (exports) {
 
   function DiscreteColorLegend(state_) {
   	this._state = state_;
-  	for (var key in DEFAULTS$4) {
-  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$4[key];
+  	for (var key in DEFAULTS$b) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$b[key];
   	}
 
   	this._colorFunction = undefined;
@@ -11172,7 +11189,7 @@ var template = (function (exports) {
   	this._auto_title = "";
   	this._last_clicked_item = null;
 
-  	this._container = select$2(document.createElement("div"))
+  	this._container = select$4(document.createElement("div"))
   		.attr("class", "fl-legend-container")
   		.attr("id", this._id);
   	this._container.append("p").attr("class", "fl-legend-title");
@@ -11247,13 +11264,13 @@ var template = (function (exports) {
   	} else {
   		const handleLegendInteraction = () => {
   			if (
-  				event$2.type === "keydown" &&
-  				event$2.key !== "Enter" &&
-  				event$2.key !== " "
+  				event$3.type === "keydown" &&
+  				event$3.key !== "Enter" &&
+  				event$3.key !== " "
   			)
   				return;
 
-  			const t = event$2.target;
+  			const t = event$3.target;
   			const t_parent = t.parentNode;
   			const item = t.classList.contains("fl-legend-item")
   				? t
@@ -11261,7 +11278,7 @@ var template = (function (exports) {
   					? t_parent
   					: null;
   			if (item) {
-  				const item_data = select$2(item).datum();
+  				const item_data = select$4(item).datum();
   				this._last_clicked_item = item_data;
 
   				if (item.matches(":focus-visible")) {
@@ -11377,7 +11394,7 @@ var template = (function (exports) {
   		announce_text = announce_count;
   	}
 
-  	select$2("#fl-legend-announcement")
+  	select$4("#fl-legend-announcement")
   		.text(announce_text)
   		.attr("aria-live", "assertive");
   };
@@ -11390,7 +11407,7 @@ var template = (function (exports) {
   	this._updateAnnouncements();
 
   	this._container
-  		.style("max-width", remToPx(this._state.max_width) + "px")
+  		.style("max-width", remToPx$3(this._state.max_width) + "px")
   		.style("display", "inline-flex")
   		.style("flex-wrap", "wrap")
   		.style(
@@ -11512,7 +11529,7 @@ var template = (function (exports) {
   	// Style all icons
   	legend_items_with_icons_update.each(function (d) {
   		// Using Math.ceil on SVG width and height seems to prevent subtle cropping of the icon edges (particularly apparent in outline mode)
-  		let height = Math.ceil(remToPx(_this._state.icon_height));
+  		let height = Math.ceil(remToPx$3(_this._state.icon_height));
 
   		let width = "auto";
   		if (d.icon.width) {
@@ -11523,13 +11540,13 @@ var template = (function (exports) {
   			h += stroke_width;
 
   			let aspect_ratio = w / h;
-  			let width_px = remToPx(_this._state.icon_height * aspect_ratio);
+  			let width_px = remToPx$3(_this._state.icon_height * aspect_ratio);
   			width = Math.ceil(width_px);
   		}
 
   		let margin_right = _this._state.text_size * 0.25 + "rem";
 
-  		select$2(this)
+  		select$4(this)
   			.selectAll(".fl-legend-icon")
   			.attr("height", height)
   			.attr("width", width)
@@ -11544,13 +11561,13 @@ var template = (function (exports) {
   		});
 
   	legend_items_with_icons_update.each(function (d) {
-  		select$2(this)
+  		select$4(this)
   			.select("svg.fl-legend-icon")
   			.style("display", d.icon.path_string ? "inline" : "none");
-  		select$2(this)
+  		select$4(this)
   			.select("img.fl-legend-icon")
   			.style("display", d.icon.url ? "inline" : "none");
-  		select$2(this)
+  		select$4(this)
   			.select("div.fl-legend-icon")
   			.style("display", d.icon.html ? "inline-block" : "none");
   	});
@@ -11566,7 +11583,7 @@ var template = (function (exports) {
   		.filter((d) => d.icon.html)
   		.select("div.fl-legend-icon")
   		.html((d) => d.icon.html)
-  		.style("font-size", `${Math.ceil(remToPx(this._state.icon_height))}px`)
+  		.style("font-size", `${Math.ceil(remToPx$3(this._state.icon_height))}px`)
   		.style("color", function (d) {
   			if (d.outline) return "none";
   			return d.fill || d.color || _this._state.icon_color;
@@ -11586,7 +11603,7 @@ var template = (function (exports) {
   			var stroke_width = d.outline ? h * d.stroke_thickness : 0;
   			h += stroke_width;
 
-  			var svg_height = remToPx(_this._state.icon_height);
+  			var svg_height = remToPx$3(_this._state.icon_height);
   			var scale_factor = svg_height / h;
 
   			var transform = "scale(" + scale_factor + ")";
@@ -11662,7 +11679,7 @@ var template = (function (exports) {
   	font_weight,
   	default_text_size = 1;
 
-  var DEFAULTS$3 = Object.freeze({
+  var DEFAULTS$a = Object.freeze({
   	alignment: "start",
   	orientation: "horizontal",
   	text_color: null,
@@ -11674,22 +11691,22 @@ var template = (function (exports) {
 
   function legendContainer(state_) {
   	this._state = state_;
-  	for (var key in DEFAULTS$3) {
-  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$3[key];
+  	for (var key in DEFAULTS$a) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$a[key];
   	}
 
   	return this;
   }
 
   legendContainer.prototype.appendTo = function (container_) {
-  	this._container = select$2(container_)
+  	this._container = select$4(container_)
   		.append("div")
   		.classed("fl-legend-wrapper", true)
   		.style("user-select", "none")
   		.style("-webkit-user-select", "none")
   		.node();
 
-  	select$2(this._container)
+  	select$4(this._container)
   		.insert("p", ":first-child")
   		.attr("class", "fl-legend-announcement fl-legend-sr-only")
   		.attr("id", "fl-legend-announcement");
@@ -11744,13 +11761,13 @@ var template = (function (exports) {
   	// ================== //
 
   	// Styles for main legend wrapper container
-  	select$2(this._container)
+  	select$4(this._container)
   		.style("justify-content", is_horizontal ? flex_alignment : null)
   		.style("align-items", is_horizontal ? null : flex_alignment)
   		.style("display", "flex")
   		.style("flex-direction", is_horizontal ? "row" : "column");
 
-  	var individual_legend_containers = select$2(this._container).selectAll(
+  	var individual_legend_containers = select$4(this._container).selectAll(
   		".fl-legend-container",
   	);
 
@@ -11767,7 +11784,7 @@ var template = (function (exports) {
   		.style("justify-content", flex_alignment);
 
   	// Styles for the titles of each legend
-  	select$2(this._container)
+  	select$4(this._container)
   		.selectAll(".fl-legend-title")
   		.style("color", this._state.text_color)
   		.style("font-weight", this._state.title_weight)
@@ -11783,13 +11800,13 @@ var template = (function (exports) {
   	// ============================ //
 
   	// Styles for discrete color legend items
-  	select$2(this._container)
+  	select$4(this._container)
   		.selectAll(".fl-legend-item")
   		.style("display", "inline-flex")
   		.style("text-align", alignment);
 
   	// Styles discrete color legend labels
-  	select$2(this._container)
+  	select$4(this._container)
   		.selectAll(".fl-legend-label")
   		.style("color", this._state.text_color)
   		.style("font-weight", this._state.text_weight)
@@ -11800,7 +11817,7 @@ var template = (function (exports) {
   	// ===================================== //
 
   	// Styles for continuous size and color legend labels
-  	select$2(this._container)
+  	select$4(this._container)
   		.selectAll(".label")
   		.style("color", this._state.text_color)
   		.style("font-weight", this._state.text_weight)
@@ -12497,6 +12514,7077 @@ var template = (function (exports) {
   }
   Flourish_popup.version = VERSION;
 
+  var xhtml$3 = "http://www.w3.org/1999/xhtml";
+
+  var namespaces$3 = {
+    svg: "http://www.w3.org/2000/svg",
+    xhtml: xhtml$3,
+    xlink: "http://www.w3.org/1999/xlink",
+    xml: "http://www.w3.org/XML/1998/namespace",
+    xmlns: "http://www.w3.org/2000/xmlns/"
+  };
+
+  function namespace$3(name) {
+    var prefix = name += "", i = prefix.indexOf(":");
+    if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns") name = name.slice(i + 1);
+    return namespaces$3.hasOwnProperty(prefix) ? {space: namespaces$3[prefix], local: name} : name;
+  }
+
+  function creatorInherit$3(name) {
+    return function() {
+      var document = this.ownerDocument,
+          uri = this.namespaceURI;
+      return uri === xhtml$3 && document.documentElement.namespaceURI === xhtml$3
+          ? document.createElement(name)
+          : document.createElementNS(uri, name);
+    };
+  }
+
+  function creatorFixed$3(fullname) {
+    return function() {
+      return this.ownerDocument.createElementNS(fullname.space, fullname.local);
+    };
+  }
+
+  function creator$3(name) {
+    var fullname = namespace$3(name);
+    return (fullname.local
+        ? creatorFixed$3
+        : creatorInherit$3)(fullname);
+  }
+
+  function none$3() {}
+
+  function selector$3(selector) {
+    return selector == null ? none$3 : function() {
+      return this.querySelector(selector);
+    };
+  }
+
+  function selection_select$3(select) {
+    if (typeof select !== "function") select = selector$3(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+        if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
+          if ("__data__" in node) subnode.__data__ = node.__data__;
+          subgroup[i] = subnode;
+        }
+      }
+    }
+
+    return new Selection$6(subgroups, this._parents);
+  }
+
+  function empty$3() {
+    return [];
+  }
+
+  function selectorAll$3(selector) {
+    return selector == null ? empty$3 : function() {
+      return this.querySelectorAll(selector);
+    };
+  }
+
+  function selection_selectAll$3(select) {
+    if (typeof select !== "function") select = selectorAll$3(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          subgroups.push(select.call(node, node.__data__, i, group));
+          parents.push(node);
+        }
+      }
+    }
+
+    return new Selection$6(subgroups, parents);
+  }
+
+  function matcher$3(selector) {
+    return function() {
+      return this.matches(selector);
+    };
+  }
+
+  function selection_filter$3(match) {
+    if (typeof match !== "function") match = matcher$3(match);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+        if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
+          subgroup.push(node);
+        }
+      }
+    }
+
+    return new Selection$6(subgroups, this._parents);
+  }
+
+  function sparse$3(update) {
+    return new Array(update.length);
+  }
+
+  function selection_enter$3() {
+    return new Selection$6(this._enter || this._groups.map(sparse$3), this._parents);
+  }
+
+  function EnterNode$3(parent, datum) {
+    this.ownerDocument = parent.ownerDocument;
+    this.namespaceURI = parent.namespaceURI;
+    this._next = null;
+    this._parent = parent;
+    this.__data__ = datum;
+  }
+
+  EnterNode$3.prototype = {
+    constructor: EnterNode$3,
+    appendChild: function(child) { return this._parent.insertBefore(child, this._next); },
+    insertBefore: function(child, next) { return this._parent.insertBefore(child, next); },
+    querySelector: function(selector) { return this._parent.querySelector(selector); },
+    querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
+  };
+
+  function constant$6(x) {
+    return function() {
+      return x;
+    };
+  }
+
+  var keyPrefix$2 = "$"; // Protect against keys like “__proto__”.
+
+  function bindIndex$3(parent, group, enter, update, exit, data) {
+    var i = 0,
+        node,
+        groupLength = group.length,
+        dataLength = data.length;
+
+    // Put any non-null nodes that fit into update.
+    // Put any null nodes into enter.
+    // Put any remaining data into enter.
+    for (; i < dataLength; ++i) {
+      if (node = group[i]) {
+        node.__data__ = data[i];
+        update[i] = node;
+      } else {
+        enter[i] = new EnterNode$3(parent, data[i]);
+      }
+    }
+
+    // Put any non-null nodes that don’t fit into exit.
+    for (; i < groupLength; ++i) {
+      if (node = group[i]) {
+        exit[i] = node;
+      }
+    }
+  }
+
+  function bindKey$3(parent, group, enter, update, exit, data, key) {
+    var i,
+        node,
+        nodeByKeyValue = {},
+        groupLength = group.length,
+        dataLength = data.length,
+        keyValues = new Array(groupLength),
+        keyValue;
+
+    // Compute the key for each node.
+    // If multiple nodes have the same key, the duplicates are added to exit.
+    for (i = 0; i < groupLength; ++i) {
+      if (node = group[i]) {
+        keyValues[i] = keyValue = keyPrefix$2 + key.call(node, node.__data__, i, group);
+        if (keyValue in nodeByKeyValue) {
+          exit[i] = node;
+        } else {
+          nodeByKeyValue[keyValue] = node;
+        }
+      }
+    }
+
+    // Compute the key for each datum.
+    // If there a node associated with this key, join and add it to update.
+    // If there is not (or the key is a duplicate), add it to enter.
+    for (i = 0; i < dataLength; ++i) {
+      keyValue = keyPrefix$2 + key.call(parent, data[i], i, data);
+      if (node = nodeByKeyValue[keyValue]) {
+        update[i] = node;
+        node.__data__ = data[i];
+        nodeByKeyValue[keyValue] = null;
+      } else {
+        enter[i] = new EnterNode$3(parent, data[i]);
+      }
+    }
+
+    // Add any remaining nodes that were not bound to data to exit.
+    for (i = 0; i < groupLength; ++i) {
+      if ((node = group[i]) && (nodeByKeyValue[keyValues[i]] === node)) {
+        exit[i] = node;
+      }
+    }
+  }
+
+  function selection_data$3(value, key) {
+    if (!value) {
+      data = new Array(this.size()), j = -1;
+      this.each(function(d) { data[++j] = d; });
+      return data;
+    }
+
+    var bind = key ? bindKey$3 : bindIndex$3,
+        parents = this._parents,
+        groups = this._groups;
+
+    if (typeof value !== "function") value = constant$6(value);
+
+    for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
+      var parent = parents[j],
+          group = groups[j],
+          groupLength = group.length,
+          data = value.call(parent, parent && parent.__data__, j, parents),
+          dataLength = data.length,
+          enterGroup = enter[j] = new Array(dataLength),
+          updateGroup = update[j] = new Array(dataLength),
+          exitGroup = exit[j] = new Array(groupLength);
+
+      bind(parent, group, enterGroup, updateGroup, exitGroup, data, key);
+
+      // Now connect the enter nodes to their following update node, such that
+      // appendChild can insert the materialized enter node before this node,
+      // rather than at the end of the parent node.
+      for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
+        if (previous = enterGroup[i0]) {
+          if (i0 >= i1) i1 = i0 + 1;
+          while (!(next = updateGroup[i1]) && ++i1 < dataLength);
+          previous._next = next || null;
+        }
+      }
+    }
+
+    update = new Selection$6(update, parents);
+    update._enter = enter;
+    update._exit = exit;
+    return update;
+  }
+
+  function selection_exit$3() {
+    return new Selection$6(this._exit || this._groups.map(sparse$3), this._parents);
+  }
+
+  function selection_join$3(onenter, onupdate, onexit) {
+    var enter = this.enter(), update = this, exit = this.exit();
+    enter = typeof onenter === "function" ? onenter(enter) : enter.append(onenter + "");
+    if (onupdate != null) update = onupdate(update);
+    if (onexit == null) exit.remove(); else onexit(exit);
+    return enter && update ? enter.merge(update).order() : update;
+  }
+
+  function selection_merge$3(selection) {
+
+    for (var groups0 = this._groups, groups1 = selection._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+      for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group0[i] || group1[i]) {
+          merge[i] = node;
+        }
+      }
+    }
+
+    for (; j < m0; ++j) {
+      merges[j] = groups0[j];
+    }
+
+    return new Selection$6(merges, this._parents);
+  }
+
+  function selection_order$3() {
+
+    for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
+      for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
+        if (node = group[i]) {
+          if (next && node.compareDocumentPosition(next) ^ 4) next.parentNode.insertBefore(node, next);
+          next = node;
+        }
+      }
+    }
+
+    return this;
+  }
+
+  function selection_sort$3(compare) {
+    if (!compare) compare = ascending$4;
+
+    function compareNode(a, b) {
+      return a && b ? compare(a.__data__, b.__data__) : !a - !b;
+    }
+
+    for (var groups = this._groups, m = groups.length, sortgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, sortgroup = sortgroups[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          sortgroup[i] = node;
+        }
+      }
+      sortgroup.sort(compareNode);
+    }
+
+    return new Selection$6(sortgroups, this._parents).order();
+  }
+
+  function ascending$4(a, b) {
+    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+  }
+
+  function selection_call$3() {
+    var callback = arguments[0];
+    arguments[0] = this;
+    callback.apply(null, arguments);
+    return this;
+  }
+
+  function selection_nodes$3() {
+    var nodes = new Array(this.size()), i = -1;
+    this.each(function() { nodes[++i] = this; });
+    return nodes;
+  }
+
+  function selection_node$3() {
+
+    for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+      for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
+        var node = group[i];
+        if (node) return node;
+      }
+    }
+
+    return null;
+  }
+
+  function selection_size$3() {
+    var size = 0;
+    this.each(function() { ++size; });
+    return size;
+  }
+
+  function selection_empty$3() {
+    return !this.node();
+  }
+
+  function selection_each$3(callback) {
+
+    for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+      for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
+        if (node = group[i]) callback.call(node, node.__data__, i, group);
+      }
+    }
+
+    return this;
+  }
+
+  function attrRemove$6(name) {
+    return function() {
+      this.removeAttribute(name);
+    };
+  }
+
+  function attrRemoveNS$6(fullname) {
+    return function() {
+      this.removeAttributeNS(fullname.space, fullname.local);
+    };
+  }
+
+  function attrConstant$6(name, value) {
+    return function() {
+      this.setAttribute(name, value);
+    };
+  }
+
+  function attrConstantNS$6(fullname, value) {
+    return function() {
+      this.setAttributeNS(fullname.space, fullname.local, value);
+    };
+  }
+
+  function attrFunction$6(name, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.removeAttribute(name);
+      else this.setAttribute(name, v);
+    };
+  }
+
+  function attrFunctionNS$6(fullname, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
+      else this.setAttributeNS(fullname.space, fullname.local, v);
+    };
+  }
+
+  function selection_attr$3(name, value) {
+    var fullname = namespace$3(name);
+
+    if (arguments.length < 2) {
+      var node = this.node();
+      return fullname.local
+          ? node.getAttributeNS(fullname.space, fullname.local)
+          : node.getAttribute(fullname);
+    }
+
+    return this.each((value == null
+        ? (fullname.local ? attrRemoveNS$6 : attrRemove$6) : (typeof value === "function"
+        ? (fullname.local ? attrFunctionNS$6 : attrFunction$6)
+        : (fullname.local ? attrConstantNS$6 : attrConstant$6)))(fullname, value));
+  }
+
+  function defaultView$3(node) {
+    return (node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
+        || (node.document && node) // node is a Window
+        || node.defaultView; // node is a Document
+  }
+
+  function styleRemove$6(name) {
+    return function() {
+      this.style.removeProperty(name);
+    };
+  }
+
+  function styleConstant$6(name, value, priority) {
+    return function() {
+      this.style.setProperty(name, value, priority);
+    };
+  }
+
+  function styleFunction$6(name, value, priority) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.style.removeProperty(name);
+      else this.style.setProperty(name, v, priority);
+    };
+  }
+
+  function selection_style$3(name, value, priority) {
+    return arguments.length > 1
+        ? this.each((value == null
+              ? styleRemove$6 : typeof value === "function"
+              ? styleFunction$6
+              : styleConstant$6)(name, value, priority == null ? "" : priority))
+        : styleValue$3(this.node(), name);
+  }
+
+  function styleValue$3(node, name) {
+    return node.style.getPropertyValue(name)
+        || defaultView$3(node).getComputedStyle(node, null).getPropertyValue(name);
+  }
+
+  function propertyRemove$3(name) {
+    return function() {
+      delete this[name];
+    };
+  }
+
+  function propertyConstant$3(name, value) {
+    return function() {
+      this[name] = value;
+    };
+  }
+
+  function propertyFunction$3(name, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) delete this[name];
+      else this[name] = v;
+    };
+  }
+
+  function selection_property$3(name, value) {
+    return arguments.length > 1
+        ? this.each((value == null
+            ? propertyRemove$3 : typeof value === "function"
+            ? propertyFunction$3
+            : propertyConstant$3)(name, value))
+        : this.node()[name];
+  }
+
+  function classArray$3(string) {
+    return string.trim().split(/^|\s+/);
+  }
+
+  function classList$3(node) {
+    return node.classList || new ClassList$3(node);
+  }
+
+  function ClassList$3(node) {
+    this._node = node;
+    this._names = classArray$3(node.getAttribute("class") || "");
+  }
+
+  ClassList$3.prototype = {
+    add: function(name) {
+      var i = this._names.indexOf(name);
+      if (i < 0) {
+        this._names.push(name);
+        this._node.setAttribute("class", this._names.join(" "));
+      }
+    },
+    remove: function(name) {
+      var i = this._names.indexOf(name);
+      if (i >= 0) {
+        this._names.splice(i, 1);
+        this._node.setAttribute("class", this._names.join(" "));
+      }
+    },
+    contains: function(name) {
+      return this._names.indexOf(name) >= 0;
+    }
+  };
+
+  function classedAdd$3(node, names) {
+    var list = classList$3(node), i = -1, n = names.length;
+    while (++i < n) list.add(names[i]);
+  }
+
+  function classedRemove$3(node, names) {
+    var list = classList$3(node), i = -1, n = names.length;
+    while (++i < n) list.remove(names[i]);
+  }
+
+  function classedTrue$3(names) {
+    return function() {
+      classedAdd$3(this, names);
+    };
+  }
+
+  function classedFalse$3(names) {
+    return function() {
+      classedRemove$3(this, names);
+    };
+  }
+
+  function classedFunction$3(names, value) {
+    return function() {
+      (value.apply(this, arguments) ? classedAdd$3 : classedRemove$3)(this, names);
+    };
+  }
+
+  function selection_classed$3(name, value) {
+    var names = classArray$3(name + "");
+
+    if (arguments.length < 2) {
+      var list = classList$3(this.node()), i = -1, n = names.length;
+      while (++i < n) if (!list.contains(names[i])) return false;
+      return true;
+    }
+
+    return this.each((typeof value === "function"
+        ? classedFunction$3 : value
+        ? classedTrue$3
+        : classedFalse$3)(names, value));
+  }
+
+  function textRemove$3() {
+    this.textContent = "";
+  }
+
+  function textConstant$6(value) {
+    return function() {
+      this.textContent = value;
+    };
+  }
+
+  function textFunction$6(value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      this.textContent = v == null ? "" : v;
+    };
+  }
+
+  function selection_text$3(value) {
+    return arguments.length
+        ? this.each(value == null
+            ? textRemove$3 : (typeof value === "function"
+            ? textFunction$6
+            : textConstant$6)(value))
+        : this.node().textContent;
+  }
+
+  function htmlRemove$3() {
+    this.innerHTML = "";
+  }
+
+  function htmlConstant$3(value) {
+    return function() {
+      this.innerHTML = value;
+    };
+  }
+
+  function htmlFunction$3(value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      this.innerHTML = v == null ? "" : v;
+    };
+  }
+
+  function selection_html$3(value) {
+    return arguments.length
+        ? this.each(value == null
+            ? htmlRemove$3 : (typeof value === "function"
+            ? htmlFunction$3
+            : htmlConstant$3)(value))
+        : this.node().innerHTML;
+  }
+
+  function raise$3() {
+    if (this.nextSibling) this.parentNode.appendChild(this);
+  }
+
+  function selection_raise$3() {
+    return this.each(raise$3);
+  }
+
+  function lower$3() {
+    if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
+  }
+
+  function selection_lower$3() {
+    return this.each(lower$3);
+  }
+
+  function selection_append$3(name) {
+    var create = typeof name === "function" ? name : creator$3(name);
+    return this.select(function() {
+      return this.appendChild(create.apply(this, arguments));
+    });
+  }
+
+  function constantNull$3() {
+    return null;
+  }
+
+  function selection_insert$3(name, before) {
+    var create = typeof name === "function" ? name : creator$3(name),
+        select = before == null ? constantNull$3 : typeof before === "function" ? before : selector$3(before);
+    return this.select(function() {
+      return this.insertBefore(create.apply(this, arguments), select.apply(this, arguments) || null);
+    });
+  }
+
+  function remove$3() {
+    var parent = this.parentNode;
+    if (parent) parent.removeChild(this);
+  }
+
+  function selection_remove$3() {
+    return this.each(remove$3);
+  }
+
+  function selection_cloneShallow$3() {
+    var clone = this.cloneNode(false), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+  }
+
+  function selection_cloneDeep$3() {
+    var clone = this.cloneNode(true), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+  }
+
+  function selection_clone$3(deep) {
+    return this.select(deep ? selection_cloneDeep$3 : selection_cloneShallow$3);
+  }
+
+  function selection_datum$3(value) {
+    return arguments.length
+        ? this.property("__data__", value)
+        : this.node().__data__;
+  }
+
+  var filterEvents$2 = {};
+
+  var event$2 = null;
+
+  if (typeof document !== "undefined") {
+    var element$2 = document.documentElement;
+    if (!("onmouseenter" in element$2)) {
+      filterEvents$2 = {mouseenter: "mouseover", mouseleave: "mouseout"};
+    }
+  }
+
+  function filterContextListener$2(listener, index, group) {
+    listener = contextListener$3(listener, index, group);
+    return function(event) {
+      var related = event.relatedTarget;
+      if (!related || (related !== this && !(related.compareDocumentPosition(this) & 8))) {
+        listener.call(this, event);
+      }
+    };
+  }
+
+  function contextListener$3(listener, index, group) {
+    return function(event1) {
+      var event0 = event$2; // Events can be reentrant (e.g., focus).
+      event$2 = event1;
+      try {
+        listener.call(this, this.__data__, index, group);
+      } finally {
+        event$2 = event0;
+      }
+    };
+  }
+
+  function parseTypenames$7(typenames) {
+    return typenames.trim().split(/^|\s+/).map(function(t) {
+      var name = "", i = t.indexOf(".");
+      if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
+      return {type: t, name: name};
+    });
+  }
+
+  function onRemove$3(typename) {
+    return function() {
+      var on = this.__on;
+      if (!on) return;
+      for (var j = 0, i = -1, m = on.length, o; j < m; ++j) {
+        if (o = on[j], (!typename.type || o.type === typename.type) && o.name === typename.name) {
+          this.removeEventListener(o.type, o.listener, o.capture);
+        } else {
+          on[++i] = o;
+        }
+      }
+      if (++i) on.length = i;
+      else delete this.__on;
+    };
+  }
+
+  function onAdd$3(typename, value, capture) {
+    var wrap = filterEvents$2.hasOwnProperty(typename.type) ? filterContextListener$2 : contextListener$3;
+    return function(d, i, group) {
+      var on = this.__on, o, listener = wrap(value, i, group);
+      if (on) for (var j = 0, m = on.length; j < m; ++j) {
+        if ((o = on[j]).type === typename.type && o.name === typename.name) {
+          this.removeEventListener(o.type, o.listener, o.capture);
+          this.addEventListener(o.type, o.listener = listener, o.capture = capture);
+          o.value = value;
+          return;
+        }
+      }
+      this.addEventListener(typename.type, listener, capture);
+      o = {type: typename.type, name: typename.name, value: value, listener: listener, capture: capture};
+      if (!on) this.__on = [o];
+      else on.push(o);
+    };
+  }
+
+  function selection_on$3(typename, value, capture) {
+    var typenames = parseTypenames$7(typename + ""), i, n = typenames.length, t;
+
+    if (arguments.length < 2) {
+      var on = this.node().__on;
+      if (on) for (var j = 0, m = on.length, o; j < m; ++j) {
+        for (i = 0, o = on[j]; i < n; ++i) {
+          if ((t = typenames[i]).type === o.type && t.name === o.name) {
+            return o.value;
+          }
+        }
+      }
+      return;
+    }
+
+    on = value ? onAdd$3 : onRemove$3;
+    if (capture == null) capture = false;
+    for (i = 0; i < n; ++i) this.each(on(typenames[i], value, capture));
+    return this;
+  }
+
+  function dispatchEvent$3(node, type, params) {
+    var window = defaultView$3(node),
+        event = window.CustomEvent;
+
+    if (typeof event === "function") {
+      event = new event(type, params);
+    } else {
+      event = window.document.createEvent("Event");
+      if (params) event.initEvent(type, params.bubbles, params.cancelable), event.detail = params.detail;
+      else event.initEvent(type, false, false);
+    }
+
+    node.dispatchEvent(event);
+  }
+
+  function dispatchConstant$3(type, params) {
+    return function() {
+      return dispatchEvent$3(this, type, params);
+    };
+  }
+
+  function dispatchFunction$3(type, params) {
+    return function() {
+      return dispatchEvent$3(this, type, params.apply(this, arguments));
+    };
+  }
+
+  function selection_dispatch$3(type, params) {
+    return this.each((typeof params === "function"
+        ? dispatchFunction$3
+        : dispatchConstant$3)(type, params));
+  }
+
+  var root$3 = [null];
+
+  function Selection$6(groups, parents) {
+    this._groups = groups;
+    this._parents = parents;
+  }
+
+  function selection$2() {
+    return new Selection$6([[document.documentElement]], root$3);
+  }
+
+  Selection$6.prototype = selection$2.prototype = {
+    constructor: Selection$6,
+    select: selection_select$3,
+    selectAll: selection_selectAll$3,
+    filter: selection_filter$3,
+    data: selection_data$3,
+    enter: selection_enter$3,
+    exit: selection_exit$3,
+    join: selection_join$3,
+    merge: selection_merge$3,
+    order: selection_order$3,
+    sort: selection_sort$3,
+    call: selection_call$3,
+    nodes: selection_nodes$3,
+    node: selection_node$3,
+    size: selection_size$3,
+    empty: selection_empty$3,
+    each: selection_each$3,
+    attr: selection_attr$3,
+    style: selection_style$3,
+    property: selection_property$3,
+    classed: selection_classed$3,
+    text: selection_text$3,
+    html: selection_html$3,
+    raise: selection_raise$3,
+    lower: selection_lower$3,
+    append: selection_append$3,
+    insert: selection_insert$3,
+    remove: selection_remove$3,
+    clone: selection_clone$3,
+    datum: selection_datum$3,
+    on: selection_on$3,
+    dispatch: selection_dispatch$3
+  };
+
+  function select$3(selector) {
+    return typeof selector === "string"
+        ? new Selection$6([[document.querySelector(selector)]], [document.documentElement])
+        : new Selection$6([[selector]], root$3);
+  }
+
+  function create$3(name) {
+    return select$3(creator$3(name).call(document.documentElement));
+  }
+
+  var frame$3 = 0, // is an animation frame pending?
+      timeout$6 = 0, // is a timeout pending?
+      interval$3 = 0, // are any timers active?
+      pokeDelay$3 = 1000, // how frequently we check for clock skew
+      taskHead$3,
+      taskTail$3,
+      clockLast$3 = 0,
+      clockNow$3 = 0,
+      clockSkew$3 = 0,
+      clock$3 = typeof performance === "object" && performance.now ? performance : Date,
+      setFrame$3 = typeof window === "object" && window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function(f) { setTimeout(f, 17); };
+
+  function now$3() {
+    return clockNow$3 || (setFrame$3(clearNow$3), clockNow$3 = clock$3.now() + clockSkew$3);
+  }
+
+  function clearNow$3() {
+    clockNow$3 = 0;
+  }
+
+  function Timer$3() {
+    this._call =
+    this._time =
+    this._next = null;
+  }
+
+  Timer$3.prototype = timer$3.prototype = {
+    constructor: Timer$3,
+    restart: function(callback, delay, time) {
+      if (typeof callback !== "function") throw new TypeError("callback is not a function");
+      time = (time == null ? now$3() : +time) + (delay == null ? 0 : +delay);
+      if (!this._next && taskTail$3 !== this) {
+        if (taskTail$3) taskTail$3._next = this;
+        else taskHead$3 = this;
+        taskTail$3 = this;
+      }
+      this._call = callback;
+      this._time = time;
+      sleep$3();
+    },
+    stop: function() {
+      if (this._call) {
+        this._call = null;
+        this._time = Infinity;
+        sleep$3();
+      }
+    }
+  };
+
+  function timer$3(callback, delay, time) {
+    var t = new Timer$3;
+    t.restart(callback, delay, time);
+    return t;
+  }
+
+  function timerFlush$3() {
+    now$3(); // Get the current time, if not already set.
+    ++frame$3; // Pretend we’ve set an alarm, if we haven’t already.
+    var t = taskHead$3, e;
+    while (t) {
+      if ((e = clockNow$3 - t._time) >= 0) t._call.call(null, e);
+      t = t._next;
+    }
+    --frame$3;
+  }
+
+  function wake$3() {
+    clockNow$3 = (clockLast$3 = clock$3.now()) + clockSkew$3;
+    frame$3 = timeout$6 = 0;
+    try {
+      timerFlush$3();
+    } finally {
+      frame$3 = 0;
+      nap$3();
+      clockNow$3 = 0;
+    }
+  }
+
+  function poke$3() {
+    var now = clock$3.now(), delay = now - clockLast$3;
+    if (delay > pokeDelay$3) clockSkew$3 -= delay, clockLast$3 = now;
+  }
+
+  function nap$3() {
+    var t0, t1 = taskHead$3, t2, time = Infinity;
+    while (t1) {
+      if (t1._call) {
+        if (time > t1._time) time = t1._time;
+        t0 = t1, t1 = t1._next;
+      } else {
+        t2 = t1._next, t1._next = null;
+        t1 = t0 ? t0._next = t2 : taskHead$3 = t2;
+      }
+    }
+    taskTail$3 = t0;
+    sleep$3(time);
+  }
+
+  function sleep$3(time) {
+    if (frame$3) return; // Soonest alarm already set, or will be.
+    if (timeout$6) timeout$6 = clearTimeout(timeout$6);
+    var delay = time - clockNow$3; // Strictly less than if we recomputed clockNow.
+    if (delay > 24) {
+      if (time < Infinity) timeout$6 = setTimeout(wake$3, time - clock$3.now() - clockSkew$3);
+      if (interval$3) interval$3 = clearInterval(interval$3);
+    } else {
+      if (!interval$3) clockLast$3 = clock$3.now(), interval$3 = setInterval(poke$3, pokeDelay$3);
+      frame$3 = 1, setFrame$3(wake$3);
+    }
+  }
+
+  function timeout$5(callback, delay, time) {
+    var t = new Timer$3;
+    delay = delay == null ? 0 : +delay;
+    t.restart(function(elapsed) {
+      t.stop();
+      callback(elapsed + delay);
+    }, delay, time);
+    return t;
+  }
+
+  var noop$3 = {value: function() {}};
+
+  function dispatch$3() {
+    for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
+      if (!(t = arguments[i] + "") || (t in _) || /[\s.]/.test(t)) throw new Error("illegal type: " + t);
+      _[t] = [];
+    }
+    return new Dispatch$3(_);
+  }
+
+  function Dispatch$3(_) {
+    this._ = _;
+  }
+
+  function parseTypenames$6(typenames, types) {
+    return typenames.trim().split(/^|\s+/).map(function(t) {
+      var name = "", i = t.indexOf(".");
+      if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
+      if (t && !types.hasOwnProperty(t)) throw new Error("unknown type: " + t);
+      return {type: t, name: name};
+    });
+  }
+
+  Dispatch$3.prototype = dispatch$3.prototype = {
+    constructor: Dispatch$3,
+    on: function(typename, callback) {
+      var _ = this._,
+          T = parseTypenames$6(typename + "", _),
+          t,
+          i = -1,
+          n = T.length;
+
+      // If no callback was specified, return the callback of the given type and name.
+      if (arguments.length < 2) {
+        while (++i < n) if ((t = (typename = T[i]).type) && (t = get$6(_[t], typename.name))) return t;
+        return;
+      }
+
+      // If a type was specified, set the callback for the given type and name.
+      // Otherwise, if a null callback was specified, remove callbacks of the given name.
+      if (callback != null && typeof callback !== "function") throw new Error("invalid callback: " + callback);
+      while (++i < n) {
+        if (t = (typename = T[i]).type) _[t] = set$6(_[t], typename.name, callback);
+        else if (callback == null) for (t in _) _[t] = set$6(_[t], typename.name, null);
+      }
+
+      return this;
+    },
+    copy: function() {
+      var copy = {}, _ = this._;
+      for (var t in _) copy[t] = _[t].slice();
+      return new Dispatch$3(copy);
+    },
+    call: function(type, that) {
+      if ((n = arguments.length - 2) > 0) for (var args = new Array(n), i = 0, n, t; i < n; ++i) args[i] = arguments[i + 2];
+      if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
+      for (t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
+    },
+    apply: function(type, that, args) {
+      if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
+      for (var t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
+    }
+  };
+
+  function get$6(type, name) {
+    for (var i = 0, n = type.length, c; i < n; ++i) {
+      if ((c = type[i]).name === name) {
+        return c.value;
+      }
+    }
+  }
+
+  function set$6(type, name, callback) {
+    for (var i = 0, n = type.length; i < n; ++i) {
+      if (type[i].name === name) {
+        type[i] = noop$3, type = type.slice(0, i).concat(type.slice(i + 1));
+        break;
+      }
+    }
+    if (callback != null) type.push({name: name, value: callback});
+    return type;
+  }
+
+  var emptyOn$2 = dispatch$3("start", "end", "cancel", "interrupt");
+  var emptyTween$2 = [];
+
+  var CREATED$2 = 0;
+  var SCHEDULED$2 = 1;
+  var STARTING$2 = 2;
+  var STARTED$2 = 3;
+  var RUNNING$2 = 4;
+  var ENDING$2 = 5;
+  var ENDED$2 = 6;
+
+  function schedule$2(node, name, id, index, group, timing) {
+    var schedules = node.__transition;
+    if (!schedules) node.__transition = {};
+    else if (id in schedules) return;
+    create$2(node, id, {
+      name: name,
+      index: index, // For context during callback.
+      group: group, // For context during callback.
+      on: emptyOn$2,
+      tween: emptyTween$2,
+      time: timing.time,
+      delay: timing.delay,
+      duration: timing.duration,
+      ease: timing.ease,
+      timer: null,
+      state: CREATED$2
+    });
+  }
+
+  function init$4(node, id) {
+    var schedule = get$5(node, id);
+    if (schedule.state > CREATED$2) throw new Error("too late; already scheduled");
+    return schedule;
+  }
+
+  function set$5(node, id) {
+    var schedule = get$5(node, id);
+    if (schedule.state > STARTED$2) throw new Error("too late; already running");
+    return schedule;
+  }
+
+  function get$5(node, id) {
+    var schedule = node.__transition;
+    if (!schedule || !(schedule = schedule[id])) throw new Error("transition not found");
+    return schedule;
+  }
+
+  function create$2(node, id, self) {
+    var schedules = node.__transition,
+        tween;
+
+    // Initialize the self timer when the transition is created.
+    // Note the actual delay is not known until the first callback!
+    schedules[id] = self;
+    self.timer = timer$3(schedule, 0, self.time);
+
+    function schedule(elapsed) {
+      self.state = SCHEDULED$2;
+      self.timer.restart(start, self.delay, self.time);
+
+      // If the elapsed delay is less than our first sleep, start immediately.
+      if (self.delay <= elapsed) start(elapsed - self.delay);
+    }
+
+    function start(elapsed) {
+      var i, j, n, o;
+
+      // If the state is not SCHEDULED, then we previously errored on start.
+      if (self.state !== SCHEDULED$2) return stop();
+
+      for (i in schedules) {
+        o = schedules[i];
+        if (o.name !== self.name) continue;
+
+        // While this element already has a starting transition during this frame,
+        // defer starting an interrupting transition until that transition has a
+        // chance to tick (and possibly end); see d3/d3-transition#54!
+        if (o.state === STARTED$2) return timeout$5(start);
+
+        // Interrupt the active transition, if any.
+        if (o.state === RUNNING$2) {
+          o.state = ENDED$2;
+          o.timer.stop();
+          o.on.call("interrupt", node, node.__data__, o.index, o.group);
+          delete schedules[i];
+        }
+
+        // Cancel any pre-empted transitions.
+        else if (+i < id) {
+          o.state = ENDED$2;
+          o.timer.stop();
+          o.on.call("cancel", node, node.__data__, o.index, o.group);
+          delete schedules[i];
+        }
+      }
+
+      // Defer the first tick to end of the current frame; see d3/d3#1576.
+      // Note the transition may be canceled after start and before the first tick!
+      // Note this must be scheduled before the start event; see d3/d3-transition#16!
+      // Assuming this is successful, subsequent callbacks go straight to tick.
+      timeout$5(function() {
+        if (self.state === STARTED$2) {
+          self.state = RUNNING$2;
+          self.timer.restart(tick, self.delay, self.time);
+          tick(elapsed);
+        }
+      });
+
+      // Dispatch the start event.
+      // Note this must be done before the tween are initialized.
+      self.state = STARTING$2;
+      self.on.call("start", node, node.__data__, self.index, self.group);
+      if (self.state !== STARTING$2) return; // interrupted
+      self.state = STARTED$2;
+
+      // Initialize the tween, deleting null tween.
+      tween = new Array(n = self.tween.length);
+      for (i = 0, j = -1; i < n; ++i) {
+        if (o = self.tween[i].value.call(node, node.__data__, self.index, self.group)) {
+          tween[++j] = o;
+        }
+      }
+      tween.length = j + 1;
+    }
+
+    function tick(elapsed) {
+      var t = elapsed < self.duration ? self.ease.call(null, elapsed / self.duration) : (self.timer.restart(stop), self.state = ENDING$2, 1),
+          i = -1,
+          n = tween.length;
+
+      while (++i < n) {
+        tween[i].call(node, t);
+      }
+
+      // Dispatch the end event.
+      if (self.state === ENDING$2) {
+        self.on.call("end", node, node.__data__, self.index, self.group);
+        stop();
+      }
+    }
+
+    function stop() {
+      self.state = ENDED$2;
+      self.timer.stop();
+      delete schedules[id];
+      for (var i in schedules) return; // eslint-disable-line no-unused-vars
+      delete node.__transition;
+    }
+  }
+
+  function interrupt$2(node, name) {
+    var schedules = node.__transition,
+        schedule,
+        active,
+        empty = true,
+        i;
+
+    if (!schedules) return;
+
+    name = name == null ? null : name + "";
+
+    for (i in schedules) {
+      if ((schedule = schedules[i]).name !== name) { empty = false; continue; }
+      active = schedule.state > STARTING$2 && schedule.state < ENDING$2;
+      schedule.state = ENDED$2;
+      schedule.timer.stop();
+      schedule.on.call(active ? "interrupt" : "cancel", node, node.__data__, schedule.index, schedule.group);
+      delete schedules[i];
+    }
+
+    if (empty) delete node.__transition;
+  }
+
+  function selection_interrupt$2(name) {
+    return this.each(function() {
+      interrupt$2(this, name);
+    });
+  }
+
+  function define$2(constructor, factory, prototype) {
+    constructor.prototype = factory.prototype = prototype;
+    prototype.constructor = constructor;
+  }
+
+  function extend$2(parent, definition) {
+    var prototype = Object.create(parent.prototype);
+    for (var key in definition) prototype[key] = definition[key];
+    return prototype;
+  }
+
+  function Color$2() {}
+
+  var darker$2 = 0.7;
+  var brighter$2 = 1 / darker$2;
+
+  var reI$2 = "\\s*([+-]?\\d+)\\s*",
+      reN$2 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+      reP$2 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+      reHex$2 = /^#([0-9a-f]{3,8})$/,
+      reRgbInteger$2 = new RegExp("^rgb\\(" + [reI$2, reI$2, reI$2] + "\\)$"),
+      reRgbPercent$2 = new RegExp("^rgb\\(" + [reP$2, reP$2, reP$2] + "\\)$"),
+      reRgbaInteger$2 = new RegExp("^rgba\\(" + [reI$2, reI$2, reI$2, reN$2] + "\\)$"),
+      reRgbaPercent$2 = new RegExp("^rgba\\(" + [reP$2, reP$2, reP$2, reN$2] + "\\)$"),
+      reHslPercent$2 = new RegExp("^hsl\\(" + [reN$2, reP$2, reP$2] + "\\)$"),
+      reHslaPercent$2 = new RegExp("^hsla\\(" + [reN$2, reP$2, reP$2, reN$2] + "\\)$");
+
+  var named$2 = {
+    aliceblue: 0xf0f8ff,
+    antiquewhite: 0xfaebd7,
+    aqua: 0x00ffff,
+    aquamarine: 0x7fffd4,
+    azure: 0xf0ffff,
+    beige: 0xf5f5dc,
+    bisque: 0xffe4c4,
+    black: 0x000000,
+    blanchedalmond: 0xffebcd,
+    blue: 0x0000ff,
+    blueviolet: 0x8a2be2,
+    brown: 0xa52a2a,
+    burlywood: 0xdeb887,
+    cadetblue: 0x5f9ea0,
+    chartreuse: 0x7fff00,
+    chocolate: 0xd2691e,
+    coral: 0xff7f50,
+    cornflowerblue: 0x6495ed,
+    cornsilk: 0xfff8dc,
+    crimson: 0xdc143c,
+    cyan: 0x00ffff,
+    darkblue: 0x00008b,
+    darkcyan: 0x008b8b,
+    darkgoldenrod: 0xb8860b,
+    darkgray: 0xa9a9a9,
+    darkgreen: 0x006400,
+    darkgrey: 0xa9a9a9,
+    darkkhaki: 0xbdb76b,
+    darkmagenta: 0x8b008b,
+    darkolivegreen: 0x556b2f,
+    darkorange: 0xff8c00,
+    darkorchid: 0x9932cc,
+    darkred: 0x8b0000,
+    darksalmon: 0xe9967a,
+    darkseagreen: 0x8fbc8f,
+    darkslateblue: 0x483d8b,
+    darkslategray: 0x2f4f4f,
+    darkslategrey: 0x2f4f4f,
+    darkturquoise: 0x00ced1,
+    darkviolet: 0x9400d3,
+    deeppink: 0xff1493,
+    deepskyblue: 0x00bfff,
+    dimgray: 0x696969,
+    dimgrey: 0x696969,
+    dodgerblue: 0x1e90ff,
+    firebrick: 0xb22222,
+    floralwhite: 0xfffaf0,
+    forestgreen: 0x228b22,
+    fuchsia: 0xff00ff,
+    gainsboro: 0xdcdcdc,
+    ghostwhite: 0xf8f8ff,
+    gold: 0xffd700,
+    goldenrod: 0xdaa520,
+    gray: 0x808080,
+    green: 0x008000,
+    greenyellow: 0xadff2f,
+    grey: 0x808080,
+    honeydew: 0xf0fff0,
+    hotpink: 0xff69b4,
+    indianred: 0xcd5c5c,
+    indigo: 0x4b0082,
+    ivory: 0xfffff0,
+    khaki: 0xf0e68c,
+    lavender: 0xe6e6fa,
+    lavenderblush: 0xfff0f5,
+    lawngreen: 0x7cfc00,
+    lemonchiffon: 0xfffacd,
+    lightblue: 0xadd8e6,
+    lightcoral: 0xf08080,
+    lightcyan: 0xe0ffff,
+    lightgoldenrodyellow: 0xfafad2,
+    lightgray: 0xd3d3d3,
+    lightgreen: 0x90ee90,
+    lightgrey: 0xd3d3d3,
+    lightpink: 0xffb6c1,
+    lightsalmon: 0xffa07a,
+    lightseagreen: 0x20b2aa,
+    lightskyblue: 0x87cefa,
+    lightslategray: 0x778899,
+    lightslategrey: 0x778899,
+    lightsteelblue: 0xb0c4de,
+    lightyellow: 0xffffe0,
+    lime: 0x00ff00,
+    limegreen: 0x32cd32,
+    linen: 0xfaf0e6,
+    magenta: 0xff00ff,
+    maroon: 0x800000,
+    mediumaquamarine: 0x66cdaa,
+    mediumblue: 0x0000cd,
+    mediumorchid: 0xba55d3,
+    mediumpurple: 0x9370db,
+    mediumseagreen: 0x3cb371,
+    mediumslateblue: 0x7b68ee,
+    mediumspringgreen: 0x00fa9a,
+    mediumturquoise: 0x48d1cc,
+    mediumvioletred: 0xc71585,
+    midnightblue: 0x191970,
+    mintcream: 0xf5fffa,
+    mistyrose: 0xffe4e1,
+    moccasin: 0xffe4b5,
+    navajowhite: 0xffdead,
+    navy: 0x000080,
+    oldlace: 0xfdf5e6,
+    olive: 0x808000,
+    olivedrab: 0x6b8e23,
+    orange: 0xffa500,
+    orangered: 0xff4500,
+    orchid: 0xda70d6,
+    palegoldenrod: 0xeee8aa,
+    palegreen: 0x98fb98,
+    paleturquoise: 0xafeeee,
+    palevioletred: 0xdb7093,
+    papayawhip: 0xffefd5,
+    peachpuff: 0xffdab9,
+    peru: 0xcd853f,
+    pink: 0xffc0cb,
+    plum: 0xdda0dd,
+    powderblue: 0xb0e0e6,
+    purple: 0x800080,
+    rebeccapurple: 0x663399,
+    red: 0xff0000,
+    rosybrown: 0xbc8f8f,
+    royalblue: 0x4169e1,
+    saddlebrown: 0x8b4513,
+    salmon: 0xfa8072,
+    sandybrown: 0xf4a460,
+    seagreen: 0x2e8b57,
+    seashell: 0xfff5ee,
+    sienna: 0xa0522d,
+    silver: 0xc0c0c0,
+    skyblue: 0x87ceeb,
+    slateblue: 0x6a5acd,
+    slategray: 0x708090,
+    slategrey: 0x708090,
+    snow: 0xfffafa,
+    springgreen: 0x00ff7f,
+    steelblue: 0x4682b4,
+    tan: 0xd2b48c,
+    teal: 0x008080,
+    thistle: 0xd8bfd8,
+    tomato: 0xff6347,
+    turquoise: 0x40e0d0,
+    violet: 0xee82ee,
+    wheat: 0xf5deb3,
+    white: 0xffffff,
+    whitesmoke: 0xf5f5f5,
+    yellow: 0xffff00,
+    yellowgreen: 0x9acd32
+  };
+
+  define$2(Color$2, color$2, {
+    copy: function(channels) {
+      return Object.assign(new this.constructor, this, channels);
+    },
+    displayable: function() {
+      return this.rgb().displayable();
+    },
+    hex: color_formatHex$2, // Deprecated! Use color.formatHex.
+    formatHex: color_formatHex$2,
+    formatHsl: color_formatHsl$2,
+    formatRgb: color_formatRgb$2,
+    toString: color_formatRgb$2
+  });
+
+  function color_formatHex$2() {
+    return this.rgb().formatHex();
+  }
+
+  function color_formatHsl$2() {
+    return hslConvert$2(this).formatHsl();
+  }
+
+  function color_formatRgb$2() {
+    return this.rgb().formatRgb();
+  }
+
+  function color$2(format) {
+    var m, l;
+    format = (format + "").trim().toLowerCase();
+    return (m = reHex$2.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$2(m) // #ff0000
+        : l === 3 ? new Rgb$2((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+        : l === 8 ? rgba$2(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+        : l === 4 ? rgba$2((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+        : null) // invalid hex
+        : (m = reRgbInteger$2.exec(format)) ? new Rgb$2(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+        : (m = reRgbPercent$2.exec(format)) ? new Rgb$2(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+        : (m = reRgbaInteger$2.exec(format)) ? rgba$2(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+        : (m = reRgbaPercent$2.exec(format)) ? rgba$2(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+        : (m = reHslPercent$2.exec(format)) ? hsla$2(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+        : (m = reHslaPercent$2.exec(format)) ? hsla$2(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+        : named$2.hasOwnProperty(format) ? rgbn$2(named$2[format]) // eslint-disable-line no-prototype-builtins
+        : format === "transparent" ? new Rgb$2(NaN, NaN, NaN, 0)
+        : null;
+  }
+
+  function rgbn$2(n) {
+    return new Rgb$2(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+  }
+
+  function rgba$2(r, g, b, a) {
+    if (a <= 0) r = g = b = NaN;
+    return new Rgb$2(r, g, b, a);
+  }
+
+  function rgbConvert$2(o) {
+    if (!(o instanceof Color$2)) o = color$2(o);
+    if (!o) return new Rgb$2;
+    o = o.rgb();
+    return new Rgb$2(o.r, o.g, o.b, o.opacity);
+  }
+
+  function rgb$2(r, g, b, opacity) {
+    return arguments.length === 1 ? rgbConvert$2(r) : new Rgb$2(r, g, b, opacity == null ? 1 : opacity);
+  }
+
+  function Rgb$2(r, g, b, opacity) {
+    this.r = +r;
+    this.g = +g;
+    this.b = +b;
+    this.opacity = +opacity;
+  }
+
+  define$2(Rgb$2, rgb$2, extend$2(Color$2, {
+    brighter: function(k) {
+      k = k == null ? brighter$2 : Math.pow(brighter$2, k);
+      return new Rgb$2(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    darker: function(k) {
+      k = k == null ? darker$2 : Math.pow(darker$2, k);
+      return new Rgb$2(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    rgb: function() {
+      return this;
+    },
+    displayable: function() {
+      return (-0.5 <= this.r && this.r < 255.5)
+          && (-0.5 <= this.g && this.g < 255.5)
+          && (-0.5 <= this.b && this.b < 255.5)
+          && (0 <= this.opacity && this.opacity <= 1);
+    },
+    hex: rgb_formatHex$2, // Deprecated! Use color.formatHex.
+    formatHex: rgb_formatHex$2,
+    formatRgb: rgb_formatRgb$2,
+    toString: rgb_formatRgb$2
+  }));
+
+  function rgb_formatHex$2() {
+    return "#" + hex$2(this.r) + hex$2(this.g) + hex$2(this.b);
+  }
+
+  function rgb_formatRgb$2() {
+    var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+    return (a === 1 ? "rgb(" : "rgba(")
+        + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
+        + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
+        + Math.max(0, Math.min(255, Math.round(this.b) || 0))
+        + (a === 1 ? ")" : ", " + a + ")");
+  }
+
+  function hex$2(value) {
+    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    return (value < 16 ? "0" : "") + value.toString(16);
+  }
+
+  function hsla$2(h, s, l, a) {
+    if (a <= 0) h = s = l = NaN;
+    else if (l <= 0 || l >= 1) h = s = NaN;
+    else if (s <= 0) h = NaN;
+    return new Hsl$2(h, s, l, a);
+  }
+
+  function hslConvert$2(o) {
+    if (o instanceof Hsl$2) return new Hsl$2(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color$2)) o = color$2(o);
+    if (!o) return new Hsl$2;
+    if (o instanceof Hsl$2) return o;
+    o = o.rgb();
+    var r = o.r / 255,
+        g = o.g / 255,
+        b = o.b / 255,
+        min = Math.min(r, g, b),
+        max = Math.max(r, g, b),
+        h = NaN,
+        s = max - min,
+        l = (max + min) / 2;
+    if (s) {
+      if (r === max) h = (g - b) / s + (g < b) * 6;
+      else if (g === max) h = (b - r) / s + 2;
+      else h = (r - g) / s + 4;
+      s /= l < 0.5 ? max + min : 2 - max - min;
+      h *= 60;
+    } else {
+      s = l > 0 && l < 1 ? 0 : h;
+    }
+    return new Hsl$2(h, s, l, o.opacity);
+  }
+
+  function hsl$2(h, s, l, opacity) {
+    return arguments.length === 1 ? hslConvert$2(h) : new Hsl$2(h, s, l, opacity == null ? 1 : opacity);
+  }
+
+  function Hsl$2(h, s, l, opacity) {
+    this.h = +h;
+    this.s = +s;
+    this.l = +l;
+    this.opacity = +opacity;
+  }
+
+  define$2(Hsl$2, hsl$2, extend$2(Color$2, {
+    brighter: function(k) {
+      k = k == null ? brighter$2 : Math.pow(brighter$2, k);
+      return new Hsl$2(this.h, this.s, this.l * k, this.opacity);
+    },
+    darker: function(k) {
+      k = k == null ? darker$2 : Math.pow(darker$2, k);
+      return new Hsl$2(this.h, this.s, this.l * k, this.opacity);
+    },
+    rgb: function() {
+      var h = this.h % 360 + (this.h < 0) * 360,
+          s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
+          l = this.l,
+          m2 = l + (l < 0.5 ? l : 1 - l) * s,
+          m1 = 2 * l - m2;
+      return new Rgb$2(
+        hsl2rgb$2(h >= 240 ? h - 240 : h + 120, m1, m2),
+        hsl2rgb$2(h, m1, m2),
+        hsl2rgb$2(h < 120 ? h + 240 : h - 120, m1, m2),
+        this.opacity
+      );
+    },
+    displayable: function() {
+      return (0 <= this.s && this.s <= 1 || isNaN(this.s))
+          && (0 <= this.l && this.l <= 1)
+          && (0 <= this.opacity && this.opacity <= 1);
+    },
+    formatHsl: function() {
+      var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+      return (a === 1 ? "hsl(" : "hsla(")
+          + (this.h || 0) + ", "
+          + (this.s || 0) * 100 + "%, "
+          + (this.l || 0) * 100 + "%"
+          + (a === 1 ? ")" : ", " + a + ")");
+    }
+  }));
+
+  /* From FvD 13.37, CSS Color Module Level 3 */
+  function hsl2rgb$2(h, m1, m2) {
+    return (h < 60 ? m1 + (m2 - m1) * h / 60
+        : h < 180 ? m2
+        : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
+        : m1) * 255;
+  }
+
+  function constant$5(x) {
+    return function() {
+      return x;
+    };
+  }
+
+  function linear$2(a, d) {
+    return function(t) {
+      return a + t * d;
+    };
+  }
+
+  function exponential$2(a, b, y) {
+    return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
+      return Math.pow(a + t * b, y);
+    };
+  }
+
+  function gamma$2(y) {
+    return (y = +y) === 1 ? nogamma$2 : function(a, b) {
+      return b - a ? exponential$2(a, b, y) : constant$5(isNaN(a) ? b : a);
+    };
+  }
+
+  function nogamma$2(a, b) {
+    var d = b - a;
+    return d ? linear$2(a, d) : constant$5(isNaN(a) ? b : a);
+  }
+
+  var interpolateRgb$2 = (function rgbGamma(y) {
+    var color = gamma$2(y);
+
+    function rgb(start, end) {
+      var r = color((start = rgb$2(start)).r, (end = rgb$2(end)).r),
+          g = color(start.g, end.g),
+          b = color(start.b, end.b),
+          opacity = nogamma$2(start.opacity, end.opacity);
+      return function(t) {
+        start.r = r(t);
+        start.g = g(t);
+        start.b = b(t);
+        start.opacity = opacity(t);
+        return start + "";
+      };
+    }
+
+    rgb.gamma = rgbGamma;
+
+    return rgb;
+  })(1);
+
+  function interpolateNumber$2(a, b) {
+    return a = +a, b = +b, function(t) {
+      return a * (1 - t) + b * t;
+    };
+  }
+
+  var reA$2 = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
+      reB$2 = new RegExp(reA$2.source, "g");
+
+  function zero$2(b) {
+    return function() {
+      return b;
+    };
+  }
+
+  function one$2(b) {
+    return function(t) {
+      return b(t) + "";
+    };
+  }
+
+  function interpolateString$2(a, b) {
+    var bi = reA$2.lastIndex = reB$2.lastIndex = 0, // scan index for next number in b
+        am, // current match in a
+        bm, // current match in b
+        bs, // string preceding current number in b, if any
+        i = -1, // index in s
+        s = [], // string constants and placeholders
+        q = []; // number interpolators
+
+    // Coerce inputs to strings.
+    a = a + "", b = b + "";
+
+    // Interpolate pairs of numbers in a & b.
+    while ((am = reA$2.exec(a))
+        && (bm = reB$2.exec(b))) {
+      if ((bs = bm.index) > bi) { // a string precedes the next number in b
+        bs = b.slice(bi, bs);
+        if (s[i]) s[i] += bs; // coalesce with previous string
+        else s[++i] = bs;
+      }
+      if ((am = am[0]) === (bm = bm[0])) { // numbers in a & b match
+        if (s[i]) s[i] += bm; // coalesce with previous string
+        else s[++i] = bm;
+      } else { // interpolate non-matching numbers
+        s[++i] = null;
+        q.push({i: i, x: interpolateNumber$2(am, bm)});
+      }
+      bi = reB$2.lastIndex;
+    }
+
+    // Add remains of b.
+    if (bi < b.length) {
+      bs = b.slice(bi);
+      if (s[i]) s[i] += bs; // coalesce with previous string
+      else s[++i] = bs;
+    }
+
+    // Special optimization for only a single match.
+    // Otherwise, interpolate each of the numbers and rejoin the string.
+    return s.length < 2 ? (q[0]
+        ? one$2(q[0].x)
+        : zero$2(b))
+        : (b = q.length, function(t) {
+            for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
+            return s.join("");
+          });
+  }
+
+  var degrees$2 = 180 / Math.PI;
+
+  var identity$2 = {
+    translateX: 0,
+    translateY: 0,
+    rotate: 0,
+    skewX: 0,
+    scaleX: 1,
+    scaleY: 1
+  };
+
+  function decompose$2(a, b, c, d, e, f) {
+    var scaleX, scaleY, skewX;
+    if (scaleX = Math.sqrt(a * a + b * b)) a /= scaleX, b /= scaleX;
+    if (skewX = a * c + b * d) c -= a * skewX, d -= b * skewX;
+    if (scaleY = Math.sqrt(c * c + d * d)) c /= scaleY, d /= scaleY, skewX /= scaleY;
+    if (a * d < b * c) a = -a, b = -b, skewX = -skewX, scaleX = -scaleX;
+    return {
+      translateX: e,
+      translateY: f,
+      rotate: Math.atan2(b, a) * degrees$2,
+      skewX: Math.atan(skewX) * degrees$2,
+      scaleX: scaleX,
+      scaleY: scaleY
+    };
+  }
+
+  var cssNode$1,
+      cssRoot$1,
+      cssView$1,
+      svgNode$2;
+
+  function parseCss$2(value) {
+    if (value === "none") return identity$2;
+    if (!cssNode$1) cssNode$1 = document.createElement("DIV"), cssRoot$1 = document.documentElement, cssView$1 = document.defaultView;
+    cssNode$1.style.transform = value;
+    value = cssView$1.getComputedStyle(cssRoot$1.appendChild(cssNode$1), null).getPropertyValue("transform");
+    cssRoot$1.removeChild(cssNode$1);
+    value = value.slice(7, -1).split(",");
+    return decompose$2(+value[0], +value[1], +value[2], +value[3], +value[4], +value[5]);
+  }
+
+  function parseSvg$2(value) {
+    if (value == null) return identity$2;
+    if (!svgNode$2) svgNode$2 = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    svgNode$2.setAttribute("transform", value);
+    if (!(value = svgNode$2.transform.baseVal.consolidate())) return identity$2;
+    value = value.matrix;
+    return decompose$2(value.a, value.b, value.c, value.d, value.e, value.f);
+  }
+
+  function interpolateTransform$2(parse, pxComma, pxParen, degParen) {
+
+    function pop(s) {
+      return s.length ? s.pop() + " " : "";
+    }
+
+    function translate(xa, ya, xb, yb, s, q) {
+      if (xa !== xb || ya !== yb) {
+        var i = s.push("translate(", null, pxComma, null, pxParen);
+        q.push({i: i - 4, x: interpolateNumber$2(xa, xb)}, {i: i - 2, x: interpolateNumber$2(ya, yb)});
+      } else if (xb || yb) {
+        s.push("translate(" + xb + pxComma + yb + pxParen);
+      }
+    }
+
+    function rotate(a, b, s, q) {
+      if (a !== b) {
+        if (a - b > 180) b += 360; else if (b - a > 180) a += 360; // shortest path
+        q.push({i: s.push(pop(s) + "rotate(", null, degParen) - 2, x: interpolateNumber$2(a, b)});
+      } else if (b) {
+        s.push(pop(s) + "rotate(" + b + degParen);
+      }
+    }
+
+    function skewX(a, b, s, q) {
+      if (a !== b) {
+        q.push({i: s.push(pop(s) + "skewX(", null, degParen) - 2, x: interpolateNumber$2(a, b)});
+      } else if (b) {
+        s.push(pop(s) + "skewX(" + b + degParen);
+      }
+    }
+
+    function scale(xa, ya, xb, yb, s, q) {
+      if (xa !== xb || ya !== yb) {
+        var i = s.push(pop(s) + "scale(", null, ",", null, ")");
+        q.push({i: i - 4, x: interpolateNumber$2(xa, xb)}, {i: i - 2, x: interpolateNumber$2(ya, yb)});
+      } else if (xb !== 1 || yb !== 1) {
+        s.push(pop(s) + "scale(" + xb + "," + yb + ")");
+      }
+    }
+
+    return function(a, b) {
+      var s = [], // string constants and placeholders
+          q = []; // number interpolators
+      a = parse(a), b = parse(b);
+      translate(a.translateX, a.translateY, b.translateX, b.translateY, s, q);
+      rotate(a.rotate, b.rotate, s, q);
+      skewX(a.skewX, b.skewX, s, q);
+      scale(a.scaleX, a.scaleY, b.scaleX, b.scaleY, s, q);
+      a = b = null; // gc
+      return function(t) {
+        var i = -1, n = q.length, o;
+        while (++i < n) s[(o = q[i]).i] = o.x(t);
+        return s.join("");
+      };
+    };
+  }
+
+  var interpolateTransformCss$2 = interpolateTransform$2(parseCss$2, "px, ", "px)", "deg)");
+  var interpolateTransformSvg$2 = interpolateTransform$2(parseSvg$2, ", ", ")", ")");
+
+  function tweenRemove$2(id, name) {
+    var tween0, tween1;
+    return function() {
+      var schedule = set$5(this, id),
+          tween = schedule.tween;
+
+      // If this node shared tween with the previous node,
+      // just assign the updated shared tween and we’re done!
+      // Otherwise, copy-on-write.
+      if (tween !== tween0) {
+        tween1 = tween0 = tween;
+        for (var i = 0, n = tween1.length; i < n; ++i) {
+          if (tween1[i].name === name) {
+            tween1 = tween1.slice();
+            tween1.splice(i, 1);
+            break;
+          }
+        }
+      }
+
+      schedule.tween = tween1;
+    };
+  }
+
+  function tweenFunction$2(id, name, value) {
+    var tween0, tween1;
+    if (typeof value !== "function") throw new Error;
+    return function() {
+      var schedule = set$5(this, id),
+          tween = schedule.tween;
+
+      // If this node shared tween with the previous node,
+      // just assign the updated shared tween and we’re done!
+      // Otherwise, copy-on-write.
+      if (tween !== tween0) {
+        tween1 = (tween0 = tween).slice();
+        for (var t = {name: name, value: value}, i = 0, n = tween1.length; i < n; ++i) {
+          if (tween1[i].name === name) {
+            tween1[i] = t;
+            break;
+          }
+        }
+        if (i === n) tween1.push(t);
+      }
+
+      schedule.tween = tween1;
+    };
+  }
+
+  function transition_tween$2(name, value) {
+    var id = this._id;
+
+    name += "";
+
+    if (arguments.length < 2) {
+      var tween = get$5(this.node(), id).tween;
+      for (var i = 0, n = tween.length, t; i < n; ++i) {
+        if ((t = tween[i]).name === name) {
+          return t.value;
+        }
+      }
+      return null;
+    }
+
+    return this.each((value == null ? tweenRemove$2 : tweenFunction$2)(id, name, value));
+  }
+
+  function tweenValue$2(transition, name, value) {
+    var id = transition._id;
+
+    transition.each(function() {
+      var schedule = set$5(this, id);
+      (schedule.value || (schedule.value = {}))[name] = value.apply(this, arguments);
+    });
+
+    return function(node) {
+      return get$5(node, id).value[name];
+    };
+  }
+
+  function define$1(constructor, factory, prototype) {
+    constructor.prototype = factory.prototype = prototype;
+    prototype.constructor = constructor;
+  }
+
+  function extend$1(parent, definition) {
+    var prototype = Object.create(parent.prototype);
+    for (var key in definition) prototype[key] = definition[key];
+    return prototype;
+  }
+
+  function Color$1() {}
+
+  var darker$1 = 0.7;
+  var brighter$1 = 1 / darker$1;
+
+  var reI$1 = "\\s*([+-]?\\d+)\\s*",
+      reN$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+      reP$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+      reHex$1 = /^#([0-9a-f]{3,8})$/,
+      reRgbInteger$1 = new RegExp("^rgb\\(" + [reI$1, reI$1, reI$1] + "\\)$"),
+      reRgbPercent$1 = new RegExp("^rgb\\(" + [reP$1, reP$1, reP$1] + "\\)$"),
+      reRgbaInteger$1 = new RegExp("^rgba\\(" + [reI$1, reI$1, reI$1, reN$1] + "\\)$"),
+      reRgbaPercent$1 = new RegExp("^rgba\\(" + [reP$1, reP$1, reP$1, reN$1] + "\\)$"),
+      reHslPercent$1 = new RegExp("^hsl\\(" + [reN$1, reP$1, reP$1] + "\\)$"),
+      reHslaPercent$1 = new RegExp("^hsla\\(" + [reN$1, reP$1, reP$1, reN$1] + "\\)$");
+
+  var named$1 = {
+    aliceblue: 0xf0f8ff,
+    antiquewhite: 0xfaebd7,
+    aqua: 0x00ffff,
+    aquamarine: 0x7fffd4,
+    azure: 0xf0ffff,
+    beige: 0xf5f5dc,
+    bisque: 0xffe4c4,
+    black: 0x000000,
+    blanchedalmond: 0xffebcd,
+    blue: 0x0000ff,
+    blueviolet: 0x8a2be2,
+    brown: 0xa52a2a,
+    burlywood: 0xdeb887,
+    cadetblue: 0x5f9ea0,
+    chartreuse: 0x7fff00,
+    chocolate: 0xd2691e,
+    coral: 0xff7f50,
+    cornflowerblue: 0x6495ed,
+    cornsilk: 0xfff8dc,
+    crimson: 0xdc143c,
+    cyan: 0x00ffff,
+    darkblue: 0x00008b,
+    darkcyan: 0x008b8b,
+    darkgoldenrod: 0xb8860b,
+    darkgray: 0xa9a9a9,
+    darkgreen: 0x006400,
+    darkgrey: 0xa9a9a9,
+    darkkhaki: 0xbdb76b,
+    darkmagenta: 0x8b008b,
+    darkolivegreen: 0x556b2f,
+    darkorange: 0xff8c00,
+    darkorchid: 0x9932cc,
+    darkred: 0x8b0000,
+    darksalmon: 0xe9967a,
+    darkseagreen: 0x8fbc8f,
+    darkslateblue: 0x483d8b,
+    darkslategray: 0x2f4f4f,
+    darkslategrey: 0x2f4f4f,
+    darkturquoise: 0x00ced1,
+    darkviolet: 0x9400d3,
+    deeppink: 0xff1493,
+    deepskyblue: 0x00bfff,
+    dimgray: 0x696969,
+    dimgrey: 0x696969,
+    dodgerblue: 0x1e90ff,
+    firebrick: 0xb22222,
+    floralwhite: 0xfffaf0,
+    forestgreen: 0x228b22,
+    fuchsia: 0xff00ff,
+    gainsboro: 0xdcdcdc,
+    ghostwhite: 0xf8f8ff,
+    gold: 0xffd700,
+    goldenrod: 0xdaa520,
+    gray: 0x808080,
+    green: 0x008000,
+    greenyellow: 0xadff2f,
+    grey: 0x808080,
+    honeydew: 0xf0fff0,
+    hotpink: 0xff69b4,
+    indianred: 0xcd5c5c,
+    indigo: 0x4b0082,
+    ivory: 0xfffff0,
+    khaki: 0xf0e68c,
+    lavender: 0xe6e6fa,
+    lavenderblush: 0xfff0f5,
+    lawngreen: 0x7cfc00,
+    lemonchiffon: 0xfffacd,
+    lightblue: 0xadd8e6,
+    lightcoral: 0xf08080,
+    lightcyan: 0xe0ffff,
+    lightgoldenrodyellow: 0xfafad2,
+    lightgray: 0xd3d3d3,
+    lightgreen: 0x90ee90,
+    lightgrey: 0xd3d3d3,
+    lightpink: 0xffb6c1,
+    lightsalmon: 0xffa07a,
+    lightseagreen: 0x20b2aa,
+    lightskyblue: 0x87cefa,
+    lightslategray: 0x778899,
+    lightslategrey: 0x778899,
+    lightsteelblue: 0xb0c4de,
+    lightyellow: 0xffffe0,
+    lime: 0x00ff00,
+    limegreen: 0x32cd32,
+    linen: 0xfaf0e6,
+    magenta: 0xff00ff,
+    maroon: 0x800000,
+    mediumaquamarine: 0x66cdaa,
+    mediumblue: 0x0000cd,
+    mediumorchid: 0xba55d3,
+    mediumpurple: 0x9370db,
+    mediumseagreen: 0x3cb371,
+    mediumslateblue: 0x7b68ee,
+    mediumspringgreen: 0x00fa9a,
+    mediumturquoise: 0x48d1cc,
+    mediumvioletred: 0xc71585,
+    midnightblue: 0x191970,
+    mintcream: 0xf5fffa,
+    mistyrose: 0xffe4e1,
+    moccasin: 0xffe4b5,
+    navajowhite: 0xffdead,
+    navy: 0x000080,
+    oldlace: 0xfdf5e6,
+    olive: 0x808000,
+    olivedrab: 0x6b8e23,
+    orange: 0xffa500,
+    orangered: 0xff4500,
+    orchid: 0xda70d6,
+    palegoldenrod: 0xeee8aa,
+    palegreen: 0x98fb98,
+    paleturquoise: 0xafeeee,
+    palevioletred: 0xdb7093,
+    papayawhip: 0xffefd5,
+    peachpuff: 0xffdab9,
+    peru: 0xcd853f,
+    pink: 0xffc0cb,
+    plum: 0xdda0dd,
+    powderblue: 0xb0e0e6,
+    purple: 0x800080,
+    rebeccapurple: 0x663399,
+    red: 0xff0000,
+    rosybrown: 0xbc8f8f,
+    royalblue: 0x4169e1,
+    saddlebrown: 0x8b4513,
+    salmon: 0xfa8072,
+    sandybrown: 0xf4a460,
+    seagreen: 0x2e8b57,
+    seashell: 0xfff5ee,
+    sienna: 0xa0522d,
+    silver: 0xc0c0c0,
+    skyblue: 0x87ceeb,
+    slateblue: 0x6a5acd,
+    slategray: 0x708090,
+    slategrey: 0x708090,
+    snow: 0xfffafa,
+    springgreen: 0x00ff7f,
+    steelblue: 0x4682b4,
+    tan: 0xd2b48c,
+    teal: 0x008080,
+    thistle: 0xd8bfd8,
+    tomato: 0xff6347,
+    turquoise: 0x40e0d0,
+    violet: 0xee82ee,
+    wheat: 0xf5deb3,
+    white: 0xffffff,
+    whitesmoke: 0xf5f5f5,
+    yellow: 0xffff00,
+    yellowgreen: 0x9acd32
+  };
+
+  define$1(Color$1, color$1, {
+    copy: function(channels) {
+      return Object.assign(new this.constructor, this, channels);
+    },
+    displayable: function() {
+      return this.rgb().displayable();
+    },
+    hex: color_formatHex$1, // Deprecated! Use color.formatHex.
+    formatHex: color_formatHex$1,
+    formatHsl: color_formatHsl$1,
+    formatRgb: color_formatRgb$1,
+    toString: color_formatRgb$1
+  });
+
+  function color_formatHex$1() {
+    return this.rgb().formatHex();
+  }
+
+  function color_formatHsl$1() {
+    return hslConvert$1(this).formatHsl();
+  }
+
+  function color_formatRgb$1() {
+    return this.rgb().formatRgb();
+  }
+
+  function color$1(format) {
+    var m, l;
+    format = (format + "").trim().toLowerCase();
+    return (m = reHex$1.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$1(m) // #ff0000
+        : l === 3 ? new Rgb$1((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+        : l === 8 ? rgba$1(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+        : l === 4 ? rgba$1((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+        : null) // invalid hex
+        : (m = reRgbInteger$1.exec(format)) ? new Rgb$1(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+        : (m = reRgbPercent$1.exec(format)) ? new Rgb$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+        : (m = reRgbaInteger$1.exec(format)) ? rgba$1(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+        : (m = reRgbaPercent$1.exec(format)) ? rgba$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+        : (m = reHslPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+        : (m = reHslaPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+        : named$1.hasOwnProperty(format) ? rgbn$1(named$1[format]) // eslint-disable-line no-prototype-builtins
+        : format === "transparent" ? new Rgb$1(NaN, NaN, NaN, 0)
+        : null;
+  }
+
+  function rgbn$1(n) {
+    return new Rgb$1(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+  }
+
+  function rgba$1(r, g, b, a) {
+    if (a <= 0) r = g = b = NaN;
+    return new Rgb$1(r, g, b, a);
+  }
+
+  function rgbConvert$1(o) {
+    if (!(o instanceof Color$1)) o = color$1(o);
+    if (!o) return new Rgb$1;
+    o = o.rgb();
+    return new Rgb$1(o.r, o.g, o.b, o.opacity);
+  }
+
+  function rgb$1(r, g, b, opacity) {
+    return arguments.length === 1 ? rgbConvert$1(r) : new Rgb$1(r, g, b, opacity == null ? 1 : opacity);
+  }
+
+  function Rgb$1(r, g, b, opacity) {
+    this.r = +r;
+    this.g = +g;
+    this.b = +b;
+    this.opacity = +opacity;
+  }
+
+  define$1(Rgb$1, rgb$1, extend$1(Color$1, {
+    brighter: function(k) {
+      k = k == null ? brighter$1 : Math.pow(brighter$1, k);
+      return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    darker: function(k) {
+      k = k == null ? darker$1 : Math.pow(darker$1, k);
+      return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    rgb: function() {
+      return this;
+    },
+    displayable: function() {
+      return (-0.5 <= this.r && this.r < 255.5)
+          && (-0.5 <= this.g && this.g < 255.5)
+          && (-0.5 <= this.b && this.b < 255.5)
+          && (0 <= this.opacity && this.opacity <= 1);
+    },
+    hex: rgb_formatHex$1, // Deprecated! Use color.formatHex.
+    formatHex: rgb_formatHex$1,
+    formatRgb: rgb_formatRgb$1,
+    toString: rgb_formatRgb$1
+  }));
+
+  function rgb_formatHex$1() {
+    return "#" + hex$1(this.r) + hex$1(this.g) + hex$1(this.b);
+  }
+
+  function rgb_formatRgb$1() {
+    var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+    return (a === 1 ? "rgb(" : "rgba(")
+        + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
+        + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
+        + Math.max(0, Math.min(255, Math.round(this.b) || 0))
+        + (a === 1 ? ")" : ", " + a + ")");
+  }
+
+  function hex$1(value) {
+    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    return (value < 16 ? "0" : "") + value.toString(16);
+  }
+
+  function hsla$1(h, s, l, a) {
+    if (a <= 0) h = s = l = NaN;
+    else if (l <= 0 || l >= 1) h = s = NaN;
+    else if (s <= 0) h = NaN;
+    return new Hsl$1(h, s, l, a);
+  }
+
+  function hslConvert$1(o) {
+    if (o instanceof Hsl$1) return new Hsl$1(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color$1)) o = color$1(o);
+    if (!o) return new Hsl$1;
+    if (o instanceof Hsl$1) return o;
+    o = o.rgb();
+    var r = o.r / 255,
+        g = o.g / 255,
+        b = o.b / 255,
+        min = Math.min(r, g, b),
+        max = Math.max(r, g, b),
+        h = NaN,
+        s = max - min,
+        l = (max + min) / 2;
+    if (s) {
+      if (r === max) h = (g - b) / s + (g < b) * 6;
+      else if (g === max) h = (b - r) / s + 2;
+      else h = (r - g) / s + 4;
+      s /= l < 0.5 ? max + min : 2 - max - min;
+      h *= 60;
+    } else {
+      s = l > 0 && l < 1 ? 0 : h;
+    }
+    return new Hsl$1(h, s, l, o.opacity);
+  }
+
+  function hsl$1(h, s, l, opacity) {
+    return arguments.length === 1 ? hslConvert$1(h) : new Hsl$1(h, s, l, opacity == null ? 1 : opacity);
+  }
+
+  function Hsl$1(h, s, l, opacity) {
+    this.h = +h;
+    this.s = +s;
+    this.l = +l;
+    this.opacity = +opacity;
+  }
+
+  define$1(Hsl$1, hsl$1, extend$1(Color$1, {
+    brighter: function(k) {
+      k = k == null ? brighter$1 : Math.pow(brighter$1, k);
+      return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
+    },
+    darker: function(k) {
+      k = k == null ? darker$1 : Math.pow(darker$1, k);
+      return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
+    },
+    rgb: function() {
+      var h = this.h % 360 + (this.h < 0) * 360,
+          s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
+          l = this.l,
+          m2 = l + (l < 0.5 ? l : 1 - l) * s,
+          m1 = 2 * l - m2;
+      return new Rgb$1(
+        hsl2rgb$1(h >= 240 ? h - 240 : h + 120, m1, m2),
+        hsl2rgb$1(h, m1, m2),
+        hsl2rgb$1(h < 120 ? h + 240 : h - 120, m1, m2),
+        this.opacity
+      );
+    },
+    displayable: function() {
+      return (0 <= this.s && this.s <= 1 || isNaN(this.s))
+          && (0 <= this.l && this.l <= 1)
+          && (0 <= this.opacity && this.opacity <= 1);
+    },
+    formatHsl: function() {
+      var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+      return (a === 1 ? "hsl(" : "hsla(")
+          + (this.h || 0) + ", "
+          + (this.s || 0) * 100 + "%, "
+          + (this.l || 0) * 100 + "%"
+          + (a === 1 ? ")" : ", " + a + ")");
+    }
+  }));
+
+  /* From FvD 13.37, CSS Color Module Level 3 */
+  function hsl2rgb$1(h, m1, m2) {
+    return (h < 60 ? m1 + (m2 - m1) * h / 60
+        : h < 180 ? m2
+        : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
+        : m1) * 255;
+  }
+
+  function interpolate$2(a, b) {
+    var c;
+    return (typeof b === "number" ? interpolateNumber$2
+        : b instanceof color$1 ? interpolateRgb$2
+        : (c = color$1(b)) ? (b = c, interpolateRgb$2)
+        : interpolateString$2)(a, b);
+  }
+
+  function attrRemove$5(name) {
+    return function() {
+      this.removeAttribute(name);
+    };
+  }
+
+  function attrRemoveNS$5(fullname) {
+    return function() {
+      this.removeAttributeNS(fullname.space, fullname.local);
+    };
+  }
+
+  function attrConstant$5(name, interpolate, value1) {
+    var string00,
+        string1 = value1 + "",
+        interpolate0;
+    return function() {
+      var string0 = this.getAttribute(name);
+      return string0 === string1 ? null
+          : string0 === string00 ? interpolate0
+          : interpolate0 = interpolate(string00 = string0, value1);
+    };
+  }
+
+  function attrConstantNS$5(fullname, interpolate, value1) {
+    var string00,
+        string1 = value1 + "",
+        interpolate0;
+    return function() {
+      var string0 = this.getAttributeNS(fullname.space, fullname.local);
+      return string0 === string1 ? null
+          : string0 === string00 ? interpolate0
+          : interpolate0 = interpolate(string00 = string0, value1);
+    };
+  }
+
+  function attrFunction$5(name, interpolate, value) {
+    var string00,
+        string10,
+        interpolate0;
+    return function() {
+      var string0, value1 = value(this), string1;
+      if (value1 == null) return void this.removeAttribute(name);
+      string0 = this.getAttribute(name);
+      string1 = value1 + "";
+      return string0 === string1 ? null
+          : string0 === string00 && string1 === string10 ? interpolate0
+          : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
+    };
+  }
+
+  function attrFunctionNS$5(fullname, interpolate, value) {
+    var string00,
+        string10,
+        interpolate0;
+    return function() {
+      var string0, value1 = value(this), string1;
+      if (value1 == null) return void this.removeAttributeNS(fullname.space, fullname.local);
+      string0 = this.getAttributeNS(fullname.space, fullname.local);
+      string1 = value1 + "";
+      return string0 === string1 ? null
+          : string0 === string00 && string1 === string10 ? interpolate0
+          : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
+    };
+  }
+
+  function transition_attr$2(name, value) {
+    var fullname = namespace$3(name), i = fullname === "transform" ? interpolateTransformSvg$2 : interpolate$2;
+    return this.attrTween(name, typeof value === "function"
+        ? (fullname.local ? attrFunctionNS$5 : attrFunction$5)(fullname, i, tweenValue$2(this, "attr." + name, value))
+        : value == null ? (fullname.local ? attrRemoveNS$5 : attrRemove$5)(fullname)
+        : (fullname.local ? attrConstantNS$5 : attrConstant$5)(fullname, i, value));
+  }
+
+  function attrInterpolate$2(name, i) {
+    return function(t) {
+      this.setAttribute(name, i.call(this, t));
+    };
+  }
+
+  function attrInterpolateNS$2(fullname, i) {
+    return function(t) {
+      this.setAttributeNS(fullname.space, fullname.local, i.call(this, t));
+    };
+  }
+
+  function attrTweenNS$2(fullname, value) {
+    var t0, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0) t0 = (i0 = i) && attrInterpolateNS$2(fullname, i);
+      return t0;
+    }
+    tween._value = value;
+    return tween;
+  }
+
+  function attrTween$2(name, value) {
+    var t0, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0) t0 = (i0 = i) && attrInterpolate$2(name, i);
+      return t0;
+    }
+    tween._value = value;
+    return tween;
+  }
+
+  function transition_attrTween$2(name, value) {
+    var key = "attr." + name;
+    if (arguments.length < 2) return (key = this.tween(key)) && key._value;
+    if (value == null) return this.tween(key, null);
+    if (typeof value !== "function") throw new Error;
+    var fullname = namespace$3(name);
+    return this.tween(key, (fullname.local ? attrTweenNS$2 : attrTween$2)(fullname, value));
+  }
+
+  function delayFunction$2(id, value) {
+    return function() {
+      init$4(this, id).delay = +value.apply(this, arguments);
+    };
+  }
+
+  function delayConstant$2(id, value) {
+    return value = +value, function() {
+      init$4(this, id).delay = value;
+    };
+  }
+
+  function transition_delay$2(value) {
+    var id = this._id;
+
+    return arguments.length
+        ? this.each((typeof value === "function"
+            ? delayFunction$2
+            : delayConstant$2)(id, value))
+        : get$5(this.node(), id).delay;
+  }
+
+  function durationFunction$2(id, value) {
+    return function() {
+      set$5(this, id).duration = +value.apply(this, arguments);
+    };
+  }
+
+  function durationConstant$2(id, value) {
+    return value = +value, function() {
+      set$5(this, id).duration = value;
+    };
+  }
+
+  function transition_duration$2(value) {
+    var id = this._id;
+
+    return arguments.length
+        ? this.each((typeof value === "function"
+            ? durationFunction$2
+            : durationConstant$2)(id, value))
+        : get$5(this.node(), id).duration;
+  }
+
+  function easeConstant$2(id, value) {
+    if (typeof value !== "function") throw new Error;
+    return function() {
+      set$5(this, id).ease = value;
+    };
+  }
+
+  function transition_ease$2(value) {
+    var id = this._id;
+
+    return arguments.length
+        ? this.each(easeConstant$2(id, value))
+        : get$5(this.node(), id).ease;
+  }
+
+  function transition_filter$2(match) {
+    if (typeof match !== "function") match = matcher$3(match);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+        if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
+          subgroup.push(node);
+        }
+      }
+    }
+
+    return new Transition$2(subgroups, this._parents, this._name, this._id);
+  }
+
+  function transition_merge$2(transition) {
+    if (transition._id !== this._id) throw new Error;
+
+    for (var groups0 = this._groups, groups1 = transition._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+      for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group0[i] || group1[i]) {
+          merge[i] = node;
+        }
+      }
+    }
+
+    for (; j < m0; ++j) {
+      merges[j] = groups0[j];
+    }
+
+    return new Transition$2(merges, this._parents, this._name, this._id);
+  }
+
+  function start$2(name) {
+    return (name + "").trim().split(/^|\s+/).every(function(t) {
+      var i = t.indexOf(".");
+      if (i >= 0) t = t.slice(0, i);
+      return !t || t === "start";
+    });
+  }
+
+  function onFunction$2(id, name, listener) {
+    var on0, on1, sit = start$2(name) ? init$4 : set$5;
+    return function() {
+      var schedule = sit(this, id),
+          on = schedule.on;
+
+      // If this node shared a dispatch with the previous node,
+      // just assign the updated shared dispatch and we’re done!
+      // Otherwise, copy-on-write.
+      if (on !== on0) (on1 = (on0 = on).copy()).on(name, listener);
+
+      schedule.on = on1;
+    };
+  }
+
+  function transition_on$2(name, listener) {
+    var id = this._id;
+
+    return arguments.length < 2
+        ? get$5(this.node(), id).on.on(name)
+        : this.each(onFunction$2(id, name, listener));
+  }
+
+  function removeFunction$2(id) {
+    return function() {
+      var parent = this.parentNode;
+      for (var i in this.__transition) if (+i !== id) return;
+      if (parent) parent.removeChild(this);
+    };
+  }
+
+  function transition_remove$2() {
+    return this.on("end.remove", removeFunction$2(this._id));
+  }
+
+  function transition_select$2(select) {
+    var name = this._name,
+        id = this._id;
+
+    if (typeof select !== "function") select = selector$3(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+        if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
+          if ("__data__" in node) subnode.__data__ = node.__data__;
+          subgroup[i] = subnode;
+          schedule$2(subgroup[i], name, id, i, subgroup, get$5(node, id));
+        }
+      }
+    }
+
+    return new Transition$2(subgroups, this._parents, name, id);
+  }
+
+  function transition_selectAll$2(select) {
+    var name = this._name,
+        id = this._id;
+
+    if (typeof select !== "function") select = selectorAll$3(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          for (var children = select.call(node, node.__data__, i, group), child, inherit = get$5(node, id), k = 0, l = children.length; k < l; ++k) {
+            if (child = children[k]) {
+              schedule$2(child, name, id, k, children, inherit);
+            }
+          }
+          subgroups.push(children);
+          parents.push(node);
+        }
+      }
+    }
+
+    return new Transition$2(subgroups, parents, name, id);
+  }
+
+  var Selection$5 = selection$2.prototype.constructor;
+
+  function transition_selection$2() {
+    return new Selection$5(this._groups, this._parents);
+  }
+
+  function styleNull$2(name, interpolate) {
+    var string00,
+        string10,
+        interpolate0;
+    return function() {
+      var string0 = styleValue$3(this, name),
+          string1 = (this.style.removeProperty(name), styleValue$3(this, name));
+      return string0 === string1 ? null
+          : string0 === string00 && string1 === string10 ? interpolate0
+          : interpolate0 = interpolate(string00 = string0, string10 = string1);
+    };
+  }
+
+  function styleRemove$5(name) {
+    return function() {
+      this.style.removeProperty(name);
+    };
+  }
+
+  function styleConstant$5(name, interpolate, value1) {
+    var string00,
+        string1 = value1 + "",
+        interpolate0;
+    return function() {
+      var string0 = styleValue$3(this, name);
+      return string0 === string1 ? null
+          : string0 === string00 ? interpolate0
+          : interpolate0 = interpolate(string00 = string0, value1);
+    };
+  }
+
+  function styleFunction$5(name, interpolate, value) {
+    var string00,
+        string10,
+        interpolate0;
+    return function() {
+      var string0 = styleValue$3(this, name),
+          value1 = value(this),
+          string1 = value1 + "";
+      if (value1 == null) string1 = value1 = (this.style.removeProperty(name), styleValue$3(this, name));
+      return string0 === string1 ? null
+          : string0 === string00 && string1 === string10 ? interpolate0
+          : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
+    };
+  }
+
+  function styleMaybeRemove$2(id, name) {
+    var on0, on1, listener0, key = "style." + name, event = "end." + key, remove;
+    return function() {
+      var schedule = set$5(this, id),
+          on = schedule.on,
+          listener = schedule.value[key] == null ? remove || (remove = styleRemove$5(name)) : undefined;
+
+      // If this node shared a dispatch with the previous node,
+      // just assign the updated shared dispatch and we’re done!
+      // Otherwise, copy-on-write.
+      if (on !== on0 || listener0 !== listener) (on1 = (on0 = on).copy()).on(event, listener0 = listener);
+
+      schedule.on = on1;
+    };
+  }
+
+  function transition_style$2(name, value, priority) {
+    var i = (name += "") === "transform" ? interpolateTransformCss$2 : interpolate$2;
+    return value == null ? this
+        .styleTween(name, styleNull$2(name, i))
+        .on("end.style." + name, styleRemove$5(name))
+      : typeof value === "function" ? this
+        .styleTween(name, styleFunction$5(name, i, tweenValue$2(this, "style." + name, value)))
+        .each(styleMaybeRemove$2(this._id, name))
+      : this
+        .styleTween(name, styleConstant$5(name, i, value), priority)
+        .on("end.style." + name, null);
+  }
+
+  function styleInterpolate$2(name, i, priority) {
+    return function(t) {
+      this.style.setProperty(name, i.call(this, t), priority);
+    };
+  }
+
+  function styleTween$2(name, value, priority) {
+    var t, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0) t = (i0 = i) && styleInterpolate$2(name, i, priority);
+      return t;
+    }
+    tween._value = value;
+    return tween;
+  }
+
+  function transition_styleTween$2(name, value, priority) {
+    var key = "style." + (name += "");
+    if (arguments.length < 2) return (key = this.tween(key)) && key._value;
+    if (value == null) return this.tween(key, null);
+    if (typeof value !== "function") throw new Error;
+    return this.tween(key, styleTween$2(name, value, priority == null ? "" : priority));
+  }
+
+  function textConstant$5(value) {
+    return function() {
+      this.textContent = value;
+    };
+  }
+
+  function textFunction$5(value) {
+    return function() {
+      var value1 = value(this);
+      this.textContent = value1 == null ? "" : value1;
+    };
+  }
+
+  function transition_text$2(value) {
+    return this.tween("text", typeof value === "function"
+        ? textFunction$5(tweenValue$2(this, "text", value))
+        : textConstant$5(value == null ? "" : value + ""));
+  }
+
+  function textInterpolate$2(i) {
+    return function(t) {
+      this.textContent = i.call(this, t);
+    };
+  }
+
+  function textTween$2(value) {
+    var t0, i0;
+    function tween() {
+      var i = value.apply(this, arguments);
+      if (i !== i0) t0 = (i0 = i) && textInterpolate$2(i);
+      return t0;
+    }
+    tween._value = value;
+    return tween;
+  }
+
+  function transition_textTween$2(value) {
+    var key = "text";
+    if (arguments.length < 1) return (key = this.tween(key)) && key._value;
+    if (value == null) return this.tween(key, null);
+    if (typeof value !== "function") throw new Error;
+    return this.tween(key, textTween$2(value));
+  }
+
+  function transition_transition$2() {
+    var name = this._name,
+        id0 = this._id,
+        id1 = newId$2();
+
+    for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          var inherit = get$5(node, id0);
+          schedule$2(node, name, id1, i, group, {
+            time: inherit.time + inherit.delay + inherit.duration,
+            delay: 0,
+            duration: inherit.duration,
+            ease: inherit.ease
+          });
+        }
+      }
+    }
+
+    return new Transition$2(groups, this._parents, name, id1);
+  }
+
+  function transition_end$2() {
+    var on0, on1, that = this, id = that._id, size = that.size();
+    return new Promise(function(resolve, reject) {
+      var cancel = {value: reject},
+          end = {value: function() { if (--size === 0) resolve(); }};
+
+      that.each(function() {
+        var schedule = set$5(this, id),
+            on = schedule.on;
+
+        // If this node shared a dispatch with the previous node,
+        // just assign the updated shared dispatch and we’re done!
+        // Otherwise, copy-on-write.
+        if (on !== on0) {
+          on1 = (on0 = on).copy();
+          on1._.cancel.push(cancel);
+          on1._.interrupt.push(cancel);
+          on1._.end.push(end);
+        }
+
+        schedule.on = on1;
+      });
+    });
+  }
+
+  var id$2 = 0;
+
+  function Transition$2(groups, parents, name, id) {
+    this._groups = groups;
+    this._parents = parents;
+    this._name = name;
+    this._id = id;
+  }
+
+  function newId$2() {
+    return ++id$2;
+  }
+
+  var selection_prototype$2 = selection$2.prototype;
+
+  Transition$2.prototype = {
+    constructor: Transition$2,
+    select: transition_select$2,
+    selectAll: transition_selectAll$2,
+    filter: transition_filter$2,
+    merge: transition_merge$2,
+    selection: transition_selection$2,
+    transition: transition_transition$2,
+    call: selection_prototype$2.call,
+    nodes: selection_prototype$2.nodes,
+    node: selection_prototype$2.node,
+    size: selection_prototype$2.size,
+    empty: selection_prototype$2.empty,
+    each: selection_prototype$2.each,
+    on: transition_on$2,
+    attr: transition_attr$2,
+    attrTween: transition_attrTween$2,
+    style: transition_style$2,
+    styleTween: transition_styleTween$2,
+    text: transition_text$2,
+    textTween: transition_textTween$2,
+    remove: transition_remove$2,
+    tween: transition_tween$2,
+    delay: transition_delay$2,
+    duration: transition_duration$2,
+    ease: transition_ease$2,
+    end: transition_end$2
+  };
+
+  function cubicInOut$2(t) {
+    return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
+  }
+
+  var defaultTiming$2 = {
+    time: null, // Set on use.
+    delay: 0,
+    duration: 250,
+    ease: cubicInOut$2
+  };
+
+  function inherit$2(node, id) {
+    var timing;
+    while (!(timing = node.__transition) || !(timing = timing[id])) {
+      if (!(node = node.parentNode)) {
+        return defaultTiming$2.time = now$3(), defaultTiming$2;
+      }
+    }
+    return timing;
+  }
+
+  function selection_transition$2(name) {
+    var id,
+        timing;
+
+    if (name instanceof Transition$2) {
+      id = name._id, name = name._name;
+    } else {
+      id = newId$2(), (timing = defaultTiming$2).time = now$3(), name = name == null ? null : name + "";
+    }
+
+    for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          schedule$2(node, name, id, i, group, timing || inherit$2(node, id));
+        }
+      }
+    }
+
+    return new Transition$2(groups, this._parents, name, id);
+  }
+
+  selection$2.prototype.interrupt = selection_interrupt$2;
+  selection$2.prototype.transition = selection_transition$2;
+
+  var next_unique_id = 1;
+
+  var OPTIONS = {
+  	container: document.body,
+  	point: [window.innerWidth / 2, window.innerHeight / 2],
+  	html: "",
+  	open_duration: 250,
+  	close_duration: 250,
+  	popup_custom_template: "",
+  	position: "overlay",
+  	shadow: true,
+  	underlay_color: "rgba(255, 255, 255, 0.75)",
+
+  	width_side: 35,
+  	height_side: 35,
+  	width_overlay: 80,
+  	height_overlay: 80,
+  	vertical_position: "click",
+  	max_width: null,
+  	max_height: null,
+  	closeable: true,
+  };
+
+  function Panel() {
+  	var panel = this;
+  	panel.unique_id = next_unique_id++;
+  	panel._is_open = false;
+  	panel._onclose = null;
+  	for (var k in OPTIONS) panel["_" + k] = OPTIONS[k];
+  }
+
+  // Create accessor methods for all the options
+  function accessor(k) {
+  	Panel.prototype[k] = function (v) {
+  		if (typeof v == "undefined") return this["_" + k];
+  		this["_" + k] = v;
+  		return this;
+  	};
+  }
+  for (var k in OPTIONS) accessor(k);
+
+  // Custom accessor method for .point
+  Panel.prototype.point = function (arg1, arg2) {
+  	if (typeof arg1 == "undefined") return this._point;
+  	if (Array.isArray(arg1)) this._point = [arg1[0], arg1[1]];
+  	else if (typeof arg2 != "undefined") this._point = [arg1, arg2];
+  	else if (arg1 instanceof HTMLElement || arg1 instanceof SVGElement) {
+  		var r = arg1.getBoundingClientRect();
+  		this._point = [
+  			Math.floor(r.left + r.width / 2),
+  			Math.floor(r.top + r.height / 2),
+  		];
+  	} else {
+  		console.error("Panel: could not understand argument");
+  	}
+  	return this;
+  };
+
+  Panel.prototype.container = function (container) {
+  	if (container) this._container = container;
+  	return this;
+  };
+
+  function fadeOutPanel(panel) {
+  	panel._getElement().style.pointerEvents = "none";
+  	panel._is_open = false;
+  	var duration = panel._close_duration;
+  	select$3(panel._getElement())
+  		.transition()
+  		.duration(duration)
+  		.style("background", "rgba(255, 255, 255, 0)")
+  		.on("interrupt", function () {
+  			select$3(this).style("display", panel._is_open ? "block" : "none");
+  		})
+  		.on("end", function () {
+  			select$3(this).style("display", "none");
+  			select$3(panel._content).html("");
+  		})
+  		.select(".flourish-panel-close")
+  		.style("opacity", "0");
+
+  	select$3(panel._inner).transition().duration(duration).style("opacity", 0);
+
+  	select$3(panel._content)
+  		.transition()
+  		.duration(duration / 2)
+  		.style("opacity", 0);
+  }
+
+  Panel.prototype.hide = function () {
+  	var panel = this;
+  	if (!panel._is_open) return;
+  	fadeOutPanel(panel);
+  	panel._focusTrap.deactivate();
+  	return this;
+  };
+
+  Panel.prototype.close = Panel.prototype.hide;
+
+  function addCloseButton(panel) {
+  	select$3(panel._inner)
+  		.append("svg")
+  		.attr("class", "flourish-panel-close fl-ignore-svg-download")
+  		.attr("viewBox", "0 0 40 40")
+  		.style("width", "1.25rem")
+  		.style("height", "1.25rem")
+  		.style("position", "absolute")
+  		.style("right", "1rem")
+  		.style("top", "1rem")
+  		.style("cursor", "pointer")
+  		.style("opacity", 0)
+  		.attr("tabindex", "-1")
+  		.attr("role", "button")
+  		.attr("aria-label", "Close")
+  		.on("mouseover", function () {
+  			if (panel._closeable) this.style.opacity = 0.66;
+  		})
+  		.on("mouseout", function () {
+  			if (panel._closeable) this.style.opacity = 1;
+  		})
+  		.on("click", function () {
+  			event$2.stopPropagation();
+  			panel.hide();
+  			if (panel._onclose) panel._onclose();
+  		})
+  		.on("touch", function () {
+  			event$2.stopPropagation();
+  			panel.hide();
+  			if (panel._onclose) panel._onclose();
+  		})
+  		.on("keydown", function () {
+  			if (event$2.key == "Enter" || event$2.key == " ") {
+  				event$2.stopPropagation();
+  				event$2.preventDefault();
+  				panel.hide();
+  				if (panel._onclose) panel._onclose();
+  			}
+  		})
+  		.append("path")
+  		.attr("stroke", "#333333")
+  		.attr("stroke-width", "0.5rem")
+  		.attr("stroke-linecap", "round")
+  		.attr("d", "M 10,10 L 30,30 M 30,10 L 10,30");
+  }
+
+  function extractTitleFromContent(contentEl) {
+  	// Look for heading elements in order of priority
+  	var headings = contentEl.querySelectorAll("h1, h2, h3, h4, h5, h6");
+  	if (headings.length > 0) {
+  		return headings[0].textContent.trim();
+  	}
+
+  	// Look for elements with title-like classes
+  	var titleEl = contentEl.querySelector(
+  		".title, .heading, .panel-title, .popup-title",
+  	);
+  	if (titleEl) {
+  		return titleEl.textContent.trim();
+  	}
+
+  	return null;
+  }
+
+  Panel.prototype.draw = function () {
+  	var panel = this;
+  	panel._content.innerHTML = panel._html;
+
+  	openPanel(panel);
+  	return this;
+  };
+
+  Panel.prototype.on = function (event, callback) {
+  	if (event == "close") {
+  		if (callback) this._onclose = callback;
+  	} else console.error("Panel .on() method only supports 'close' events");
+  	return this;
+  };
+
+  function openPanel(panel) {
+  	var duration =
+  		panel._is_open || panel._html == panel._default ? 0 : panel._open_duration;
+
+  	var window_w = window.innerWidth,
+  		window_h = window.innerHeight;
+
+  	var overlay = panel._position == "overlay",
+  		full_width = panel._position == "top" || panel._position == "bottom",
+  		full_height = panel._position == "left" || panel._position == "right",
+  		max_w_percent = (100 * (panel._max_width || Infinity)) / window_w,
+  		max_h_percent = (100 * (panel._max_height || Infinity)) / window_h,
+  		y_percent = (100 * panel._point[1]) / window_h;
+
+  	var position_click =
+  		panel._vertical_position == "click" && !Flourish.fixed_height;
+
+  	var end_w_percent = overlay
+  			? Math.min(panel._width_overlay, max_w_percent)
+  			: full_width
+  				? 100
+  				: Math.min(panel._width_side, max_w_percent),
+  		end_h_percent = overlay
+  			? Math.min(panel._height_overlay, max_h_percent)
+  			: full_height
+  				? 100
+  				: Math.min(panel._height_side, max_h_percent);
+
+  	var end_l_percent = overlay
+  			? (100 - end_w_percent) / 2
+  			: panel._position == "right"
+  				? 100 - end_w_percent
+  				: 0,
+  		end_t_percent_overlay = position_click
+  			? Math.max(1, Math.min(y_percent - end_h_percent / 2, 99 - end_h_percent))
+  			: (100 - end_h_percent) / 2,
+  		end_t_percent = overlay
+  			? end_t_percent_overlay
+  			: panel._position == "bottom"
+  				? 100 - end_h_percent
+  				: 0;
+
+  	var start_w_percent = overlay ? 0 : end_w_percent,
+  		start_h_percent = overlay ? 0 : end_h_percent,
+  		start_l_percent = overlay
+  			? (100 * panel._point[0]) / window_w
+  			: panel._position == "right"
+  				? 100
+  				: panel._position == "left"
+  					? -end_w_percent
+  					: 0,
+  		start_t_percent = overlay
+  			? y_percent
+  			: panel._position == "bottom"
+  				? 100
+  				: panel._position == "top"
+  					? -end_h_percent
+  					: 0;
+
+  	var title = extractTitleFromContent(panel._content);
+  	var ariaLabel = title ? title + " dialog" : "Information dialog";
+
+  	select$3(panel._getElement())
+  		.style("display", "block")
+  		.transition()
+  		.duration(duration)
+  		.delay(duration * 0.25)
+  		.style(
+  			"background",
+  			overlay ? panel._underlay_color : "rgba(255, 255, 255, 0)",
+  		)
+  		.style("pointer-events", overlay ? null : "none")
+  		.attr("aria-label", ariaLabel);
+
+  	select$3(panel._inner)
+  		.style("opacity", 1)
+  		.style("display", "block")
+  		.style("pointer-events", "none")
+  		.style("width", start_w_percent + "%")
+  		.style("height", start_h_percent + "%")
+  		.style("left", start_l_percent + "%")
+  		.style("top", start_t_percent + "%")
+  		.transition()
+  		.duration(duration)
+  		.style("width", end_w_percent + "%")
+  		.style("height", end_h_percent + "%")
+  		.style("left", end_l_percent + "%")
+  		.style("top", end_t_percent + "%")
+  		.on("end", function () {
+  			select$3(panel._inner)
+  				.style("pointer-events", "all")
+  				.style("width", end_w_percent + "%")
+  				.style("height", end_h_percent + "%")
+  				.style("left", end_l_percent + "%")
+  				.style("top", end_t_percent + "%");
+  		})
+  		.on("interrupt", function () {
+  			select$3(panel._inner)
+  				.style("pointer-events", "all")
+  				.style("width", end_w_percent + "%")
+  				.style("height", end_h_percent + "%")
+  				.style("left", end_l_percent + "%")
+  				.style("top", end_t_percent + "%");
+  		});
+
+  	var offset_panel_content = full_height && position_click;
+
+  	select$3(panel._content)
+  		.transition()
+  		.duration(duration / 4)
+  		.delay(duration)
+  		.style("opacity", 1)
+  		.on("interrupt", function () {
+  			select$3(this).style("opacity", 1);
+  		});
+
+  	select$3(panel._content)
+  		.select(".flourish-panel-content-inner")
+  		.style("position", offset_panel_content ? "absolute" : null)
+  		.style("top", offset_panel_content ? y_percent + "%" : null)
+  		.style("transform", offset_panel_content ? "translateY(-50%)" : null);
+
+  	select$3(panel._inner)
+  		.select(".flourish-panel-close")
+  		.style("opacity", 0)
+  		.transition()
+  		.duration(duration / 4)
+  		.delay(duration)
+  		.style("opacity", panel._closeable ? 1 : 0)
+  		.attr("tabindex", panel._closeable ? "0" : "-1");
+
+  	if (!panel._focusTrap) {
+  		panel._focusTrap = createFocusTrap();
+  	}
+
+  	panel._focusTrap.activate();
+  	panel._is_open = true;
+
+  	timerFlush$3();
+  }
+
+  function createFocusTrap() {
+  	let previous_active_element = null;
+  	let first_focusable_element = null;
+  	let last_focusable_element = null;
+
+  	const panel_el = document.querySelector(".flourish-panel");
+  	const panel_inner_el = document.querySelector(".flourish-panel-inner");
+  	const focusable_els = panel_inner_el.querySelectorAll(
+  		'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), [role="button"]',
+  	);
+
+  	if (focusable_els.length) {
+  		first_focusable_element = focusable_els[0];
+  		last_focusable_element = focusable_els[focusable_els.length - 1];
+  	}
+
+  	function handle_key_down(event) {
+  		if (event.key === "Tab" || event.keyCode === 9) {
+  			// If shift + tab and on first element, move to last element
+  			if (focusable_els.length === 0) return; // No focusable elements
+  			if (
+  				event.shiftKey &&
+  				document.activeElement === first_focusable_element
+  			) {
+  				event.preventDefault();
+  				last_focusable_element.focus();
+  			}
+  			// If tab and on last element, cycle back to first element
+  			else if (
+  				!event.shiftKey &&
+  				document.activeElement === last_focusable_element
+  			) {
+  				event.preventDefault();
+  				first_focusable_element.focus();
+  			}
+  		}
+  	}
+
+  	return {
+  		activate: function () {
+  			previous_active_element = document.activeElement;
+  			panel_inner_el.addEventListener("keydown", handle_key_down);
+  			setTimeout(() => {
+  				// Focus the panel first to announce the aria-label
+  				panel_el.focus();
+  				// If there are focusable elements, don't auto-focus them initially
+  				// Let screen reader announce the panel label first
+  			}, 100);
+  		},
+  		deactivate: function () {
+  			panel_inner_el.removeEventListener("keydown", handle_key_down);
+  			const has_visible_focus = Boolean(
+  				document.querySelector(":focus-visible"),
+  			);
+  			if (has_visible_focus && previous_active_element) {
+  				previous_active_element.focus();
+  			}
+  		},
+  	};
+  }
+
+  Panel.prototype.margins = function () {
+  	var margins = { top: 0, right: 0, bottom: 0, left: 0 };
+  	if (this._is_open && this._position != "overlay") {
+  		var rect = this._getElement().getBoundingClientRect();
+  		if (this._position == "top") margins.top = rect.top + rect.height;
+  		if (this._position == "right") margins.right = rect.left;
+  		if (this._position == "bottom") margins.bottom = rect.top;
+  		if (this._position == "left") margins.left = rect.left + rect.width;
+  	}
+  	margins.css =
+  		margins.top +
+  		"px " +
+  		margins.right +
+  		"px " +
+  		margins.bottom +
+  		"px " +
+  		margins.left +
+  		"px";
+  	return margins;
+  };
+
+  Panel.prototype._getElement = function () {
+  	var panel = this;
+  	var id = "flourish-panel-" + panel.unique_id;
+  	var el = document.getElementById(id);
+  	if (!el) {
+  		el = document.createElement("div");
+  		el.className = "flourish-panel";
+  		el.role = "dialog";
+  		el.ariaModal = "true";
+  		el.tabIndex = "-1";
+  		el.id = id;
+  		el.addEventListener("click", function (e) {
+  			e.stopPropagation();
+  			closePanel();
+  		});
+
+  		window.addEventListener(
+  			"keydown",
+  			function (e) {
+  				if (!panel._is_open) return;
+  				if (e.key === "Escape") {
+  					e.stopPropagation();
+  					e.preventDefault();
+  					closePanel();
+  				}
+  			},
+  			false,
+  		);
+
+  		var s = el.style;
+  		s.position = "absolute";
+  		s.zIndex = "999999";
+  		s.pointerEvents = "none";
+  		s.width = "100%";
+  		s.height = "100%";
+  		s.top = "0";
+  		s.left = "0";
+  		s.background = "rgba(255, 255, 255, 0)";
+
+  		var inner = document.createElement("div");
+  		inner.className = "flourish-panel-inner";
+  		el.appendChild(inner);
+  		panel._inner = inner;
+
+  		addCloseButton(panel);
+
+  		s = inner.style;
+  		s.width = "0";
+  		s.height = "0";
+  		s.position = "absolute";
+  		s.boxSizing = "border-box";
+
+  		var shadow = document.createElement("div");
+  		shadow.className = "flourish-panel-shadow";
+  		inner.appendChild(shadow);
+
+  		var content = document.createElement("div");
+  		content.className = "flourish-panel-content";
+  		inner.appendChild(content);
+  		panel._content = content;
+
+  		s = content.style;
+  		s.opacity = "0";
+  		s.overflowY = "auto";
+  		s.height = "100%";
+
+  		panel._container.appendChild(el);
+  	}
+
+  	function closePanel() {
+  		panel.hide();
+  		if (panel._onclose) panel._onclose();
+  	}
+
+  	return el;
+  };
+
+  function initPanel() {
+  	return new Panel();
+  }
+
+  var DEFAULTS$9 = {
+  	mode: "popup",
+
+  	// If truthy, means panel or popup are locked
+  	locked_id: null,
+
+  	// Popup content
+  	popup_is_custom: false,
+  	popup_custom_header: "Popup header",
+  	popup_custom_main:
+  		"Popup main content. Write your column names in between double curly brackets to display dynamic content.",
+  	popup_custom_accessible: "",
+  	popup_teaser_default: "Click to see more",
+
+  	// Popup styles
+  	popup_text_color: "#333333",
+  	popup_align: "start",
+  	popup_font_size: 1,
+  	popup_font_family: null,
+  	popup_width: 18,
+  	popup_background: "#ffffff",
+  	popup_background_opacity: 1,
+  	popup_padding: 0.5,
+  	popup_radius: 0.2,
+  	popup_shadow: true,
+  	popup_pointer: true,
+  	popup_header_background: "#333333",
+  	popup_header_text_color: "#ffffff",
+  	popup_header_type: "block",
+  	popup_list_type: "table",
+  	popup_list_label_weight: "normal",
+  	popup_list_separator: ": ",
+
+  	// Panel content
+  	panel_is_custom: false,
+  	panel_custom_header: "Custom panel header",
+  	panel_custom_main: "Custom panel main content",
+  	panel_side_default_content: "<h3>Tap or click to explore</h3>",
+  	panel_side_fixed: false,
+
+  	// Panel layout
+  	panel_position: "overlay",
+  	panel_width_overlay: 80,
+  	panel_height_overlay: 80,
+  	panel_vertical_position: "center",
+  	panel_width_side: 35,
+  	panel_height_side: 35,
+  	panel_max_width: null,
+  	panel_max_height: null,
+
+  	// Panel styles
+  	panel_text_color: "#333333",
+  	panel_align: "start",
+  	panel_font_size: 1.25,
+  	panel_font_family: null,
+  	panel_background: "#ffffff",
+  	panel_background_opacity: 0.9,
+  	panel_padding: 1.2,
+  	panel_radius: 0.2,
+  	panel_shadow: true,
+  	panel_open_duration: 250,
+  	panel_close_duration: 250,
+  	panel_list_type: "table",
+  	panel_list_label_weight: "normal",
+  	panel_list_separator: ": ",
+  };
+
+  const variable_regex = /\{\{((?:[^}]|\}[^}])*)\}\}/g; // This checks for {{ variable }} blocks
+
+  function isMissing(value) {
+  	if (
+  		value === "" ||
+  		Number.isNaN(value) ||
+  		value === null ||
+  		value === undefined
+  	)
+  		return true;
+  	return false;
+  }
+
+  // The default popup and accessible content should show the content of all
+  // bound columns. This function returns an object that:
+  // 1. If popup.setFormatters has been called, formats the values first
+  // 2. If titleKey and/or subtitleKey have been called, adds title/subtitle properties
+  // 3. Adds each column's formatted value to the main content (ensuring it's only
+  // added once even if a column is bound to more than one binding)
+  function getDefaultContent(instance, formatted_data) {
+  	let content = {
+  		title: null,
+  		subtitle: null,
+  		main: {},
+  	};
+  	var col_names_in_popup = {};
+  	const title = formatted_data[instance._title_key];
+  	const subtitle = formatted_data[instance._subtitle_key];
+  	if (title) {
+  		content.title = title;
+  		const col_name = instance._column_names[instance._title_key];
+  		col_names_in_popup[col_name] = true;
+  	}
+  	if (subtitle) {
+  		content.subtitle = subtitle;
+  		const col_name = instance._column_names[instance._subtitle_key];
+  		col_names_in_popup[col_name] = true;
+  	}
+  	// Move metadata to end of loop to prioritise other bindings
+  	const bindings = Object.keys(instance._column_names);
+  	if (bindings.includes("metadata")) {
+  		bindings.push(bindings.splice(bindings.indexOf("metadata"), 1)[0]);
+  	}
+
+  	for (let i = 0; i < bindings.length; i++) {
+  		const binding = bindings[i];
+  		if (instance._column_names_hidden.indexOf(binding) > -1) continue;
+  		if (binding == instance._title_key) continue;
+  		if (binding == instance._subtitle_key) continue;
+  		const col_name = instance._column_names[binding];
+  		if (Array.isArray(col_name)) {
+  			col_name.forEach(function (name, i) {
+  				if (col_names_in_popup[name] || isMissing(formatted_data[binding]))
+  					return;
+  				col_names_in_popup[name] = true;
+  				content.main[name] = formatted_data[binding][i];
+  			});
+  		} else {
+  			if (col_names_in_popup[col_name] || isMissing(formatted_data[binding]))
+  				continue;
+  			col_names_in_popup[col_name] = true;
+  			content.main[col_name] = formatted_data[binding];
+  		}
+  	}
+  	return content;
+  }
+
+  function getAccessiblePopupContent(instance, d) {
+  	let content = "";
+  	var custom_default = instance._popup_default_template;
+  	const formatted_data = formatValues(instance, d);
+  	if (
+  		instance._state.popup_is_custom &&
+  		instance._state.popup_custom_accessible
+  	) {
+  		const raw_content = instance._state.popup_custom_accessible;
+  		content = getParsedContent(raw_content, instance, formatted_data);
+  	} else if (!custom_default) {
+  		let formatted_content = getDefaultContent(instance, formatted_data);
+
+  		if (formatted_content.title) content += `${formatted_content.title}, `;
+  		if (formatted_content.subtitle)
+  			content += `${formatted_content.subtitle}, `;
+
+  		for (var col in formatted_content.main) {
+  			const col_value = formatted_content.main[col];
+  			if (!isMissing(col_value)) content += `${col}: ${col_value}, `;
+  		}
+  	} else {
+  		// For accessible content, just extract variables from template
+  		// and don't include URLs
+  		var col_names_in_popup = {};
+  		const variables = custom_default.match(variable_regex);
+  		variables.forEach((v) => {
+  			v.replace(variable_regex, function (_, target_binding) {
+  				var text;
+  				const col_name = instance._column_names[target_binding];
+  				if (Array.isArray(col_name)) {
+  					if (col_name.length == 0) return;
+  					col_name.forEach(function (name, i) {
+  						if (col_names_in_popup[name]) return;
+  						col_names_in_popup[name] = true;
+  						const value = formatted_data[target_binding][i];
+  						if (isUrl(value) || isMissing(value)) return;
+  						text = `${name}: ${value}, `;
+  					});
+  				} else {
+  					const value = formatted_data[target_binding];
+  					if (isUrl(value) || isMissing(value)) return;
+  					if (col_names_in_popup[col_name]) return;
+  					col_names_in_popup[col_name] = true;
+  					text = `${col_name}: ${value}, `;
+  				}
+  				if (text !== undefined) content += text;
+  			});
+  		});
+  	}
+
+  	content = content.replace(/, $/, "");
+  	return getInnerText(content);
+  }
+
+  function getInnerText(content) {
+  	const div = document.createElement("div");
+  	div.innerHTML = content;
+  	return div.innerText;
+  }
+
+  function getDefaultHTML(instance, formatted_data, mode) {
+  	var html = "<div class='flourish-panel-content-inner'>";
+  	var custom_default = instance["_" + mode + "_default_template"];
+  	var list_mode = instance._state[mode + "_list_type"];
+  	var separator = instance._state[mode + "_list_separator"];
+  	var separator_is_line_break = separator === "<br />";
+  	var character_separator = separator_is_line_break ? "" : separator;
+  	var line_break = separator_is_line_break ? separator : "";
+
+  	if (!custom_default) {
+  		let formatted_content = getDefaultContent(instance, formatted_data);
+
+  		// Header
+  		if (formatted_content.title || formatted_content.subtitle) {
+  			html += "<header>";
+  			if (formatted_content.title)
+  				html += `<h3>${formatted_content.title}</h3>`;
+  			if (formatted_content.subtitle)
+  				html += `<h4>${formatted_content.subtitle}</h4>`;
+  			html += "</header>";
+  		}
+
+  		// Main
+  		if (Object.keys(formatted_content.main).length) {
+  			let main_content = "";
+  			for (var col_name in formatted_content.main) {
+  				const col_value = formatted_content.main[col_name];
+  				if (list_mode == "table") {
+  					main_content +=
+  						"<tr><td class='table-col-label'><span class='data-heading'>";
+  					main_content += col_name + "</span></td><td class='table-col-value'>";
+  					main_content += col_value + "</td></tr>";
+  				} else if (list_mode == "ul") {
+  					main_content +=
+  						"<li><span class='data-heading'>" + col_name + character_separator;
+  					main_content += " </span> " + line_break + col_value + "</li>";
+  				}
+  			}
+
+  			html += "<div class='main-content'><" + list_mode + ">";
+  			html += main_content;
+  			html += "</" + list_mode + "></div></div>";
+  		}
+  	} else {
+  		html += custom_default.replace(
+  			variable_regex,
+  			function (_, target_binding) {
+  				var text;
+  				var col_name = instance._column_names[target_binding];
+  				if (Array.isArray(col_name)) {
+  					if (col_name.length == 0) return "";
+  					text = "<ul>";
+  					col_name.forEach(function (name, i) {
+  						text +=
+  							"<li>" +
+  							name +
+  							separator +
+  							formatted_data[target_binding][i] +
+  							"</li>";
+  					});
+  					text += "</ul>";
+  				} else {
+  					text = formatted_data[target_binding];
+  				}
+  				if (text !== undefined) return text;
+  				return "";
+  			},
+  		);
+  	}
+  	return html;
+  }
+
+  function getValueFromColumnName(instance, target_binding, formatted_data) {
+  	var value;
+  	Object.keys(instance._column_names).some(function (key) {
+  		if (Array.isArray(instance._column_names[key])) {
+  			var index = instance._column_names[key].indexOf(target_binding);
+  			if (index >= 0) {
+  				value = formatted_data[key][index];
+  				return true;
+  			}
+  		} else if (instance._column_names[key] == target_binding) {
+  			value = formatted_data[key];
+  			return true;
+  		}
+  	});
+  	if (value !== undefined) return value;
+  	return "";
+  }
+
+  function getCustomHTML(instance, formatted_data, mode) {
+  	var content = "";
+  	const content_header_raw =
+  		mode === "popup"
+  			? instance._state.popup_custom_header
+  			: instance._state.panel_custom_header;
+  	const content_main_raw =
+  		mode === "popup"
+  			? instance._state.popup_custom_main
+  			: instance._state.panel_custom_main;
+  	// TODO. Add handlebars proper to extend this to support else statements and nested conditions
+  	var content_header_parsed = getParsedContent(
+  		content_header_raw,
+  		instance,
+  		formatted_data,
+  	);
+  	var content_main_parsed = getParsedContent(
+  		content_main_raw,
+  		instance,
+  		formatted_data,
+  	);
+
+  	if (content_header_parsed)
+  		content += "<header>" + content_header_parsed + "</header>";
+  	if (content_main_parsed)
+  		content += "<div class='main-content'>" + content_main_parsed + "</div>";
+
+  	return content;
+  }
+
+  function getParsedContent(content_raw, instance, formatted_data) {
+  	var condition_regex = /\{\{#if ((?:[^}]|\}[^}])*)\}\}([\s\S]*?)\{\{\/if\}\}/g; // This checks for {{# if}} {{/ if}} blocks
+  	var flourish_regex = /\{\{(visualisation|story)\/(.*)\}\}/g; // This checks for {{ visualisation/123 }} Flourish blocks
+
+  	return content_raw
+  		.replace(condition_regex, function (_, target_binding, if_contents) {
+  			return getValueFromColumnName(instance, target_binding, formatted_data) ==
+  				""
+  				? ""
+  				: if_contents;
+  		})
+  		.replace(flourish_regex, function (original, type, opts) {
+  			var metadata = opts.split("/");
+  			if (metadata.length < 1 || !["visualisation", "story"].includes(type))
+  				return original;
+  			var embed_info = {
+  				id: metadata[0],
+  				w: metadata[1] || "100%",
+  				h: metadata[2] || "400px%",
+  			};
+  			var url = "https://flo.uri.sh/" + type + "/" + embed_info.id + "/embed?";
+  			var iframe = create$3("iframe")
+  				.attr("src", url)
+  				.attr("title", "Interactive or visual content")
+  				.attr("class", "flourish-embed-iframe")
+  				.attr("frameborder", "0")
+  				.attr("scrolling", "no")
+  				.attr(
+  					"sandbox",
+  					"allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation",
+  				)
+  				.style("width", embed_info.width)
+  				.style("height", embed_info.height);
+
+  			return iframe.node().outerHTML;
+  		})
+  		.replace(variable_regex, function (_, target_binding) {
+  			return getValueFromColumnName(instance, target_binding, formatted_data);
+  		})
+  		.trim();
+  }
+
+  function formatValues(instance, d) {
+  	var formatters = instance._formatters;
+
+  	var formatted_data = {};
+  	for (var binding in d) {
+  		if (formatters && formatters[binding]) {
+  			if (Array.isArray(formatters[binding])) {
+  				var formatted_array_of_values = [];
+  				for (var col = 0; col < formatters[binding].length; col++) {
+  					let formatted_value;
+  					if (isMissing(d[binding][col])) formatted_value = "";
+  					else formatted_value = formatters[binding][col](d[binding][col]);
+  					formatted_array_of_values.push(formatted_value);
+  				}
+  				formatted_data[binding] = formatted_array_of_values;
+  			} else {
+  				if (isMissing(d[binding])) continue;
+  				formatted_data[binding] = isMissing(d[binding])
+  					? ""
+  					: formatters[binding](d[binding]);
+  			}
+  		} else {
+  			formatted_data[binding] = isMissing(d[binding]) ? "" : d[binding];
+  		}
+  	}
+  	return formatted_data;
+  }
+
+  function getPopupHTML(instance, d, teaser) {
+  	var html = "";
+  	var formatted_data = formatValues(instance, d);
+  	if (teaser && !instance._state.popup_is_custom)
+  		html +=
+  			"<div class='main-content'>" +
+  			instance._state.popup_teaser_default +
+  			"</div>";
+  	else if (!teaser && !instance._state.popup_is_custom)
+  		html += getDefaultHTML(instance, formatted_data, "popup");
+  	else html += getCustomHTML(instance, formatted_data, "popup");
+  	return html;
+  }
+
+  function getPanelHTML(instance, d) {
+  	var html = "";
+  	var formatted_data = formatValues(instance, d);
+  	if (!instance._state.panel_is_custom)
+  		html += getDefaultHTML(instance, formatted_data, "panel");
+  	else html += getCustomHTML(instance, formatted_data, "panel");
+  	return html;
+  }
+
+  function appendStyles(instance) {
+  	if (!document.querySelector("#popup-styles")) {
+  		var css = document.createElement("style");
+  		css.id = "popup-styles";
+  		document.head.appendChild(css);
+  	}
+  	var styles = new Stylesheet$1();
+  	var header_block = instance._state.popup_header_type == "block";
+  	var header_background = color$4(
+  		instance._state.popup_header_background || "transparent",
+  	);
+  	header_background.opacity = instance._state.popup_header_background
+  		? instance._state.popup_background_opacity
+  		: 0;
+  	var panel_pos = instance._state.panel_position;
+  	styles
+  		.select(".flourish-panel .flourish-panel-shadow")
+  		.style("pointer-events", "none")
+  		.style("position", "absolute")
+  		.style(
+  			"display",
+  			panel_pos == "overlay" || !instance._state.panel_shadow
+  				? "none"
+  				: "block",
+  		)
+  		.style(
+  			"top",
+  			panel_pos == "bottom" ? "-3rem" : panel_pos == "top" ? "auto" : 0,
+  		)
+  		.style(
+  			"right",
+  			panel_pos == "left" ? "-3rem" : panel_pos == "right" ? "auto" : 0,
+  		)
+  		.style(
+  			"bottom",
+  			panel_pos == "top" ? "-3rem" : panel_pos == "bottom" ? "auto" : 0,
+  		)
+  		.style(
+  			"left",
+  			panel_pos == "right" ? "-3rem" : panel_pos == "left" ? "auto" : 0,
+  		)
+  		.style(
+  			"width",
+  			panel_pos == "left" || panel_pos == "right" ? "3rem" : "100%",
+  		)
+  		.style(
+  			"height",
+  			panel_pos == "top" || panel_pos == "bottom" ? "3rem" : "100%",
+  		)
+  		.style("z-index", "-1")
+  		.style("overflow", "hidden");
+
+  	styles
+  		.select(".flourish-panel .flourish-panel-shadow:before")
+  		.style("content", "''")
+  		.style("display", "block")
+  		.style("position", "absolute")
+  		.style(
+  			"width",
+  			panel_pos == "left" || panel_pos == "right" ? "1.5rem" : "100%",
+  		)
+  		.style(
+  			"height",
+  			panel_pos == "top" || panel_pos == "bottom" ? "1.5rem" : "100%",
+  		)
+  		.style("border-radius", "50%")
+  		.style("background", "rgba(0,0,0,0.3)")
+  		.style(
+  			"bottom",
+  			panel_pos == "bottom" ? "-50%" : panel_pos == "top" ? "auto" : 0,
+  		)
+  		.style(
+  			"left",
+  			panel_pos == "left" ? "-50%" : panel_pos == "right" ? "auto" : 0,
+  		)
+  		.style(
+  			"top",
+  			panel_pos == "top" ? "-50%" : panel_pos == "bottom" ? "auto" : 0,
+  		)
+  		.style(
+  			"right",
+  			panel_pos == "right" ? "-50%" : panel_pos == "left" ? "auto" : 0,
+  		)
+  		.style("filter", "blur(15px)");
+
+  	styles
+  		.select(".flourish-panel-inner:focus-visible")
+  		.style("outline", "none !important");
+
+  	styles
+  		.select(".flourish-panel:focus-visible")
+  		.style("outline", "none !important");
+
+  	styles.select(".flourish-panel-close:focus").style("outline", "none");
+
+  	styles
+  		.select(".flourish-panel-close:focus-visible")
+  		.style("outline", "-webkit-focus-ring-color auto 5px");
+
+  	styles
+  		.select(".flourish-popup")
+  		.style("pointer-events", "none")
+  		.select(".flourish-popup-content")
+  		.style("pointer-events", "auto")
+  		.style(
+  			"max-width",
+  			instance._state.popup_width == null
+  				? null
+  				: instance._state.popup_width + "rem !important",
+  		);
+
+  	styles
+  		.select(".flourish-popup header, .flourish-panel header")
+  		.style("margin", "0");
+
+  	styles
+  		.select(".flourish-popup header")
+  		.style("font-weight", "bold")
+  		.style(
+  			"color",
+  			header_block ? instance._state.popup_header_text_color : null,
+  		)
+  		.style("background", header_block ? header_background.rgb() : null)
+  		.style("padding", instance._state.popup_padding + "rem")
+  		.style(
+  			"border-radius",
+  			instance._state.popup_radius +
+  				"rem " +
+  				instance._state.popup_radius +
+  				"rem 0 0",
+  		);
+
+  	// If a header is not the last child that means the popup has content
+  	const headers_with_content = styles.select(
+  		".flourish-popup header:not(:last-child)",
+  	);
+  	// We want the padding bottom to be zero only when the popup has content and has an inline header
+  	headers_with_content.style("padding-bottom", header_block ? null : "0");
+
+  	// Header which isn't the last child has content following it. If it's an
+  	// inline header, there should be no extra padding between it and the content.
+  	styles
+  		.select(".flourish-popup header:not(:last-child)")
+  		.style("padding-bottom", header_block ? null : "0");
+
+  	styles
+  		.select(".flourish-panel .flourish-panel-content-inner")
+  		.style("overflow", "auto");
+
+  	styles
+  		.select(".flourish-panel header")
+  		.style("font-weight", "bold")
+  		.style("margin-bottom", "0.5em")
+  		.style("padding-right", "1rem");
+
+  	styles
+  		.select(".flourish-popup .main-content")
+  		.style("padding", instance._state.popup_padding + "rem");
+
+  	styles
+  		.select(".flourish-popup header + .main-content")
+  		.style("padding", instance._state.popup_padding + "rem")
+  		.style("padding-top", !header_block ? "0" : null);
+
+  	styles
+  		.select(".flourish-popup h3, .flourish-panel h3")
+  		.style("font-size", "1em")
+  		.style("margin", "0");
+
+  	styles
+  		.select(".flourish-popup h3, .flourish-popup h4, .flourish-popup ul li")
+  		.style("text-align", instance._state.popup_align);
+
+  	styles
+  		.select(".flourish-panel h3, .flourish-panel h4, .flourish-panel ul li")
+  		.style("text-align", instance._state.panel_align);
+
+  	styles
+  		.select(".flourish-popup h4, .flourish-panel h4")
+  		.style("font-size", "1em")
+  		.style("margin", header_block ? "0" : "0 0 0.25em")
+  		.style("opacity", "0.6")
+  		.style("font-weight", "normal");
+
+  	styles
+  		.select(
+  			".flourish-popup h4:empty, .flourish-panel h4:empty, .flourish-popup h3:empty, .flourish-panel h3:empty, .flourish-popup p:empty, .flourish-panel p:empty",
+  		)
+  		.style("display", "none");
+
+  	styles
+  		.select(".flourish-popup p, .flourish-panel p")
+  		.style("margin", "0")
+  		.style("font-size", "inherit")
+  		.style("font-weight", "normal");
+
+  	styles
+  		.select(".flourish-popup table, .flourish-panel table")
+  		.style("margin", "0")
+  		.style("width", "100%")
+  		.style("border-collapse", "collapse")
+  		.style("table-layout", "auto");
+
+  	styles
+  		.select(".flourish-popup table tr, .flourish-panel table tr")
+  		.style("border-top", "1px solid #eee");
+
+  	styles
+  		.select(
+  			".flourish-popup table tr:first-child, .flourish-panel table tr:first-child",
+  		)
+  		.style("border-top", "none");
+
+  	styles
+  		.select(".flourish-popup table tr td, .flourish-panel table tr td")
+  		.style("padding", "0.25em 0 0.25em 0")
+  		.style("padding-inline-end", "0.25em")
+  		.style("vertical-align", "top")
+  		.style("font-size", "inherit")
+  		.style("text-align", "start")
+  		.style("font-weight", "normal")
+  		.style("overflow", "hidden")
+  		.style("text-overflow", "ellipsis");
+
+  	styles
+  		.select(
+  			".flourish-popup table tr:last-child td, .flourish-panel table tr:last-child td",
+  		)
+  		.style("padding-bottom", "0");
+
+  	styles
+  		.select(".flourish-popup .data-heading")
+  		.style("font-weight", instance._state.popup_list_label_weight)
+  		.style("display", "inline-block");
+
+  	styles
+  		.select(".flourish-panel .data-heading")
+  		.style("font-weight", instance._state.panel_list_label_weight)
+  		.style("display", "inline-block");
+
+  	styles
+  		.select(
+  			".flourish-popup table tr td.table-col-value, .flourish-panel table tr td.table-col-value",
+  		)
+  		.style("text-align", "end")
+  		.style("padding", "0.25em 0 0.25em 0")
+  		.style("padding-inline-end", "0.25em");
+
+  	styles
+  		.select(
+  			".flourish-popup table tr:last-child td.table-col-value, .flourish-panel table tr:last-child td.table-col-value",
+  		)
+  		.style("padding-bottom", "0");
+
+  	styles
+  		.select(".flourish-popup ul, .flourish-panel ul")
+  		.style("padding", "0")
+  		.style("margin", "0");
+
+  	styles
+  		.select(".flourish-popup ul li, .flourish-panel ul li")
+  		.style("font-size", "inherit")
+  		.style("list-style-type", "none");
+
+  	if (instance._state.popup_is_custom) {
+  		console.log("is custom", instance._state.popup_is_custom);
+  		styles
+  			.select(".flourish-popup ul, .flourish-panel ul, .flourish-popup ol")
+  			.style("padding-inline-start", "1.5em")
+  			.style("padding-inline-end", "0.5em");
+
+  		styles
+  			.select(".flourish-popup ul li, .flourish-panel ul li")
+  			.style("list-style-type", "disc");
+
+  		styles
+  			.select(".flourish-popup ul li, .flourish-panel ul li")
+  			.style("font-size", "inherit")
+  			.style("list-style-position", "outside");
+
+  		styles
+  			.select(".flourish-popup ol li")
+  			.style("padding-inline-start", "0.5em");
+  	}
+
+  	document.head.querySelector("#popup-styles").innerHTML = styles.print();
+  }
+
+  function updateStyle(instance) {
+  	var popup_el = instance.popup._getElement();
+  	var popup_el_content = popup_el.querySelector(".flourish-popup-content");
+
+  	popup_el_content.style.padding = "0";
+  	popup_el_content.style.textAlign = instance._state.popup_align;
+  	popup_el_content.style.color = instance._state.popup_text_color;
+  	popup_el_content.style.fontSize = instance._state.popup_font_size + "rem";
+  	popup_el_content.style.fontFamily =
+  		instance._state.popup_font_family?.name || null;
+  	popup_el_content.style.borderRadius = instance._state.popup_radius + "rem";
+  	popup_el_content.addEventListener("click", function () {
+  		event.stopPropagation();
+  	});
+
+  	var panel_el = instance.panel._getElement();
+  	var panel_el_inner = panel_el.querySelector(".flourish-panel-inner");
+  	var panel_el_content = panel_el.querySelector(".flourish-panel-content");
+
+  	var rgba = color$4(instance._state.panel_background);
+  	panel_el_inner.style.background =
+  		"rgba(" +
+  		rgba.r +
+  		"," +
+  		rgba.g +
+  		"," +
+  		rgba.b +
+  		"," +
+  		instance._state.panel_background_opacity +
+  		")";
+  	panel_el_inner.style.borderRadius = instance._state.popup_radius + "rem";
+  	panel_el_inner.style.boxShadow =
+  		instance._state.panel_position == "overlay" && instance._state.panel_shadow
+  			? "0 0 1.5rem rgba(0,0,0,0.2)"
+  			: "";
+  	// panel_el_inner.style.focus = "outline: none;";
+  	// panel_el_inner.style.focusVisible = "outline: none;";
+  	panel_el_inner.addEventListener("click", function () {
+  		event.stopPropagation();
+  	});
+
+  	panel_el_content.style.padding = instance._state.panel_padding + "rem";
+  	panel_el_content.style.textAlign = instance._state.panel_align;
+  	panel_el_content.style.color = instance._state.panel_text_color;
+  	panel_el_content.style.fontSize = instance._state.panel_font_size + "rem";
+  	panel_el_content.style.fontFamily =
+  		instance._state.panel_font_family?.name || null;
+  	panel_el_content.style.boxSizing = "border-box";
+
+  	var g = popup_el.querySelector(".flourish-popup-svg g");
+  	g.style.fill = instance._state.popup_background;
+  	g.style.opacity = instance._state.popup_background_opacity;
+
+  	var closer = panel_el.querySelector(".flourish-panel-close path");
+  	if (closer) closer.style.stroke = instance._state.panel_text_color;
+
+  	if (instance._state.popup_shadow == false) g.removeAttribute("filter");
+  	else
+  		g.setAttribute(
+  			"filter",
+  			"url(#dropshadow-" + instance.popup.unique_id + ")",
+  		);
+  	g.querySelector("rect").setAttribute(
+  		"rx",
+  		instance._state.popup_radius + "rem",
+  	);
+  	g.querySelector("path").style.display = instance._state.popup_pointer
+  		? "block"
+  		: "none";
+
+  	appendStyles(instance);
+  }
+
+  function InfoPopup(state, panel_container, popup_container) {
+  	var instance = this;
+  	this._state = state;
+  	this._popup_default_template = null;
+  	this._panel_default_template = null;
+  	this._title_key = "name";
+  	this._subtitle_key = null;
+  	this._first_load = true;
+  	this._on_panel_close = null;
+  	this._show_default_content_timer = null;
+  	this._panel_container = panel_container || document.body;
+  	this._popup_container = popup_container || document.body;
+  	this._popup_directions = ["top", "bottom", "left", "right"];
+  	(this._column_names = []),
+  		(this._column_names_hidden = []),
+  		(this._formatters = null);
+  	this._getLockedPosition = function () {
+  		return null;
+  	};
+
+  	for (var key in DEFAULTS$9) {
+  		if (state[key] == undefined) state[key] = DEFAULTS$9[key];
+  	}
+
+  	this.panel = initPanel()
+  		.container(this._panel_container)
+  		.on("close", function () {
+  			instance._state.locked_id = null;
+  			instance.popup.hide();
+  			if (typeof instance._on_panel_close == "function")
+  				instance._on_panel_close();
+  		});
+  	this.popup = Flourish_popup()
+  		.container(this._popup_container)
+  		.point(0, 0)
+  		.draw()
+  		.hide();
+  }
+
+  // ============ //
+  // INIT METHODS //
+  // ============ //
+
+  InfoPopup.prototype.getLockedPosition = function (getLockedPositionFunction) {
+  	if (typeof getLockedPositionFunction != "function") {
+  		console.error(
+  			"Invalid function passed to @flourish/info-popup getLockedPosition",
+  		);
+  	} else this._getLockedPosition = getLockedPositionFunction;
+  	return this;
+  };
+
+  // ====== //
+  // UDPATE //
+  // ====== //
+
+  InfoPopup.prototype.update = function (callback) {
+  	if (this._state.locked_id !== null && this._state.mode != "none") {
+  		var selected = this._getLockedPosition(this._state.locked_id);
+  		if (selected)
+  			this.click(selected[0], selected[1], this._state.locked_id, callback);
+  		else
+  			console.warn(
+  				"@flourish/info-popup: failed to return value from getLockedPosition function",
+  			);
+  	} else this.clickout();
+  };
+
+  // ============= //
+  // EVENT METHODS //
+  // ============= //
+
+  function disablePopupPointerEvents(instance) {
+  	instance.popup
+  		._getElement()
+  		.querySelector(".flourish-popup-content").style.pointerEvents = "none";
+  }
+
+  function enablePopupPointerEvents(instance) {
+  	instance.popup
+  		._getElement()
+  		.querySelector(".flourish-popup-content").style.pointerEvents = "auto";
+  }
+
+  InfoPopup.prototype.click = function (coords_or_node, d, id, callback) {
+  	if (this._state.mode == "none") return;
+  	var target = this._state.mode == "popup" ? "popup" : "panel";
+  	if (this._checkIfPopupIsEmpty(d, target)) {
+  		target === "panel" ? this.hidePanel() : this.hidePopup();
+  		return;
+  	}
+  	// TODO: Check if popup content is empty
+  	this._point(coords_or_node);
+  	if (id != undefined) {
+  		this._state.locked_id = id;
+  		enablePopupPointerEvents(this);
+  	} else this._state.locked_id = null;
+  	if (target == "panel") {
+  		clearTimeout(this._show_default_content_timer);
+  		this.popup.hide();
+  		this._drawPanel(d, callback);
+  	} else if (target == "popup") {
+  		this.panel.hide();
+  		this._drawPopup(d, callback);
+  	}
+  };
+
+  InfoPopup.prototype.clickout = function () {
+  	this._state.locked_id = null;
+  	if (this._state.mode == "both" || this._state.mode == "panel") {
+  		this.popup.draw(); // call draw to resize constrainer, if necessary
+  		this.popup.hide();
+  		if (
+  			this._state.panel_position == "overlay" ||
+  			!this._state.panel_side_fixed
+  		) {
+  			this.panel.hide();
+  		} else this._showDefaultPanelContent();
+  	}
+  	if (this._state.mode == "popup") {
+  		this.panel.hide();
+  		this.popup.draw(); // call draw to resize constrainer, if necessary
+  		this.popup.hide();
+  	}
+
+  	// draw popup initially in "none" mode to resize constrainer & avoid whitespace around main graphic
+  	if (this._state.mode == "none") {
+  		this.panel.hide();
+  		this.popup.draw(); // call draw to resize constrainer, if necessary
+  		this.popup.hide();
+  	}
+  };
+
+  InfoPopup.prototype.touch = function (coords_or_node, d, id, callback) {
+  	this.mouseover(coords_or_node, d, callback, true, id);
+  };
+
+  InfoPopup.prototype.mouseover = function (
+  	coords_or_node,
+  	d,
+  	callback,
+  	touch,
+  	touch_id,
+  ) {
+  	var target = this._state.mode == "panel" ? "panel" : "popup";
+  	if (this._checkIfPopupIsEmpty(d, target, this._state.mode == "both")) {
+  		target === "panel" ? this.hidePanel() : this.hidePopup();
+  		return;
+  	}
+  	var instance = this;
+  	if (this._state.mode == "both") {
+  		this._point(coords_or_node);
+  		this._drawPopup(d, callback, true);
+  		touch ? enablePopupPointerEvents(this) : disablePopupPointerEvents(this);
+  		if (touch) {
+  			var popup_contents = instance.popup
+  				._getElement()
+  				.querySelector(".flourish-popup-content");
+  			popup_contents.onclick = function () {
+  				instance.click(coords_or_node, d, touch_id, callback);
+  			};
+  		}
+  	}
+  	if (this._state.mode == "popup") {
+  		if (this._state.locked_id !== null) return;
+  		disablePopupPointerEvents(this);
+  		this._point(coords_or_node);
+  		this._drawPopup(d, callback);
+  	}
+  	if (this._state.mode == "panel") {
+  		if (
+  			this._state.locked_id !== null ||
+  			this._state.panel_position == "overlay"
+  		)
+  			return;
+  		if (!this._state.panel_side_fixed) return;
+  		clearTimeout(this._show_default_content_timer);
+  		this._point(coords_or_node);
+  		this._drawPanel(d, callback);
+  	}
+  };
+
+  InfoPopup.prototype.mouseout = function () {
+  	if (this._state.mode == "both") {
+  		this.popup.hide();
+  	}
+  	if (this._state.mode == "popup") {
+  		if (this._state.locked_id !== null) return;
+  		this.popup.hide();
+  	}
+  	if (this._state.mode == "panel") {
+  		if (this._state.locked_id !== null) return;
+  		if (
+  			this._state.panel_position == "overlay" ||
+  			!this._state.panel_side_fixed
+  		)
+  			return;
+  		this._showDefaultPanelContent();
+  	}
+  };
+
+  // ======= //
+  // GETTERS //
+  // ======= //
+
+  InfoPopup.prototype.locked = function () {
+  	return this._state.locked_id;
+  };
+
+  InfoPopup.prototype.mode = function () {
+  	return this._state.mode;
+  };
+
+  // ====================== //
+  // DATA & CONTENT METHODS //
+  // ====================== //
+
+  InfoPopup.prototype.setColumnNames = function (column_names) {
+  	this._column_names = column_names;
+
+  	return this;
+  };
+
+  InfoPopup.prototype.hideColumnNames = function (column_names) {
+  	this._column_names_hidden = column_names;
+
+  	return this;
+  };
+
+  InfoPopup.prototype.setFormatters = function (metadata) {
+  	var formatters = {};
+  	for (var binding in metadata) {
+  		if (typeof metadata[binding] === "function") {
+  			formatters[binding] = metadata[binding];
+  		} else if (Array.isArray(metadata[binding])) {
+  			var array_of_formatters = [];
+  			for (var col = 0; col < metadata[binding].length; col++) {
+  				var formatter;
+  				if (typeof metadata[binding][col] === "function") {
+  					formatter = metadata[binding][col];
+  				} else {
+  					formatter = getFormatter(metadata[binding][col].output_format_id);
+  				}
+  				array_of_formatters.push(formatter);
+  			}
+  			formatters[binding] = array_of_formatters;
+  		} else {
+  			formatters[binding] = getFormatter(metadata[binding].output_format_id);
+  		}
+  	}
+  	this._formatters = formatters;
+
+  	return this;
+  };
+
+  InfoPopup.prototype._showDefaultPanelContent = function () {
+  	var instance = this;
+  	clearTimeout(this._show_default_content_timer);
+  	// This delays the return to the default content by 100ms, to avoid
+  	// a "strobe" effect if you are quickly moving in and out of data points
+  	// e.g. on a map
+  	this._show_default_content_timer = setTimeout(function () {
+  		instance.panel.html(instance._state.panel_side_default_content);
+  		instance._drawPanel();
+  	}, 100);
+  	// We do, however, immediately call the drawPanel function to make sure
+  	// the margins() measurement is correct, rather than stuck with the old
+  	// values at the time of being called.
+  	instance._drawPanel();
+  };
+
+  /**
+   * @param {any} d
+   * @param {"panel" | "popup" | "both"} target
+   * @param {boolean} teaser
+   */
+  InfoPopup.prototype._checkIfPopupIsEmpty = function (d, target, teaser) {
+  	if (this._state.popup_is_custom) {
+  		var popup_content =
+  			target === "panel"
+  				? getPanelHTML(this, d)
+  				: getPopupHTML(this, d, teaser);
+  		return popup_content.trim() === "";
+  	}
+
+  	if (isValueDisplayable(d[this._title_key])) return false;
+
+  	var binding_names = Object.keys(this._column_names);
+  	for (var i = 0; i < binding_names.length; i++) {
+  		var binding_name = binding_names[i];
+  		if (this._column_names_hidden.includes(binding_name)) continue;
+
+  		var value = d[binding_name];
+  		if (Array.isArray(value)) {
+  			for (let j = 0; j < value.length; j++) {
+  				if (isValueDisplayable(value[j])) return false;
+  			}
+  			continue;
+  		}
+
+  		if (isValueDisplayable(value)) return false;
+  	}
+
+  	return true;
+  };
+
+  function isValueDisplayable(value) {
+  	return value || value === 0;
+  }
+
+  InfoPopup.prototype.getAccessiblePopupContent = function (d) {
+  	return getAccessiblePopupContent(this, d);
+  };
+
+  // =================== //
+  // DRAW & HIDE METHODS //
+  // =================== //
+
+  InfoPopup.prototype.onPanelClose = function (f) {
+  	this._on_panel_close = f;
+  	return this;
+  };
+
+  InfoPopup.prototype._drawPopup = function (d, callback, teaser) {
+  	if (d) this.popup.html(getPopupHTML(this, d, teaser));
+  	updateStyle(this);
+  	this.popup.draw();
+  	if (callback) callback(this.popup._getElement(), d);
+  	return this;
+  };
+
+  InfoPopup.prototype._drawPanel = function (d, callback) {
+  	var instance = this;
+  	updateStyle(instance);
+  	this.panel
+  		.open_duration(this._state.panel_open_duration)
+  		.close_duration(this._state.panel_close_duration)
+  		.width_overlay(this._state.panel_width_overlay)
+  		.height_overlay(this._state.panel_height_overlay)
+  		.vertical_position(this._state.panel_vertical_position)
+  		.width_side(this._state.panel_width_side)
+  		.height_side(this._state.panel_height_side)
+  		.position(this._state.panel_position)
+  		.max_width(this._state.panel_max_width)
+  		.max_height(this._state.panel_max_height)
+  		.closeable(
+  			this._state.panel_position == "overlay" || !this._state.panel_side_fixed,
+  		);
+  	if (d === undefined) this.panel.draw();
+  	else this.panel.html(getPanelHTML(instance, d)).draw();
+  	if (callback) callback(this.panel._getElement(), d);
+  	return this;
+  };
+
+  InfoPopup.prototype.hidePanel = function () {
+  	this.panel.hide();
+  	return this;
+  };
+
+  InfoPopup.prototype.hidePopup = function () {
+  	this.popup.hide();
+  	return this;
+  };
+
+  // ================== //
+  // POSITIONAL METHODS //
+  // ================== //
+
+  InfoPopup.prototype.popupDirections = function (value) {
+  	if (!value) return this._popup_directions.slice();
+  	this._popup_directions = value;
+  	return this;
+  };
+
+  InfoPopup.prototype.margins = function () {
+  	return this.panel.margins();
+  };
+
+  InfoPopup.prototype._getBiggestGap = function (node_bbox) {
+  	var constrainer_bbox = this._popup_container.getBoundingClientRect();
+  	var best_side,
+  		biggest_gap = 0,
+  		arrow_directions;
+  	var gaps = {
+  		right:
+  			(constrainer_bbox.width +
+  				constrainer_bbox.left -
+  				(node_bbox.width + node_bbox.left)) /
+  			constrainer_bbox.width,
+  		bottom:
+  			(constrainer_bbox.height +
+  				constrainer_bbox.top -
+  				(node_bbox.height + node_bbox.top)) /
+  			constrainer_bbox.height,
+  		left: (node_bbox.left - constrainer_bbox.left) / constrainer_bbox.width,
+  		top: (node_bbox.top - constrainer_bbox.top) / constrainer_bbox.height,
+  	};
+
+  	var all_arrow_directions = {
+  		right: [
+  			"left",
+  			"leftFlexible",
+  			"topLeft",
+  			"bottomLeft",
+  			"bottomFlexible",
+  			"bottom",
+  			"topFlexible",
+  			"top",
+  			"bottomRight",
+  			"topRight",
+  			"rightFlexible",
+  			"right",
+  		],
+  		left: [
+  			"right",
+  			"rightFlexible",
+  			"topRight",
+  			"bottomRight",
+  			"top",
+  			"topFlexible",
+  			"bottom",
+  			"bottomFlexible",
+  			"bottomLeft",
+  			"topLeft",
+  			"leftFlexible",
+  			"left",
+  		],
+  		top: [
+  			"bottom",
+  			"bottomFlexible",
+  			"bottomRight",
+  			"bottomLeft",
+  			"rightFlexible",
+  			"leftFlexible",
+  			"right",
+  			"left",
+  			"topRight",
+  			"topLeft",
+  			"topFlexible",
+  			"top",
+  		],
+  		bottom: [
+  			"top",
+  			"topFlexible",
+  			"topLeft",
+  			"topRight",
+  			"left",
+  			"right",
+  			"leftFlexible",
+  			"rightFlexible",
+  			"bottomLeft",
+  			"bottomRight",
+  			"bottomFlexible",
+  			"bottom",
+  		],
+  	};
+
+  	for (var side in gaps) {
+  		if (this._popup_directions.indexOf(side) < 0) continue;
+  		if (gaps[side] > biggest_gap) {
+  			biggest_gap = gaps[side];
+  			best_side = side;
+  			arrow_directions = all_arrow_directions[side];
+  		}
+  	}
+
+  	var x = node_bbox.left,
+  		y = node_bbox.top;
+  	if (best_side == "left" || best_side == "right") y += node_bbox.height * 0.5;
+  	else if (best_side == "bottom") y += node_bbox.height;
+
+  	if (best_side == "top" || best_side == "bottom") x += node_bbox.width * 0.5;
+  	else if (best_side == "right") x += node_bbox.width;
+
+  	return {
+  		side: best_side,
+  		arrow_directions: arrow_directions,
+  		x: x,
+  		y: y,
+  	};
+  };
+
+  // Point should not often be required by template authors, who
+  // should generally use the click or mouseover methods
+  InfoPopup.prototype._point = function (coords_or_node) {
+  	var x,
+  		y,
+  		arrow_directions = this._popup_directions;
+  	if (Array.isArray(coords_or_node)) {
+  		x = coords_or_node[0];
+  		y = coords_or_node[1];
+  	} else if (coords_or_node && coords_or_node.getBoundingClientRect) {
+  		var node_rect = coords_or_node.getBoundingClientRect();
+  		var best_side = this._getBiggestGap(node_rect);
+  		x = best_side.x;
+  		y = best_side.y;
+  		arrow_directions = best_side.arrow_directions;
+  	} else {
+  		console.warn(
+  			"@flourish/info-popup: Invalid positional value passed in point function, should be a coordinates array, or a node. Current value is",
+  			coords_or_node,
+  		);
+  		return this;
+  	}
+  	this.panel.point(coords_or_node);
+  	this.popup.directions(arrow_directions).point(x, y);
+  	return this;
+  };
+
+  // ============== //
+  // CONFIG METHODS //
+  // ============== //
+
+  InfoPopup.prototype.popupDefaultTemplate = function (template) {
+  	if (template != undefined) {
+  		this._popup_default_template = template;
+  		return this;
+  	} else return this._popup_default_template;
+  };
+
+  InfoPopup.prototype.panelDefaultTemplate = function (template) {
+  	if (template != undefined) {
+  		this._panel_default_template = template;
+  		return this;
+  	} else return this._panel_default_template;
+  };
+
+  InfoPopup.prototype.titleKey = function (key) {
+  	if (key != undefined) {
+  		this._title_key = key;
+  		return this;
+  	} else return this._title_key;
+  };
+
+  InfoPopup.prototype.subtitleKey = function (key) {
+  	if (key != undefined) {
+  		this._subtitle_key = key;
+  		return this;
+  	} else return this._subtitle_key;
+  };
+
+  // ==== //
+  // INIT //
+  // ==== //
+
+  function createInfoPopup (state, panel_container, popup_container) {
+  	return new InfoPopup(state, panel_container, popup_container);
+  }
+
+  var DEFAULTS$8 = Object.freeze({
+  	input_decimal_separator: ".",
+  	output_separators: ",.",
+  });
+
+  function getLocaleObject(decimal, thousands) {
+  	return {
+  		decimal: decimal,
+  		thousands: thousands,
+  		grouping: [ 3 ],
+  		currency: [ "", "" ]
+  	};
+  }
+
+
+  function makeParser(separator) {
+  	var number_regex = new RegExp("[^-0-9eE" + separator + "]", "g");
+
+  	return function(val_string) {
+  		if (typeof val_string === "number") return val_string;
+  		if (val_string === "" || typeof val_string == "undefined") return NaN;
+  		return parseFloat(val_string.replace(number_regex, "").replace(separator, "."));
+  	};
+  }
+
+
+  function makeFormatterFunction(separators) {
+  	var multi_char = separators.length > 1;
+  	var decimal = multi_char ? separators.charAt(1) : separators.charAt(0);
+  	var thousands = multi_char ? separators.charAt(0) : "";
+  	var formatter = formatLocale(getLocaleObject(decimal, thousands)).format;
+  	// Attach separator properties for easy querying
+  	formatter.decimal = decimal;
+  	formatter.thousands = thousands;
+  	return formatter;
+  }
+
+
+  function init$3(state) {
+  	for (var key in DEFAULTS$8) {
+  		if (state[key] === undefined) state[key] = DEFAULTS$8[key];
+  	}
+
+  	return {
+  		getParser: function() { return makeParser(state.input_decimal_separator); },
+  		getFormatterFunction: function() { return makeFormatterFunction(state.output_separators); }
+  	};
+  }
+
+  var DEFAULTS$7 = Object.freeze({
+  	transform_labels: false,
+  	transform: "multiply",
+  	multiply_divide_constant: 1,
+  	exponentiate_constant: 0,
+  	multiplier: 1,
+  	prefix: "",
+  	n_dec: 2,
+  	suffix: "",
+  	strip_zeros: true,
+  	strip_separator: true,
+  	negative_sign: "-$nk"
+  });
+
+  function round(val, pow) {
+  	pow = pow > 0 ? Math.floor(pow) : Math.ceil(pow);
+  	if (!pow) return Math.round(val);
+  	var rounder =  Math.pow(10, Math.abs(pow));
+  	return pow > 0 ? (Math.round(val*rounder) / rounder) : (Math.round(val/rounder) * rounder);
+  }
+
+  function getTransformFunction(state) {
+  	var constant = 1;
+  	if (state.transform_labels) {
+  		if (state.transform === "multiply") constant = state.multiply_divide_constant;
+  		else if (state.transform === "divide") constant = 1 / state.multiply_divide_constant;
+  		else constant = Math.pow(10, state.exponentiate_constant);
+  	}
+  	return function(x) { return x * constant; };
+  }
+
+  function makeNumberFormatter(state, formatterFunction) {
+  	var n_dec = state.n_dec >= 0 ? Math.floor(state.n_dec) : Math.ceil(state.n_dec);
+  	var form = formatterFunction(",." + (n_dec > 0 ? n_dec : "0") + "f");
+  	var decimal = formatterFunction.decimal;
+  	var thousands = formatterFunction.thousands;
+  	var strip_zeros_regex = (state.strip_zeros && n_dec > 0) ? new RegExp("\\" + decimal + "?0+$") : null;
+  	var may_strip_separator = state.strip_separator && thousands;
+  	var neg_sign = state.negative_sign;
+  	var transform = getTransformFunction(state);
+
+  	return function(val) {
+  		var num = n_dec >= 0 ? transform(val) : round(transform(val), n_dec);
+  		var is_negative = num < 0;
+  		var abs_num = Math.abs(num);
+  		var strip_separator = may_strip_separator && thousands && abs_num >= 1000 && abs_num < 10000;
+  		var num_string = form(abs_num);
+  		if (strip_zeros_regex) num_string = num_string.replace(strip_zeros_regex, "");
+  		if (strip_separator) num_string = num_string.replace(thousands, "");
+  		if (!is_negative || neg_sign === "none") return state.prefix + num_string + state.suffix;
+  		if (neg_sign === "-$nk") return "-" + state.prefix + num_string + state.suffix;
+  		if (neg_sign === "$-nk") return state.prefix + "-" + num_string + state.suffix;
+  		if (neg_sign === "($nk)") return "(" + state.prefix + num_string + state.suffix + ")";
+  		return state.prefix + "(" + num_string + ")" + state.suffix;
+  	};
+  }
+
+  function init$2(state) {
+  	for (var key in DEFAULTS$7) {
+  		if (state[key] === undefined) state[key] = DEFAULTS$7[key];
+  	}
+
+  	return function(formatterFunction) {
+  		return makeNumberFormatter(state, formatterFunction);
+  	};
+  }
+
+  function Stylesheet() {
+  	this.declarations = [];
+  	return this;
+  }
+
+  Stylesheet.prototype.select = function (selector) {
+  	if (!selector) return this;
+  	var declaration = new Declaration(selector);
+  	declaration.parent = this;
+  	this.addDeclaration(declaration);
+
+  	return declaration;
+  };
+
+  Stylesheet.prototype.addDeclaration = function (declaration) {
+  	this.declarations.push(declaration);
+  	return this;
+  };
+
+  Stylesheet.prototype.print = function () {
+  	var text = "";
+  	this.declarations.forEach(function (declaration) {
+  		text += declaration.selector + " {\n";
+  		declaration.styles.forEach(function (style) {
+  			text += "\t" + style[0] + ": " + style[1] + ";\n";
+  		});
+  		text += "}\n\n";
+  	});
+  	return text;
+  };
+
+  Stylesheet.prototype.clear = function () {
+  	this.declarations = [];
+  	return this;
+  };
+
+  function Declaration(selector) {
+  	this.selector = selector;
+  	this.styles = [];
+  	return this;
+  }
+
+  Declaration.prototype.style = function (property, _value) {
+  	var value = typeof value_ == "function" ? _value() : _value;
+  	if (value !== "" && value !== null && value !== undefined)
+  		this.styles.push([property, value]);
+  	return this;
+  };
+
+  Declaration.prototype.select = function (selector) {
+  	return this.parent.select(this.selector + " " + selector);
+  };
+
+  var DEFAULTS$6 = Object.freeze({
+  	font_size: 1,
+  	font_weight: "bold",
+  	height: 2,
+  });
+
+  function GeneralControlsStyle(state_, selector_, layout_) {
+  	this._state = state_;
+  	for (var key in DEFAULTS$6) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$6[key];
+  	}
+
+  	this._layout = layout_ || {};
+
+  	this._styles = new Stylesheet();
+  	this._selector = selector_;
+  	this._createStylesheet();
+
+  	return this;
+  }
+
+  GeneralControlsStyle.prototype._createStylesheet = function () {
+  	this._stylesheet = document.createElement("style");
+  	this._stylesheet.className = "fl-ui-styles-controls";
+  	document.head.appendChild(this._stylesheet);
+  };
+
+  GeneralControlsStyle.prototype.update = function () {
+  	this._styles.clear();
+
+  	this._styles.select(this._selector + ".hidden").style("display", "none");
+
+  	this._styles
+  		.select(this._selector)
+  		.style("vertical-align", "middle")
+  		.style("position", "relative")
+  		.style("font-size", this._state.font_size + "rem")
+  		.style("font-weight", this._state.font_weight);
+
+  	this._styles
+  		.select(".fl-controls-title")
+  		.style("font-size", this._state.font_size + "rem")
+  		.style("font-weight", this._state.font_weight)
+  		.style("vertical-align", "middle");
+
+  	this._styles
+  		.select(this._selector + ".fl-control .button")
+  		.style("height", this._state.height + "rem")
+  		.style("padding", "0 0.5em");
+
+  	this._styles
+  		.select(this._selector + "-dropdown select")
+  		.style("height", this._state.height + "rem")
+  		.style("font-size", this._state.font_size + "rem")
+  		.style("font-weight", this._state.font_weight)
+  		.style("padding", 0 + " " + this._state.height * 0.1 + "rem");
+
+  	this._styles
+  		.select(this._selector + "-slider .slider-end-labels")
+  		.style("font-size", this._state.font_size + "rem")
+  		.style("font-weight", this._state.font_weight);
+
+  	this._styles
+  		.select(this._selector + "-slider")
+  		.style("height", this._state.height + "rem");
+
+  	// Some additional styling for slider controls
+  	// TODO: should move this somewhere else at some point
+
+  	this._stylesheet.innerHTML = this._styles.print();
+  };
+
+  var DEFAULTS$5 = Object.freeze({
+  	background: null,
+  	font_color: null,
+
+  	background_selected: "#333333",
+  	font_color_selected: "#ffffff",
+
+  	background_hover: null,
+  	font_color_hover: null,
+
+  	border_width: 1,
+  	border_transparency: 0.25,
+  	border_color: null,
+  	border_radius: 3,
+  });
+
+  function ButtonStyle(state_, selector_, layout_) {
+  	this._state = state_;
+  	for (var key in DEFAULTS$5) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$5[key];
+  	}
+
+  	this._layout = layout_ || {};
+
+  	this._styles = new Stylesheet();
+  	this._selector = selector_;
+  	this._createStylesheet();
+
+  	return this;
+  }
+
+  ButtonStyle.prototype._createStylesheet = function () {
+  	this._stylesheet = document.createElement("style");
+  	this._stylesheet.className = "fl-ui-styles-button";
+  	document.head.appendChild(this._stylesheet);
+  };
+
+  ButtonStyle.prototype.update = function () {
+  	this._styles.clear();
+
+  	var background_color =
+  		this._state.background ||
+  		(this._layout.background_color_enabled
+  			? this._layout.background_color || "#ffffff"
+  			: "#ffffff");
+  	var text_color =
+  		this._state.font_color || this._layout.font_color || "#333333";
+  	var border_color = hexToRgba(
+  		this._state.border_color || text_color,
+  		this._state.border_transparency,
+  	);
+  	var read_direction = getTextDirection();
+
+  	this._styles
+  		.select(this._selector + ".fl-control.hidden")
+  		.style("display", "none");
+
+  	this._styles
+  		.select(this._selector + ".fl-control .button")
+  		.style("overflow", "hidden")
+  		.style("white-space", "nowrap")
+  		.style("margin", "0 2px 0 0 !important")
+  		.style("background-color", background_color)
+  		.style("color", text_color)
+  		.style("border", this._state.border_width + "px solid " + border_color)
+  		.style("border-radius", this._state.border_radius + "px");
+
+  	this._styles
+  		.select(this._selector + ".fl-control .button:hover")
+  		.style("background-color", this._state.background_hover || background_color)
+  		.style("color", this._state.font_color_hover || text_color);
+
+  	this._styles
+  		.select(this._selector + ".fl-control .button.selected")
+  		.style("background-color", this._state.background_selected)
+  		.style("color", this._state.font_color_selected);
+
+  	this._styles
+  		.select(this._selector + ".grouped.fl-control .button")
+  		.style("border-right", "none")
+  		.style("border-radius", "0")
+  		.style("margin", "0");
+
+  	var is_rtl = read_direction === "rtl";
+  	var left_most_button_selector = is_rtl ? ":last-child" : ":first-child";
+  	var right_most_button_selector = is_rtl ? ":first-child" : ":last-child";
+
+  	this._styles
+  		.select(
+  			this._selector +
+  				".grouped.fl-control .button" +
+  				left_most_button_selector,
+  		)
+  		.style(
+  			"border-radius",
+  			this._state.border_radius + "px 0 0 " + this._state.border_radius + "px",
+  		);
+
+  	this._styles
+  		.select(
+  			this._selector +
+  				".grouped.fl-control .button" +
+  				right_most_button_selector,
+  		)
+  		.style(
+  			"border-radius",
+  			"0 " +
+  				this._state.border_radius +
+  				"px " +
+  				this._state.border_radius +
+  				"px 0",
+  		)
+  		.style(
+  			"border-right",
+  			this._state.border_width + "px solid " + border_color,
+  		);
+
+  	this._styles
+  		.select(this._selector + ".grouped.fl-control.fixed-width:not(.hidden)")
+  		.style("width", this._state.grouped_width + "%");
+
+  	this._stylesheet.innerHTML = this._styles.print();
+  };
+
+  var DEFAULTS$4 = Object.freeze({
+  	background: null,
+  	font_color: null,
+
+  	border_style: "bottom",
+  	border_width: 1,
+  	border_color: null,
+  	border_transparency: 0.25,
+  	border_radius: 3,
+  });
+
+  function DropdownStyle(state_, selector_, layout_) {
+  	this._state = state_;
+  	for (var key in DEFAULTS$4) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$4[key];
+  	}
+
+  	this._layout = layout_ || {};
+
+  	this._styles = new Stylesheet();
+  	this._selector = selector_;
+  	this._createStylesheet();
+
+  	return this;
+  }
+
+  DropdownStyle.prototype._createStylesheet = function () {
+  	this._stylesheet = document.createElement("style");
+  	this._stylesheet.className = "fl-ui-styles-dropdown";
+  	document.head.appendChild(this._stylesheet);
+  };
+
+  DropdownStyle.prototype.update = function () {
+  	this._styles.clear();
+
+  	const background_color = this._state.background || "transparent";
+  	const user_defined_text_color =
+  		this._state.font_color || this._layout.font_color;
+  	const text_color = user_defined_text_color || "inherit";
+  	let border_color;
+  	if (this._state.border_color) {
+  		border_color = hexToRgba(
+  			this._state.border_color,
+  			this._state.border_transparency,
+  		);
+  	} else if (user_defined_text_color) {
+  		border_color = hexToRgba(
+  			user_defined_text_color,
+  			this._state.border_transparency,
+  		);
+  	} else {
+  		border_color = "currentColor";
+  	}
+
+  	this._styles
+  		.select(this._selector + " .heading")
+  		.style("margin-bottom", "0.4em");
+
+  	this._styles.select(this._selector).style("pointer-events", "all");
+
+  	this._styles
+  		.select(this._selector + " select")
+  		.style("display", "inline-block")
+  		.style("cursor", "pointer")
+  		.style("overflow", "hidden")
+  		.style("white-space", "nowrap")
+  		.style("position", "relative")
+  		.style("font-family", "inherit")
+  		.style("background-color", background_color)
+  		.style("color", text_color)
+  		.style(
+  			"border",
+  			this._state.border_style == "bottom"
+  				? this._state.border_width + "px solid transparent"
+  				: this._state.border_width + "px solid " + border_color,
+  		)
+  		.style(
+  			"border-bottom",
+  			this._state.border_style == "bottom"
+  				? this._state.border_width + "px solid " + border_color
+  				: null,
+  		)
+  		.style(
+  			"border-radius",
+  			this._state.border_style == "bottom"
+  				? null
+  				: this._state.border_radius + "px",
+  		);
+
+  	this._styles
+  		.select(this._selector + ":after")
+  		.style(
+  			"right",
+  			this._state.border_style == "bottom"
+  				? null
+  				: this._state.border_width + 5 + "px",
+  		)
+  		.style("color", text_color);
+
+  	this._styles
+  		.select(this._selector + " .main .current")
+  		.style("line-height", "1em")
+  		.style("height", "100%")
+  		.style("max-width", "88%")
+  		.style("display", "inline-block")
+  		.style("overflow", "hidden")
+  		.style("vertical-align", "top");
+
+  	this._styles
+  		.select(this._selector + " .list")
+  		.style("top", "2px")
+  		.style("min-width", "100%")
+  		.style("padding", "2px")
+  		.style("display", "none")
+  		.style("max-height", "200px")
+  		.style("overflow-y", "auto")
+  		.style("box-shadow", "0 1px 4px rgba(0, 0, 0, .1)")
+  		.style("margin-top", "2px")
+  		.select(".list-item")
+  		.style("line-height", "1em")
+  		.style("cursor", "pointer")
+  		.style("font-weight", "normal")
+  		.style("color", text_color);
+
+  	this._styles
+  		.select(this._selector + ".open .list")
+  		.style("display", "block")
+  		.style("border", this._state.border_width + "px solid " + border_color)
+  		.style("background-color", background_color)
+  		.style("z-index", "1")
+  		.style("animation", "dropdown-out 200ms");
+
+  	this._styles
+  		.select(this._selector + " .list-item:hover")
+  		.style("opacity", "0.6");
+
+  	this._styles
+  		.select(
+  			this._selector +
+  				" .list-item.selected, " +
+  				this._selector +
+  				" .list-item.selected:hover",
+  		)
+  		.style("opacity", "1")
+  		.style("cursor", "default");
+
+  	if (this._state.border_style == "bottom") {
+  		this._styles
+  			.select(this._selector + " .main")
+  			.style("padding-left", 0)
+  			.style("padding-right", "0.1rem");
+  	}
+
+  	this._stylesheet.innerHTML = this._styles.print();
+  };
+
+  function remToPx$2(rem) {
+  	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+  }
+
+  var DEFAULTS$3 = Object.freeze({
+  	play_color: null,
+  	handle_color: null,
+  	font_color: null,
+  	track_color: null,
+
+  	handle_height: 1,
+  	track_height: 0.2,
+  	margin: 4.5,
+
+  	play_button: true,
+  });
+
+  function SliderStyle(state_, selector_, layout_) {
+  	this._state = state_;
+  	for (var key in DEFAULTS$3) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$3[key];
+  	}
+
+  	this._layout = layout_ || {};
+
+  	this._styles = new Stylesheet();
+  	this._selector = selector_;
+  	this._createStylesheet();
+
+  	return this;
+  }
+
+  SliderStyle.prototype._createStylesheet = function () {
+  	this._stylesheet = document.createElement("style");
+  	this._stylesheet.className = "fl-ui-styles-slider";
+  	document.head.appendChild(this._stylesheet);
+  };
+
+  SliderStyle.prototype.update = function () {
+  	this._styles.clear();
+
+  	var track_color = this._state.track_color || "#dddddd";
+  	var text_color =
+  		this._state.font_color || this._layout.font_color || "currentColor";
+  	var slider_color = "currentColor"; // So that handle can inherit layout text color via this parent
+  	var handle_color =
+  		this._state.handle_color || this._layout.font_color || "currentColor";
+  	var play_color =
+  		this._state.play_color || this._layout.font_color || "currentColor";
+
+  	var handle_radius = Math.round(remToPx$2(this._state.handle_height));
+  	var track_height = remToPx$2(this._state.track_height);
+
+  	this._styles
+  		.select(this._selector + " .fl-controls-slider")
+  		.style("height", handle_radius * 2 + "px");
+
+  	this._styles
+  		.select(this._selector + " .slider-play")
+  		.style("fill", play_color)
+  		.style("width", handle_radius + "px")
+  		.style("height", handle_radius + "px")
+  		.style("display", this._state.play_button ? null : "none");
+
+  	this._styles
+  		.select(this._selector + " .slider-label")
+  		.style("padding-inline-start", "0.3rem")
+  		.style("box-sizing", "content-box")
+  		.style("color", text_color);
+
+  	this._styles
+  		.select(this._selector + " input[type=range]")
+  		.style("-webkit-appearance", "none")
+  		.style("color", slider_color)
+  		.style("background-color", "transparent");
+
+  	// Chrome/Edge
+  	this._styles
+  		.select(
+  			this._selector + " input[type=range]::-webkit-slider-runnable-track",
+  		)
+  		.style("-webkit-appearance", "none")
+  		.style("background", track_color)
+  		.style("border-radius", "100px")
+  		.style("height", track_height + "px");
+
+  	this._styles
+  		.select(this._selector + " input[type=range]::-webkit-slider-thumb")
+  		.style("-webkit-appearance", "none")
+  		.style("width", handle_radius + "px")
+  		.style("height", handle_radius + "px")
+  		.style("border-radius", "100px")
+  		.style("background", handle_color)
+  		.style("margin-top", -handle_radius / 2 + track_height / 2 + "px");
+
+  	// Firefox
+  	this._styles
+  		.select(this._selector + " input[type=range]::-moz-range-track")
+  		.style("-webkit-appearance", "none")
+  		.style("background", track_color)
+  		.style("border-radius", "100px")
+  		.style("height", track_height + "px");
+
+  	this._styles
+  		.select(this._selector + " input[type=range]::-moz-range-thumb")
+  		.style("-webkit-appearance", "none")
+  		.style("width", handle_radius + "px")
+  		.style("height", handle_radius + "px")
+  		.style("border-radius", "100px")
+  		.style("border", "none")
+  		.style("background", handle_color);
+
+  	this._stylesheet.innerHTML = this._styles.print();
+  };
+
+  function createGeneralControlsStyle(state, selector, layout) {
+  	return new GeneralControlsStyle(state, selector, layout);
+  }
+
+  function createButtonStyle(state, selector, layout) {
+  	return new ButtonStyle(state, selector, layout);
+  }
+
+  function createDropdownStyle(state, selector, layout) {
+  	return new DropdownStyle(state, selector, layout);
+  }
+
+  function createSliderStyle(state, selector, layout) {
+  	return new SliderStyle(state, selector, layout);
+  }
+
+  var xhtml$2 = "http://www.w3.org/1999/xhtml";
+
+  var namespaces$2 = {
+    svg: "http://www.w3.org/2000/svg",
+    xhtml: xhtml$2,
+    xlink: "http://www.w3.org/1999/xlink",
+    xml: "http://www.w3.org/XML/1998/namespace",
+    xmlns: "http://www.w3.org/2000/xmlns/"
+  };
+
+  function namespace$2(name) {
+    var prefix = name += "", i = prefix.indexOf(":");
+    if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns") name = name.slice(i + 1);
+    return namespaces$2.hasOwnProperty(prefix) ? {space: namespaces$2[prefix], local: name} : name;
+  }
+
+  function creatorInherit$2(name) {
+    return function() {
+      var document = this.ownerDocument,
+          uri = this.namespaceURI;
+      return uri === xhtml$2 && document.documentElement.namespaceURI === xhtml$2
+          ? document.createElement(name)
+          : document.createElementNS(uri, name);
+    };
+  }
+
+  function creatorFixed$2(fullname) {
+    return function() {
+      return this.ownerDocument.createElementNS(fullname.space, fullname.local);
+    };
+  }
+
+  function creator$2(name) {
+    var fullname = namespace$2(name);
+    return (fullname.local
+        ? creatorFixed$2
+        : creatorInherit$2)(fullname);
+  }
+
+  function none$2() {}
+
+  function selector$2(selector) {
+    return selector == null ? none$2 : function() {
+      return this.querySelector(selector);
+    };
+  }
+
+  function selection_select$2(select) {
+    if (typeof select !== "function") select = selector$2(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+        if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
+          if ("__data__" in node) subnode.__data__ = node.__data__;
+          subgroup[i] = subnode;
+        }
+      }
+    }
+
+    return new Selection$4(subgroups, this._parents);
+  }
+
+  function empty$2() {
+    return [];
+  }
+
+  function selectorAll$2(selector) {
+    return selector == null ? empty$2 : function() {
+      return this.querySelectorAll(selector);
+    };
+  }
+
+  function selection_selectAll$2(select) {
+    if (typeof select !== "function") select = selectorAll$2(select);
+
+    for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          subgroups.push(select.call(node, node.__data__, i, group));
+          parents.push(node);
+        }
+      }
+    }
+
+    return new Selection$4(subgroups, parents);
+  }
+
+  function matcher$2(selector) {
+    return function() {
+      return this.matches(selector);
+    };
+  }
+
+  function selection_filter$2(match) {
+    if (typeof match !== "function") match = matcher$2(match);
+
+    for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+        if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
+          subgroup.push(node);
+        }
+      }
+    }
+
+    return new Selection$4(subgroups, this._parents);
+  }
+
+  function sparse$2(update) {
+    return new Array(update.length);
+  }
+
+  function selection_enter$2() {
+    return new Selection$4(this._enter || this._groups.map(sparse$2), this._parents);
+  }
+
+  function EnterNode$2(parent, datum) {
+    this.ownerDocument = parent.ownerDocument;
+    this.namespaceURI = parent.namespaceURI;
+    this._next = null;
+    this._parent = parent;
+    this.__data__ = datum;
+  }
+
+  EnterNode$2.prototype = {
+    constructor: EnterNode$2,
+    appendChild: function(child) { return this._parent.insertBefore(child, this._next); },
+    insertBefore: function(child, next) { return this._parent.insertBefore(child, next); },
+    querySelector: function(selector) { return this._parent.querySelector(selector); },
+    querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
+  };
+
+  function constant$4(x) {
+    return function() {
+      return x;
+    };
+  }
+
+  var keyPrefix$1 = "$"; // Protect against keys like “__proto__”.
+
+  function bindIndex$2(parent, group, enter, update, exit, data) {
+    var i = 0,
+        node,
+        groupLength = group.length,
+        dataLength = data.length;
+
+    // Put any non-null nodes that fit into update.
+    // Put any null nodes into enter.
+    // Put any remaining data into enter.
+    for (; i < dataLength; ++i) {
+      if (node = group[i]) {
+        node.__data__ = data[i];
+        update[i] = node;
+      } else {
+        enter[i] = new EnterNode$2(parent, data[i]);
+      }
+    }
+
+    // Put any non-null nodes that don’t fit into exit.
+    for (; i < groupLength; ++i) {
+      if (node = group[i]) {
+        exit[i] = node;
+      }
+    }
+  }
+
+  function bindKey$2(parent, group, enter, update, exit, data, key) {
+    var i,
+        node,
+        nodeByKeyValue = {},
+        groupLength = group.length,
+        dataLength = data.length,
+        keyValues = new Array(groupLength),
+        keyValue;
+
+    // Compute the key for each node.
+    // If multiple nodes have the same key, the duplicates are added to exit.
+    for (i = 0; i < groupLength; ++i) {
+      if (node = group[i]) {
+        keyValues[i] = keyValue = keyPrefix$1 + key.call(node, node.__data__, i, group);
+        if (keyValue in nodeByKeyValue) {
+          exit[i] = node;
+        } else {
+          nodeByKeyValue[keyValue] = node;
+        }
+      }
+    }
+
+    // Compute the key for each datum.
+    // If there a node associated with this key, join and add it to update.
+    // If there is not (or the key is a duplicate), add it to enter.
+    for (i = 0; i < dataLength; ++i) {
+      keyValue = keyPrefix$1 + key.call(parent, data[i], i, data);
+      if (node = nodeByKeyValue[keyValue]) {
+        update[i] = node;
+        node.__data__ = data[i];
+        nodeByKeyValue[keyValue] = null;
+      } else {
+        enter[i] = new EnterNode$2(parent, data[i]);
+      }
+    }
+
+    // Add any remaining nodes that were not bound to data to exit.
+    for (i = 0; i < groupLength; ++i) {
+      if ((node = group[i]) && (nodeByKeyValue[keyValues[i]] === node)) {
+        exit[i] = node;
+      }
+    }
+  }
+
+  function selection_data$2(value, key) {
+    if (!value) {
+      data = new Array(this.size()), j = -1;
+      this.each(function(d) { data[++j] = d; });
+      return data;
+    }
+
+    var bind = key ? bindKey$2 : bindIndex$2,
+        parents = this._parents,
+        groups = this._groups;
+
+    if (typeof value !== "function") value = constant$4(value);
+
+    for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
+      var parent = parents[j],
+          group = groups[j],
+          groupLength = group.length,
+          data = value.call(parent, parent && parent.__data__, j, parents),
+          dataLength = data.length,
+          enterGroup = enter[j] = new Array(dataLength),
+          updateGroup = update[j] = new Array(dataLength),
+          exitGroup = exit[j] = new Array(groupLength);
+
+      bind(parent, group, enterGroup, updateGroup, exitGroup, data, key);
+
+      // Now connect the enter nodes to their following update node, such that
+      // appendChild can insert the materialized enter node before this node,
+      // rather than at the end of the parent node.
+      for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
+        if (previous = enterGroup[i0]) {
+          if (i0 >= i1) i1 = i0 + 1;
+          while (!(next = updateGroup[i1]) && ++i1 < dataLength);
+          previous._next = next || null;
+        }
+      }
+    }
+
+    update = new Selection$4(update, parents);
+    update._enter = enter;
+    update._exit = exit;
+    return update;
+  }
+
+  function selection_exit$2() {
+    return new Selection$4(this._exit || this._groups.map(sparse$2), this._parents);
+  }
+
+  function selection_join$2(onenter, onupdate, onexit) {
+    var enter = this.enter(), update = this, exit = this.exit();
+    enter = typeof onenter === "function" ? onenter(enter) : enter.append(onenter + "");
+    if (onupdate != null) update = onupdate(update);
+    if (onexit == null) exit.remove(); else onexit(exit);
+    return enter && update ? enter.merge(update).order() : update;
+  }
+
+  function selection_merge$2(selection) {
+
+    for (var groups0 = this._groups, groups1 = selection._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+      for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group0[i] || group1[i]) {
+          merge[i] = node;
+        }
+      }
+    }
+
+    for (; j < m0; ++j) {
+      merges[j] = groups0[j];
+    }
+
+    return new Selection$4(merges, this._parents);
+  }
+
+  function selection_order$2() {
+
+    for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
+      for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
+        if (node = group[i]) {
+          if (next && node.compareDocumentPosition(next) ^ 4) next.parentNode.insertBefore(node, next);
+          next = node;
+        }
+      }
+    }
+
+    return this;
+  }
+
+  function selection_sort$2(compare) {
+    if (!compare) compare = ascending$3;
+
+    function compareNode(a, b) {
+      return a && b ? compare(a.__data__, b.__data__) : !a - !b;
+    }
+
+    for (var groups = this._groups, m = groups.length, sortgroups = new Array(m), j = 0; j < m; ++j) {
+      for (var group = groups[j], n = group.length, sortgroup = sortgroups[j] = new Array(n), node, i = 0; i < n; ++i) {
+        if (node = group[i]) {
+          sortgroup[i] = node;
+        }
+      }
+      sortgroup.sort(compareNode);
+    }
+
+    return new Selection$4(sortgroups, this._parents).order();
+  }
+
+  function ascending$3(a, b) {
+    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+  }
+
+  function selection_call$2() {
+    var callback = arguments[0];
+    arguments[0] = this;
+    callback.apply(null, arguments);
+    return this;
+  }
+
+  function selection_nodes$2() {
+    var nodes = new Array(this.size()), i = -1;
+    this.each(function() { nodes[++i] = this; });
+    return nodes;
+  }
+
+  function selection_node$2() {
+
+    for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+      for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
+        var node = group[i];
+        if (node) return node;
+      }
+    }
+
+    return null;
+  }
+
+  function selection_size$2() {
+    var size = 0;
+    this.each(function() { ++size; });
+    return size;
+  }
+
+  function selection_empty$2() {
+    return !this.node();
+  }
+
+  function selection_each$2(callback) {
+
+    for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+      for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
+        if (node = group[i]) callback.call(node, node.__data__, i, group);
+      }
+    }
+
+    return this;
+  }
+
+  function attrRemove$4(name) {
+    return function() {
+      this.removeAttribute(name);
+    };
+  }
+
+  function attrRemoveNS$4(fullname) {
+    return function() {
+      this.removeAttributeNS(fullname.space, fullname.local);
+    };
+  }
+
+  function attrConstant$4(name, value) {
+    return function() {
+      this.setAttribute(name, value);
+    };
+  }
+
+  function attrConstantNS$4(fullname, value) {
+    return function() {
+      this.setAttributeNS(fullname.space, fullname.local, value);
+    };
+  }
+
+  function attrFunction$4(name, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.removeAttribute(name);
+      else this.setAttribute(name, v);
+    };
+  }
+
+  function attrFunctionNS$4(fullname, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
+      else this.setAttributeNS(fullname.space, fullname.local, v);
+    };
+  }
+
+  function selection_attr$2(name, value) {
+    var fullname = namespace$2(name);
+
+    if (arguments.length < 2) {
+      var node = this.node();
+      return fullname.local
+          ? node.getAttributeNS(fullname.space, fullname.local)
+          : node.getAttribute(fullname);
+    }
+
+    return this.each((value == null
+        ? (fullname.local ? attrRemoveNS$4 : attrRemove$4) : (typeof value === "function"
+        ? (fullname.local ? attrFunctionNS$4 : attrFunction$4)
+        : (fullname.local ? attrConstantNS$4 : attrConstant$4)))(fullname, value));
+  }
+
+  function defaultView$2(node) {
+    return (node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
+        || (node.document && node) // node is a Window
+        || node.defaultView; // node is a Document
+  }
+
+  function styleRemove$4(name) {
+    return function() {
+      this.style.removeProperty(name);
+    };
+  }
+
+  function styleConstant$4(name, value, priority) {
+    return function() {
+      this.style.setProperty(name, value, priority);
+    };
+  }
+
+  function styleFunction$4(name, value, priority) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) this.style.removeProperty(name);
+      else this.style.setProperty(name, v, priority);
+    };
+  }
+
+  function selection_style$2(name, value, priority) {
+    return arguments.length > 1
+        ? this.each((value == null
+              ? styleRemove$4 : typeof value === "function"
+              ? styleFunction$4
+              : styleConstant$4)(name, value, priority == null ? "" : priority))
+        : styleValue$2(this.node(), name);
+  }
+
+  function styleValue$2(node, name) {
+    return node.style.getPropertyValue(name)
+        || defaultView$2(node).getComputedStyle(node, null).getPropertyValue(name);
+  }
+
+  function propertyRemove$2(name) {
+    return function() {
+      delete this[name];
+    };
+  }
+
+  function propertyConstant$2(name, value) {
+    return function() {
+      this[name] = value;
+    };
+  }
+
+  function propertyFunction$2(name, value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      if (v == null) delete this[name];
+      else this[name] = v;
+    };
+  }
+
+  function selection_property$2(name, value) {
+    return arguments.length > 1
+        ? this.each((value == null
+            ? propertyRemove$2 : typeof value === "function"
+            ? propertyFunction$2
+            : propertyConstant$2)(name, value))
+        : this.node()[name];
+  }
+
+  function classArray$2(string) {
+    return string.trim().split(/^|\s+/);
+  }
+
+  function classList$2(node) {
+    return node.classList || new ClassList$2(node);
+  }
+
+  function ClassList$2(node) {
+    this._node = node;
+    this._names = classArray$2(node.getAttribute("class") || "");
+  }
+
+  ClassList$2.prototype = {
+    add: function(name) {
+      var i = this._names.indexOf(name);
+      if (i < 0) {
+        this._names.push(name);
+        this._node.setAttribute("class", this._names.join(" "));
+      }
+    },
+    remove: function(name) {
+      var i = this._names.indexOf(name);
+      if (i >= 0) {
+        this._names.splice(i, 1);
+        this._node.setAttribute("class", this._names.join(" "));
+      }
+    },
+    contains: function(name) {
+      return this._names.indexOf(name) >= 0;
+    }
+  };
+
+  function classedAdd$2(node, names) {
+    var list = classList$2(node), i = -1, n = names.length;
+    while (++i < n) list.add(names[i]);
+  }
+
+  function classedRemove$2(node, names) {
+    var list = classList$2(node), i = -1, n = names.length;
+    while (++i < n) list.remove(names[i]);
+  }
+
+  function classedTrue$2(names) {
+    return function() {
+      classedAdd$2(this, names);
+    };
+  }
+
+  function classedFalse$2(names) {
+    return function() {
+      classedRemove$2(this, names);
+    };
+  }
+
+  function classedFunction$2(names, value) {
+    return function() {
+      (value.apply(this, arguments) ? classedAdd$2 : classedRemove$2)(this, names);
+    };
+  }
+
+  function selection_classed$2(name, value) {
+    var names = classArray$2(name + "");
+
+    if (arguments.length < 2) {
+      var list = classList$2(this.node()), i = -1, n = names.length;
+      while (++i < n) if (!list.contains(names[i])) return false;
+      return true;
+    }
+
+    return this.each((typeof value === "function"
+        ? classedFunction$2 : value
+        ? classedTrue$2
+        : classedFalse$2)(names, value));
+  }
+
+  function textRemove$2() {
+    this.textContent = "";
+  }
+
+  function textConstant$4(value) {
+    return function() {
+      this.textContent = value;
+    };
+  }
+
+  function textFunction$4(value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      this.textContent = v == null ? "" : v;
+    };
+  }
+
+  function selection_text$2(value) {
+    return arguments.length
+        ? this.each(value == null
+            ? textRemove$2 : (typeof value === "function"
+            ? textFunction$4
+            : textConstant$4)(value))
+        : this.node().textContent;
+  }
+
+  function htmlRemove$2() {
+    this.innerHTML = "";
+  }
+
+  function htmlConstant$2(value) {
+    return function() {
+      this.innerHTML = value;
+    };
+  }
+
+  function htmlFunction$2(value) {
+    return function() {
+      var v = value.apply(this, arguments);
+      this.innerHTML = v == null ? "" : v;
+    };
+  }
+
+  function selection_html$2(value) {
+    return arguments.length
+        ? this.each(value == null
+            ? htmlRemove$2 : (typeof value === "function"
+            ? htmlFunction$2
+            : htmlConstant$2)(value))
+        : this.node().innerHTML;
+  }
+
+  function raise$2() {
+    if (this.nextSibling) this.parentNode.appendChild(this);
+  }
+
+  function selection_raise$2() {
+    return this.each(raise$2);
+  }
+
+  function lower$2() {
+    if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
+  }
+
+  function selection_lower$2() {
+    return this.each(lower$2);
+  }
+
+  function selection_append$2(name) {
+    var create = typeof name === "function" ? name : creator$2(name);
+    return this.select(function() {
+      return this.appendChild(create.apply(this, arguments));
+    });
+  }
+
+  function constantNull$2() {
+    return null;
+  }
+
+  function selection_insert$2(name, before) {
+    var create = typeof name === "function" ? name : creator$2(name),
+        select = before == null ? constantNull$2 : typeof before === "function" ? before : selector$2(before);
+    return this.select(function() {
+      return this.insertBefore(create.apply(this, arguments), select.apply(this, arguments) || null);
+    });
+  }
+
+  function remove$2() {
+    var parent = this.parentNode;
+    if (parent) parent.removeChild(this);
+  }
+
+  function selection_remove$2() {
+    return this.each(remove$2);
+  }
+
+  function selection_cloneShallow$2() {
+    var clone = this.cloneNode(false), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+  }
+
+  function selection_cloneDeep$2() {
+    var clone = this.cloneNode(true), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+  }
+
+  function selection_clone$2(deep) {
+    return this.select(deep ? selection_cloneDeep$2 : selection_cloneShallow$2);
+  }
+
+  function selection_datum$2(value) {
+    return arguments.length
+        ? this.property("__data__", value)
+        : this.node().__data__;
+  }
+
+  var filterEvents$1 = {};
+
+  var event$1 = null;
+
+  if (typeof document !== "undefined") {
+    var element$1 = document.documentElement;
+    if (!("onmouseenter" in element$1)) {
+      filterEvents$1 = {mouseenter: "mouseover", mouseleave: "mouseout"};
+    }
+  }
+
+  function filterContextListener$1(listener, index, group) {
+    listener = contextListener$2(listener, index, group);
+    return function(event) {
+      var related = event.relatedTarget;
+      if (!related || (related !== this && !(related.compareDocumentPosition(this) & 8))) {
+        listener.call(this, event);
+      }
+    };
+  }
+
+  function contextListener$2(listener, index, group) {
+    return function(event1) {
+      var event0 = event$1; // Events can be reentrant (e.g., focus).
+      event$1 = event1;
+      try {
+        listener.call(this, this.__data__, index, group);
+      } finally {
+        event$1 = event0;
+      }
+    };
+  }
+
+  function parseTypenames$5(typenames) {
+    return typenames.trim().split(/^|\s+/).map(function(t) {
+      var name = "", i = t.indexOf(".");
+      if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
+      return {type: t, name: name};
+    });
+  }
+
+  function onRemove$2(typename) {
+    return function() {
+      var on = this.__on;
+      if (!on) return;
+      for (var j = 0, i = -1, m = on.length, o; j < m; ++j) {
+        if (o = on[j], (!typename.type || o.type === typename.type) && o.name === typename.name) {
+          this.removeEventListener(o.type, o.listener, o.capture);
+        } else {
+          on[++i] = o;
+        }
+      }
+      if (++i) on.length = i;
+      else delete this.__on;
+    };
+  }
+
+  function onAdd$2(typename, value, capture) {
+    var wrap = filterEvents$1.hasOwnProperty(typename.type) ? filterContextListener$1 : contextListener$2;
+    return function(d, i, group) {
+      var on = this.__on, o, listener = wrap(value, i, group);
+      if (on) for (var j = 0, m = on.length; j < m; ++j) {
+        if ((o = on[j]).type === typename.type && o.name === typename.name) {
+          this.removeEventListener(o.type, o.listener, o.capture);
+          this.addEventListener(o.type, o.listener = listener, o.capture = capture);
+          o.value = value;
+          return;
+        }
+      }
+      this.addEventListener(typename.type, listener, capture);
+      o = {type: typename.type, name: typename.name, value: value, listener: listener, capture: capture};
+      if (!on) this.__on = [o];
+      else on.push(o);
+    };
+  }
+
+  function selection_on$2(typename, value, capture) {
+    var typenames = parseTypenames$5(typename + ""), i, n = typenames.length, t;
+
+    if (arguments.length < 2) {
+      var on = this.node().__on;
+      if (on) for (var j = 0, m = on.length, o; j < m; ++j) {
+        for (i = 0, o = on[j]; i < n; ++i) {
+          if ((t = typenames[i]).type === o.type && t.name === o.name) {
+            return o.value;
+          }
+        }
+      }
+      return;
+    }
+
+    on = value ? onAdd$2 : onRemove$2;
+    if (capture == null) capture = false;
+    for (i = 0; i < n; ++i) this.each(on(typenames[i], value, capture));
+    return this;
+  }
+
+  function dispatchEvent$2(node, type, params) {
+    var window = defaultView$2(node),
+        event = window.CustomEvent;
+
+    if (typeof event === "function") {
+      event = new event(type, params);
+    } else {
+      event = window.document.createEvent("Event");
+      if (params) event.initEvent(type, params.bubbles, params.cancelable), event.detail = params.detail;
+      else event.initEvent(type, false, false);
+    }
+
+    node.dispatchEvent(event);
+  }
+
+  function dispatchConstant$2(type, params) {
+    return function() {
+      return dispatchEvent$2(this, type, params);
+    };
+  }
+
+  function dispatchFunction$2(type, params) {
+    return function() {
+      return dispatchEvent$2(this, type, params.apply(this, arguments));
+    };
+  }
+
+  function selection_dispatch$2(type, params) {
+    return this.each((typeof params === "function"
+        ? dispatchFunction$2
+        : dispatchConstant$2)(type, params));
+  }
+
+  var root$2 = [null];
+
+  function Selection$4(groups, parents) {
+    this._groups = groups;
+    this._parents = parents;
+  }
+
+  Selection$4.prototype = {
+    constructor: Selection$4,
+    select: selection_select$2,
+    selectAll: selection_selectAll$2,
+    filter: selection_filter$2,
+    data: selection_data$2,
+    enter: selection_enter$2,
+    exit: selection_exit$2,
+    join: selection_join$2,
+    merge: selection_merge$2,
+    order: selection_order$2,
+    sort: selection_sort$2,
+    call: selection_call$2,
+    nodes: selection_nodes$2,
+    node: selection_node$2,
+    size: selection_size$2,
+    empty: selection_empty$2,
+    each: selection_each$2,
+    attr: selection_attr$2,
+    style: selection_style$2,
+    property: selection_property$2,
+    classed: selection_classed$2,
+    text: selection_text$2,
+    html: selection_html$2,
+    raise: selection_raise$2,
+    lower: selection_lower$2,
+    append: selection_append$2,
+    insert: selection_insert$2,
+    remove: selection_remove$2,
+    clone: selection_clone$2,
+    datum: selection_datum$2,
+    on: selection_on$2,
+    dispatch: selection_dispatch$2
+  };
+
+  function select$2(selector) {
+    return typeof selector === "string"
+        ? new Selection$4([[document.querySelector(selector)]], [document.documentElement])
+        : new Selection$4([[selector]], root$2);
+  }
+
+  function ascending$2(a, b) {
+  	return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+  }
+
+  function sortArray(uarr, sort, parser, formatter, exclude_from_formatting) {
+  	var sarr = uarr.map(function (d, i) {
+  		var parsed_value = parser(d);
+  		var display_value;
+  		if (d === null) display_value = "";
+  		if (exclude_from_formatting.includes(d)) display_value = d;
+  		else display_value = formatter(d);
+  		return {
+  			value: d,
+  			options_index: i,
+  			parsed: parsed_value,
+  			display: display_value,
+  		};
+  	});
+
+  	if (!sort) return sarr;
+  	return sarr.sort(function (a, b) {
+  		return ascending$2(a.parsed, b.parsed);
+  	});
+  }
+
+  function createCssString() {
+  	var s = new Stylesheet$1();
+
+  	s.select(".fl-controls-container")
+  		.style("display", "inline-block")
+  		.style("line-height", "1em");
+
+  	s.select(".fl-controls-title")
+  		.style("display", "inline-block")
+  		.style("margin-inline-end", "0.5rem");
+
+  	s.select(".fl-controls-container, .fl-controls-container *").style(
+  		"box-sizing",
+  		"border-box",
+  	);
+
+  	s.select(".slider-holder").style("margin-bottom", "20px");
+
+  	s.select(".fl-controls-slider, .slider-play")
+  		.style("pointer-events", "all")
+  		.style("display", "inline-block")
+  		.style("vertical-align", "middle");
+
+  	s.select(".slider-play svg")
+  		.style("height", "100%")
+  		.style("width", "100%")
+  		.style("display", "block")
+  		.style("cursor", " pointer", "");
+
+  	s.select(".fl-controls-slider svg").style("display", "block");
+
+  	s.select(".slider-play:hover").style("opacity", "0.6");
+
+  	s.select(".fl-control-slider")
+  		.style("width", "100%")
+  		.style("bottom", "0")
+  		.style("align-items", "center");
+
+  	s.select(".fl-control").style("position", "relative");
+
+  	s.select(".fl-control.hidden").style("display", "none");
+
+  	s.select(".fl-control .button")
+  		.style("display", "inline-flex")
+  		.style("align-items", "center")
+  		.style("background", "#eee")
+  		.style("padding", "0 0.5em")
+  		.style("margin-right", "0.25em")
+  		.style("margin-bottom", "0.25em")
+  		.style("line-height", "1em")
+  		.style("box-sizing", "border-box");
+
+  	s.select(".fl-control.grouped:not(.hidden)")
+  		.style("display", "inline-table")
+  		.style("table-layout", "fixed")
+  		.select(".button")
+  		.style("display", "table-cell")
+  		.style("vertical-align", "middle")
+  		.style("margin", "0")
+  		.style("text-align", "center");
+
+  	s.select(".fl-control .button.selected").style("background", "#ddd");
+
+  	s.select(".fl-control-dropdown")
+  		.style("line-height", "1em")
+  		.style("position", "relative");
+
+  	s.select(".fl-control-dropdown::after")
+  		.style("display", "block")
+  		.style("content", "''")
+  		.style("width", "10px")
+  		.style("height", "10px")
+  		.style("background", "transparent")
+  		.style("position", "absolute")
+  		.style("right", "5px")
+  		.style("left", "auto")
+  		.style("top", "50%")
+  		.style("pointer-events", "none")
+  		.style("transform", "translateY(calc(-50% + 3px))")
+  		.style("border-left", "5px solid transparent")
+  		.style("border-right", "5px solid transparent")
+  		.style("border-top", "5px solid")
+  		.style("box-sizing", "border-box");
+
+  	s.select(".is-rtl .fl-control-dropdown::after")
+  		.style("left", "5px")
+  		.style("right", "auto");
+
+  	s.select(".fl-control-dropdown select")
+  		.style("-webkit-appearance", "none")
+  		.style("width", "100%");
+
+  	return s.print();
+  }
+
+  var css_injected = false;
+
+  function injectCSS() {
+  	if (css_injected || typeof document === "undefined") return;
+
+  	var css_string = createCssString();
+
+  	var head = document.head || document.getElementsByTagName("head")[0];
+  	var style = document.createElement("style");
+  	style.type = "text/css";
+  	style.className = "flourish-controls";
+  	head.appendChild(style);
+  	if (style.styleSheet) {
+  		style.styleSheet.cssText = css_string;
+  	} else {
+  		style.appendChild(document.createTextNode(css_string));
+  	}
+  	css_injected = true;
+  }
+
+  var getTextWidth = (function() {
+  	var context = document.createElement("canvas").getContext("2d");
+  	return function(text, font) {
+  		context.font = font || "10px sans-serif";
+  		var metrics = context.measureText(text);
+  		return metrics.width;
+  	};
+  })();
+
+  var remToPx$1;
+
+  function getRemToPx() {
+  	var font_size =
+  		parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+  	remToPx$1 = function (rem) {
+  		return rem * font_size;
+  	};
+  }
+
+  function createDropdown(control_obj, state, container) {
+  	var dropdown_obj = {};
+
+  	// Add dropdown elements to container
+  	var dropdown_wrapper = select$2(container)
+  		.append("div")
+  		.attr("class", "fl-control fl-control-dropdown")
+  		.style("display", "none");
+
+  	const dropdown = dropdown_wrapper.append("select").on("change", function () {
+  		const data = dropdown.select("option:checked").datum();
+  		const index = data.options_index;
+  		control_obj.index(index);
+  		control_obj.trigger("change");
+  	});
+
+  	var showControl = function (longest_text_width) {
+  		var dropdown_width = "100%";
+
+  		if (state.dropdown_width_mode == "auto") {
+  			dropdown_width =
+  				Math.min(longest_text_width + 40, remToPx$1(20)) + remToPx$1(1) + "px";
+  		} else if (state.dropdown_width_mode == "fixed") {
+  			dropdown_width = remToPx$1(state.dropdown_width_fixed) + "px";
+  		}
+
+  		container.style.width =
+  			state.dropdown_width_mode == "full" ? dropdown_width : "";
+
+  		dropdown_wrapper
+  			.style("width", dropdown_width)
+  			.style(
+  				"display",
+  				state.dropdown_width_mode !== "full" ? "inline-table" : null,
+  			);
+  	};
+
+  	var hideControl = function () {
+  		dropdown_wrapper.style("display", "none");
+  	};
+
+  	dropdown_obj.show = showControl;
+  	dropdown_obj.hide = hideControl;
+
+  	dropdown_obj.update = function (sorted_options, visible) {
+  		var dropdown_font_size = window.getComputedStyle(dropdown.node()).fontSize;
+  		if (!control_obj.n_options || state.control_type !== "dropdown") {
+  			hideControl();
+  			return dropdown_obj;
+  		}
+
+  		const options = dropdown
+  			.selectAll("option")
+  			.data(sorted_options, (d) => d.value);
+  		options.exit().remove();
+
+  		var options_enter = options.enter().append("option");
+
+  		options
+  			.merge(options_enter)
+  			.text((d) => d.display)
+  			.attr("value", (d) => d.value);
+
+  		let longest_text_width = 0;
+  		const font = dropdown_font_size + " sans-serif";
+
+  		if (state.dropdown_width_mode === "auto") {
+  			options.merge(options_enter).each(function (d) {
+  				const text_width = getTextWidth(d.display, font);
+  				longest_text_width = Math.max(longest_text_width, text_width);
+  			});
+  		}
+
+  		dropdown.node().value = control_obj.value();
+
+  		if (visible) showControl(longest_text_width);
+  		else hideControl();
+
+  		return dropdown_obj;
+  	};
+
+  	return dropdown_obj;
+  }
+
+  function createButtons(control_obj, state, container) {
+  	var button_obj = {};
+  	var button_container = select$2(container)
+  		.append("div")
+  		.attr("class", "fl-control fl-control-buttons");
+
+  	var showControl = function () {
+  		button_container.classed("hidden", false);
+  	};
+
+  	var hideControl = function () {
+  		button_container.classed("hidden", true);
+  	};
+
+  	button_obj.show = showControl;
+  	button_obj.hide = hideControl;
+
+  	button_obj.update = function (sorted_options, visible) {
+  		if (!control_obj.n_options || state.control_type !== "buttons") {
+  			hideControl();
+  			return button_obj;
+  		}
+
+  		var index = control_obj.index();
+
+  		button_container.classed("grouped", state.button_group);
+  		button_container.classed(
+  			"fixed-width",
+  			state.button_group_width_mode == "fixed" ||
+  				state.button_group_width_mode == "full",
+  		);
+  		button_container.style(
+  			"width",
+  			state.button_group && state.button_group_width_mode == "fixed"
+  				? remToPx$1(state.button_group_width_fixed) + "px"
+  				: state.button_group_width_mode == "full"
+  					? "100%"
+  					: null,
+  		);
+
+  		var clickHandler = function (d) {
+  			var i = d.options_index;
+  			if (i === control_obj.index()) return;
+  			control_obj.index(i);
+  			control_obj.trigger("change");
+  		};
+
+  		var buttons = button_container
+  			.selectAll(".button")
+  			.data(sorted_options, function (d) {
+  				return d.display;
+  			});
+
+  		var buttons_enter = buttons
+  			.enter()
+  			.append("div")
+  			.attr("class", "button")
+  			.style("cursor", "pointer")
+  			.attr("role", "button")
+  			.attr("tabindex", 0)
+  			.on("click", function (d) {
+  				clickHandler(d);
+  			})
+  			.on("keyup", function (d) {
+  				if (event$1.code === "Space" || event$1.code === "Enter") {
+  					event$1.preventDefault();
+  					clickHandler(d);
+  				}
+  			});
+
+  		buttons_enter.append("span").text(function (d) {
+  			return d.display;
+  		});
+
+  		buttons
+  			.merge(buttons_enter)
+  			.classed("selected", function (d) {
+  				return d.options_index === index;
+  			})
+  			.attr("aria-pressed", function (d) {
+  				return d.options_index === index;
+  			});
+
+  		buttons.exit().remove();
+
+  		if (visible) showControl();
+  		else hideControl();
+  	};
+
+  	return button_obj;
+  }
+
+  function createPlayButton() {
+  	return '<svg aria-hidden="true" width="25px" height="30px" viewBox="0 0 25 30"> <polygon stroke="none" points="25 15 0 30 0 0"></polygon> </svg>';
+  }
+
+  function createPauseButton() {
+  	return '<svg aria-hidden="true" width="26px" height="30px" viewBox="0 0 26 30"> <g stroke="none" stroke-width="1"quarter><rect x="2" y="2" width="9" height="26"></rect> <rect x="15" y="2" width="9" height="26"></rect> </g> </svg>';
+  }
+
+  function createSlider(control_obj, state, container) {
+  	var slider_obj = {};
+  	var slider_holder = select$2(container)
+  		.append("div")
+  		.attr("class", "fl-control fl-control-slider")
+  		.style("flex", "1");
+  	var slider_play_button = slider_holder
+  		.append("div")
+  		.attr("class", "slider-play")
+  		.attr("role", "button")
+  		.attr("aria-label", "play-button")
+  		.attr("cursor", "pointer")
+  		.attr("tabindex", 0);
+  	var slider_div = slider_holder
+  		.append("div")
+  		.attr("class", "fl-controls-slider")
+  		.style("display", "none") // hide initially to avoid view of unstyled slider on load
+  		.style("align-items", "center");
+
+  	var play_string, pause_string;
+  	var sorted_options, timesteps, is_playing;
+  	var timer_id = null;
+
+  	const slider_range = slider_div
+  		.append("input")
+  		.attr("type", "range")
+  		.attr("id", "slider-range")
+  		.attr("name", "slider-range")
+  		.attr("value", 0);
+
+  	const slider_label = slider_div
+  		.append("label")
+  		.attr("class", "slider-label")
+  		.attr("for", "slider-range");
+
+  	var clearTimer = function () {
+  		clearTimeout(timer_id);
+  		timer_id = null;
+  	};
+
+  	var sliderChangeFunction = function (i) {
+  		var d = sorted_options[i];
+  		if (d.options_index === control_obj.index()) return;
+  		control_obj.index(d.options_index);
+  		control_obj.trigger("change");
+  	};
+
+  	var stopSliderPlayer = function () {
+  		clearTimer();
+  		slider_holder.classed("playing", false);
+  		slider_play_button.html(play_string).attr("aria-label", "play-button");
+  		control_obj._isPlaying_(false);
+  		is_playing = false;
+  	};
+
+  	var setNextTick = function () {
+  		var current_index = control_obj.getSortedIndex();
+  		var current_delay = timesteps[current_index];
+  		var final_index = control_obj.n_options - 1;
+  		var next_index = current_index < final_index ? current_index + 1 : 0;
+
+  		timer_id = setTimeout(function () {
+  			sliderChangeFunction(next_index);
+  			if (state.slider_loop || next_index < final_index) setNextTick();
+  			else stopSliderPlayer();
+  		}, current_delay);
+  	};
+
+  	var startSliderPlayer = function () {
+  		slider_holder.classed("playing", true);
+  		slider_play_button.html(pause_string).attr("aria-label", "pause-button");
+  		setNextTick();
+  		control_obj._isPlaying_(true);
+  		is_playing = true;
+  	};
+
+  	slider_play_button
+  		.on("click", function () {
+  			if (timer_id === null) startSliderPlayer();
+  			else stopSliderPlayer();
+  		})
+  		.on("keyup", function () {
+  			if (event$1.code === "Space" || event$1.code === "Enter") {
+  				event$1.preventDefault();
+  				if (timer_id === null) startSliderPlayer();
+  				else stopSliderPlayer();
+  			}
+  		});
+
+  	var setHandles = function () {
+  		play_string = createPlayButton();
+  		pause_string = createPauseButton();
+  		slider_play_button.html(timer_id ? pause_string : play_string);
+  	};
+
+  	var showControl = function (longest_text_width) {
+  		const label_width =
+  			Math.min(
+  				Math.ceil(longest_text_width),
+  				remToPx$1(state.slider_max_label_width),
+  			) + "px";
+  		slider_label.style("width", label_width).style("flex-shrink", 0);
+
+  		slider_holder.style("display", "inline-flex");
+
+  		slider_range.style("width", remToPx$1(state.slider_width) + "px");
+
+  		setHandles();
+  		return slider_obj;
+  	};
+
+  	var hideControl = function () {
+  		stopSliderPlayer();
+  		slider_holder.style("display", "none");
+  		return slider_obj;
+  	};
+
+  	slider_obj.show = showControl;
+  	slider_obj.hide = hideControl;
+
+  	slider_obj.update = function (_sorted_options, visible) {
+  		slider_div.style("display", "flex");
+
+  		sorted_options = _sorted_options;
+  		if (!control_obj.n_options || state.control_type !== "slider") {
+  			hideControl();
+  			return slider_obj;
+  		}
+
+  		var slider_font_size = window.getComputedStyle(
+  			slider_label.node(),
+  		).fontSize;
+  		var slider_font_family = window.getComputedStyle(
+  			slider_label.node(),
+  		).fontFamily;
+  		var slider_font_weight = window.getComputedStyle(
+  			slider_holder.node(),
+  		).fontWeight;
+  		let longest_text_width = 0;
+  		const font =
+  			slider_font_weight +
+  			" " +
+  			slider_font_size +
+  			" " +
+  			slider_font_family +
+  			", sans-serif";
+  		sorted_options.forEach(function (d) {
+  			const text_width = getTextWidth(d.display, font);
+  			longest_text_width = Math.max(longest_text_width, text_width);
+  		});
+
+  		if (visible) showControl(longest_text_width);
+  		else hideControl();
+
+  		var n_options = control_obj.n_options;
+  		var loop = state.slider_loop;
+
+  		timesteps = sorted_options.map(function (d, i) {
+  			var dur_in_seconds =
+  				state.slider_step_time +
+  				(loop && i === n_options - 1 ? state.slider_restart_pause : 0);
+  			return dur_in_seconds * 1000;
+  		});
+
+  		var sorted_index = control_obj.getSortedIndex();
+  		var d = sorted_options[sorted_index];
+
+  		var min_display_value = sorted_options[0].display;
+  		var max_display_value = sorted_options[sorted_options.length - 1].display;
+
+  		slider_range
+  			.attr("min", 0)
+  			.attr("max", n_options - 1)
+  			.attr("step", 1)
+  			.attr("aria-valuenow", d.display)
+  			.attr("aria-valuemin", min_display_value)
+  			.attr("aria-valuemax", max_display_value)
+  			.on("input", function () {
+  				var is_playing = timer_id !== null;
+  				if (is_playing) clearTimer();
+  				sliderChangeFunction(this.value);
+  				if (is_playing) setNextTick();
+  			});
+
+  		slider_range.node().value = sorted_index;
+
+  		slider_label.html(d.display);
+
+  		if (control_obj._isPlaying_() && !is_playing) startSliderPlayer();
+  		else if (!control_obj._isPlaying_() && is_playing) stopSliderPlayer();
+
+  		return slider_obj;
+  	};
+
+  	return slider_obj;
+  }
+
+  var DEFAULTS$2 = Object.freeze({
+  	alignment: "start",
+  	controls_spacing: 1,
+  });
+
+  function controlsContainer(state_) {
+  	this._state = state_;
+  	for (var key in DEFAULTS$2) {
+  		if (this._state[key] === undefined) this._state[key] = DEFAULTS$2[key];
+  	}
+  	return this;
+  }
+
+  controlsContainer.prototype.appendTo = function (container_) {
+  	this._container = select$2(container_).append("div").node();
+  	return this;
+  };
+
+  controlsContainer.prototype.add = function (controls) {
+  	this._controls = Array.isArray(controls) ? controls : [controls];
+
+  	this._controls.forEach(function (control) {
+  		if (control && typeof control.appendTo === "function")
+  			control.appendTo(this._container);
+  		else console.warn("Please pass valid controls instances to .add()");
+  	}, this);
+
+  	return this;
+  };
+
+  controlsContainer.prototype.update = function () {
+  	this._controls.forEach(function (control) {
+  		if (control && typeof control.update == "function") control.update();
+  	});
+
+  	var alignment = this._state.alignment;
+  	var flex_alignment = alignment == "center" ? alignment : "flex-" + alignment;
+
+  	var template = window.template || undefined;
+  	var layout = template ? template.state.layout : undefined;
+  	var read_direction =
+  		(layout && layout.read_direction) || select$2("body").node().dir || "ltr";
+  	// This flips the controls container margins if read direction is set to right-to-left
+  	// Flex alignment is not flipped in order to match the behaviour of the legend
+  	var alignment_for_margins = alignment;
+  	if (read_direction === "rtl" && alignment !== "center") {
+  		alignment_for_margins = alignment === "start" ? "end" : "start";
+  	}
+
+  	select$2(this._container)
+  		.classed("is-rtl", read_direction == "rtl")
+  		.style("display", "flex")
+  		.style("flex-wrap", "wrap")
+  		.style("justify-content", flex_alignment);
+
+  	var individual_controls_container = select$2(this._container).selectAll(
+  		".fl-controls-container",
+  	);
+
+  	var controls_spacing = this._state.controls_spacing;
+  	var margin_left;
+  	var margin_right;
+  	switch (alignment_for_margins) {
+  		case "end":
+  			margin_left = controls_spacing + "em";
+  			margin_right = 0;
+  			break;
+  		case "center":
+  			margin_left = controls_spacing * 0.5 + "em";
+  			margin_right = controls_spacing * 0.5 + "em";
+  			break;
+  		case "start":
+  		default:
+  			margin_left = 0;
+  			margin_right = controls_spacing + "em";
+  			break;
+  	}
+
+  	individual_controls_container
+  		.style("margin-left", margin_left)
+  		.style("margin-right", margin_right);
+
+  	return this;
+  };
+
+  var DEFAULTS$1 = Object.freeze({
+  	control_type: "dropdown",
+  	control_title: "",
+
+  	// Dropdown
+  	dropdown_width_mode: "auto",
+  	dropdown_width_fixed: 20,
+
+  	// Buttons
+  	button_group: true,
+  	button_group_width_mode: "auto",
+  	button_group_width_fixed: 20,
+
+  	// Slider
+  	slider_width: 15,
+  	slider_max_label_width: 20,
+  	slider_handle_height: 1,
+  	slider_track_height: 0.2,
+  	slider_margin: 4.5,
+
+  	slider_play_button: true,
+  	slider_step_time: 2,
+  	slider_loop: true,
+  	slider_restart_pause: 0,
+
+  	// Data typing
+  	sort: false,
+
+  	_index_: null,
+  	_is_playing_: false,
+  });
+
+  function defaultParser(x) {
+  	return x;
+  }
+
+  function defaultFormatter(x) {
+  	return x == null ? "" : x.toString();
+  }
+
+  function createControls(state, id) {
+  	var control_obj = {};
+  	var parser = defaultParser;
+  	var formatter = defaultFormatter;
+  	var exclude_from_formatting = [];
+  	var visible = true;
+  	var options = [];
+  	var sorted_options = [];
+  	var changeHandlers = [];
+  	var container = document.createElement("div");
+  	container.setAttribute("class", "fl-controls-container");
+  	var container_title = select$2(container)
+  		.append("div")
+  		.attr("class", "fl-controls-title");
+  	var dropdown_obj = createDropdown(control_obj, state, container);
+  	var buttons_obj = createButtons(control_obj, state, container);
+  	var slider_obj = createSlider(control_obj, state, container);
+
+  	for (var key in DEFAULTS$1) {
+  		if (state[key] === undefined) state[key] = DEFAULTS$1[key];
+  	}
+
+  	var current_index = state._index_;
+
+  	var checkValidIndex = function (i) {
+  		return options.length && i >= 0 && i < options.length;
+  	};
+
+  	var updateControls = function (sorted_options) {
+  		container.style.display = sorted_options.length > 1 ? "flex" : "none";
+  		container.style.width = "";
+  		container.style.alignItems = "center";
+  		container_title.node().innerHTML = state.control_title;
+  		container_title.node().style.display =
+  			state.control_title === "" ? "none" : "inline-block";
+  		slider_obj.update(sorted_options, visible); // Do slider first in case we're stopping playing
+  		dropdown_obj.update(sorted_options, visible);
+  		buttons_obj.update(sorted_options, visible);
+  	};
+
+  	control_obj.appendTo = function (parent_container) {
+  		injectCSS();
+  		select$2(parent_container).node().appendChild(container);
+  		return control_obj;
+  	};
+
+  	var callOnChangeCallbacks = function () {
+  		var index = indexFunction();
+  		var value = options[index];
+  		changeHandlers.forEach(function (func) {
+  			func(value, index);
+  		});
+  		return control_obj;
+  	};
+
+  	control_obj.remove = function () {
+  		if (container.parentElement) container.parentElement.removeChild(container);
+  		return control_obj;
+  	};
+
+  	control_obj.options = function (arr) {
+  		if (arr === undefined) return options.slice();
+  		if (!Array.isArray(arr)) return control_obj;
+  		options = arr.slice();
+  		var n = options.length;
+  		var i = indexFunction();
+  		if (!n) indexFunction(null);
+  		else if (i === null || i >= n) indexFunction(0);
+  		return control_obj;
+  	};
+
+  	Object.defineProperty(control_obj, "n_options", {
+  		get: function () {
+  			return options.length;
+  		},
+  	});
+
+  	var indexFunction = function (i) {
+  		if (i === undefined) {
+  			if (!state._is_playing_) current_index = state._index_;
+  			return current_index;
+  		}
+  		if (i === null || checkValidIndex(i)) {
+  			current_index = i;
+  			if (!state._is_playing_) state._index_ = current_index;
+  		} else console.warn("Invalid index, ignoring update call");
+  		return control_obj;
+  	};
+  	control_obj.index = indexFunction;
+
+  	control_obj.getSortedIndex = function () {
+  		var options_index = indexFunction();
+  		if (state.sort == "unsorted") return options_index;
+  		var sorted_index;
+  		sorted_options.some(function (d, i) {
+  			if (d.options_index === options_index) {
+  				sorted_index = i;
+  				return true;
+  			}
+  		});
+  		return sorted_index;
+  	};
+
+  	control_obj.value = function (value) {
+  		if (value === undefined) return options[indexFunction()];
+  		var index = options.indexOf(value);
+  		if (index !== -1) indexFunction(index);
+  		return control_obj;
+  	};
+
+  	control_obj.on = function (event, callback) {
+  		if (event === "change") changeHandlers.push(callback.bind(control_obj));
+  		return control_obj;
+  	};
+
+  	control_obj.parse = function (value) {
+  		if (value === undefined) return parser;
+  		if (value === null) parser = defaultParser;
+  		else parser = value;
+  		return control_obj;
+  	};
+
+  	control_obj.format = function (value, exclude) {
+  		if (value === undefined) return formatter;
+  		if (value === null) formatter = defaultFormatter;
+  		if (typeof value === "string") {
+  			try {
+  				formatter = getFormatter(value);
+  			} catch (err) {
+  				formatter = defaultFormatter;
+  				console.warn(err.message);
+  			}
+  		} else {
+  			formatter = value;
+  		}
+  		if (exclude && Array.isArray(exclude)) exclude_from_formatting = exclude;
+  		return control_obj;
+  	};
+
+  	control_obj.visible = function (value) {
+  		if (value === undefined) return visible;
+  		if (value === null) visible = true;
+  		else visible = value;
+  		return control_obj;
+  	};
+
+  	control_obj.update = function () {
+  		getRemToPx();
+  		sorted_options = sortArray(
+  			options,
+  			state.sort,
+  			parser,
+  			formatter,
+  			exclude_from_formatting,
+  		);
+  		updateControls(sorted_options);
+  		return control_obj;
+  	};
+
+  	control_obj.trigger = function (event) {
+  		if (event === "change") callOnChangeCallbacks();
+  		return control_obj;
+  	};
+
+  	control_obj.getNode = function () {
+  		return container;
+  	};
+
+  	var isPlaying = function (is_playing) {
+  		if (is_playing === undefined) return state._is_playing_;
+  		state._is_playing_ = !!is_playing;
+  		if (!is_playing) indexFunction(current_index); // Force _index_ to match current index
+  	};
+
+  	control_obj._isPlaying_ = isPlaying;
+
+  	return control_obj;
+  }
+
+  function createControlsContainer(state) {
+  	return new controlsContainer(state);
+  }
+
   var xhtml$1 = "http://www.w3.org/1999/xhtml";
 
   var namespaces$1 = {
@@ -13180,8 +20268,6 @@ var template = (function (exports) {
 
   var filterEvents = {};
 
-  var event$1 = null;
-
   if (typeof document !== "undefined") {
     var element = document.documentElement;
     if (!("onmouseenter" in element)) {
@@ -13201,12 +20287,9 @@ var template = (function (exports) {
 
   function contextListener$1(listener, index, group) {
     return function(event1) {
-      var event0 = event$1; // Events can be reentrant (e.g., focus).
-      event$1 = event1;
       try {
         listener.call(this, this.__data__, index, group);
       } finally {
-        event$1 = event0;
       }
     };
   }
@@ -13360,8 +20443,87 @@ var template = (function (exports) {
         : new Selection$3([[selector]], root$1);
   }
 
-  function create$2(name) {
-    return select$1(creator$1(name).call(document.documentElement));
+  var noop$2 = {value: function() {}};
+
+  function dispatch$2() {
+    for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
+      if (!(t = arguments[i] + "") || (t in _) || /[\s.]/.test(t)) throw new Error("illegal type: " + t);
+      _[t] = [];
+    }
+    return new Dispatch$2(_);
+  }
+
+  function Dispatch$2(_) {
+    this._ = _;
+  }
+
+  function parseTypenames$3(typenames, types) {
+    return typenames.trim().split(/^|\s+/).map(function(t) {
+      var name = "", i = t.indexOf(".");
+      if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
+      if (t && !types.hasOwnProperty(t)) throw new Error("unknown type: " + t);
+      return {type: t, name: name};
+    });
+  }
+
+  Dispatch$2.prototype = dispatch$2.prototype = {
+    constructor: Dispatch$2,
+    on: function(typename, callback) {
+      var _ = this._,
+          T = parseTypenames$3(typename + "", _),
+          t,
+          i = -1,
+          n = T.length;
+
+      // If no callback was specified, return the callback of the given type and name.
+      if (arguments.length < 2) {
+        while (++i < n) if ((t = (typename = T[i]).type) && (t = get$4(_[t], typename.name))) return t;
+        return;
+      }
+
+      // If a type was specified, set the callback for the given type and name.
+      // Otherwise, if a null callback was specified, remove callbacks of the given name.
+      if (callback != null && typeof callback !== "function") throw new Error("invalid callback: " + callback);
+      while (++i < n) {
+        if (t = (typename = T[i]).type) _[t] = set$4(_[t], typename.name, callback);
+        else if (callback == null) for (t in _) _[t] = set$4(_[t], typename.name, null);
+      }
+
+      return this;
+    },
+    copy: function() {
+      var copy = {}, _ = this._;
+      for (var t in _) copy[t] = _[t].slice();
+      return new Dispatch$2(copy);
+    },
+    call: function(type, that) {
+      if ((n = arguments.length - 2) > 0) for (var args = new Array(n), i = 0, n, t; i < n; ++i) args[i] = arguments[i + 2];
+      if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
+      for (t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
+    },
+    apply: function(type, that, args) {
+      if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
+      for (var t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
+    }
+  };
+
+  function get$4(type, name) {
+    for (var i = 0, n = type.length, c; i < n; ++i) {
+      if ((c = type[i]).name === name) {
+        return c.value;
+      }
+    }
+  }
+
+  function set$4(type, name, callback) {
+    for (var i = 0, n = type.length; i < n; ++i) {
+      if (type[i].name === name) {
+        type[i] = noop$2, type = type.slice(0, i).concat(type.slice(i + 1));
+        break;
+      }
+    }
+    if (callback != null) type.push({name: name, value: callback});
+    return type;
   }
 
   var frame$2 = 0, // is an animation frame pending?
@@ -13485,89 +20647,6 @@ var template = (function (exports) {
     return t;
   }
 
-  var noop$2 = {value: function() {}};
-
-  function dispatch$2() {
-    for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
-      if (!(t = arguments[i] + "") || (t in _) || /[\s.]/.test(t)) throw new Error("illegal type: " + t);
-      _[t] = [];
-    }
-    return new Dispatch$2(_);
-  }
-
-  function Dispatch$2(_) {
-    this._ = _;
-  }
-
-  function parseTypenames$3(typenames, types) {
-    return typenames.trim().split(/^|\s+/).map(function(t) {
-      var name = "", i = t.indexOf(".");
-      if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
-      if (t && !types.hasOwnProperty(t)) throw new Error("unknown type: " + t);
-      return {type: t, name: name};
-    });
-  }
-
-  Dispatch$2.prototype = dispatch$2.prototype = {
-    constructor: Dispatch$2,
-    on: function(typename, callback) {
-      var _ = this._,
-          T = parseTypenames$3(typename + "", _),
-          t,
-          i = -1,
-          n = T.length;
-
-      // If no callback was specified, return the callback of the given type and name.
-      if (arguments.length < 2) {
-        while (++i < n) if ((t = (typename = T[i]).type) && (t = get$4(_[t], typename.name))) return t;
-        return;
-      }
-
-      // If a type was specified, set the callback for the given type and name.
-      // Otherwise, if a null callback was specified, remove callbacks of the given name.
-      if (callback != null && typeof callback !== "function") throw new Error("invalid callback: " + callback);
-      while (++i < n) {
-        if (t = (typename = T[i]).type) _[t] = set$4(_[t], typename.name, callback);
-        else if (callback == null) for (t in _) _[t] = set$4(_[t], typename.name, null);
-      }
-
-      return this;
-    },
-    copy: function() {
-      var copy = {}, _ = this._;
-      for (var t in _) copy[t] = _[t].slice();
-      return new Dispatch$2(copy);
-    },
-    call: function(type, that) {
-      if ((n = arguments.length - 2) > 0) for (var args = new Array(n), i = 0, n, t; i < n; ++i) args[i] = arguments[i + 2];
-      if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
-      for (t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
-    },
-    apply: function(type, that, args) {
-      if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
-      for (var t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
-    }
-  };
-
-  function get$4(type, name) {
-    for (var i = 0, n = type.length, c; i < n; ++i) {
-      if ((c = type[i]).name === name) {
-        return c.value;
-      }
-    }
-  }
-
-  function set$4(type, name, callback) {
-    for (var i = 0, n = type.length; i < n; ++i) {
-      if (type[i].name === name) {
-        type[i] = noop$2, type = type.slice(0, i).concat(type.slice(i + 1));
-        break;
-      }
-    }
-    if (callback != null) type.push({name: name, value: callback});
-    return type;
-  }
-
   var emptyOn$1 = dispatch$2("start", "end", "cancel", "interrupt");
   var emptyTween$1 = [];
 
@@ -13598,7 +20677,7 @@ var template = (function (exports) {
     });
   }
 
-  function init$3(node, id) {
+  function init$1(node, id) {
     var schedule = get$3(node, id);
     if (schedule.state > CREATED$1) throw new Error("too late; already scheduled");
     return schedule;
@@ -13746,699 +20825,6 @@ var template = (function (exports) {
     return this.each(function() {
       interrupt$1(this, name);
     });
-  }
-
-  function define$1(constructor, factory, prototype) {
-    constructor.prototype = factory.prototype = prototype;
-    prototype.constructor = constructor;
-  }
-
-  function extend$1(parent, definition) {
-    var prototype = Object.create(parent.prototype);
-    for (var key in definition) prototype[key] = definition[key];
-    return prototype;
-  }
-
-  function Color$1() {}
-
-  var darker$1 = 0.7;
-  var brighter$1 = 1 / darker$1;
-
-  var reI$1 = "\\s*([+-]?\\d+)\\s*",
-      reN$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-      reP$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-      reHex$1 = /^#([0-9a-f]{3,8})$/,
-      reRgbInteger$1 = new RegExp("^rgb\\(" + [reI$1, reI$1, reI$1] + "\\)$"),
-      reRgbPercent$1 = new RegExp("^rgb\\(" + [reP$1, reP$1, reP$1] + "\\)$"),
-      reRgbaInteger$1 = new RegExp("^rgba\\(" + [reI$1, reI$1, reI$1, reN$1] + "\\)$"),
-      reRgbaPercent$1 = new RegExp("^rgba\\(" + [reP$1, reP$1, reP$1, reN$1] + "\\)$"),
-      reHslPercent$1 = new RegExp("^hsl\\(" + [reN$1, reP$1, reP$1] + "\\)$"),
-      reHslaPercent$1 = new RegExp("^hsla\\(" + [reN$1, reP$1, reP$1, reN$1] + "\\)$");
-
-  var named$1 = {
-    aliceblue: 0xf0f8ff,
-    antiquewhite: 0xfaebd7,
-    aqua: 0x00ffff,
-    aquamarine: 0x7fffd4,
-    azure: 0xf0ffff,
-    beige: 0xf5f5dc,
-    bisque: 0xffe4c4,
-    black: 0x000000,
-    blanchedalmond: 0xffebcd,
-    blue: 0x0000ff,
-    blueviolet: 0x8a2be2,
-    brown: 0xa52a2a,
-    burlywood: 0xdeb887,
-    cadetblue: 0x5f9ea0,
-    chartreuse: 0x7fff00,
-    chocolate: 0xd2691e,
-    coral: 0xff7f50,
-    cornflowerblue: 0x6495ed,
-    cornsilk: 0xfff8dc,
-    crimson: 0xdc143c,
-    cyan: 0x00ffff,
-    darkblue: 0x00008b,
-    darkcyan: 0x008b8b,
-    darkgoldenrod: 0xb8860b,
-    darkgray: 0xa9a9a9,
-    darkgreen: 0x006400,
-    darkgrey: 0xa9a9a9,
-    darkkhaki: 0xbdb76b,
-    darkmagenta: 0x8b008b,
-    darkolivegreen: 0x556b2f,
-    darkorange: 0xff8c00,
-    darkorchid: 0x9932cc,
-    darkred: 0x8b0000,
-    darksalmon: 0xe9967a,
-    darkseagreen: 0x8fbc8f,
-    darkslateblue: 0x483d8b,
-    darkslategray: 0x2f4f4f,
-    darkslategrey: 0x2f4f4f,
-    darkturquoise: 0x00ced1,
-    darkviolet: 0x9400d3,
-    deeppink: 0xff1493,
-    deepskyblue: 0x00bfff,
-    dimgray: 0x696969,
-    dimgrey: 0x696969,
-    dodgerblue: 0x1e90ff,
-    firebrick: 0xb22222,
-    floralwhite: 0xfffaf0,
-    forestgreen: 0x228b22,
-    fuchsia: 0xff00ff,
-    gainsboro: 0xdcdcdc,
-    ghostwhite: 0xf8f8ff,
-    gold: 0xffd700,
-    goldenrod: 0xdaa520,
-    gray: 0x808080,
-    green: 0x008000,
-    greenyellow: 0xadff2f,
-    grey: 0x808080,
-    honeydew: 0xf0fff0,
-    hotpink: 0xff69b4,
-    indianred: 0xcd5c5c,
-    indigo: 0x4b0082,
-    ivory: 0xfffff0,
-    khaki: 0xf0e68c,
-    lavender: 0xe6e6fa,
-    lavenderblush: 0xfff0f5,
-    lawngreen: 0x7cfc00,
-    lemonchiffon: 0xfffacd,
-    lightblue: 0xadd8e6,
-    lightcoral: 0xf08080,
-    lightcyan: 0xe0ffff,
-    lightgoldenrodyellow: 0xfafad2,
-    lightgray: 0xd3d3d3,
-    lightgreen: 0x90ee90,
-    lightgrey: 0xd3d3d3,
-    lightpink: 0xffb6c1,
-    lightsalmon: 0xffa07a,
-    lightseagreen: 0x20b2aa,
-    lightskyblue: 0x87cefa,
-    lightslategray: 0x778899,
-    lightslategrey: 0x778899,
-    lightsteelblue: 0xb0c4de,
-    lightyellow: 0xffffe0,
-    lime: 0x00ff00,
-    limegreen: 0x32cd32,
-    linen: 0xfaf0e6,
-    magenta: 0xff00ff,
-    maroon: 0x800000,
-    mediumaquamarine: 0x66cdaa,
-    mediumblue: 0x0000cd,
-    mediumorchid: 0xba55d3,
-    mediumpurple: 0x9370db,
-    mediumseagreen: 0x3cb371,
-    mediumslateblue: 0x7b68ee,
-    mediumspringgreen: 0x00fa9a,
-    mediumturquoise: 0x48d1cc,
-    mediumvioletred: 0xc71585,
-    midnightblue: 0x191970,
-    mintcream: 0xf5fffa,
-    mistyrose: 0xffe4e1,
-    moccasin: 0xffe4b5,
-    navajowhite: 0xffdead,
-    navy: 0x000080,
-    oldlace: 0xfdf5e6,
-    olive: 0x808000,
-    olivedrab: 0x6b8e23,
-    orange: 0xffa500,
-    orangered: 0xff4500,
-    orchid: 0xda70d6,
-    palegoldenrod: 0xeee8aa,
-    palegreen: 0x98fb98,
-    paleturquoise: 0xafeeee,
-    palevioletred: 0xdb7093,
-    papayawhip: 0xffefd5,
-    peachpuff: 0xffdab9,
-    peru: 0xcd853f,
-    pink: 0xffc0cb,
-    plum: 0xdda0dd,
-    powderblue: 0xb0e0e6,
-    purple: 0x800080,
-    rebeccapurple: 0x663399,
-    red: 0xff0000,
-    rosybrown: 0xbc8f8f,
-    royalblue: 0x4169e1,
-    saddlebrown: 0x8b4513,
-    salmon: 0xfa8072,
-    sandybrown: 0xf4a460,
-    seagreen: 0x2e8b57,
-    seashell: 0xfff5ee,
-    sienna: 0xa0522d,
-    silver: 0xc0c0c0,
-    skyblue: 0x87ceeb,
-    slateblue: 0x6a5acd,
-    slategray: 0x708090,
-    slategrey: 0x708090,
-    snow: 0xfffafa,
-    springgreen: 0x00ff7f,
-    steelblue: 0x4682b4,
-    tan: 0xd2b48c,
-    teal: 0x008080,
-    thistle: 0xd8bfd8,
-    tomato: 0xff6347,
-    turquoise: 0x40e0d0,
-    violet: 0xee82ee,
-    wheat: 0xf5deb3,
-    white: 0xffffff,
-    whitesmoke: 0xf5f5f5,
-    yellow: 0xffff00,
-    yellowgreen: 0x9acd32
-  };
-
-  define$1(Color$1, color$1, {
-    copy: function(channels) {
-      return Object.assign(new this.constructor, this, channels);
-    },
-    displayable: function() {
-      return this.rgb().displayable();
-    },
-    hex: color_formatHex$1, // Deprecated! Use color.formatHex.
-    formatHex: color_formatHex$1,
-    formatHsl: color_formatHsl$1,
-    formatRgb: color_formatRgb$1,
-    toString: color_formatRgb$1
-  });
-
-  function color_formatHex$1() {
-    return this.rgb().formatHex();
-  }
-
-  function color_formatHsl$1() {
-    return hslConvert$1(this).formatHsl();
-  }
-
-  function color_formatRgb$1() {
-    return this.rgb().formatRgb();
-  }
-
-  function color$1(format) {
-    var m, l;
-    format = (format + "").trim().toLowerCase();
-    return (m = reHex$1.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$1(m) // #ff0000
-        : l === 3 ? new Rgb$1((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-        : l === 8 ? rgba$1(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-        : l === 4 ? rgba$1((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
-        : null) // invalid hex
-        : (m = reRgbInteger$1.exec(format)) ? new Rgb$1(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-        : (m = reRgbPercent$1.exec(format)) ? new Rgb$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-        : (m = reRgbaInteger$1.exec(format)) ? rgba$1(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-        : (m = reRgbaPercent$1.exec(format)) ? rgba$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-        : (m = reHslPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-        : (m = reHslaPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-        : named$1.hasOwnProperty(format) ? rgbn$1(named$1[format]) // eslint-disable-line no-prototype-builtins
-        : format === "transparent" ? new Rgb$1(NaN, NaN, NaN, 0)
-        : null;
-  }
-
-  function rgbn$1(n) {
-    return new Rgb$1(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
-  }
-
-  function rgba$1(r, g, b, a) {
-    if (a <= 0) r = g = b = NaN;
-    return new Rgb$1(r, g, b, a);
-  }
-
-  function rgbConvert$1(o) {
-    if (!(o instanceof Color$1)) o = color$1(o);
-    if (!o) return new Rgb$1;
-    o = o.rgb();
-    return new Rgb$1(o.r, o.g, o.b, o.opacity);
-  }
-
-  function rgb$1(r, g, b, opacity) {
-    return arguments.length === 1 ? rgbConvert$1(r) : new Rgb$1(r, g, b, opacity == null ? 1 : opacity);
-  }
-
-  function Rgb$1(r, g, b, opacity) {
-    this.r = +r;
-    this.g = +g;
-    this.b = +b;
-    this.opacity = +opacity;
-  }
-
-  define$1(Rgb$1, rgb$1, extend$1(Color$1, {
-    brighter: function(k) {
-      k = k == null ? brighter$1 : Math.pow(brighter$1, k);
-      return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
-    },
-    darker: function(k) {
-      k = k == null ? darker$1 : Math.pow(darker$1, k);
-      return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
-    },
-    rgb: function() {
-      return this;
-    },
-    displayable: function() {
-      return (-0.5 <= this.r && this.r < 255.5)
-          && (-0.5 <= this.g && this.g < 255.5)
-          && (-0.5 <= this.b && this.b < 255.5)
-          && (0 <= this.opacity && this.opacity <= 1);
-    },
-    hex: rgb_formatHex$1, // Deprecated! Use color.formatHex.
-    formatHex: rgb_formatHex$1,
-    formatRgb: rgb_formatRgb$1,
-    toString: rgb_formatRgb$1
-  }));
-
-  function rgb_formatHex$1() {
-    return "#" + hex$1(this.r) + hex$1(this.g) + hex$1(this.b);
-  }
-
-  function rgb_formatRgb$1() {
-    var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-    return (a === 1 ? "rgb(" : "rgba(")
-        + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
-        + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
-        + Math.max(0, Math.min(255, Math.round(this.b) || 0))
-        + (a === 1 ? ")" : ", " + a + ")");
-  }
-
-  function hex$1(value) {
-    value = Math.max(0, Math.min(255, Math.round(value) || 0));
-    return (value < 16 ? "0" : "") + value.toString(16);
-  }
-
-  function hsla$1(h, s, l, a) {
-    if (a <= 0) h = s = l = NaN;
-    else if (l <= 0 || l >= 1) h = s = NaN;
-    else if (s <= 0) h = NaN;
-    return new Hsl$1(h, s, l, a);
-  }
-
-  function hslConvert$1(o) {
-    if (o instanceof Hsl$1) return new Hsl$1(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof Color$1)) o = color$1(o);
-    if (!o) return new Hsl$1;
-    if (o instanceof Hsl$1) return o;
-    o = o.rgb();
-    var r = o.r / 255,
-        g = o.g / 255,
-        b = o.b / 255,
-        min = Math.min(r, g, b),
-        max = Math.max(r, g, b),
-        h = NaN,
-        s = max - min,
-        l = (max + min) / 2;
-    if (s) {
-      if (r === max) h = (g - b) / s + (g < b) * 6;
-      else if (g === max) h = (b - r) / s + 2;
-      else h = (r - g) / s + 4;
-      s /= l < 0.5 ? max + min : 2 - max - min;
-      h *= 60;
-    } else {
-      s = l > 0 && l < 1 ? 0 : h;
-    }
-    return new Hsl$1(h, s, l, o.opacity);
-  }
-
-  function hsl$1(h, s, l, opacity) {
-    return arguments.length === 1 ? hslConvert$1(h) : new Hsl$1(h, s, l, opacity == null ? 1 : opacity);
-  }
-
-  function Hsl$1(h, s, l, opacity) {
-    this.h = +h;
-    this.s = +s;
-    this.l = +l;
-    this.opacity = +opacity;
-  }
-
-  define$1(Hsl$1, hsl$1, extend$1(Color$1, {
-    brighter: function(k) {
-      k = k == null ? brighter$1 : Math.pow(brighter$1, k);
-      return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
-    },
-    darker: function(k) {
-      k = k == null ? darker$1 : Math.pow(darker$1, k);
-      return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
-    },
-    rgb: function() {
-      var h = this.h % 360 + (this.h < 0) * 360,
-          s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
-          l = this.l,
-          m2 = l + (l < 0.5 ? l : 1 - l) * s,
-          m1 = 2 * l - m2;
-      return new Rgb$1(
-        hsl2rgb$1(h >= 240 ? h - 240 : h + 120, m1, m2),
-        hsl2rgb$1(h, m1, m2),
-        hsl2rgb$1(h < 120 ? h + 240 : h - 120, m1, m2),
-        this.opacity
-      );
-    },
-    displayable: function() {
-      return (0 <= this.s && this.s <= 1 || isNaN(this.s))
-          && (0 <= this.l && this.l <= 1)
-          && (0 <= this.opacity && this.opacity <= 1);
-    },
-    formatHsl: function() {
-      var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-      return (a === 1 ? "hsl(" : "hsla(")
-          + (this.h || 0) + ", "
-          + (this.s || 0) * 100 + "%, "
-          + (this.l || 0) * 100 + "%"
-          + (a === 1 ? ")" : ", " + a + ")");
-    }
-  }));
-
-  /* From FvD 13.37, CSS Color Module Level 3 */
-  function hsl2rgb$1(h, m1, m2) {
-    return (h < 60 ? m1 + (m2 - m1) * h / 60
-        : h < 180 ? m2
-        : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
-        : m1) * 255;
-  }
-
-  function constant$2(x) {
-    return function() {
-      return x;
-    };
-  }
-
-  function linear$1(a, d) {
-    return function(t) {
-      return a + t * d;
-    };
-  }
-
-  function exponential$1(a, b, y) {
-    return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
-      return Math.pow(a + t * b, y);
-    };
-  }
-
-  function gamma$1(y) {
-    return (y = +y) === 1 ? nogamma$1 : function(a, b) {
-      return b - a ? exponential$1(a, b, y) : constant$2(isNaN(a) ? b : a);
-    };
-  }
-
-  function nogamma$1(a, b) {
-    var d = b - a;
-    return d ? linear$1(a, d) : constant$2(isNaN(a) ? b : a);
-  }
-
-  var interpolateRgb$1 = (function rgbGamma(y) {
-    var color = gamma$1(y);
-
-    function rgb(start, end) {
-      var r = color((start = rgb$1(start)).r, (end = rgb$1(end)).r),
-          g = color(start.g, end.g),
-          b = color(start.b, end.b),
-          opacity = nogamma$1(start.opacity, end.opacity);
-      return function(t) {
-        start.r = r(t);
-        start.g = g(t);
-        start.b = b(t);
-        start.opacity = opacity(t);
-        return start + "";
-      };
-    }
-
-    rgb.gamma = rgbGamma;
-
-    return rgb;
-  })(1);
-
-  function interpolateNumber$1(a, b) {
-    return a = +a, b = +b, function(t) {
-      return a * (1 - t) + b * t;
-    };
-  }
-
-  var reA$1 = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
-      reB$1 = new RegExp(reA$1.source, "g");
-
-  function zero$1(b) {
-    return function() {
-      return b;
-    };
-  }
-
-  function one$1(b) {
-    return function(t) {
-      return b(t) + "";
-    };
-  }
-
-  function interpolateString$1(a, b) {
-    var bi = reA$1.lastIndex = reB$1.lastIndex = 0, // scan index for next number in b
-        am, // current match in a
-        bm, // current match in b
-        bs, // string preceding current number in b, if any
-        i = -1, // index in s
-        s = [], // string constants and placeholders
-        q = []; // number interpolators
-
-    // Coerce inputs to strings.
-    a = a + "", b = b + "";
-
-    // Interpolate pairs of numbers in a & b.
-    while ((am = reA$1.exec(a))
-        && (bm = reB$1.exec(b))) {
-      if ((bs = bm.index) > bi) { // a string precedes the next number in b
-        bs = b.slice(bi, bs);
-        if (s[i]) s[i] += bs; // coalesce with previous string
-        else s[++i] = bs;
-      }
-      if ((am = am[0]) === (bm = bm[0])) { // numbers in a & b match
-        if (s[i]) s[i] += bm; // coalesce with previous string
-        else s[++i] = bm;
-      } else { // interpolate non-matching numbers
-        s[++i] = null;
-        q.push({i: i, x: interpolateNumber$1(am, bm)});
-      }
-      bi = reB$1.lastIndex;
-    }
-
-    // Add remains of b.
-    if (bi < b.length) {
-      bs = b.slice(bi);
-      if (s[i]) s[i] += bs; // coalesce with previous string
-      else s[++i] = bs;
-    }
-
-    // Special optimization for only a single match.
-    // Otherwise, interpolate each of the numbers and rejoin the string.
-    return s.length < 2 ? (q[0]
-        ? one$1(q[0].x)
-        : zero$1(b))
-        : (b = q.length, function(t) {
-            for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
-            return s.join("");
-          });
-  }
-
-  var degrees$1 = 180 / Math.PI;
-
-  var identity$1 = {
-    translateX: 0,
-    translateY: 0,
-    rotate: 0,
-    skewX: 0,
-    scaleX: 1,
-    scaleY: 1
-  };
-
-  function decompose$1(a, b, c, d, e, f) {
-    var scaleX, scaleY, skewX;
-    if (scaleX = Math.sqrt(a * a + b * b)) a /= scaleX, b /= scaleX;
-    if (skewX = a * c + b * d) c -= a * skewX, d -= b * skewX;
-    if (scaleY = Math.sqrt(c * c + d * d)) c /= scaleY, d /= scaleY, skewX /= scaleY;
-    if (a * d < b * c) a = -a, b = -b, skewX = -skewX, scaleX = -scaleX;
-    return {
-      translateX: e,
-      translateY: f,
-      rotate: Math.atan2(b, a) * degrees$1,
-      skewX: Math.atan(skewX) * degrees$1,
-      scaleX: scaleX,
-      scaleY: scaleY
-    };
-  }
-
-  var cssNode,
-      cssRoot,
-      cssView,
-      svgNode$1;
-
-  function parseCss$1(value) {
-    if (value === "none") return identity$1;
-    if (!cssNode) cssNode = document.createElement("DIV"), cssRoot = document.documentElement, cssView = document.defaultView;
-    cssNode.style.transform = value;
-    value = cssView.getComputedStyle(cssRoot.appendChild(cssNode), null).getPropertyValue("transform");
-    cssRoot.removeChild(cssNode);
-    value = value.slice(7, -1).split(",");
-    return decompose$1(+value[0], +value[1], +value[2], +value[3], +value[4], +value[5]);
-  }
-
-  function parseSvg$1(value) {
-    if (value == null) return identity$1;
-    if (!svgNode$1) svgNode$1 = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    svgNode$1.setAttribute("transform", value);
-    if (!(value = svgNode$1.transform.baseVal.consolidate())) return identity$1;
-    value = value.matrix;
-    return decompose$1(value.a, value.b, value.c, value.d, value.e, value.f);
-  }
-
-  function interpolateTransform$1(parse, pxComma, pxParen, degParen) {
-
-    function pop(s) {
-      return s.length ? s.pop() + " " : "";
-    }
-
-    function translate(xa, ya, xb, yb, s, q) {
-      if (xa !== xb || ya !== yb) {
-        var i = s.push("translate(", null, pxComma, null, pxParen);
-        q.push({i: i - 4, x: interpolateNumber$1(xa, xb)}, {i: i - 2, x: interpolateNumber$1(ya, yb)});
-      } else if (xb || yb) {
-        s.push("translate(" + xb + pxComma + yb + pxParen);
-      }
-    }
-
-    function rotate(a, b, s, q) {
-      if (a !== b) {
-        if (a - b > 180) b += 360; else if (b - a > 180) a += 360; // shortest path
-        q.push({i: s.push(pop(s) + "rotate(", null, degParen) - 2, x: interpolateNumber$1(a, b)});
-      } else if (b) {
-        s.push(pop(s) + "rotate(" + b + degParen);
-      }
-    }
-
-    function skewX(a, b, s, q) {
-      if (a !== b) {
-        q.push({i: s.push(pop(s) + "skewX(", null, degParen) - 2, x: interpolateNumber$1(a, b)});
-      } else if (b) {
-        s.push(pop(s) + "skewX(" + b + degParen);
-      }
-    }
-
-    function scale(xa, ya, xb, yb, s, q) {
-      if (xa !== xb || ya !== yb) {
-        var i = s.push(pop(s) + "scale(", null, ",", null, ")");
-        q.push({i: i - 4, x: interpolateNumber$1(xa, xb)}, {i: i - 2, x: interpolateNumber$1(ya, yb)});
-      } else if (xb !== 1 || yb !== 1) {
-        s.push(pop(s) + "scale(" + xb + "," + yb + ")");
-      }
-    }
-
-    return function(a, b) {
-      var s = [], // string constants and placeholders
-          q = []; // number interpolators
-      a = parse(a), b = parse(b);
-      translate(a.translateX, a.translateY, b.translateX, b.translateY, s, q);
-      rotate(a.rotate, b.rotate, s, q);
-      skewX(a.skewX, b.skewX, s, q);
-      scale(a.scaleX, a.scaleY, b.scaleX, b.scaleY, s, q);
-      a = b = null; // gc
-      return function(t) {
-        var i = -1, n = q.length, o;
-        while (++i < n) s[(o = q[i]).i] = o.x(t);
-        return s.join("");
-      };
-    };
-  }
-
-  var interpolateTransformCss$1 = interpolateTransform$1(parseCss$1, "px, ", "px)", "deg)");
-  var interpolateTransformSvg$1 = interpolateTransform$1(parseSvg$1, ", ", ")", ")");
-
-  function tweenRemove$1(id, name) {
-    var tween0, tween1;
-    return function() {
-      var schedule = set$3(this, id),
-          tween = schedule.tween;
-
-      // If this node shared tween with the previous node,
-      // just assign the updated shared tween and we’re done!
-      // Otherwise, copy-on-write.
-      if (tween !== tween0) {
-        tween1 = tween0 = tween;
-        for (var i = 0, n = tween1.length; i < n; ++i) {
-          if (tween1[i].name === name) {
-            tween1 = tween1.slice();
-            tween1.splice(i, 1);
-            break;
-          }
-        }
-      }
-
-      schedule.tween = tween1;
-    };
-  }
-
-  function tweenFunction$1(id, name, value) {
-    var tween0, tween1;
-    if (typeof value !== "function") throw new Error;
-    return function() {
-      var schedule = set$3(this, id),
-          tween = schedule.tween;
-
-      // If this node shared tween with the previous node,
-      // just assign the updated shared tween and we’re done!
-      // Otherwise, copy-on-write.
-      if (tween !== tween0) {
-        tween1 = (tween0 = tween).slice();
-        for (var t = {name: name, value: value}, i = 0, n = tween1.length; i < n; ++i) {
-          if (tween1[i].name === name) {
-            tween1[i] = t;
-            break;
-          }
-        }
-        if (i === n) tween1.push(t);
-      }
-
-      schedule.tween = tween1;
-    };
-  }
-
-  function transition_tween$1(name, value) {
-    var id = this._id;
-
-    name += "";
-
-    if (arguments.length < 2) {
-      var tween = get$3(this.node(), id).tween;
-      for (var i = 0, n = tween.length, t; i < n; ++i) {
-        if ((t = tween[i]).name === name) {
-          return t.value;
-        }
-      }
-      return null;
-    }
-
-    return this.each((value == null ? tweenRemove$1 : tweenFunction$1)(id, name, value));
-  }
-
-  function tweenValue$1(transition, name, value) {
-    var id = transition._id;
-
-    transition.each(function() {
-      var schedule = set$3(this, id);
-      (schedule.value || (schedule.value = {}))[name] = value.apply(this, arguments);
-    });
-
-    return function(node) {
-      return get$3(node, id).value[name];
-    };
   }
 
   function define(constructor, factory, prototype) {
@@ -14822,6 +21208,318 @@ var template = (function (exports) {
         : m1) * 255;
   }
 
+  function constant$2(x) {
+    return function() {
+      return x;
+    };
+  }
+
+  function linear$1(a, d) {
+    return function(t) {
+      return a + t * d;
+    };
+  }
+
+  function exponential$1(a, b, y) {
+    return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
+      return Math.pow(a + t * b, y);
+    };
+  }
+
+  function gamma$1(y) {
+    return (y = +y) === 1 ? nogamma$1 : function(a, b) {
+      return b - a ? exponential$1(a, b, y) : constant$2(isNaN(a) ? b : a);
+    };
+  }
+
+  function nogamma$1(a, b) {
+    var d = b - a;
+    return d ? linear$1(a, d) : constant$2(isNaN(a) ? b : a);
+  }
+
+  var interpolateRgb$1 = (function rgbGamma(y) {
+    var color = gamma$1(y);
+
+    function rgb$1(start, end) {
+      var r = color((start = rgb(start)).r, (end = rgb(end)).r),
+          g = color(start.g, end.g),
+          b = color(start.b, end.b),
+          opacity = nogamma$1(start.opacity, end.opacity);
+      return function(t) {
+        start.r = r(t);
+        start.g = g(t);
+        start.b = b(t);
+        start.opacity = opacity(t);
+        return start + "";
+      };
+    }
+
+    rgb$1.gamma = rgbGamma;
+
+    return rgb$1;
+  })(1);
+
+  function interpolateNumber$1(a, b) {
+    return a = +a, b = +b, function(t) {
+      return a * (1 - t) + b * t;
+    };
+  }
+
+  var reA$1 = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
+      reB$1 = new RegExp(reA$1.source, "g");
+
+  function zero$1(b) {
+    return function() {
+      return b;
+    };
+  }
+
+  function one$1(b) {
+    return function(t) {
+      return b(t) + "";
+    };
+  }
+
+  function interpolateString$1(a, b) {
+    var bi = reA$1.lastIndex = reB$1.lastIndex = 0, // scan index for next number in b
+        am, // current match in a
+        bm, // current match in b
+        bs, // string preceding current number in b, if any
+        i = -1, // index in s
+        s = [], // string constants and placeholders
+        q = []; // number interpolators
+
+    // Coerce inputs to strings.
+    a = a + "", b = b + "";
+
+    // Interpolate pairs of numbers in a & b.
+    while ((am = reA$1.exec(a))
+        && (bm = reB$1.exec(b))) {
+      if ((bs = bm.index) > bi) { // a string precedes the next number in b
+        bs = b.slice(bi, bs);
+        if (s[i]) s[i] += bs; // coalesce with previous string
+        else s[++i] = bs;
+      }
+      if ((am = am[0]) === (bm = bm[0])) { // numbers in a & b match
+        if (s[i]) s[i] += bm; // coalesce with previous string
+        else s[++i] = bm;
+      } else { // interpolate non-matching numbers
+        s[++i] = null;
+        q.push({i: i, x: interpolateNumber$1(am, bm)});
+      }
+      bi = reB$1.lastIndex;
+    }
+
+    // Add remains of b.
+    if (bi < b.length) {
+      bs = b.slice(bi);
+      if (s[i]) s[i] += bs; // coalesce with previous string
+      else s[++i] = bs;
+    }
+
+    // Special optimization for only a single match.
+    // Otherwise, interpolate each of the numbers and rejoin the string.
+    return s.length < 2 ? (q[0]
+        ? one$1(q[0].x)
+        : zero$1(b))
+        : (b = q.length, function(t) {
+            for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
+            return s.join("");
+          });
+  }
+
+  var degrees$1 = 180 / Math.PI;
+
+  var identity$1 = {
+    translateX: 0,
+    translateY: 0,
+    rotate: 0,
+    skewX: 0,
+    scaleX: 1,
+    scaleY: 1
+  };
+
+  function decompose$1(a, b, c, d, e, f) {
+    var scaleX, scaleY, skewX;
+    if (scaleX = Math.sqrt(a * a + b * b)) a /= scaleX, b /= scaleX;
+    if (skewX = a * c + b * d) c -= a * skewX, d -= b * skewX;
+    if (scaleY = Math.sqrt(c * c + d * d)) c /= scaleY, d /= scaleY, skewX /= scaleY;
+    if (a * d < b * c) a = -a, b = -b, skewX = -skewX, scaleX = -scaleX;
+    return {
+      translateX: e,
+      translateY: f,
+      rotate: Math.atan2(b, a) * degrees$1,
+      skewX: Math.atan(skewX) * degrees$1,
+      scaleX: scaleX,
+      scaleY: scaleY
+    };
+  }
+
+  var cssNode,
+      cssRoot,
+      cssView,
+      svgNode$1;
+
+  function parseCss$1(value) {
+    if (value === "none") return identity$1;
+    if (!cssNode) cssNode = document.createElement("DIV"), cssRoot = document.documentElement, cssView = document.defaultView;
+    cssNode.style.transform = value;
+    value = cssView.getComputedStyle(cssRoot.appendChild(cssNode), null).getPropertyValue("transform");
+    cssRoot.removeChild(cssNode);
+    value = value.slice(7, -1).split(",");
+    return decompose$1(+value[0], +value[1], +value[2], +value[3], +value[4], +value[5]);
+  }
+
+  function parseSvg$1(value) {
+    if (value == null) return identity$1;
+    if (!svgNode$1) svgNode$1 = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    svgNode$1.setAttribute("transform", value);
+    if (!(value = svgNode$1.transform.baseVal.consolidate())) return identity$1;
+    value = value.matrix;
+    return decompose$1(value.a, value.b, value.c, value.d, value.e, value.f);
+  }
+
+  function interpolateTransform$1(parse, pxComma, pxParen, degParen) {
+
+    function pop(s) {
+      return s.length ? s.pop() + " " : "";
+    }
+
+    function translate(xa, ya, xb, yb, s, q) {
+      if (xa !== xb || ya !== yb) {
+        var i = s.push("translate(", null, pxComma, null, pxParen);
+        q.push({i: i - 4, x: interpolateNumber$1(xa, xb)}, {i: i - 2, x: interpolateNumber$1(ya, yb)});
+      } else if (xb || yb) {
+        s.push("translate(" + xb + pxComma + yb + pxParen);
+      }
+    }
+
+    function rotate(a, b, s, q) {
+      if (a !== b) {
+        if (a - b > 180) b += 360; else if (b - a > 180) a += 360; // shortest path
+        q.push({i: s.push(pop(s) + "rotate(", null, degParen) - 2, x: interpolateNumber$1(a, b)});
+      } else if (b) {
+        s.push(pop(s) + "rotate(" + b + degParen);
+      }
+    }
+
+    function skewX(a, b, s, q) {
+      if (a !== b) {
+        q.push({i: s.push(pop(s) + "skewX(", null, degParen) - 2, x: interpolateNumber$1(a, b)});
+      } else if (b) {
+        s.push(pop(s) + "skewX(" + b + degParen);
+      }
+    }
+
+    function scale(xa, ya, xb, yb, s, q) {
+      if (xa !== xb || ya !== yb) {
+        var i = s.push(pop(s) + "scale(", null, ",", null, ")");
+        q.push({i: i - 4, x: interpolateNumber$1(xa, xb)}, {i: i - 2, x: interpolateNumber$1(ya, yb)});
+      } else if (xb !== 1 || yb !== 1) {
+        s.push(pop(s) + "scale(" + xb + "," + yb + ")");
+      }
+    }
+
+    return function(a, b) {
+      var s = [], // string constants and placeholders
+          q = []; // number interpolators
+      a = parse(a), b = parse(b);
+      translate(a.translateX, a.translateY, b.translateX, b.translateY, s, q);
+      rotate(a.rotate, b.rotate, s, q);
+      skewX(a.skewX, b.skewX, s, q);
+      scale(a.scaleX, a.scaleY, b.scaleX, b.scaleY, s, q);
+      a = b = null; // gc
+      return function(t) {
+        var i = -1, n = q.length, o;
+        while (++i < n) s[(o = q[i]).i] = o.x(t);
+        return s.join("");
+      };
+    };
+  }
+
+  var interpolateTransformCss$1 = interpolateTransform$1(parseCss$1, "px, ", "px)", "deg)");
+  var interpolateTransformSvg$1 = interpolateTransform$1(parseSvg$1, ", ", ")", ")");
+
+  function tweenRemove$1(id, name) {
+    var tween0, tween1;
+    return function() {
+      var schedule = set$3(this, id),
+          tween = schedule.tween;
+
+      // If this node shared tween with the previous node,
+      // just assign the updated shared tween and we’re done!
+      // Otherwise, copy-on-write.
+      if (tween !== tween0) {
+        tween1 = tween0 = tween;
+        for (var i = 0, n = tween1.length; i < n; ++i) {
+          if (tween1[i].name === name) {
+            tween1 = tween1.slice();
+            tween1.splice(i, 1);
+            break;
+          }
+        }
+      }
+
+      schedule.tween = tween1;
+    };
+  }
+
+  function tweenFunction$1(id, name, value) {
+    var tween0, tween1;
+    if (typeof value !== "function") throw new Error;
+    return function() {
+      var schedule = set$3(this, id),
+          tween = schedule.tween;
+
+      // If this node shared tween with the previous node,
+      // just assign the updated shared tween and we’re done!
+      // Otherwise, copy-on-write.
+      if (tween !== tween0) {
+        tween1 = (tween0 = tween).slice();
+        for (var t = {name: name, value: value}, i = 0, n = tween1.length; i < n; ++i) {
+          if (tween1[i].name === name) {
+            tween1[i] = t;
+            break;
+          }
+        }
+        if (i === n) tween1.push(t);
+      }
+
+      schedule.tween = tween1;
+    };
+  }
+
+  function transition_tween$1(name, value) {
+    var id = this._id;
+
+    name += "";
+
+    if (arguments.length < 2) {
+      var tween = get$3(this.node(), id).tween;
+      for (var i = 0, n = tween.length, t; i < n; ++i) {
+        if ((t = tween[i]).name === name) {
+          return t.value;
+        }
+      }
+      return null;
+    }
+
+    return this.each((value == null ? tweenRemove$1 : tweenFunction$1)(id, name, value));
+  }
+
+  function tweenValue$1(transition, name, value) {
+    var id = transition._id;
+
+    transition.each(function() {
+      var schedule = set$3(this, id);
+      (schedule.value || (schedule.value = {}))[name] = value.apply(this, arguments);
+    });
+
+    return function(node) {
+      return get$3(node, id).value[name];
+    };
+  }
+
   function interpolate$1(a, b) {
     var c;
     return (typeof b === "number" ? interpolateNumber$1
@@ -14949,13 +21647,13 @@ var template = (function (exports) {
 
   function delayFunction$1(id, value) {
     return function() {
-      init$3(this, id).delay = +value.apply(this, arguments);
+      init$1(this, id).delay = +value.apply(this, arguments);
     };
   }
 
   function delayConstant$1(id, value) {
     return value = +value, function() {
-      init$3(this, id).delay = value;
+      init$1(this, id).delay = value;
     };
   }
 
@@ -15047,7 +21745,7 @@ var template = (function (exports) {
   }
 
   function onFunction$1(id, name, listener) {
-    var on0, on1, sit = start$1(name) ? init$3 : set$3;
+    var on0, on1, sit = start$1(name) ? init$1 : set$3;
     return function() {
       var schedule = sit(this, id),
           on = schedule.on;
@@ -15409,1920 +22107,715 @@ var template = (function (exports) {
   selection$1.prototype.interrupt = selection_interrupt$1;
   selection$1.prototype.transition = selection_transition$1;
 
-  var next_unique_id = 1;
+  function computeGridMetrics(
+  	state,
+  	data_names,
+  	num_facets,
+  	grid_width,
+  	gutter_w,
+  ) {
+  	// Calculate the number of rows and columns in the grid
+  	let cols, rows;
+  	let custom_positions = {};
+  	const min_width = state.columns_fixed
+  		? state.min_width_fixed
+  		: state.min_width;
+  	const max_cols = Math.floor((grid_width + gutter_w) / (min_width + gutter_w));
+  	if (state.columns_fixed) {
+  		cols = num_facets == 1 ? 1 : Math.floor(state.columns);
+  		rows = Math.ceil(num_facets / cols);
+  		if (state.custom_grid) {
+  			state.custom_positions.split(/\n/).forEach(function (d) {
+  				if (!d.trim().length) return;
+  				const cell = d.split(/:/);
+  				if (!cell.length) return;
+  				const label = cell[0].trim();
+  				const label_index = data_names.indexOf(label);
+  				if (label_index < 0 && label.length) {
+  					Flourish.warn(`No match for custom position for ${label}`);
+  					return;
+  				}
+  				const xy = cell[1].split(/,/);
+  				const y = Math.max(1, +xy[0] || 1);
+  				const x = Math.max(1, +xy[1] || 1);
+  				if (x > 50 || y > 50) {
+  					Flourish.warn(
+  						`Grid is too large with over 50 ${x > 50 ? "columns" : "rows"}`,
+  					);
+  				}
+  				custom_positions[label_index] = { y: y - 1, x: x - 1 };
+  				cols = Math.max(cols, x);
+  			});
+  			rows = 1;
+  			data_names.forEach(function (d, i) {
+  				rows = Math.max(
+  					rows,
+  					custom_positions[i]
+  						? custom_positions[i].y + 1
+  						: Math.floor(i / cols) + 1,
+  				);
+  			});
+  		}
+  		if (cols > max_cols) custom_positions = {};
+  	}
+  	if (!state.columns_fixed || cols > max_cols) {
+  		cols = Math.max(1, Math.min(max_cols, num_facets));
+  		rows = Math.ceil(num_facets / cols);
+  		// Reduce the number of columns as much as possible without adding rows
+  		for (let i = cols; i > 0; i--) {
+  			if (Math.ceil(num_facets / (cols - 1)) == rows) cols--;
+  			else break;
+  		}
+  	}
+  	return { cols, rows, custom_positions };
+  }
 
-  var OPTIONS = {
-  	container: document.body,
-  	point: [window.innerWidth / 2, window.innerHeight / 2],
-  	html: "",
-  	open_duration: 250,
-  	close_duration: 250,
-  	popup_custom_template: "",
-  	position: "overlay",
-  	shadow: true,
-  	underlay_color: "rgba(255, 255, 255, 0.75)",
-
-  	width_side: 35,
-  	height_side: 35,
-  	width_overlay: 80,
-  	height_overlay: 80,
-  	vertical_position: "click",
+  var DEFAULTS = {
+  	gutter_w: 1,
+  	gutter_h: 1,
+  	min_width: 300,
+  	min_width_fixed: 10,
   	max_width: null,
-  	max_height: null,
-  	closeable: true,
+
+  	columns_fixed: false,
+  	columns: 2,
+  	custom_grid: false,
+  	custom_positions: "",
+
+  	titles: true,
+  	title_color_mode: "auto",
+  	title_color: null,
+  	title_size: 1,
+  	title_unit: "rem",
+  	title_weight: 600,
+  	title_padding_top: 0.25,
+  	title_padding_bottom: 0.25,
+  	title_align: "auto",
+
+  	title_bg: "none",
+  	title_bg_padding: 0.25,
+  	title_bg_mode: "fixed",
+  	title_bg_color: "#eeeeee",
+
+  	animation: "auto",
   };
 
-  function Panel() {
-  	var panel = this;
-  	panel.unique_id = next_unique_id++;
-  	panel._is_open = false;
-  	panel._onclose = null;
-  	for (var k in OPTIONS) panel["_" + k] = OPTIONS[k];
-  }
+  function Facets(state) {
+  	for (var prop in DEFAULTS) {
+  		if (!(prop in state)) state[prop] = DEFAULTS[prop];
+  	}
 
-  // Create accessor methods for all the options
-  function accessor(k) {
-  	Panel.prototype[k] = function (v) {
-  		if (typeof v == "undefined") return this["_" + k];
-  		this["_" + k] = v;
-  		return this;
+  	var container = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  	container.setAttribute("class", "fl-facets");
+  	this._container = container;
+
+  	this._state = state;
+  	this._duration = 1000;
+  	this._width = window.innerWidth;
+  	this._height = window.innerHeight;
+  	this._facet_width = null;
+  	this._facet_aspect = null;
+
+  	this._facet_aspect_margin_top = 0;
+  	this._facet_aspect_margin_right = 0;
+  	this._facet_aspect_margin_bottom = 0;
+  	this._facet_aspect_margin_left = 0;
+
+  	this._facet_height = null;
+  	this._is_ragged = null;
+  	this._max_facets = 250;
+
+  	this._axis_space_top = 0;
+  	this._axis_space_bottom = 0;
+  	this._axis_space_left = 0;
+  	this._axis_space_right = 0;
+
+  	this._hide_title = null;
+  	this._titleColor = null;
+  	this._autoTitleAlign = function () {
+  		return "left";
   	};
-  }
-  for (var k in OPTIONS) accessor(k);
 
-  // Custom accessor method for .point
-  Panel.prototype.point = function (arg1, arg2) {
-  	if (typeof arg1 == "undefined") return this._point;
-  	if (Array.isArray(arg1)) this._point = [arg1[0], arg1[1]];
-  	else if (typeof arg2 != "undefined") this._point = [arg1, arg2];
-  	else if (arg1 instanceof HTMLElement || arg1 instanceof SVGElement) {
-  		var r = arg1.getBoundingClientRect();
-  		this._point = [
-  			Math.floor(r.left + r.width / 2),
-  			Math.floor(r.top + r.height / 2),
-  		];
-  	} else {
-  		console.error("Panel: could not understand argument");
+  	this._computed_height = this._height;
+
+  	this._data = [];
+  	this._data_names = [];
+
+  	this._read_direction = null;
+
+  	return this;
+  }
+
+  Facets.prototype.appendTo = function (container) {
+  	// TODO. Throw an error if it's not an svg or g?
+  	container.appendChild(this._container);
+  	return this;
+  };
+
+  Facets.prototype.maxFacets = function (max_facets) {
+  	this._max_facets = max_facets;
+  	return this;
+  };
+
+  Facets.prototype.width = function (width) {
+  	this._width = width;
+  	return this;
+  };
+
+  Facets.prototype.height = function (height) {
+  	if (typeof height == "undefined") return this._computed_height;
+  	else this._height = height;
+  	if (height !== null) {
+  		// Clear any other height modes
+  		this._facet_aspect = null;
+  		this._facet_height = null;
   	}
   	return this;
   };
 
-  Panel.prototype.container = function (container) {
-  	if (container) this._container = container;
+  Facets.prototype.facetHeight = function (height) {
+  	this._facet_height = height;
+  	if (height !== null) {
+  		// Clear any other height modes
+  		this._facet_aspect = null;
+  		this._height = null;
+  	}
   	return this;
   };
 
-  function fadeOutPanel(panel) {
-  	panel._getElement().style.pointerEvents = "none";
-  	panel._is_open = false;
-  	var duration = panel._close_duration;
-  	select$1(panel._getElement())
+  Facets.prototype.facetAspect = function (aspect, margins) {
+  	this._facet_aspect = aspect;
+  	if (aspect !== null) {
+  		// Clear any other height modes
+  		this._facet_height = null;
+  		this._height = null;
+
+  		// Set any margins present
+  		if (margins) {
+  			if ("top" in margins) this._facet_aspect_margin_top = margins.top;
+  			if ("right" in margins) this._facet_aspect_margin_right = margins.right;
+  			if ("bottom" in margins)
+  				this._facet_aspect_margin_bottom = margins.bottom;
+  			if ("left" in margins) this._facet_aspect_margin_left = margins.left;
+  		}
+  	}
+  	return this;
+  };
+
+  Facets.prototype.axisSpaceTop = function (height) {
+  	this._axis_space_top = height;
+  	return this;
+  };
+
+  Facets.prototype.axisSpaceBottom = function (height) {
+  	this._axis_space_bottom = height;
+  	return this;
+  };
+
+  Facets.prototype.axisSpaceLeft = function (width) {
+  	this._axis_space_left = width;
+  	return this;
+  };
+
+  Facets.prototype.axisSpaceRight = function (width) {
+  	this._axis_space_right = width;
+  	return this;
+  };
+
+  Facets.prototype.debug = function (debug) {
+  	this._debug = !!debug;
+  	return this;
+  };
+
+  Facets.prototype.data = function (data, accessor) {
+  	this._data = data;
+  	this._data_names = accessor ? data.map(accessor) : data;
+  	return this;
+  };
+
+  Facets.prototype.duration = function (duration) {
+  	this._duration = duration;
+  	return this;
+  };
+
+  Facets.prototype.autoTitleAlign = function (callback) {
+  	this._autoTitleAlign = callback;
+  	return this;
+  };
+
+  Facets.prototype.titleColor = function (colorFunc) {
+  	this._titleColor = colorFunc;
+  	return this;
+  };
+
+  Facets.prototype.hideTitle = function (string) {
+  	this._hide_title = string;
+  	return this;
+  };
+
+  Facets.prototype.readDirection = function (string) {
+  	if (["ltr", "rtl"].includes(string)) {
+  		this._read_direction = string;
+  	} else {
+  		console.warn('Read direction must be one of "ltr" or "rtl"');
+  	}
+  	return this;
+  };
+
+  Facets.prototype.update = function (callback) {
+  	var instance = this;
+  	var state = this._state;
+  	var duration = this._duration;
+  	var data = this._data.slice(0, this._max_facets);
+  	var data_names = this._data_names.slice(0, this._max_facets);
+  	var num_facets = data.length;
+  	var gutter_w = remToPx(state.gutter_w);
+  	var gutter_h = remToPx(state.gutter_h);
+  	var axis_space_left = this._axis_space_left;
+  	var axis_space_right = this._axis_space_right;
+  	var axis_space_top = this._axis_space_top;
+  	var axis_space_bottom = this._axis_space_bottom;
+  	var grid_width = this._width - axis_space_left - axis_space_right;
+  	var grid_height =
+  		this._height == null
+  			? null
+  			: this._height - axis_space_top - axis_space_bottom;
+  	var facet_aspect = this._facet_aspect;
+  	var facet_margins_horizontal =
+  		this._facet_aspect_margin_right + this._facet_aspect_margin_left;
+  	var facet_margins_vertical =
+  		this._facet_aspect_margin_top + this._facet_aspect_margin_bottom;
+  	var facet_height = this._facet_height;
+  	var show_titles =
+  		state.titles &&
+  		!(
+  			num_facets == 1 &&
+  			(data_names[0] == "" || data_names[0] == this._hide_title)
+  		);
+  	var read_direction = this._read_direction || getTextDirection();
+  	var title_align = adjustTitleAlignForReadDirection(
+  		state.title_align != "auto" ? state.title_align : this._autoTitleAlign(),
+  		read_direction,
+  	);
+
+  	const { cols, rows, custom_positions } = computeGridMetrics(
+  		state,
+  		data_names,
+  		num_facets,
+  		grid_width,
+  		gutter_w,
+  	);
+
+  	// Store/expose info about the grid
+  	instance._num_columns = cols;
+  	instance._num_rows = rows;
+  	instance._is_ragged =
+  		(state.columns_fixed && state.custom_grid) ||
+  		(num_facets % cols != 0 && num_facets > cols); // Whether the grid is incomplete
+
+  	// Calculate the width of each facet
+  	var max_facet_w = state.max_width || Infinity;
+  	var gutters_w = gutter_w * (cols - 1);
+  	var facet_w = Math.max(
+  		0,
+  		Math.min(max_facet_w, (grid_width - gutters_w) / cols),
+  	);
+  	var extra_space = Math.max(0, grid_width - facet_w * cols - gutters_w); // Unallocated horizontal spac;
+
+  	instance._facet_width = facet_w;
+
+  	// Calculate the height of each facet (and its title)
+  	var title_size =
+  		state.title_unit == "rem"
+  			? remToPx(state.title_size)
+  			: (state.title_size * facet_w) / 15;
+  	var font_family = getComputedStyle(this._container).fontFamily;
+  	var title_style = `${state.title_weight} ${title_size}px ${font_family}`;
+
+  	var title_bg_padding_px =
+  		state.title_bg == "none" ? 0 : title_size * state.title_bg_padding;
+  	var title_max_width = facet_w - title_bg_padding_px * 2;
+
+  	var titles_wrapped = data_names.map(function (d) {
+  		return wrapStringToLines(d, title_style, 5, title_max_width);
+  	});
+  	var title_num_lines = getTitleNumLines();
+  	var max_title_lines = Math.max(...Object.values(title_num_lines));
+  	var max_title_height = getMaxTitleHeight(max_title_lines);
+  	var facet_h = 100; // Fallback in case height and aspect are both null
+
+  	if (grid_height != null) {
+  		facet_h = Math.max(0, (grid_height - gutter_h * (rows - 1)) / rows);
+  		this._computed_height = this._height;
+  	} else {
+  		if (facet_height != null) facet_h = max_title_height + facet_height;
+  		else if (facet_aspect != null)
+  			facet_h =
+  				max_title_height +
+  				facet_margins_vertical +
+  				(facet_w - facet_margins_horizontal) / facet_aspect;
+  		this._computed_height =
+  			facet_h * rows +
+  			gutter_h * (rows - 1) +
+  			axis_space_top +
+  			axis_space_bottom;
+  	}
+
+  	// **************************** //
+  	//    UPDATE THE DOM: FACETS    //
+  	// **************************** //
+
+  	// Bind the facets to the array of names, with a key depending on the animation mode
+  	var facets = select$1(this._container)
+  		.selectAll(".fl-facet")
+  		.data(data_names, function (d, i) {
+  			if (state.animation == "name") return d;
+  			if (state.animation == "reuse") return i;
+  			return data.length == 1 ? i : d; // Auto mode. Reuse axis if only one, otherwise bind to name
+  		});
+
+  	// Enter selection
+  	var facets_enter = facets
+  		.enter()
+  		.append("g")
+  		.attr("class", "fl-facet")
+  		.attr("transform", function (d, i) {
+  			return positionFacet(i);
+  		});
+
+  	// Add rects for debugging
+  	facets_enter
+  		.append("rect")
+  		.attr("class", "fl-facet-rect")
+  		.attr("width", facet_w)
+  		.attr("height", facet_h);
+
+  	facets_enter
+  		.append("rect")
+  		.attr("class", "fl-facet-primary-rect")
+  		.attr("width", facet_w)
+  		.attr("height", facet_h);
+
+  	var title_text_anchor = getTitleTextAnchor(title_align, read_direction);
+
+  	var title_enter = facets_enter.append("g").attr("class", "fl-facet-title");
+  	title_enter.append("rect").attr("class", "fl-facet-title-bg");
+  	title_enter
+  		.append("text")
+  		.attr("class", "fl-facet-title-text")
+  		.attr("font-size", title_size)
+  		.attr("font-weight", state.title_weight)
+  		.attr("fill", facetTitleColor)
+  		.each(setWidthOfFacetTitle)
+  		.attr("transform", facetTitleTransform)
+  		.attr("opacity", 0)
+  		.attr("text-anchor", title_text_anchor);
+  	facets_enter
+  		.select(".facet-title-bg")
+  		.attr("height", max_title_height)
+  		.attr("width", facetTitleBgWidth)
+  		.attr("fill", facetTitleBgColor)
+  		.attr("x", facetTitleBgX)
+  		.attr("opacity", 0);
+
+  	facets_enter
+  		.append("g")
+  		.attr("class", "fl-facet-primary")
+  		.attr("transform", "translate(0, " + max_title_height + ")");
+
+  	// Update selection
+  	var facets_update = facets.merge(facets_enter);
+
+  	facets_update
   		.transition()
   		.duration(duration)
-  		.style("background", "rgba(255, 255, 255, 0)")
+  		.attr("transform", function (d, i) {
+  			return positionFacet(i);
+  		})
+  		.each(updateFacetOuter)
+  		.attr("opacity", 1)
   		.on("interrupt", function () {
-  			select$1(this).style("display", panel._is_open ? "block" : "none");
-  		})
-  		.on("end", function () {
-  			select$1(this).style("display", "none");
-  			select$1(panel._content).html("");
-  		})
-  		.select(".flourish-panel-close")
-  		.style("opacity", "0");
+  			select$1(this).attr("opacity", 1);
+  		});
 
-  	select$1(panel._inner).transition().duration(duration).style("opacity", 0);
+  	facets_update
+  		.select(".fl-facet-rect")
+  		.attr("width", facet_w)
+  		.attr("height", facet_h)
+  		.attr("fill", instance._debug ? "rgba(230, 100, 100, 0.33)" : "none");
 
-  	select$1(panel._content)
+  	facets_update
+  		.select(".fl-facet-primary-rect")
+  		.attr("width", facet_w)
+  		.attr("height", Math.max(0, facet_h - max_title_height))
+  		.attr("y", max_title_height)
+  		.attr("fill", instance._debug ? "rgba(230, 100, 100, 0.33)" : "none");
+
+  	var title_update = facets_update.select(".fl-facet-title");
+  	title_update
+  		.select(".fl-facet-title-text")
+  		.attr("font-size", title_size)
+  		.attr("font-weight", state.title_weight)
+  		.attr("text-anchor", title_text_anchor)
+  		.each(setWidthOfFacetTitle)
+  		.transition()
+  		.duration(duration)
+  		.attr("fill", facetTitleColor)
+  		.attr("transform", facetTitleTransform)
+  		.attr("opacity", show_titles ? 1 : 0);
+  	title_update
+  		.select(".fl-facet-title-bg")
+  		.transition()
+  		.duration(duration)
+  		.attr("height", max_title_height)
+  		.attr("width", facetTitleBgWidth)
+  		.attr("fill", facetTitleBgColor)
+  		.attr("x", facetTitleBgX)
+  		.attr("opacity", show_titles ? 1 : 0);
+
+  	var tspans = title_update
+  		.select(".fl-facet-title-text")
+  		.selectAll("tspan")
+  		.data(function (d, i) {
+  			return titles_wrapped[i];
+  		});
+  	var tspans_enter = tspans.enter().append("tspan");
+  	tspans
+  		.merge(tspans_enter)
+  		.text(function (d) {
+  			return d;
+  		})
+  		.attr("x", 0)
+  		.attr("y", (d, i) => i * title_size)
+  		.attr("dx", getTitleTextXOffset(title_align, title_bg_padding_px))
+  		.attr("text-anchor", title_text_anchor);
+  	tspans.exit().remove();
+
+  	facets_update
+  		.select(".fl-facet-primary")
+  		.each(updateFacetPrimary)
+  		.transition()
+  		.duration(duration)
+  		.attr("transform", "translate(0, " + max_title_height + ")");
+
+  	// Exit selection
+  	var facets_exit = facets.exit();
+
+  	facets_exit
+  		.each(updateFacetOuter)
+  		.classed("fl-facet", false) // Ensure exit can't be interrupted
   		.transition()
   		.duration(duration / 2)
-  		.style("opacity", 0);
-  }
+  		.attr("opacity", 0)
+  		.remove();
 
-  Panel.prototype.hide = function () {
-  	var panel = this;
-  	if (!panel._is_open) return;
-  	fadeOutPanel(panel);
-  	panel._focusTrap.deactivate();
-  	return this;
-  };
-
-  Panel.prototype.close = Panel.prototype.hide;
-
-  function addCloseButton(panel) {
-  	select$1(panel._inner)
-  		.append("svg")
-  		.attr("class", "flourish-panel-close fl-ignore-svg-download")
-  		.attr("viewBox", "0 0 40 40")
-  		.style("width", "1.25rem")
-  		.style("height", "1.25rem")
-  		.style("position", "absolute")
-  		.style("right", "1rem")
-  		.style("top", "1rem")
-  		.style("cursor", "pointer")
-  		.style("opacity", 0)
-  		.attr("tabindex", "-1")
-  		.attr("role", "button")
-  		.attr("aria-label", "Close")
-  		.on("mouseover", function () {
-  			if (panel._closeable) this.style.opacity = 0.66;
-  		})
-  		.on("mouseout", function () {
-  			if (panel._closeable) this.style.opacity = 1;
-  		})
-  		.on("click", function () {
-  			event$1.stopPropagation();
-  			panel.hide();
-  			if (panel._onclose) panel._onclose();
-  		})
-  		.on("touch", function () {
-  			event$1.stopPropagation();
-  			panel.hide();
-  			if (panel._onclose) panel._onclose();
-  		})
-  		.on("keydown", function () {
-  			if (event$1.key == "Enter" || event$1.key == " ") {
-  				event$1.stopPropagation();
-  				event$1.preventDefault();
-  				panel.hide();
-  				if (panel._onclose) panel._onclose();
-  			}
-  		})
-  		.append("path")
-  		.attr("stroke", "#333333")
-  		.attr("stroke-width", "0.5rem")
-  		.attr("stroke-linecap", "round")
-  		.attr("d", "M 10,10 L 30,30 M 30,10 L 10,30");
-  }
-
-  function extractTitleFromContent(contentEl) {
-  	// Look for heading elements in order of priority
-  	var headings = contentEl.querySelectorAll("h1, h2, h3, h4, h5, h6");
-  	if (headings.length > 0) {
-  		return headings[0].textContent.trim();
-  	}
-
-  	// Look for elements with title-like classes
-  	var titleEl = contentEl.querySelector(
-  		".title, .heading, .panel-title, .popup-title",
-  	);
-  	if (titleEl) {
-  		return titleEl.textContent.trim();
-  	}
-
-  	return null;
-  }
-
-  Panel.prototype.draw = function () {
-  	var panel = this;
-  	panel._content.innerHTML = panel._html;
-
-  	openPanel(panel);
-  	return this;
-  };
-
-  Panel.prototype.on = function (event, callback) {
-  	if (event == "close") {
-  		if (callback) this._onclose = callback;
-  	} else console.error("Panel .on() method only supports 'close' events");
-  	return this;
-  };
-
-  function openPanel(panel) {
-  	var duration =
-  		panel._is_open || panel._html == panel._default ? 0 : panel._open_duration;
-
-  	var window_w = window.innerWidth,
-  		window_h = window.innerHeight;
-
-  	var overlay = panel._position == "overlay",
-  		full_width = panel._position == "top" || panel._position == "bottom",
-  		full_height = panel._position == "left" || panel._position == "right",
-  		max_w_percent = (100 * (panel._max_width || Infinity)) / window_w,
-  		max_h_percent = (100 * (panel._max_height || Infinity)) / window_h,
-  		y_percent = (100 * panel._point[1]) / window_h;
-
-  	var position_click =
-  		panel._vertical_position == "click" && !Flourish.fixed_height;
-
-  	var end_w_percent = overlay
-  			? Math.min(panel._width_overlay, max_w_percent)
-  			: full_width
-  				? 100
-  				: Math.min(panel._width_side, max_w_percent),
-  		end_h_percent = overlay
-  			? Math.min(panel._height_overlay, max_h_percent)
-  			: full_height
-  				? 100
-  				: Math.min(panel._height_side, max_h_percent);
-
-  	var end_l_percent = overlay
-  			? (100 - end_w_percent) / 2
-  			: panel._position == "right"
-  				? 100 - end_w_percent
-  				: 0,
-  		end_t_percent_overlay = position_click
-  			? Math.max(1, Math.min(y_percent - end_h_percent / 2, 99 - end_h_percent))
-  			: (100 - end_h_percent) / 2,
-  		end_t_percent = overlay
-  			? end_t_percent_overlay
-  			: panel._position == "bottom"
-  				? 100 - end_h_percent
-  				: 0;
-
-  	var start_w_percent = overlay ? 0 : end_w_percent,
-  		start_h_percent = overlay ? 0 : end_h_percent,
-  		start_l_percent = overlay
-  			? (100 * panel._point[0]) / window_w
-  			: panel._position == "right"
-  				? 100
-  				: panel._position == "left"
-  					? -end_w_percent
-  					: 0,
-  		start_t_percent = overlay
-  			? y_percent
-  			: panel._position == "bottom"
-  				? 100
-  				: panel._position == "top"
-  					? -end_h_percent
-  					: 0;
-
-  	var title = extractTitleFromContent(panel._content);
-  	var ariaLabel = title ? title + " dialog" : "Information dialog";
-
-  	select$1(panel._getElement())
-  		.style("display", "block")
+  	facets_exit
+  		.select(".fl-facet-primary")
   		.transition()
   		.duration(duration)
-  		.delay(duration * 0.25)
-  		.style(
-  			"background",
-  			overlay ? panel._underlay_color : "rgba(255, 255, 255, 0)",
-  		)
-  		.style("pointer-events", overlay ? null : "none")
-  		.attr("aria-label", ariaLabel);
+  		.attr("transform", "translate(0, " + max_title_height + ")");
 
-  	select$1(panel._inner)
-  		.style("opacity", 1)
-  		.style("display", "block")
-  		.style("pointer-events", "none")
-  		.style("width", start_w_percent + "%")
-  		.style("height", start_h_percent + "%")
-  		.style("left", start_l_percent + "%")
-  		.style("top", start_t_percent + "%")
-  		.transition()
-  		.duration(duration)
-  		.style("width", end_w_percent + "%")
-  		.style("height", end_h_percent + "%")
-  		.style("left", end_l_percent + "%")
-  		.style("top", end_t_percent + "%")
-  		.on("end", function () {
-  			select$1(panel._inner)
-  				.style("pointer-events", "all")
-  				.style("width", end_w_percent + "%")
-  				.style("height", end_h_percent + "%")
-  				.style("left", end_l_percent + "%")
-  				.style("top", end_t_percent + "%");
-  		})
-  		.on("interrupt", function () {
-  			select$1(panel._inner)
-  				.style("pointer-events", "all")
-  				.style("width", end_w_percent + "%")
-  				.style("height", end_h_percent + "%")
-  				.style("left", end_l_percent + "%")
-  				.style("top", end_t_percent + "%");
-  		});
+  	// **************************** //
+  	//       UTILITY FUNCTIONS      //
+  	// **************************** //
 
-  	var offset_panel_content = full_height && position_click;
-
-  	select$1(panel._content)
-  		.transition()
-  		.duration(duration / 4)
-  		.delay(duration)
-  		.style("opacity", 1)
-  		.on("interrupt", function () {
-  			select$1(this).style("opacity", 1);
-  		});
-
-  	select$1(panel._content)
-  		.select(".flourish-panel-content-inner")
-  		.style("position", offset_panel_content ? "absolute" : null)
-  		.style("top", offset_panel_content ? y_percent + "%" : null)
-  		.style("transform", offset_panel_content ? "translateY(-50%)" : null);
-
-  	select$1(panel._inner)
-  		.select(".flourish-panel-close")
-  		.style("opacity", 0)
-  		.transition()
-  		.duration(duration / 4)
-  		.delay(duration)
-  		.style("opacity", panel._closeable ? 1 : 0)
-  		.attr("tabindex", panel._closeable ? "0" : "-1");
-
-  	if (!panel._focusTrap) {
-  		panel._focusTrap = createFocusTrap();
+  	function updateFacetOuter(d, i) {
+  		var x = getFacetX(i),
+  			y = getFacetY(i);
+  		this.__facet_outer__ = {
+  			node: this,
+  			name: d,
+  			width: facet_w,
+  			height: facet_h,
+  			x: x,
+  			y: y,
+  			cx: x + facet_w / 2,
+  			cy: y + facet_h / 2,
+  		};
   	}
 
-  	panel._focusTrap.activate();
-  	panel._is_open = true;
-
-  	timerFlush$2();
-  }
-
-  function createFocusTrap() {
-  	let previous_active_element = null;
-  	let first_focusable_element = null;
-  	let last_focusable_element = null;
-
-  	const panel_el = document.querySelector(".flourish-panel");
-  	const panel_inner_el = document.querySelector(".flourish-panel-inner");
-  	const focusable_els = panel_inner_el.querySelectorAll(
-  		'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), [role="button"]',
-  	);
-
-  	if (focusable_els.length) {
-  		first_focusable_element = focusable_els[0];
-  		last_focusable_element = focusable_els[focusable_els.length - 1];
-  	}
-
-  	function handle_key_down(event) {
-  		if (event.key === "Tab" || event.keyCode === 9) {
-  			// If shift + tab and on first element, move to last element
-  			if (focusable_els.length === 0) return; // No focusable elements
-  			if (
-  				event.shiftKey &&
-  				document.activeElement === first_focusable_element
-  			) {
-  				event.preventDefault();
-  				last_focusable_element.focus();
-  			}
-  			// If tab and on last element, cycle back to first element
-  			else if (
-  				!event.shiftKey &&
-  				document.activeElement === last_focusable_element
-  			) {
-  				event.preventDefault();
-  				first_focusable_element.focus();
-  			}
+  	function updateFacetPrimary(d, i) {
+  		var x = getFacetX(i);
+  		var y = getFacetY(i) + max_title_height;
+  		var h = Math.max(0, facet_h - max_title_height);
+  		this.__facet_inner__ = {
+  			node: this,
+  			data: data[i],
+  			name: d,
+  			width: facet_w,
+  			height: h,
+  			x: x,
+  			y: y,
+  			cx: x + facet_w / 2,
+  			cy: y + h / 2,
+  			row: Math.floor(i / cols),
+  			column: Math.ceil(i % cols),
+  		};
+  		if (callback) {
+  			var boundCallback = callback.bind(this);
+  			boundCallback(this.__facet_inner__, i);
   		}
   	}
 
-  	return {
-  		activate: function () {
-  			previous_active_element = document.activeElement;
-  			panel_inner_el.addEventListener("keydown", handle_key_down);
-  			setTimeout(() => {
-  				// Focus the panel first to announce the aria-label
-  				panel_el.focus();
-  				// If there are focusable elements, don't auto-focus them initially
-  				// Let screen reader announce the panel label first
-  			}, 100);
-  		},
-  		deactivate: function () {
-  			panel_inner_el.removeEventListener("keydown", handle_key_down);
-  			const has_visible_focus = Boolean(
-  				document.querySelector(":focus-visible"),
+  	function getFacetX(i) {
+  		var col = Math.ceil(i % cols);
+  		if (custom_positions[i]) col = custom_positions[i].x;
+  		return axis_space_left + (col * (facet_w + gutter_w) + extra_space / 2);
+  	}
+
+  	function getFacetY(i) {
+  		var row = Math.floor(i / cols);
+  		if (custom_positions[i]) row = custom_positions[i].y;
+  		return axis_space_top + row * (facet_h + gutter_h);
+  	}
+
+  	function positionFacet(i) {
+  		return "translate(" + getFacetX(i) + ", " + getFacetY(i) + ")";
+  	}
+
+  	function facetTitleTransform(d, i) {
+  		let x = 0;
+  		const y_offset = (max_title_lines - title_num_lines[i]) * title_size;
+  		const y =
+  			title_size * 0.8 + title_size * state.title_padding_top + y_offset;
+  		// 0.8 is about right with most fonts to vertically centre-align the
+  		// ascenders and descenders inside the background
+  		if (title_align == "center") x = facet_w / 2;
+  		if (title_align == "right") x = facet_w;
+  		return `translate(${x}, ${y})`;
+  	}
+
+  	function facetTitleBgX() {
+  		if (state.title_bg == "full") return 0;
+  		if (title_align == "center")
+  			return (
+  				facet_w / 2 - this.parentNode.__title_width / 2 - title_bg_padding_px
   			);
-  			if (has_visible_focus && previous_active_element) {
-  				previous_active_element.focus();
-  			}
-  		},
-  	};
-  }
-
-  Panel.prototype.margins = function () {
-  	var margins = { top: 0, right: 0, bottom: 0, left: 0 };
-  	if (this._is_open && this._position != "overlay") {
-  		var rect = this._getElement().getBoundingClientRect();
-  		if (this._position == "top") margins.top = rect.top + rect.height;
-  		if (this._position == "right") margins.right = rect.left;
-  		if (this._position == "bottom") margins.bottom = rect.top;
-  		if (this._position == "left") margins.left = rect.left + rect.width;
+  		if (title_align == "right") return facet_w;
+  		return 0;
   	}
-  	margins.css =
-  		margins.top +
-  		"px " +
-  		margins.right +
-  		"px " +
-  		margins.bottom +
-  		"px " +
-  		margins.left +
-  		"px";
-  	return margins;
-  };
 
-  Panel.prototype._getElement = function () {
-  	var panel = this;
-  	var id = "flourish-panel-" + panel.unique_id;
-  	var el = document.getElementById(id);
-  	if (!el) {
-  		el = document.createElement("div");
-  		el.className = "flourish-panel";
-  		el.role = "dialog";
-  		el.ariaModal = "true";
-  		el.tabIndex = "-1";
-  		el.id = id;
-  		el.addEventListener("click", function (e) {
-  			e.stopPropagation();
-  			closePanel();
+  	function facetTitleColor(d) {
+  		if (state.title_color) return state.title_color;
+  		else if (instance._titleColor) return instance._titleColor(d);
+  		else return null;
+  	}
+
+  	function facetTitleBgColor() {
+  		return state.title_bg_color;
+  	}
+
+  	function facetTitleBgWidth() {
+  		if (state.title_bg == "none") return 0;
+  		else if (state.title_bg == "full") return facet_w;
+  		return this.parentNode.__title_width + title_bg_padding_px * 2;
+  	}
+
+  	function getTitleNumLines() {
+  		let num_lines = {};
+  		titles_wrapped.forEach(function (d, i) {
+  			num_lines[i] = d.length;
+  		});
+  		return num_lines;
+  	}
+
+  	function getMaxTitleHeight(max_lines) {
+  		return !show_titles
+  			? 0
+  			: title_size * max_lines +
+  					title_size * (state.title_padding_top + state.title_padding_bottom);
+  	}
+
+  	// TODO. Use pocket knife version of this?
+  	function setWidthOfFacetTitle() {
+  		// Measure the text width, accounting for the fact that we're measuring it
+  		// before its size has transitioned. Hence we consider the ratio of the current
+  		// and target font sizes, in case they are different.
+  		// TODO: consider if there is a neater and less fragile way to do this, e.g.
+  		// writing it to an invisible canvas at the target font size and measuring it
+  		// there. Also consider only taking account of the ratio on update since it's
+  		// not necessary on enter.
+  		var current_text_width = this.getBBox().width;
+  		var current_font_size = parseFloat(this.getAttribute("font-size"));
+  		var target_font_size = title_size;
+  		this.parentNode.__title_width =
+  			(current_text_width * target_font_size) / current_font_size;
+  	}
+
+  	// Finally, store the updated facet_inner data
+  	this._facets = facets_update
+  		.select(".fl-facet-primary")
+  		.nodes()
+  		.map(function (d) {
+  			return d.__facet_inner__;
   		});
 
-  		window.addEventListener(
-  			"keydown",
-  			function (e) {
-  				if (!panel._is_open) return;
-  				if (e.key === "Escape") {
-  					e.stopPropagation();
-  					e.preventDefault();
-  					closePanel();
-  				}
-  			},
-  			false,
-  		);
-
-  		var s = el.style;
-  		s.position = "absolute";
-  		s.zIndex = "999999";
-  		s.pointerEvents = "none";
-  		s.width = "100%";
-  		s.height = "100%";
-  		s.top = "0";
-  		s.left = "0";
-  		s.background = "rgba(255, 255, 255, 0)";
-
-  		var inner = document.createElement("div");
-  		inner.className = "flourish-panel-inner";
-  		el.appendChild(inner);
-  		panel._inner = inner;
-
-  		addCloseButton(panel);
-
-  		s = inner.style;
-  		s.width = "0";
-  		s.height = "0";
-  		s.position = "absolute";
-  		s.boxSizing = "border-box";
-
-  		var shadow = document.createElement("div");
-  		shadow.className = "flourish-panel-shadow";
-  		inner.appendChild(shadow);
-
-  		var content = document.createElement("div");
-  		content.className = "flourish-panel-content";
-  		inner.appendChild(content);
-  		panel._content = content;
-
-  		s = content.style;
-  		s.opacity = "0";
-  		s.overflowY = "auto";
-  		s.height = "100%";
-
-  		panel._container.appendChild(el);
-  	}
-
-  	function closePanel() {
-  		panel.hide();
-  		if (panel._onclose) panel._onclose();
-  	}
-
-  	return el;
-  };
-
-  function initPanel() {
-  	return new Panel();
-  }
-
-  var DEFAULTS$2 = {
-  	mode: "popup",
-
-  	// If truthy, means panel or popup are locked
-  	locked_id: null,
-
-  	// Popup content
-  	popup_is_custom: false,
-  	popup_custom_header: "Popup header",
-  	popup_custom_main:
-  		"Popup main content. Write your column names in between double curly brackets to display dynamic content.",
-  	popup_custom_accessible: "",
-  	popup_teaser_default: "Click to see more",
-
-  	// Popup styles
-  	popup_text_color: "#333333",
-  	popup_align: "start",
-  	popup_font_size: 1,
-  	popup_font_family: null,
-  	popup_width: 18,
-  	popup_background: "#ffffff",
-  	popup_background_opacity: 1,
-  	popup_padding: 0.5,
-  	popup_radius: 0.2,
-  	popup_shadow: true,
-  	popup_pointer: true,
-  	popup_header_background: "#333333",
-  	popup_header_text_color: "#ffffff",
-  	popup_header_type: "block",
-  	popup_list_type: "table",
-  	popup_list_label_weight: "normal",
-  	popup_list_separator: ": ",
-
-  	// Panel content
-  	panel_is_custom: false,
-  	panel_custom_header: "Custom panel header",
-  	panel_custom_main: "Custom panel main content",
-  	panel_side_default_content: "<h3>Tap or click to explore</h3>",
-  	panel_side_fixed: false,
-
-  	// Panel layout
-  	panel_position: "overlay",
-  	panel_width_overlay: 80,
-  	panel_height_overlay: 80,
-  	panel_vertical_position: "center",
-  	panel_width_side: 35,
-  	panel_height_side: 35,
-  	panel_max_width: null,
-  	panel_max_height: null,
-
-  	// Panel styles
-  	panel_text_color: "#333333",
-  	panel_align: "start",
-  	panel_font_size: 1.25,
-  	panel_font_family: null,
-  	panel_background: "#ffffff",
-  	panel_background_opacity: 0.9,
-  	panel_padding: 1.2,
-  	panel_radius: 0.2,
-  	panel_shadow: true,
-  	panel_open_duration: 250,
-  	panel_close_duration: 250,
-  	panel_list_type: "table",
-  	panel_list_label_weight: "normal",
-  	panel_list_separator: ": ",
-  };
-
-  const variable_regex = /\{\{((?:[^}]|\}[^}])*)\}\}/g; // This checks for {{ variable }} blocks
-
-  function isMissing(value) {
-  	if (
-  		value === "" ||
-  		Number.isNaN(value) ||
-  		value === null ||
-  		value === undefined
-  	)
-  		return true;
-  	return false;
-  }
-
-  // The default popup and accessible content should show the content of all
-  // bound columns. This function returns an object that:
-  // 1. If popup.setFormatters has been called, formats the values first
-  // 2. If titleKey and/or subtitleKey have been called, adds title/subtitle properties
-  // 3. Adds each column's formatted value to the main content (ensuring it's only
-  // added once even if a column is bound to more than one binding)
-  function getDefaultContent(instance, formatted_data) {
-  	let content = {
-  		title: null,
-  		subtitle: null,
-  		main: {},
-  	};
-  	var col_names_in_popup = {};
-  	const title = formatted_data[instance._title_key];
-  	const subtitle = formatted_data[instance._subtitle_key];
-  	if (title) {
-  		content.title = title;
-  		const col_name = instance._column_names[instance._title_key];
-  		col_names_in_popup[col_name] = true;
-  	}
-  	if (subtitle) {
-  		content.subtitle = subtitle;
-  		const col_name = instance._column_names[instance._subtitle_key];
-  		col_names_in_popup[col_name] = true;
-  	}
-  	// Move metadata to end of loop to prioritise other bindings
-  	const bindings = Object.keys(instance._column_names);
-  	if (bindings.includes("metadata")) {
-  		bindings.push(bindings.splice(bindings.indexOf("metadata"), 1)[0]);
-  	}
-
-  	for (let i = 0; i < bindings.length; i++) {
-  		const binding = bindings[i];
-  		if (instance._column_names_hidden.indexOf(binding) > -1) continue;
-  		if (binding == instance._title_key) continue;
-  		if (binding == instance._subtitle_key) continue;
-  		const col_name = instance._column_names[binding];
-  		if (Array.isArray(col_name)) {
-  			col_name.forEach(function (name, i) {
-  				if (col_names_in_popup[name] || isMissing(formatted_data[binding]))
-  					return;
-  				col_names_in_popup[name] = true;
-  				content.main[name] = formatted_data[binding][i];
-  			});
-  		} else {
-  			if (col_names_in_popup[col_name] || isMissing(formatted_data[binding]))
-  				continue;
-  			col_names_in_popup[col_name] = true;
-  			content.main[col_name] = formatted_data[binding];
-  		}
-  	}
-  	return content;
-  }
-
-  function getAccessiblePopupContent(instance, d) {
-  	let content = "";
-  	var custom_default = instance._popup_default_template;
-  	const formatted_data = formatValues(instance, d);
-  	if (
-  		instance._state.popup_is_custom &&
-  		instance._state.popup_custom_accessible
-  	) {
-  		const raw_content = instance._state.popup_custom_accessible;
-  		content = getParsedContent(raw_content, instance, formatted_data);
-  	} else if (!custom_default) {
-  		let formatted_content = getDefaultContent(instance, formatted_data);
-
-  		if (formatted_content.title) content += `${formatted_content.title}, `;
-  		if (formatted_content.subtitle)
-  			content += `${formatted_content.subtitle}, `;
-
-  		for (var col in formatted_content.main) {
-  			const col_value = formatted_content.main[col];
-  			if (!isMissing(col_value)) content += `${col}: ${col_value}, `;
-  		}
-  	} else {
-  		// For accessible content, just extract variables from template
-  		// and don't include URLs
-  		var col_names_in_popup = {};
-  		const variables = custom_default.match(variable_regex);
-  		variables.forEach((v) => {
-  			v.replace(variable_regex, function (_, target_binding) {
-  				var text;
-  				const col_name = instance._column_names[target_binding];
-  				if (Array.isArray(col_name)) {
-  					if (col_name.length == 0) return;
-  					col_name.forEach(function (name, i) {
-  						if (col_names_in_popup[name]) return;
-  						col_names_in_popup[name] = true;
-  						const value = formatted_data[target_binding][i];
-  						if (isUrl(value) || isMissing(value)) return;
-  						text = `${name}: ${value}, `;
-  					});
-  				} else {
-  					const value = formatted_data[target_binding];
-  					if (isUrl(value) || isMissing(value)) return;
-  					if (col_names_in_popup[col_name]) return;
-  					col_names_in_popup[col_name] = true;
-  					text = `${col_name}: ${value}, `;
-  				}
-  				if (text !== undefined) content += text;
-  			});
-  		});
-  	}
-
-  	content = content.replace(/, $/, "");
-  	return getInnerText(content);
-  }
-
-  function getInnerText(content) {
-  	const div = document.createElement("div");
-  	div.innerHTML = content;
-  	return div.innerText;
-  }
-
-  function getDefaultHTML(instance, formatted_data, mode) {
-  	var html = "<div class='flourish-panel-content-inner'>";
-  	var custom_default = instance["_" + mode + "_default_template"];
-  	var list_mode = instance._state[mode + "_list_type"];
-  	var separator = instance._state[mode + "_list_separator"];
-  	var separator_is_line_break = separator === "<br />";
-  	var character_separator = separator_is_line_break ? "" : separator;
-  	var line_break = separator_is_line_break ? separator : "";
-
-  	if (!custom_default) {
-  		let formatted_content = getDefaultContent(instance, formatted_data);
-
-  		// Header
-  		if (formatted_content.title || formatted_content.subtitle) {
-  			html += "<header>";
-  			if (formatted_content.title)
-  				html += `<h3>${formatted_content.title}</h3>`;
-  			if (formatted_content.subtitle)
-  				html += `<h4>${formatted_content.subtitle}</h4>`;
-  			html += "</header>";
-  		}
-
-  		// Main
-  		if (Object.keys(formatted_content.main).length) {
-  			let main_content = "";
-  			for (var col_name in formatted_content.main) {
-  				const col_value = formatted_content.main[col_name];
-  				if (list_mode == "table") {
-  					main_content +=
-  						"<tr><td class='table-col-label'><span class='data-heading'>";
-  					main_content += col_name + "</span></td><td class='table-col-value'>";
-  					main_content += col_value + "</td></tr>";
-  				} else if (list_mode == "ul") {
-  					main_content +=
-  						"<li><span class='data-heading'>" + col_name + character_separator;
-  					main_content += " </span> " + line_break + col_value + "</li>";
-  				}
-  			}
-
-  			html += "<div class='main-content'><" + list_mode + ">";
-  			html += main_content;
-  			html += "</" + list_mode + "></div></div>";
-  		}
-  	} else {
-  		html += custom_default.replace(
-  			variable_regex,
-  			function (_, target_binding) {
-  				var text;
-  				var col_name = instance._column_names[target_binding];
-  				if (Array.isArray(col_name)) {
-  					if (col_name.length == 0) return "";
-  					text = "<ul>";
-  					col_name.forEach(function (name, i) {
-  						text +=
-  							"<li>" +
-  							name +
-  							separator +
-  							formatted_data[target_binding][i] +
-  							"</li>";
-  					});
-  					text += "</ul>";
-  				} else {
-  					text = formatted_data[target_binding];
-  				}
-  				if (text !== undefined) return text;
-  				return "";
-  			},
-  		);
-  	}
-  	return html;
-  }
-
-  function getValueFromColumnName(instance, target_binding, formatted_data) {
-  	var value;
-  	Object.keys(instance._column_names).some(function (key) {
-  		if (Array.isArray(instance._column_names[key])) {
-  			var index = instance._column_names[key].indexOf(target_binding);
-  			if (index >= 0) {
-  				value = formatted_data[key][index];
-  				return true;
-  			}
-  		} else if (instance._column_names[key] == target_binding) {
-  			value = formatted_data[key];
-  			return true;
-  		}
-  	});
-  	if (value !== undefined) return value;
-  	return "";
-  }
-
-  function getCustomHTML(instance, formatted_data, mode) {
-  	var content = "";
-  	const content_header_raw =
-  		mode === "popup"
-  			? instance._state.popup_custom_header
-  			: instance._state.panel_custom_header;
-  	const content_main_raw =
-  		mode === "popup"
-  			? instance._state.popup_custom_main
-  			: instance._state.panel_custom_main;
-  	// TODO. Add handlebars proper to extend this to support else statements and nested conditions
-  	var content_header_parsed = getParsedContent(
-  		content_header_raw,
-  		instance,
-  		formatted_data,
-  	);
-  	var content_main_parsed = getParsedContent(
-  		content_main_raw,
-  		instance,
-  		formatted_data,
-  	);
-
-  	if (content_header_parsed)
-  		content += "<header>" + content_header_parsed + "</header>";
-  	if (content_main_parsed)
-  		content += "<div class='main-content'>" + content_main_parsed + "</div>";
-
-  	return content;
-  }
-
-  function getParsedContent(content_raw, instance, formatted_data) {
-  	var condition_regex = /\{\{#if ((?:[^}]|\}[^}])*)\}\}([\s\S]*?)\{\{\/if\}\}/g; // This checks for {{# if}} {{/ if}} blocks
-  	var flourish_regex = /\{\{(visualisation|story)\/(.*)\}\}/g; // This checks for {{ visualisation/123 }} Flourish blocks
-
-  	return content_raw
-  		.replace(condition_regex, function (_, target_binding, if_contents) {
-  			return getValueFromColumnName(instance, target_binding, formatted_data) ==
-  				""
-  				? ""
-  				: if_contents;
-  		})
-  		.replace(flourish_regex, function (original, type, opts) {
-  			var metadata = opts.split("/");
-  			if (metadata.length < 1 || !["visualisation", "story"].includes(type))
-  				return original;
-  			var embed_info = {
-  				id: metadata[0],
-  				w: metadata[1] || "100%",
-  				h: metadata[2] || "400px%",
-  			};
-  			var url = "https://flo.uri.sh/" + type + "/" + embed_info.id + "/embed?";
-  			var iframe = create$2("iframe")
-  				.attr("src", url)
-  				.attr("title", "Interactive or visual content")
-  				.attr("class", "flourish-embed-iframe")
-  				.attr("frameborder", "0")
-  				.attr("scrolling", "no")
-  				.attr(
-  					"sandbox",
-  					"allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation",
-  				)
-  				.style("width", embed_info.width)
-  				.style("height", embed_info.height);
-
-  			return iframe.node().outerHTML;
-  		})
-  		.replace(variable_regex, function (_, target_binding) {
-  			return getValueFromColumnName(instance, target_binding, formatted_data);
-  		})
-  		.trim();
-  }
-
-  function formatValues(instance, d) {
-  	var formatters = instance._formatters;
-
-  	var formatted_data = {};
-  	for (var binding in d) {
-  		if (formatters && formatters[binding]) {
-  			if (Array.isArray(formatters[binding])) {
-  				var formatted_array_of_values = [];
-  				for (var col = 0; col < formatters[binding].length; col++) {
-  					let formatted_value;
-  					if (isMissing(d[binding][col])) formatted_value = "";
-  					else formatted_value = formatters[binding][col](d[binding][col]);
-  					formatted_array_of_values.push(formatted_value);
-  				}
-  				formatted_data[binding] = formatted_array_of_values;
-  			} else {
-  				if (isMissing(d[binding])) continue;
-  				formatted_data[binding] = isMissing(d[binding])
-  					? ""
-  					: formatters[binding](d[binding]);
-  			}
-  		} else {
-  			formatted_data[binding] = isMissing(d[binding]) ? "" : d[binding];
-  		}
-  	}
-  	return formatted_data;
-  }
-
-  function getPopupHTML(instance, d, teaser) {
-  	var html = "";
-  	var formatted_data = formatValues(instance, d);
-  	if (teaser && !instance._state.popup_is_custom)
-  		html +=
-  			"<div class='main-content'>" +
-  			instance._state.popup_teaser_default +
-  			"</div>";
-  	else if (!teaser && !instance._state.popup_is_custom)
-  		html += getDefaultHTML(instance, formatted_data, "popup");
-  	else html += getCustomHTML(instance, formatted_data, "popup");
-  	return html;
-  }
-
-  function getPanelHTML(instance, d) {
-  	var html = "";
-  	var formatted_data = formatValues(instance, d);
-  	if (!instance._state.panel_is_custom)
-  		html += getDefaultHTML(instance, formatted_data, "panel");
-  	else html += getCustomHTML(instance, formatted_data, "panel");
-  	return html;
-  }
-
-  function appendStyles(instance) {
-  	if (!document.querySelector("#popup-styles")) {
-  		var css = document.createElement("style");
-  		css.id = "popup-styles";
-  		document.head.appendChild(css);
-  	}
-  	var styles = new Stylesheet();
-  	var header_block = instance._state.popup_header_type == "block";
-  	var header_background = color$3(
-  		instance._state.popup_header_background || "transparent",
-  	);
-  	header_background.opacity = instance._state.popup_header_background
-  		? instance._state.popup_background_opacity
-  		: 0;
-  	var panel_pos = instance._state.panel_position;
-  	styles
-  		.select(".flourish-panel .flourish-panel-shadow")
-  		.style("pointer-events", "none")
-  		.style("position", "absolute")
-  		.style(
-  			"display",
-  			panel_pos == "overlay" || !instance._state.panel_shadow
-  				? "none"
-  				: "block",
-  		)
-  		.style(
-  			"top",
-  			panel_pos == "bottom" ? "-3rem" : panel_pos == "top" ? "auto" : 0,
-  		)
-  		.style(
-  			"right",
-  			panel_pos == "left" ? "-3rem" : panel_pos == "right" ? "auto" : 0,
-  		)
-  		.style(
-  			"bottom",
-  			panel_pos == "top" ? "-3rem" : panel_pos == "bottom" ? "auto" : 0,
-  		)
-  		.style(
-  			"left",
-  			panel_pos == "right" ? "-3rem" : panel_pos == "left" ? "auto" : 0,
-  		)
-  		.style(
-  			"width",
-  			panel_pos == "left" || panel_pos == "right" ? "3rem" : "100%",
-  		)
-  		.style(
-  			"height",
-  			panel_pos == "top" || panel_pos == "bottom" ? "3rem" : "100%",
-  		)
-  		.style("z-index", "-1")
-  		.style("overflow", "hidden");
-
-  	styles
-  		.select(".flourish-panel .flourish-panel-shadow:before")
-  		.style("content", "''")
-  		.style("display", "block")
-  		.style("position", "absolute")
-  		.style(
-  			"width",
-  			panel_pos == "left" || panel_pos == "right" ? "1.5rem" : "100%",
-  		)
-  		.style(
-  			"height",
-  			panel_pos == "top" || panel_pos == "bottom" ? "1.5rem" : "100%",
-  		)
-  		.style("border-radius", "50%")
-  		.style("background", "rgba(0,0,0,0.3)")
-  		.style(
-  			"bottom",
-  			panel_pos == "bottom" ? "-50%" : panel_pos == "top" ? "auto" : 0,
-  		)
-  		.style(
-  			"left",
-  			panel_pos == "left" ? "-50%" : panel_pos == "right" ? "auto" : 0,
-  		)
-  		.style(
-  			"top",
-  			panel_pos == "top" ? "-50%" : panel_pos == "bottom" ? "auto" : 0,
-  		)
-  		.style(
-  			"right",
-  			panel_pos == "right" ? "-50%" : panel_pos == "left" ? "auto" : 0,
-  		)
-  		.style("filter", "blur(15px)");
-
-  	styles
-  		.select(".flourish-panel-inner:focus-visible")
-  		.style("outline", "none !important");
-
-  	styles
-  		.select(".flourish-panel:focus-visible")
-  		.style("outline", "none !important");
-
-  	styles.select(".flourish-panel-close:focus").style("outline", "none");
-
-  	styles
-  		.select(".flourish-panel-close:focus-visible")
-  		.style("outline", "-webkit-focus-ring-color auto 5px");
-
-  	styles
-  		.select(".flourish-popup")
-  		.style("pointer-events", "none")
-  		.select(".flourish-popup-content")
-  		.style("pointer-events", "auto")
-  		.style(
-  			"max-width",
-  			instance._state.popup_width == null
-  				? null
-  				: instance._state.popup_width + "rem !important",
-  		);
-
-  	styles
-  		.select(".flourish-popup header, .flourish-panel header")
-  		.style("margin", "0");
-
-  	styles
-  		.select(".flourish-popup header")
-  		.style("font-weight", "bold")
-  		.style(
-  			"color",
-  			header_block ? instance._state.popup_header_text_color : null,
-  		)
-  		.style("background", header_block ? header_background.rgb() : null)
-  		.style("padding", instance._state.popup_padding + "rem")
-  		.style(
-  			"border-radius",
-  			instance._state.popup_radius +
-  				"rem " +
-  				instance._state.popup_radius +
-  				"rem 0 0",
-  		);
-
-  	// If a header is not the last child that means the popup has content
-  	const headers_with_content = styles.select(
-  		".flourish-popup header:not(:last-child)",
-  	);
-  	// We want the padding bottom to be zero only when the popup has content and has an inline header
-  	headers_with_content.style("padding-bottom", header_block ? null : "0");
-
-  	// Header which isn't the last child has content following it. If it's an
-  	// inline header, there should be no extra padding between it and the content.
-  	styles
-  		.select(".flourish-popup header:not(:last-child)")
-  		.style("padding-bottom", header_block ? null : "0");
-
-  	styles
-  		.select(".flourish-panel .flourish-panel-content-inner")
-  		.style("overflow", "auto");
-
-  	styles
-  		.select(".flourish-panel header")
-  		.style("font-weight", "bold")
-  		.style("margin-bottom", "0.5em")
-  		.style("padding-right", "1rem");
-
-  	styles
-  		.select(".flourish-popup .main-content")
-  		.style("padding", instance._state.popup_padding + "rem");
-
-  	styles
-  		.select(".flourish-popup header + .main-content")
-  		.style("padding", instance._state.popup_padding + "rem")
-  		.style("padding-top", !header_block ? "0" : null);
-
-  	styles
-  		.select(".flourish-popup h3, .flourish-panel h3")
-  		.style("font-size", "1em")
-  		.style("margin", "0");
-
-  	styles
-  		.select(".flourish-popup h3, .flourish-popup h4, .flourish-popup ul li")
-  		.style("text-align", instance._state.popup_align);
-
-  	styles
-  		.select(".flourish-panel h3, .flourish-panel h4, .flourish-panel ul li")
-  		.style("text-align", instance._state.panel_align);
-
-  	styles
-  		.select(".flourish-popup h4, .flourish-panel h4")
-  		.style("font-size", "1em")
-  		.style("margin", header_block ? "0" : "0 0 0.25em")
-  		.style("opacity", "0.6")
-  		.style("font-weight", "normal");
-
-  	styles
-  		.select(
-  			".flourish-popup h4:empty, .flourish-panel h4:empty, .flourish-popup h3:empty, .flourish-panel h3:empty, .flourish-popup p:empty, .flourish-panel p:empty",
-  		)
-  		.style("display", "none");
-
-  	styles
-  		.select(".flourish-popup p, .flourish-panel p")
-  		.style("margin", "0")
-  		.style("font-size", "inherit")
-  		.style("font-weight", "normal");
-
-  	styles
-  		.select(".flourish-popup table, .flourish-panel table")
-  		.style("margin", "0")
-  		.style("width", "100%")
-  		.style("border-collapse", "collapse")
-  		.style("table-layout", "auto");
-
-  	styles
-  		.select(".flourish-popup table tr, .flourish-panel table tr")
-  		.style("border-top", "1px solid #eee");
-
-  	styles
-  		.select(
-  			".flourish-popup table tr:first-child, .flourish-panel table tr:first-child",
-  		)
-  		.style("border-top", "none");
-
-  	styles
-  		.select(".flourish-popup table tr td, .flourish-panel table tr td")
-  		.style("padding", "0.25em 0 0.25em 0")
-  		.style("padding-inline-end", "0.25em")
-  		.style("vertical-align", "top")
-  		.style("font-size", "inherit")
-  		.style("text-align", "start")
-  		.style("font-weight", "normal")
-  		.style("overflow", "hidden")
-  		.style("text-overflow", "ellipsis");
-
-  	styles
-  		.select(
-  			".flourish-popup table tr:last-child td, .flourish-panel table tr:last-child td",
-  		)
-  		.style("padding-bottom", "0");
-
-  	styles
-  		.select(".flourish-popup .data-heading")
-  		.style("font-weight", instance._state.popup_list_label_weight)
-  		.style("display", "inline-block");
-
-  	styles
-  		.select(".flourish-panel .data-heading")
-  		.style("font-weight", instance._state.panel_list_label_weight)
-  		.style("display", "inline-block");
-
-  	styles
-  		.select(
-  			".flourish-popup table tr td.table-col-value, .flourish-panel table tr td.table-col-value",
-  		)
-  		.style("text-align", "end")
-  		.style("padding", "0.25em 0 0.25em 0")
-  		.style("padding-inline-end", "0.25em");
-
-  	styles
-  		.select(
-  			".flourish-popup table tr:last-child td.table-col-value, .flourish-panel table tr:last-child td.table-col-value",
-  		)
-  		.style("padding-bottom", "0");
-
-  	styles
-  		.select(".flourish-popup ul, .flourish-panel ul")
-  		.style("padding", "0")
-  		.style("margin", "0");
-
-  	styles
-  		.select(".flourish-popup ul li, .flourish-panel ul li")
-  		.style("font-size", "inherit")
-  		.style("list-style-type", "none");
-
-  	if (instance._state.popup_is_custom) {
-  		console.log("is custom", instance._state.popup_is_custom);
-  		styles
-  			.select(".flourish-popup ul, .flourish-panel ul, .flourish-popup ol")
-  			.style("padding-inline-start", "1.5em")
-  			.style("padding-inline-end", "0.5em");
-
-  		styles
-  			.select(".flourish-popup ul li, .flourish-panel ul li")
-  			.style("list-style-type", "disc");
-
-  		styles
-  			.select(".flourish-popup ul li, .flourish-panel ul li")
-  			.style("font-size", "inherit")
-  			.style("list-style-position", "outside");
-
-  		styles
-  			.select(".flourish-popup ol li")
-  			.style("padding-inline-start", "0.5em");
-  	}
-
-  	document.head.querySelector("#popup-styles").innerHTML = styles.print();
-  }
-
-  function updateStyle(instance) {
-  	var popup_el = instance.popup._getElement();
-  	var popup_el_content = popup_el.querySelector(".flourish-popup-content");
-
-  	popup_el_content.style.padding = "0";
-  	popup_el_content.style.textAlign = instance._state.popup_align;
-  	popup_el_content.style.color = instance._state.popup_text_color;
-  	popup_el_content.style.fontSize = instance._state.popup_font_size + "rem";
-  	popup_el_content.style.fontFamily =
-  		instance._state.popup_font_family?.name || null;
-  	popup_el_content.style.borderRadius = instance._state.popup_radius + "rem";
-  	popup_el_content.addEventListener("click", function () {
-  		event.stopPropagation();
-  	});
-
-  	var panel_el = instance.panel._getElement();
-  	var panel_el_inner = panel_el.querySelector(".flourish-panel-inner");
-  	var panel_el_content = panel_el.querySelector(".flourish-panel-content");
-
-  	var rgba = color$3(instance._state.panel_background);
-  	panel_el_inner.style.background =
-  		"rgba(" +
-  		rgba.r +
-  		"," +
-  		rgba.g +
-  		"," +
-  		rgba.b +
-  		"," +
-  		instance._state.panel_background_opacity +
-  		")";
-  	panel_el_inner.style.borderRadius = instance._state.popup_radius + "rem";
-  	panel_el_inner.style.boxShadow =
-  		instance._state.panel_position == "overlay" && instance._state.panel_shadow
-  			? "0 0 1.5rem rgba(0,0,0,0.2)"
-  			: "";
-  	// panel_el_inner.style.focus = "outline: none;";
-  	// panel_el_inner.style.focusVisible = "outline: none;";
-  	panel_el_inner.addEventListener("click", function () {
-  		event.stopPropagation();
-  	});
-
-  	panel_el_content.style.padding = instance._state.panel_padding + "rem";
-  	panel_el_content.style.textAlign = instance._state.panel_align;
-  	panel_el_content.style.color = instance._state.panel_text_color;
-  	panel_el_content.style.fontSize = instance._state.panel_font_size + "rem";
-  	panel_el_content.style.fontFamily =
-  		instance._state.panel_font_family?.name || null;
-  	panel_el_content.style.boxSizing = "border-box";
-
-  	var g = popup_el.querySelector(".flourish-popup-svg g");
-  	g.style.fill = instance._state.popup_background;
-  	g.style.opacity = instance._state.popup_background_opacity;
-
-  	var closer = panel_el.querySelector(".flourish-panel-close path");
-  	if (closer) closer.style.stroke = instance._state.panel_text_color;
-
-  	if (instance._state.popup_shadow == false) g.removeAttribute("filter");
-  	else
-  		g.setAttribute(
-  			"filter",
-  			"url(#dropshadow-" + instance.popup.unique_id + ")",
-  		);
-  	g.querySelector("rect").setAttribute(
-  		"rx",
-  		instance._state.popup_radius + "rem",
-  	);
-  	g.querySelector("path").style.display = instance._state.popup_pointer
-  		? "block"
-  		: "none";
-
-  	appendStyles(instance);
-  }
-
-  function InfoPopup(state, panel_container, popup_container) {
-  	var instance = this;
-  	this._state = state;
-  	this._popup_default_template = null;
-  	this._panel_default_template = null;
-  	this._title_key = "name";
-  	this._subtitle_key = null;
-  	this._first_load = true;
-  	this._on_panel_close = null;
-  	this._show_default_content_timer = null;
-  	this._panel_container = panel_container || document.body;
-  	this._popup_container = popup_container || document.body;
-  	this._popup_directions = ["top", "bottom", "left", "right"];
-  	(this._column_names = []),
-  		(this._column_names_hidden = []),
-  		(this._formatters = null);
-  	this._getLockedPosition = function () {
-  		return null;
-  	};
-
-  	for (var key in DEFAULTS$2) {
-  		if (state[key] == undefined) state[key] = DEFAULTS$2[key];
-  	}
-
-  	this.panel = initPanel()
-  		.container(this._panel_container)
-  		.on("close", function () {
-  			instance._state.locked_id = null;
-  			instance.popup.hide();
-  			if (typeof instance._on_panel_close == "function")
-  				instance._on_panel_close();
-  		});
-  	this.popup = Flourish_popup()
-  		.container(this._popup_container)
-  		.point(0, 0)
-  		.draw()
-  		.hide();
-  }
-
-  // ============ //
-  // INIT METHODS //
-  // ============ //
-
-  InfoPopup.prototype.getLockedPosition = function (getLockedPositionFunction) {
-  	if (typeof getLockedPositionFunction != "function") {
-  		console.error(
-  			"Invalid function passed to @flourish/info-popup getLockedPosition",
-  		);
-  	} else this._getLockedPosition = getLockedPositionFunction;
   	return this;
   };
 
-  // ====== //
-  // UDPATE //
-  // ====== //
-
-  InfoPopup.prototype.update = function (callback) {
-  	if (this._state.locked_id !== null && this._state.mode != "none") {
-  		var selected = this._getLockedPosition(this._state.locked_id);
-  		if (selected)
-  			this.click(selected[0], selected[1], this._state.locked_id, callback);
-  		else
-  			console.warn(
-  				"@flourish/info-popup: failed to return value from getLockedPosition function",
-  			);
-  	} else this.clickout();
+  // Getters
+  Facets.prototype.facets = function () {
+  	return this._facets;
   };
 
-  // ============= //
-  // EVENT METHODS //
-  // ============= //
+  Facets.prototype.facetWidth = function () {
+  	return this._facet_width;
+  };
 
-  function disablePopupPointerEvents(instance) {
-  	instance.popup
-  		._getElement()
-  		.querySelector(".flourish-popup-content").style.pointerEvents = "none";
+  Facets.prototype.getFacet = function (name) {
+  	var i = this._data_names.indexOf(name);
+  	return this._facets[i];
+  };
+
+  Facets.prototype.isRagged = function () {
+  	return this._is_ragged;
+  };
+
+  Facets.prototype.numColumns = function () {
+  	return this._num_columns;
+  };
+
+  Facets.prototype.numRows = function () {
+  	return this._num_rows;
+  };
+
+  // Should this be in pocket knife?
+  var window_width, base_size;
+  function remToPx(rem) {
+  	if (window.innerWidth !== window_width) {
+  		window_width = window.innerWidth;
+  		base_size = parseFloat(getComputedStyle(document.documentElement).fontSize);
+  	}
+  	return rem * base_size;
   }
 
-  function enablePopupPointerEvents(instance) {
-  	instance.popup
-  		._getElement()
-  		.querySelector(".flourish-popup-content").style.pointerEvents = "auto";
+  // This follows the convention of other modules where alignment is flipped by RTL read direction
+  function adjustTitleAlignForReadDirection(title_align, read_direction) {
+  	if (read_direction === "rtl") {
+  		if (title_align === "left") return "right";
+  		if (title_align === "right") return "left";
+  	}
+  	return title_align;
   }
 
-  InfoPopup.prototype.click = function (coords_or_node, d, id, callback) {
-  	if (this._state.mode == "none") return;
-  	var target = this._state.mode == "popup" ? "popup" : "panel";
-  	if (this._checkIfPopupIsEmpty(d, target)) {
-  		target === "panel" ? this.hidePanel() : this.hidePopup();
-  		return;
+  function getTitleTextAnchor(title_align, read_direction) {
+  	if (title_align === "center") return "middle";
+  	var is_rtl = read_direction === "rtl";
+  	if (title_align === "left") {
+  		return is_rtl ? "end" : "start";
   	}
-  	// TODO: Check if popup content is empty
-  	this._point(coords_or_node);
-  	if (id != undefined) {
-  		this._state.locked_id = id;
-  		enablePopupPointerEvents(this);
-  	} else this._state.locked_id = null;
-  	if (target == "panel") {
-  		clearTimeout(this._show_default_content_timer);
-  		this.popup.hide();
-  		this._drawPanel(d, callback);
-  	} else if (target == "popup") {
-  		this.panel.hide();
-  		this._drawPopup(d, callback);
-  	}
-  };
-
-  InfoPopup.prototype.clickout = function () {
-  	this._state.locked_id = null;
-  	if (this._state.mode == "both" || this._state.mode == "panel") {
-  		this.popup.draw(); // call draw to resize constrainer, if necessary
-  		this.popup.hide();
-  		if (
-  			this._state.panel_position == "overlay" ||
-  			!this._state.panel_side_fixed
-  		) {
-  			this.panel.hide();
-  		} else this._showDefaultPanelContent();
-  	}
-  	if (this._state.mode == "popup") {
-  		this.panel.hide();
-  		this.popup.draw(); // call draw to resize constrainer, if necessary
-  		this.popup.hide();
-  	}
-
-  	// draw popup initially in "none" mode to resize constrainer & avoid whitespace around main graphic
-  	if (this._state.mode == "none") {
-  		this.panel.hide();
-  		this.popup.draw(); // call draw to resize constrainer, if necessary
-  		this.popup.hide();
-  	}
-  };
-
-  InfoPopup.prototype.touch = function (coords_or_node, d, id, callback) {
-  	this.mouseover(coords_or_node, d, callback, true, id);
-  };
-
-  InfoPopup.prototype.mouseover = function (
-  	coords_or_node,
-  	d,
-  	callback,
-  	touch,
-  	touch_id,
-  ) {
-  	var target = this._state.mode == "panel" ? "panel" : "popup";
-  	if (this._checkIfPopupIsEmpty(d, target, this._state.mode == "both")) {
-  		target === "panel" ? this.hidePanel() : this.hidePopup();
-  		return;
-  	}
-  	var instance = this;
-  	if (this._state.mode == "both") {
-  		this._point(coords_or_node);
-  		this._drawPopup(d, callback, true);
-  		touch ? enablePopupPointerEvents(this) : disablePopupPointerEvents(this);
-  		if (touch) {
-  			var popup_contents = instance.popup
-  				._getElement()
-  				.querySelector(".flourish-popup-content");
-  			popup_contents.onclick = function () {
-  				instance.click(coords_or_node, d, touch_id, callback);
-  			};
-  		}
-  	}
-  	if (this._state.mode == "popup") {
-  		if (this._state.locked_id !== null) return;
-  		disablePopupPointerEvents(this);
-  		this._point(coords_or_node);
-  		this._drawPopup(d, callback);
-  	}
-  	if (this._state.mode == "panel") {
-  		if (
-  			this._state.locked_id !== null ||
-  			this._state.panel_position == "overlay"
-  		)
-  			return;
-  		if (!this._state.panel_side_fixed) return;
-  		clearTimeout(this._show_default_content_timer);
-  		this._point(coords_or_node);
-  		this._drawPanel(d, callback);
-  	}
-  };
-
-  InfoPopup.prototype.mouseout = function () {
-  	if (this._state.mode == "both") {
-  		this.popup.hide();
-  	}
-  	if (this._state.mode == "popup") {
-  		if (this._state.locked_id !== null) return;
-  		this.popup.hide();
-  	}
-  	if (this._state.mode == "panel") {
-  		if (this._state.locked_id !== null) return;
-  		if (
-  			this._state.panel_position == "overlay" ||
-  			!this._state.panel_side_fixed
-  		)
-  			return;
-  		this._showDefaultPanelContent();
-  	}
-  };
-
-  // ======= //
-  // GETTERS //
-  // ======= //
-
-  InfoPopup.prototype.locked = function () {
-  	return this._state.locked_id;
-  };
-
-  InfoPopup.prototype.mode = function () {
-  	return this._state.mode;
-  };
-
-  // ====================== //
-  // DATA & CONTENT METHODS //
-  // ====================== //
-
-  InfoPopup.prototype.setColumnNames = function (column_names) {
-  	this._column_names = column_names;
-
-  	return this;
-  };
-
-  InfoPopup.prototype.hideColumnNames = function (column_names) {
-  	this._column_names_hidden = column_names;
-
-  	return this;
-  };
-
-  InfoPopup.prototype.setFormatters = function (metadata) {
-  	var formatters = {};
-  	for (var binding in metadata) {
-  		if (typeof metadata[binding] === "function") {
-  			formatters[binding] = metadata[binding];
-  		} else if (Array.isArray(metadata[binding])) {
-  			var array_of_formatters = [];
-  			for (var col = 0; col < metadata[binding].length; col++) {
-  				var formatter;
-  				if (typeof metadata[binding][col] === "function") {
-  					formatter = metadata[binding][col];
-  				} else {
-  					formatter = getFormatter(metadata[binding][col].output_format_id);
-  				}
-  				array_of_formatters.push(formatter);
-  			}
-  			formatters[binding] = array_of_formatters;
-  		} else {
-  			formatters[binding] = getFormatter(metadata[binding].output_format_id);
-  		}
-  	}
-  	this._formatters = formatters;
-
-  	return this;
-  };
-
-  InfoPopup.prototype._showDefaultPanelContent = function () {
-  	var instance = this;
-  	clearTimeout(this._show_default_content_timer);
-  	// This delays the return to the default content by 100ms, to avoid
-  	// a "strobe" effect if you are quickly moving in and out of data points
-  	// e.g. on a map
-  	this._show_default_content_timer = setTimeout(function () {
-  		instance.panel.html(instance._state.panel_side_default_content);
-  		instance._drawPanel();
-  	}, 100);
-  	// We do, however, immediately call the drawPanel function to make sure
-  	// the margins() measurement is correct, rather than stuck with the old
-  	// values at the time of being called.
-  	instance._drawPanel();
-  };
-
-  /**
-   * @param {any} d
-   * @param {"panel" | "popup" | "both"} target
-   * @param {boolean} teaser
-   */
-  InfoPopup.prototype._checkIfPopupIsEmpty = function (d, target, teaser) {
-  	if (this._state.popup_is_custom) {
-  		var popup_content =
-  			target === "panel"
-  				? getPanelHTML(this, d)
-  				: getPopupHTML(this, d, teaser);
-  		return popup_content.trim() === "";
-  	}
-
-  	if (isValueDisplayable(d[this._title_key])) return false;
-
-  	var binding_names = Object.keys(this._column_names);
-  	for (var i = 0; i < binding_names.length; i++) {
-  		var binding_name = binding_names[i];
-  		if (this._column_names_hidden.includes(binding_name)) continue;
-
-  		var value = d[binding_name];
-  		if (Array.isArray(value)) {
-  			for (let j = 0; j < value.length; j++) {
-  				if (isValueDisplayable(value[j])) return false;
-  			}
-  			continue;
-  		}
-
-  		if (isValueDisplayable(value)) return false;
-  	}
-
-  	return true;
-  };
-
-  function isValueDisplayable(value) {
-  	return value || value === 0;
+  	// otherwise title_align is right
+  	return is_rtl ? "start" : "end";
   }
 
-  InfoPopup.prototype.getAccessiblePopupContent = function (d) {
-  	return getAccessiblePopupContent(this, d);
-  };
-
-  // =================== //
-  // DRAW & HIDE METHODS //
-  // =================== //
-
-  InfoPopup.prototype.onPanelClose = function (f) {
-  	this._on_panel_close = f;
-  	return this;
-  };
-
-  InfoPopup.prototype._drawPopup = function (d, callback, teaser) {
-  	if (d) this.popup.html(getPopupHTML(this, d, teaser));
-  	updateStyle(this);
-  	this.popup.draw();
-  	if (callback) callback(this.popup._getElement(), d);
-  	return this;
-  };
-
-  InfoPopup.prototype._drawPanel = function (d, callback) {
-  	var instance = this;
-  	updateStyle(instance);
-  	this.panel
-  		.open_duration(this._state.panel_open_duration)
-  		.close_duration(this._state.panel_close_duration)
-  		.width_overlay(this._state.panel_width_overlay)
-  		.height_overlay(this._state.panel_height_overlay)
-  		.vertical_position(this._state.panel_vertical_position)
-  		.width_side(this._state.panel_width_side)
-  		.height_side(this._state.panel_height_side)
-  		.position(this._state.panel_position)
-  		.max_width(this._state.panel_max_width)
-  		.max_height(this._state.panel_max_height)
-  		.closeable(
-  			this._state.panel_position == "overlay" || !this._state.panel_side_fixed,
-  		);
-  	if (d === undefined) this.panel.draw();
-  	else this.panel.html(getPanelHTML(instance, d)).draw();
-  	if (callback) callback(this.panel._getElement(), d);
-  	return this;
-  };
-
-  InfoPopup.prototype.hidePanel = function () {
-  	this.panel.hide();
-  	return this;
-  };
-
-  InfoPopup.prototype.hidePopup = function () {
-  	this.popup.hide();
-  	return this;
-  };
-
-  // ================== //
-  // POSITIONAL METHODS //
-  // ================== //
-
-  InfoPopup.prototype.popupDirections = function (value) {
-  	if (!value) return this._popup_directions.slice();
-  	this._popup_directions = value;
-  	return this;
-  };
-
-  InfoPopup.prototype.margins = function () {
-  	return this.panel.margins();
-  };
-
-  InfoPopup.prototype._getBiggestGap = function (node_bbox) {
-  	var constrainer_bbox = this._popup_container.getBoundingClientRect();
-  	var best_side,
-  		biggest_gap = 0,
-  		arrow_directions;
-  	var gaps = {
-  		right:
-  			(constrainer_bbox.width +
-  				constrainer_bbox.left -
-  				(node_bbox.width + node_bbox.left)) /
-  			constrainer_bbox.width,
-  		bottom:
-  			(constrainer_bbox.height +
-  				constrainer_bbox.top -
-  				(node_bbox.height + node_bbox.top)) /
-  			constrainer_bbox.height,
-  		left: (node_bbox.left - constrainer_bbox.left) / constrainer_bbox.width,
-  		top: (node_bbox.top - constrainer_bbox.top) / constrainer_bbox.height,
-  	};
-
-  	var all_arrow_directions = {
-  		right: [
-  			"left",
-  			"leftFlexible",
-  			"topLeft",
-  			"bottomLeft",
-  			"bottomFlexible",
-  			"bottom",
-  			"topFlexible",
-  			"top",
-  			"bottomRight",
-  			"topRight",
-  			"rightFlexible",
-  			"right",
-  		],
-  		left: [
-  			"right",
-  			"rightFlexible",
-  			"topRight",
-  			"bottomRight",
-  			"top",
-  			"topFlexible",
-  			"bottom",
-  			"bottomFlexible",
-  			"bottomLeft",
-  			"topLeft",
-  			"leftFlexible",
-  			"left",
-  		],
-  		top: [
-  			"bottom",
-  			"bottomFlexible",
-  			"bottomRight",
-  			"bottomLeft",
-  			"rightFlexible",
-  			"leftFlexible",
-  			"right",
-  			"left",
-  			"topRight",
-  			"topLeft",
-  			"topFlexible",
-  			"top",
-  		],
-  		bottom: [
-  			"top",
-  			"topFlexible",
-  			"topLeft",
-  			"topRight",
-  			"left",
-  			"right",
-  			"leftFlexible",
-  			"rightFlexible",
-  			"bottomLeft",
-  			"bottomRight",
-  			"bottomFlexible",
-  			"bottom",
-  		],
-  	};
-
-  	for (var side in gaps) {
-  		if (this._popup_directions.indexOf(side) < 0) continue;
-  		if (gaps[side] > biggest_gap) {
-  			biggest_gap = gaps[side];
-  			best_side = side;
-  			arrow_directions = all_arrow_directions[side];
-  		}
-  	}
-
-  	var x = node_bbox.left,
-  		y = node_bbox.top;
-  	if (best_side == "left" || best_side == "right") y += node_bbox.height * 0.5;
-  	else if (best_side == "bottom") y += node_bbox.height;
-
-  	if (best_side == "top" || best_side == "bottom") x += node_bbox.width * 0.5;
-  	else if (best_side == "right") x += node_bbox.width;
-
-  	return {
-  		side: best_side,
-  		arrow_directions: arrow_directions,
-  		x: x,
-  		y: y,
-  	};
-  };
-
-  // Point should not often be required by template authors, who
-  // should generally use the click or mouseover methods
-  InfoPopup.prototype._point = function (coords_or_node) {
-  	var x,
-  		y,
-  		arrow_directions = this._popup_directions;
-  	if (Array.isArray(coords_or_node)) {
-  		x = coords_or_node[0];
-  		y = coords_or_node[1];
-  	} else if (coords_or_node && coords_or_node.getBoundingClientRect) {
-  		var node_rect = coords_or_node.getBoundingClientRect();
-  		var best_side = this._getBiggestGap(node_rect);
-  		x = best_side.x;
-  		y = best_side.y;
-  		arrow_directions = best_side.arrow_directions;
-  	} else {
-  		console.warn(
-  			"@flourish/info-popup: Invalid positional value passed in point function, should be a coordinates array, or a node. Current value is",
-  			coords_or_node,
-  		);
-  		return this;
-  	}
-  	this.panel.point(coords_or_node);
-  	this.popup.directions(arrow_directions).point(x, y);
-  	return this;
-  };
-
-  // ============== //
-  // CONFIG METHODS //
-  // ============== //
-
-  InfoPopup.prototype.popupDefaultTemplate = function (template) {
-  	if (template != undefined) {
-  		this._popup_default_template = template;
-  		return this;
-  	} else return this._popup_default_template;
-  };
-
-  InfoPopup.prototype.panelDefaultTemplate = function (template) {
-  	if (template != undefined) {
-  		this._panel_default_template = template;
-  		return this;
-  	} else return this._panel_default_template;
-  };
-
-  InfoPopup.prototype.titleKey = function (key) {
-  	if (key != undefined) {
-  		this._title_key = key;
-  		return this;
-  	} else return this._title_key;
-  };
-
-  InfoPopup.prototype.subtitleKey = function (key) {
-  	if (key != undefined) {
-  		this._subtitle_key = key;
-  		return this;
-  	} else return this._subtitle_key;
-  };
-
-  // ==== //
-  // INIT //
-  // ==== //
-
-  function createInfoPopup (state, panel_container, popup_container) {
-  	return new InfoPopup(state, panel_container, popup_container);
+  function getTitleTextXOffset(title_align, padding) {
+  	if (title_align === "left") return padding;
+  	if (title_align === "right") return -padding;
+  	else return 0;
   }
 
-  var DEFAULTS$1 = Object.freeze({
-  	input_decimal_separator: ".",
-  	output_separators: ",.",
-  });
-
-  function getLocaleObject(decimal, thousands) {
-  	return {
-  		decimal: decimal,
-  		thousands: thousands,
-  		grouping: [ 3 ],
-  		currency: [ "", "" ]
-  	};
-  }
-
-
-  function makeParser(separator) {
-  	var number_regex = new RegExp("[^-0-9eE" + separator + "]", "g");
-
-  	return function(val_string) {
-  		if (typeof val_string === "number") return val_string;
-  		if (val_string === "" || typeof val_string == "undefined") return NaN;
-  		return parseFloat(val_string.replace(number_regex, "").replace(separator, "."));
-  	};
-  }
-
-
-  function makeFormatterFunction(separators) {
-  	var multi_char = separators.length > 1;
-  	var decimal = multi_char ? separators.charAt(1) : separators.charAt(0);
-  	var thousands = multi_char ? separators.charAt(0) : "";
-  	var formatter = formatLocale(getLocaleObject(decimal, thousands)).format;
-  	// Attach separator properties for easy querying
-  	formatter.decimal = decimal;
-  	formatter.thousands = thousands;
-  	return formatter;
-  }
-
-
-  function init$2(state) {
-  	for (var key in DEFAULTS$1) {
-  		if (state[key] === undefined) state[key] = DEFAULTS$1[key];
-  	}
-
-  	return {
-  		getParser: function() { return makeParser(state.input_decimal_separator); },
-  		getFormatterFunction: function() { return makeFormatterFunction(state.output_separators); }
-  	};
-  }
-
-  var DEFAULTS = Object.freeze({
-  	transform_labels: false,
-  	transform: "multiply",
-  	multiply_divide_constant: 1,
-  	exponentiate_constant: 0,
-  	multiplier: 1,
-  	prefix: "",
-  	n_dec: 2,
-  	suffix: "",
-  	strip_zeros: true,
-  	strip_separator: true,
-  	negative_sign: "-$nk"
-  });
-
-  function round(val, pow) {
-  	pow = pow > 0 ? Math.floor(pow) : Math.ceil(pow);
-  	if (!pow) return Math.round(val);
-  	var rounder =  Math.pow(10, Math.abs(pow));
-  	return pow > 0 ? (Math.round(val*rounder) / rounder) : (Math.round(val/rounder) * rounder);
-  }
-
-  function getTransformFunction(state) {
-  	var constant = 1;
-  	if (state.transform_labels) {
-  		if (state.transform === "multiply") constant = state.multiply_divide_constant;
-  		else if (state.transform === "divide") constant = 1 / state.multiply_divide_constant;
-  		else constant = Math.pow(10, state.exponentiate_constant);
-  	}
-  	return function(x) { return x * constant; };
-  }
-
-  function makeNumberFormatter(state, formatterFunction) {
-  	var n_dec = state.n_dec >= 0 ? Math.floor(state.n_dec) : Math.ceil(state.n_dec);
-  	var form = formatterFunction(",." + (n_dec > 0 ? n_dec : "0") + "f");
-  	var decimal = formatterFunction.decimal;
-  	var thousands = formatterFunction.thousands;
-  	var strip_zeros_regex = (state.strip_zeros && n_dec > 0) ? new RegExp("\\" + decimal + "?0+$") : null;
-  	var may_strip_separator = state.strip_separator && thousands;
-  	var neg_sign = state.negative_sign;
-  	var transform = getTransformFunction(state);
-
-  	return function(val) {
-  		var num = n_dec >= 0 ? transform(val) : round(transform(val), n_dec);
-  		var is_negative = num < 0;
-  		var abs_num = Math.abs(num);
-  		var strip_separator = may_strip_separator && thousands && abs_num >= 1000 && abs_num < 10000;
-  		var num_string = form(abs_num);
-  		if (strip_zeros_regex) num_string = num_string.replace(strip_zeros_regex, "");
-  		if (strip_separator) num_string = num_string.replace(thousands, "");
-  		if (!is_negative || neg_sign === "none") return state.prefix + num_string + state.suffix;
-  		if (neg_sign === "-$nk") return "-" + state.prefix + num_string + state.suffix;
-  		if (neg_sign === "$-nk") return state.prefix + "-" + num_string + state.suffix;
-  		if (neg_sign === "($nk)") return "(" + state.prefix + num_string + state.suffix + ")";
-  		return state.prefix + "(" + num_string + ")" + state.suffix;
-  	};
-  }
-
-  function init$1(state) {
-  	for (var key in DEFAULTS) {
-  		if (state[key] === undefined) state[key] = DEFAULTS[key];
-  	}
-
-  	return function(formatterFunction) {
-  		return makeNumberFormatter(state, formatterFunction);
-  	};
+  function initFacets(state, container) {
+  	return new Facets(state);
   }
 
   var state = {
@@ -17347,20 +22840,46 @@ var template = (function (exports) {
       layout: {
           footer_note: `Flourish template by <a href="https://lpicci96.github.io/LucaPicci/" Luca Picci" target="_blank">Luca Picci</a>`,
       },
-      colors: {}, // color module state properties
+      // color module state properties
+      colors: {
+          jitter_shade: true, // custom property to jitter shade
+          jitter_amount: 0.1, // amount to jitter shade by (0 to 1)
+      },
       popup: {}, // popup module state properties
 
       localization: {}, // localization module state properties
       number_format: {}, // number format module state properties
+
+      // UI controls state properties
+      controls_style: {},
+      button_style: {},
+      dropdown_style: {},
+      slider_style: {},
+
+      // Controls state properties
+      controls_container: {},
+      filter: {
+          control_type: "buttons"
+      },
+
+      facets: {}, // facet module state properties
   };
 
-  var layout = init$5(state.layout);
-  var colors = init$4(state.colors);
+  var layout = init$6(state.layout);
+  var colors = init$5(state.colors);
   var legend_container = createLegendContainer(state.legend_container);
   var legend_categorical = createDiscreteColorLegend(state.legend_categorical);
   var popup = createInfoPopup(state.popup);
-  var localization = init$2(state.localization);
-  var number_format = init$1(state.number_format);
+  var localization = init$3(state.localization);
+  var number_format = init$2(state.number_format);
+
+  var controlsStyle = createGeneralControlsStyle(state.controls_style, ".fl-control");
+  var buttonStyle = createButtonStyle(state.button_style, ".fl-control-buttons");
+  var dropdownStyle = createDropdownStyle(state.dropdown_style, ".fl-control-dropdown");
+  var sliderStyle = createSliderStyle(state.slider_style, ".fl-control-slider");
+  var controls_container = createControlsContainer(state.controls_container);
+  var filter_control = createControls(state.filter);
+  var facets = initFacets(state.facets);
 
   var data = {};
 
@@ -18400,7 +23919,7 @@ var template = (function (exports) {
     var color = gamma(y);
 
     function rgb(start, end) {
-      var r = color((start = rgb$3(start)).r, (end = rgb$3(end)).r),
+      var r = color((start = rgb$4(start)).r, (end = rgb$4(end)).r),
           g = color(start.g, end.g),
           b = color(start.b, end.b),
           opacity = nogamma(start.opacity, end.opacity);
@@ -18976,8 +24495,8 @@ var template = (function (exports) {
   function interpolate(a, b) {
     var c;
     return (typeof b === "number" ? interpolateNumber
-        : b instanceof color$3 ? interpolateRgb
-        : (c = color$3(b)) ? (b = c, interpolateRgb)
+        : b instanceof color$4 ? interpolateRgb
+        : (c = color$4(b)) ? (b = c, interpolateRgb)
         : interpolateString)(a, b);
   }
 
@@ -22149,6 +27668,13 @@ var template = (function (exports) {
     return _voronoiTreemap;
   }
 
+  /**
+   * Generate a centered square clipping polygon that fits within the
+   * given dimensions, using the shorter side as the square's edge length.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Polygon vertices (counterclockwise).
+   */
   function squareClip(height, width) {
       const side = Math.min(height, width);
       const offsetX = (width - side) / 2;
@@ -22156,11 +27682,25 @@ var template = (function (exports) {
       return [[offsetX, offsetY], [offsetX, offsetY + side], [offsetX + side, offsetY + side], [offsetX + side, offsetY]];
   }
 
+  /**
+   * Generate a rectangular clipping polygon spanning the full available area.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Polygon vertices (counterclockwise).
+   */
   function rectangularClip(height, width) {
       // Clipping polygon (counterclockwise rectangle)
       return [[0, 0], [0, height], [width, height], [width, 0]];
   }
 
+  /**
+   * Generate a regular n-sided polygon centered and scaled to fit within
+   * the given dimensions. The first vertex is placed at the top.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @param {number} nSides - Number of polygon sides.
+   * @returns {Array<number[]>} Polygon vertices.
+   */
   function regularPolygonClip(height, width, nSides) {
       // Generate unit polygon (r=1) centered at origin, first vertex at top
       const unitPoints = [];
@@ -22186,26 +27726,65 @@ var template = (function (exports) {
       ]);
   }
 
+  /**
+   * Approximate a circle using a 64-sided regular polygon.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Polygon vertices.
+   */
   function circularClip(height, width) {
       return regularPolygonClip(height, width, 64);
   }
 
+  /**
+   * Generate an equilateral triangle clipping polygon.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Polygon vertices.
+   */
   function triangleClip(height, width) {
       return regularPolygonClip(height, width, 3);
   }
 
+  /**
+   * Generate a regular pentagon clipping polygon.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Polygon vertices.
+   */
   function pentagonClip(height, width) {
       return regularPolygonClip(height, width, 5);
   }
 
+  /**
+   * Generate a regular hexagon clipping polygon.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Polygon vertices.
+   */
   function hexagonClip(height, width) {
       return regularPolygonClip(height, width, 6);
   }
 
+  /**
+   * Generate a diamond (4-sided regular polygon / rotated square) clipping polygon.
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Polygon vertices.
+   */
   function diamondClip(height, width) {
       return regularPolygonClip(height, width, 4);
   }
 
+  /**
+   * Return a clipping polygon for the requested shape, scaled to fit the
+   * given dimensions.
+   * @param {string} shape - Shape identifier (square, rectangle, circle, triangle, pentagon, hexagon, diamond).
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   * @returns {Array<number[]>} Clipping polygon vertices.
+   * @throws {Error} If the shape is not recognised.
+   */
   function clipVoronoi(shape, height, width) {
 
       if (shape === "square") {
@@ -22227,8 +27806,12 @@ var template = (function (exports) {
       }
   }
 
-  // Simple seeded PRNG (mulberry32) to keep layout stable across redraws
-
+  /**
+   * Create a seeded pseudo-random number generator (mulberry32).
+   * Keeps the Voronoi layout stable across redraws for a given seed.
+   * @param {number} seed - Integer seed value.
+   * @returns {Function} PRNG function returning values in [0, 1).
+   */
   function seedrandom(seed) {
       return function() {
           seed |= 0; seed = seed + 0x6D2B79F5 | 0;
@@ -22238,7 +27821,25 @@ var template = (function (exports) {
       };
   }
 
+  /**
+   * Extract unique filter option values from data rows.
+   * Returns an empty array when no `filter` column is present.
+   * @param {Array<object>} rows - Raw data rows.
+   * @returns {string[]} Unique, non-empty filter values.
+   */
+  function getFilterOptions(rows) {
+      if (!rows || rows.length === 0) return [];
+      if (!rows[0].filter) return [];
+      return [...new Set(rows.map(d => d.filter).filter(Boolean))];
+  }
 
+  /**
+   * Convert flat data rows into a d3-hierarchy with summed values.
+   * Supports single-level (`firstLevel`) and two-level (`firstLevel` +
+   * `secondLevel`) hierarchies.
+   * @param {Array<object>|{data: Array<object>}} data - Input data (array or object with `.data`).
+   * @returns {object|null} d3-hierarchy root node, or null if input is empty.
+   */
   function processData(data) {
       const rows = Array.isArray(data) ? data : data.data;
       if (!rows || rows.length === 0) return null;
@@ -22279,13 +27880,90 @@ var template = (function (exports) {
           .sum(d => d.value);
   }
 
+  /**
+   * Compute a deterministic 32-bit integer hash from a string.
+   * Used to produce stable per-leaf jitter values.
+   * @param {string} str - Input string to hash.
+   * @returns {number} 32-bit integer hash.
+   */
+  function simpleHash(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+          hash = ((hash << 5) - hash) + str.charCodeAt(i);
+          hash |= 0;
+      }
+      return hash;
+  }
+
+  /**
+   * Shift the lightness of a base color by a deterministic amount derived
+   * from the leaf name, producing a subtle per-cell color variation.
+   * @param {string} baseColor - CSS color string (hex, rgb, etc.).
+   * @param {string} leafName - Leaf identifier used to seed the jitter.
+   * @param {number} amount - Maximum lightness shift (0–1 range).
+   * @returns {string} Hex color string with adjusted lightness.
+   */
+  function jitterColor(baseColor, leafName, amount) {
+      if (!amount || Number(amount) === 0) return baseColor;
+      const hsl = hsl$5(baseColor);
+      // Use a deterministic hash to get a value centered between -0.5 and 0.5
+      const raw = Math.abs(simpleHash(leafName));
+      const hashVal = (raw % 1000) / 1000 - 0.5;
+      hsl.l = Math.max(0, Math.min(1, hsl.l + hashVal * amount));
+      return hsl.formatHex();
+  }
+
+  /**
+   * Resolve the fill color for a single Voronoi cell.
+   * Uses `color_category` when present, otherwise falls back to the
+   * first-level parent name. Optionally applies lightness jitter to
+   * second-level leaves that don't use `color_category`.
+   * @param {object} leaf - d3-hierarchy leaf node.
+   * @param {object} root - d3-hierarchy root node.
+   * @param {object} colors - Flourish color scale instance.
+   * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
+   * @returns {string} Resolved hex color string.
+   */
+  function getCellColor(leaf, root, colors, colorSettings) {
+      let baseColor;
+      if (leaf.data._row && leaf.data._row.color_category != null) {
+          baseColor = colors.getColor(String(leaf.data._row.color_category));
+      } else {
+          const firstLevel = leaf.parent === root ? leaf.data.name : leaf.parent.data.name;
+          baseColor = colors.getColor(firstLevel);
+      }
+
+      // Apply jitter to second-level leaves, but not when color_category is used
+      const hasColorCategory = leaf.data._row && leaf.data._row.color_category != null;
+      if (colorSettings && colorSettings.jitter_shade && leaf.parent !== root && !hasColorCategory) {
+          return jitterColor(baseColor, leaf.data.name, colorSettings.jitter_amount != null ? colorSettings.jitter_amount : 0.1);
+      }
+      return baseColor;
+  }
+
+  /**
+   * Configure a Flourish popup instance with column names and number
+   * formatters derived from the current set of leaves.
+   * @param {object} popup - Flourish popup instance.
+   * @param {Array} leaves - Array of d3-hierarchy leaf nodes.
+   * @param {object} localization - Flourish localization instance.
+   * @param {Function} number_format - Flourish number_format factory.
+   */
   function configurePopup(popup, leaves, localization, number_format) {
       const sampleRow = leaves[0] && leaves[0].data._row;
       if (!sampleRow) return;
 
+      const nameMap = {
+          firstLevel: "First level",
+          secondLevel: "Second level",
+          values: "Values",
+          filter: "Filter",
+          color_category: "Color category",
+      };
+
       const columnNames = {};
       Object.keys(sampleRow).forEach(key => {
-          columnNames[key] = key;
+          columnNames[key] = nameMap[key] || key;
       });
 
       const formatter = number_format(localization.getFormatterFunction());
@@ -22295,6 +27973,15 @@ var template = (function (exports) {
       popup.setFormatters(formatters);
   }
 
+  /**
+   * Extract the raw data row from a hierarchy leaf for popup display.
+   * @param {object} leaf - d3-hierarchy leaf node.
+   * @returns {object} Shallow copy of the leaf's bound data row.
+   */
+  function getPopupData(leaf) {
+      return { ...leaf.data._row };
+  }
+
   // TODO: Additional advanced settings - handling small values
   // TODO: Aggregation of values
   // TODO: Align chart left, center or right within section
@@ -22302,6 +27989,14 @@ var template = (function (exports) {
 
   const _voronoiTreemap = voronoiTreemap();
 
+  /**
+   * Run the d3-voronoi-treemap layout algorithm on the given hierarchy.
+   * Mutates each node's `polygon` property in place.
+   * @param {object} hierarchy - d3-hierarchy root node with summed values.
+   * @param {object} voronoi_settings - Layout settings (clip_type, convergence_ratio, max_iterations, seed).
+   * @param {number} height - Available height in pixels.
+   * @param {number} width - Available width in pixels.
+   */
   function computeLayout(hierarchy, voronoi_settings, height, width) {
       const clip = clipVoronoi(voronoi_settings.clip_type, height, width);
 
@@ -22314,23 +28009,30 @@ var template = (function (exports) {
       _voronoiTreemap(hierarchy);
   }
 
+  /**
+   * Convert a polygon (array of [x, y] points) to an SVG path `d` string.
+   * @param {Array<number[]>} polygon - Array of coordinate pairs.
+   * @returns {string} SVG path data string.
+   */
   function polygonPath(polygon) {
       return "M" + polygon.map(pt => pt[0] + "," + pt[1]).join("L") + "Z";
   }
 
-  function getCellColor(leaf, root, colors) {
-      const firstLevel = leaf.parent === root ? leaf.data.name : leaf.parent.data.name;
-      return colors.getColor(firstLevel);
-  }
+  /**
+   * Render (or update) Voronoi cells inside the given SVG container element.
+   * Binds leaf data, sets fill colors, and wires popup interactions.
+   * @param {SVGElement} container - Target SVG DOM element (svg or g).
+   * @param {Array} leaves - Filtered hierarchy leaves with valid polygons.
+   * @param {object} root - d3-hierarchy root node.
+   * @param {object} voronoi_settings - Border color/size settings.
+   * @param {object} colors - Flourish color scale instance.
+   * @param {object} popup - Flourish popup instance.
+   * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
+   */
+  function renderCells(container, leaves, root, voronoi_settings, colors, popup, colorSettings) {
+      const sel = select(container);
 
-  function getPopupData(leaf) {
-      return { ...leaf.data._row };
-  }
-
-  function renderCells(svg, leaves, root, voronoi_settings, colors, popup) {
-      const svgSel = select(svg);
-
-      let g = svgSel.selectAll("g.cells").data([null]);
+      let g = sel.selectAll("g.cells").data([null]);
       g = g.enter().append("g").attr("class", "cells").merge(g);
 
       popup.clickout();
@@ -22339,7 +28041,7 @@ var template = (function (exports) {
           .data(leaves, d => d.data.name)
           .join("path")
           .attr("d", d => polygonPath(d.polygon))
-          .attr("fill", d => getCellColor(d, root, colors))
+          .attr("fill", d => getCellColor(d, root, colors, colorSettings))
           .attr("stroke", voronoi_settings.border_color)
           .attr("stroke-width", voronoi_settings.border_size)
           .on("mouseover", function(event, d) {
@@ -22354,71 +28056,192 @@ var template = (function (exports) {
               popup.click(this, getPopupData(d), d.data.name);
           });
 
-      svgSel.on("click", function() {
+      sel.on("click", function() {
+          popup.clickout();
+      });
+
+      select(document).on("click.voronoi-popup", function() {
           popup.clickout();
       });
   }
 
-  function drawVoronoi(svg, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format) {
+  /**
+   * Main entry point: compute the Voronoi treemap layout, configure popups,
+   * and render cells into the given SVG container.
+   * @param {SVGElement} container - Target SVG DOM element (svg or g).
+   * @param {object} hierarchy - d3-hierarchy root node with summed values.
+   * @param {number} width - Available width in pixels.
+   * @param {number} height - Available height in pixels.
+   * @param {object} voronoi_settings - Layout and border settings.
+   * @param {object} colors - Flourish color scale instance.
+   * @param {object} popup - Flourish popup instance.
+   * @param {object} localization - Flourish localization instance.
+   * @param {Function} number_format - Flourish number_format factory.
+   * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
+   */
+  function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings) {
       if (!hierarchy) return;
 
       computeLayout(hierarchy, voronoi_settings, height, width);
 
-      const firstLevelNames = (hierarchy.children || []).map(d => d.data.name);
-      colors.updateColorScale(firstLevelNames);
-
       const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
+
       configurePopup(popup, leaves, localization, number_format);
-      renderCells(svg, leaves, hierarchy, voronoi_settings, colors, popup);
+      renderCells(container, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings);
   }
 
   function update() {
-      const hierarchy = processData(data);
-      if (!hierarchy) {
+      const rows = Array.isArray(data) ? data : data.data;
+
+      // Update filter control with unique values from the filter column
+      const filterOptions = getFilterOptions(rows);
+      const hasFilter = filterOptions.length > 0;
+
+      if (hasFilter) {
+          filter_control.options(filterOptions);
+      }
+
+      // Update control styles before container update
+      updateControlStyles();
+      controls_container.update();
+
+      // Get the currently selected filter value
+      const selectedFilter = hasFilter ? filter_control.value() : null;
+
+      // Filter the data based on the selected value
+      const filteredRows = hasFilter && selectedFilter
+          ? rows.filter(d => d.filter === selectedFilter)
+          : rows;
+
+      // Group data by facet value
+      const facetValues = [...new Set(filteredRows.map(d => d.facet))];
+      const hasFacets = facetValues.length > 0 && !(facetValues.length === 1 && (facetValues[0] == null || facetValues[0] === ""));
+      const facetKeys = hasFacets ? facetValues.filter(v => v != null && v !== "") : [""];
+
+      const groupedByFacet = new Map();
+      for (const key of facetKeys) {
+          groupedByFacet.set(key, []);
+      }
+      for (const row of filteredRows) {
+          const key = hasFacets ? (row.facet || "") : "";
+          if (groupedByFacet.has(key)) {
+              groupedByFacet.get(key).push(row);
+          }
+      }
+
+      // Process each facet group into a hierarchy
+      const facetHierarchies = new Map();
+      for (const [key, groupRows] of groupedByFacet) {
+          if (groupRows.length === 0) continue;
+          const hierarchy = processData({ data: groupRows });
+          if (hierarchy) facetHierarchies.set(key, hierarchy);
+      }
+
+      if (facetHierarchies.size === 0) {
           layout.update();
           sizeSvg();
           return;
       }
 
-      // Update legend before layout so layout allocates space for it
-      updateLegend(hierarchy);
+      // Compute global color domain across all facets
+      const allLeaves = [];
+      const allHierarchies = [...facetHierarchies.values()];
+      for (const h of allHierarchies) {
+          allLeaves.push(...h.leaves());
+      }
+      // Check if any leaf uses color_category
+      const hasColorCategory = allLeaves.some(d => d.data._row && d.data._row.color_category != null);
+      let globalColorDomain;
+      if (hasColorCategory) {
+          globalColorDomain = [...new Set(allLeaves.map(d => String(d.data._row.color_category)))];
+      } else {
+          // Collect first-level children names from all hierarchies
+          const names = new Set();
+          for (const h of allHierarchies) {
+              (h.children || []).forEach(d => names.add(d.data.name));
+          }
+          globalColorDomain = [...names];
+      }
+
+      // Update legend with global domain before layout so layout allocates space for it
+      updateLegend(globalColorDomain);
       layout.update();
-      sizeSvg();
 
       const width = layout.getPrimaryWidth();
       const height = layout.getPrimaryHeight();
-      drawVoronoi(svg, hierarchy, width, height, state.voronoi_settings, colors, popup, localization, number_format);
+
+      // Build facet data array
+      const facetData = [...facetHierarchies.keys()].map(key => ({
+          name: key,
+          hierarchy: facetHierarchies.get(key)
+      }));
+
+      // Drive the facets grid
+      facets
+          .data(facetData, d => d.name)
+          .width(width)
+          .height(height)
+          .hideTitle("")
+          .update(function(facet) {
+              const item = facet.data;
+              if (!item || !item.hierarchy) return;
+              drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors);
+          });
+
+      sizeSvg();
       popup.update();
   }
 
   let svg;
+  let chartGroup;
 
   function sizeSvg() {
       const width = layout.getPrimaryWidth();
-      const height = layout.getPrimaryHeight();
+      const computedHeight = facets.height();
+      const height = computedHeight || layout.getPrimaryHeight();
       svg.setAttribute("width", width);
       svg.setAttribute("height", height);
       svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
   }
 
-  function updateLegend(hierarchy) {
+  function updateLegend(colorDomain) {
       const legendSection = layout.getSection("legend");
-      const firstLevelNames = (hierarchy.children || []).map(d => d.data.name);
-      colors.updateColorScale(firstLevelNames);
-      legend_categorical.data(firstLevelNames, (v) => colors.getColor(v));
+      colors.updateColorScale(colorDomain);
+      legend_categorical.data(colorDomain, (v) => colors.getColor(v));
       legend_container.update();
       legendSection.style.display = state.legend_categorical.show_legend ? "" : "none";
+  }
+
+  function updateControlStyles() {
+      controlsStyle.update();
+      buttonStyle.update();
+      dropdownStyle.update();
+      sliderStyle.update();
   }
 
   function draw() {
       const container = layout.getSection("primary");
       const legendSection = layout.getSection("legend");
+      const controlsSection = layout.getSection("controls");
 
       // Append legend to DOM
       legend_container.appendTo(legendSection).add(legend_categorical);
 
+      // Append controls to DOM
+      controls_container
+          .appendTo(controlsSection)
+          .add(filter_control);
+
+      filter_control.on("change", function() { update(); });
+
       svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       container.appendChild(svg);
+
+      chartGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      chartGroup.setAttribute("class", "chart-container");
+      svg.appendChild(chartGroup);
+
+      facets.appendTo(chartGroup);
 
       update();
       window.onresize = function () { update(); };

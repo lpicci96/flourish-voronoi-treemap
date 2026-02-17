@@ -85,9 +85,28 @@ settings:
     step: 0.001
     show_if: voronoi_settings.advanced_settings
 
+  - Grid of charts
+  - property: facets
+    import: "@flourish/facets"
+    show_if:
+      data.data.facet: true
+
   - Colours
   - property: colors
     import: "@flourish/colors"
+  - property: colors.jitter_shade
+    name: Jitter shade
+    description: Jitter the shade of the second level hierarchy. This only applies if a second level column is provided and a colour category column is not provided. Jittering the shade can help to distinguish each polygon in the level and add visual appeal to the chart, but it may also make the colours less consistent across the hierarchy.
+    type: boolean
+    new_section: Advanced
+  - property: colors.jitter_amount
+    name: Jitter amount
+    description: The amount by which to jitter the shade of the second level hierarchy. The recommended value is 0.1
+    type: number
+    min: 0
+    max: 0.5
+    step: 0.05
+    show_if: colors.jitter_shade
 
   - Legend
   - property: legend_container
@@ -108,6 +127,20 @@ settings:
   # imported modules
   - property: layout
     import: "@flourish/layout"
+
+  - Controls
+  - property: controls_style
+    import: "@flourish/ui-styles/controls-style"
+  - property: dropdown_style
+    import: "@flourish/ui-styles/dropdown-style"
+  - property: button_style
+    import: "@flourish/ui-styles/button-style"
+  - property: slider_style
+    import: "@flourish/ui-styles/slider-style"
+  - property: controls_container
+    import: "@flourish/controls/container"
+  - property: filter
+    import: "@flourish/controls"
 
 
 data:
@@ -135,5 +168,42 @@ data:
     column: "Data::C"
     data_type:
       - string
+
+  - key: filter
+    name: Filter
+    type: column
+    dataset: data
+    data_type:
+      - string
+    optional: true
+
+  - key: color_category
+    name: Color category
+    description: An optional string column that specifies the category by which to color the Voronoi polygons. If not provided, the first level of the hierarchy will be used for coloring.
+    type: column
+    dataset: data
+    data_type:
+      - string
+    optional: true
+
+  - key: facet
+    name: Grid of charts
+    type: column
+    dataset: data
+    data_type:
+      - string
+    optional: true
+
+  - key: custom_tooltip
+    name: Custom tooltip
+    description: Custom tooltip content. This column can contain a number or string, including HTML. It will be displayed on the popup when hovering or in the panel when clicked. Recommended use is to include HTML string in combination with setting custom popups in the settings.
+    type: column
+    dataset: data
+    data_type:
+      - string
+      - number
+    optional: true
+
+
 
 

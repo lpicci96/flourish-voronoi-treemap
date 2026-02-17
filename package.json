@@ -1,12 +1,15 @@
 {
   "name": "flourish-voronoi-treemap",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A Voronoi treemap template for Flourish",
   "main": "template.js",
   "author": "Luca Picci",
   "license": "MIT",
   "keywords": [
-    "flourish", "voronoi", "treemap", "hierarchy"
+    "flourish",
+    "voronoi",
+    "treemap",
+    "hierarchy"
   ],
   "scripts": {
     "build": "rollup -c",
@@ -14,11 +17,14 @@
   },
   "dependencies": {
     "@flourish/colors": "^8.0.0",
+    "@flourish/controls": "^9.0.1",
+    "@flourish/facets": "^4.2.1",
     "@flourish/info-popup": "^8.2.0",
     "@flourish/layout": "^8.7.3",
     "@flourish/legend": "^8.1.0",
     "@flourish/number-formatter": "^2.0.0",
     "@flourish/number-localization": "^0.0.1",
+    "@flourish/ui-styles": "^6.0.1",
     "d3": "^7.9.0",
     "d3-voronoi-treemap": "^1.1.2",
     "less": "^3.0.1",

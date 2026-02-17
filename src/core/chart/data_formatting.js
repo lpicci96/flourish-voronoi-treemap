@@ -1,6 +1,11 @@
-// Simple seeded PRNG (mulberry32) to keep layout stable across redraws
 import * as d3 from "d3";
 
+/**
+ * Create a seeded pseudo-random number generator (mulberry32).
+ * Keeps the Voronoi layout stable across redraws for a given seed.
+ * @param {number} seed - Integer seed value.
+ * @returns {Function} PRNG function returning values in [0, 1).
+ */
 export function seedrandom(seed) {
     return function() {
         seed |= 0; seed = seed + 0x6D2B79F5 | 0;
@@ -10,7 +15,25 @@ export function seedrandom(seed) {
     };
 }
 
+/**
+ * Extract unique filter option values from data rows.
+ * Returns an empty array when no `filter` column is present.
+ * @param {Array<object>} rows - Raw data rows.
+ * @returns {string[]} Unique, non-empty filter values.
+ */
+export function getFilterOptions(rows) {
+    if (!rows || rows.length === 0) return [];
+    if (!rows[0].filter) return [];
+    return [...new Set(rows.map(d => d.filter).filter(Boolean))];
+}
 
+/**
+ * Convert flat data rows into a d3-hierarchy with summed values.
+ * Supports single-level (`firstLevel`) and two-level (`firstLevel` +
+ * `secondLevel`) hierarchies.
+ * @param {Array<object>|{data: Array<object>}} data - Input data (array or object with `.data`).
+ * @returns {object|null} d3-hierarchy root node, or null if input is empty.
+ */
 export function processData(data) {
     const rows = Array.isArray(data) ? data : data.data;
     if (!rows || rows.length === 0) return null;
@@ -49,20 +72,4 @@ export function processData(data) {
 
     return d3.hierarchy(rootData)
         .sum(d => d.value);
-}
-
-export function configurePopup(popup, leaves, localization, number_format) {
-    const sampleRow = leaves[0] && leaves[0].data._row;
-    if (!sampleRow) return;
-
-    const columnNames = {};
-    Object.keys(sampleRow).forEach(key => {
-        columnNames[key] = key;
-    });
-
-    const formatter = number_format(localization.getFormatterFunction());
-    const formatters = { values: formatter };
-
-    popup.setColumnNames(columnNames);
-    popup.setFormatters(formatters);
 }
