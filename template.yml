@@ -188,7 +188,6 @@ data:
     name: Grid of charts
     type: column
     dataset: data
-    column: 'Data::B'
     data_type:
       - string
     optional: true
