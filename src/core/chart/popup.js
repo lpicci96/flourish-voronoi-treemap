@@ -10,9 +10,17 @@ export function configurePopup(popup, leaves, localization, number_format) {
     const sampleRow = leaves[0] && leaves[0].data._row;
     if (!sampleRow) return;
 
+    const nameMap = {
+        firstLevel: "First level",
+        secondLevel: "Second level",
+        values: "Values",
+        filter: "Filter",
+        color_category: "Color category",
+    };
+
     const columnNames = {};
     Object.keys(sampleRow).forEach(key => {
-        columnNames[key] = key;
+        columnNames[key] = nameMap[key] || key;
     });
 
     const formatter = number_format(localization.getFormatterFunction());
