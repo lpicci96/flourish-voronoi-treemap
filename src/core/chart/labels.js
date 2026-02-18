@@ -82,6 +82,6 @@ export function renderLabels(container, leaves, labelSettings) {
                 .attr("x", cx)
                 .attr("y", cy)
                 .attr("font-size", fontSize + "em")
-                .attr("fill", "#333");
+                .attr("fill", labelSettings.font_color);
         });
 }

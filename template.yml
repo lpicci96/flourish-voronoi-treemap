@@ -137,6 +137,12 @@ settings:
     choices:
         - "normal"
         - "bold"
+    width: half
+  - property: labels.font_color
+    name: Font color
+    type: color
+    show_if:
+      labels.show_labels: true
 
   - Colours
   - property: colors

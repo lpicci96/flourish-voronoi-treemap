@@ -22885,7 +22885,8 @@ var template = (function (exports) {
           font_size: 1,
           min_font_size: 0.4,
           max_font_size: 1.2,
-          font_weight: "normal"
+          font_weight: "normal",
+          font_color: "#000000",
       }
 
 
@@ -31582,7 +31583,7 @@ Example valid ways of supplying a shape would be:
                   .attr("x", cx)
                   .attr("y", cy)
                   .attr("font-size", fontSize + "em")
-                  .attr("fill", "#333");
+                  .attr("fill", labelSettings.font_color);
           });
   }
 
