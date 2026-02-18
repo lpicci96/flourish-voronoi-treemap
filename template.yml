@@ -129,6 +129,14 @@ settings:
     show_if:
       labels.size_proportionally: true
       labels.show_labels: true
+  - property: labels.font_weight
+    name: Font weight
+    type: string
+    show_if:
+      labels.show_labels: true
+    choices:
+        - "normal"
+        - "bold"
 
   - Colours
   - property: colors

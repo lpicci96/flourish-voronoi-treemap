@@ -52,6 +52,7 @@ export default {
         font_size: 1,
         min_font_size: 0.4,
         max_font_size: 1.2,
+        font_weight: "normal"
     }
 
 

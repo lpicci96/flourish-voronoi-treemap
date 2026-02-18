@@ -72,6 +72,7 @@ export function renderLabels(container, leaves, labelSettings) {
 
     enter.merge(labels)
         .text(d => d.data.name)
+        .attr("font-weight", labelSettings.font_weight)
         .each(function(d, i) {
             const [cx, cy] = polygonCentroid(d.polygon);
             const fontSize = sizeProportionally

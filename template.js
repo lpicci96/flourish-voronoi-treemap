@@ -22885,6 +22885,7 @@ var template = (function (exports) {
           font_size: 1,
           min_font_size: 0.4,
           max_font_size: 1.2,
+          font_weight: "normal"
       }
 
 
@@ -31571,6 +31572,7 @@ Example valid ways of supplying a shape would be:
 
       enter.merge(labels)
           .text(d => d.data.name)
+          .attr("font-weight", labelSettings.font_weight)
           .each(function(d, i) {
               const [cx, cy] = polygonCentroid(d.polygon);
               const fontSize = sizeProportionally
