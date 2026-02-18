@@ -59,7 +59,8 @@ export default {
         hide_margin: 0.1,
         show_outline: false,
         outline_color: "#ffffff",
-        outline_size: 0.2
+        outline_size: 0.2,
+        wrap_labels: true
     }
 
 

@@ -52,6 +52,68 @@ function polygonWidthAtY(polygon, y) {
     return Math.max(...intersections) - Math.min(...intersections);
 }
 
+const LINE_HEIGHT = 1.2; // line height in em units
+
+/**
+ * Measure the pixel width of a string by temporarily setting it on a text element.
+ * @param {SVGTextElement} textNode - The SVG text element to use for measurement.
+ * @param {string} str - The string to measure.
+ * @returns {number} The computed text length in pixels.
+ */
+function measureText(textNode, str) {
+    textNode.textContent = str;
+    return textNode.getComputedTextLength();
+}
+
+/**
+ * Wrap text into lines that fit within the polygon at each line's y-position.
+ * @param {SVGTextElement} textNode - The SVG text element (used for measuring).
+ * @param {string} text - The full label text.
+ * @param {Array<number[]>} polygon - The polygon coordinates.
+ * @param {number} cx - Centroid x.
+ * @param {number} cy - Centroid y.
+ * @param {number} lineHeightPx - Line height in pixels.
+ * @param {number} margin - Margin fraction (0–1) to shrink available width.
+ * @returns {string[]} Array of line strings.
+ */
+function wrapText(textNode, text, polygon, cx, cy, lineHeightPx, margin) {
+    const words = text.split(/\s+/);
+    if (words.length <= 1) return [text];
+
+    // Try wrapping into increasing number of lines to find the best fit
+    const marginFactor = 1 - (margin || 0);
+
+    // Greedy line-breaking: build lines that fit the available width at each y-position
+    // First estimate how many lines we might need based on single-line overflow
+    const singleLineWidth = measureText(textNode, text);
+    const centroidWidth = polygonWidthAtY(polygon, cy) * marginFactor;
+    if (singleLineWidth <= centroidWidth) return [text];
+
+    const lines = [];
+    let currentLine = words[0];
+
+    for (let w = 1; w < words.length; w++) {
+        const testLine = currentLine + " " + words[w];
+        const testWidth = measureText(textNode, testLine);
+
+        // Estimate y-position for the current line to get available width
+        const numLinesSoFar = lines.length + 1;
+        const estimatedTotalLines = Math.ceil(words.length / Math.max(1, w / numLinesSoFar));
+        const lineY = cy + (lines.length - (estimatedTotalLines - 1) / 2) * lineHeightPx;
+        const availableWidth = polygonWidthAtY(polygon, lineY) * marginFactor;
+
+        if (testWidth > availableWidth && availableWidth > 0) {
+            lines.push(currentLine);
+            currentLine = words[w];
+        } else {
+            currentLine = testLine;
+        }
+    }
+    lines.push(currentLine);
+
+    return lines;
+}
+
 /**
  * Render text labels for Voronoi treemap leaves.
  * @param {SVGElement} container - Target SVG DOM element.
@@ -86,6 +148,9 @@ export function renderLabels(container, leaves, labelSettings) {
         maxSize = mid;
     }
 
+    const shouldWrap = labelSettings.wrap_labels !== false;
+    const margin = labelSettings.hide_margin != null ? labelSettings.hide_margin : 0;
+
     const labels = g.selectAll("text")
         .data(leaves, d => d.data.name);
 
@@ -94,21 +159,19 @@ export function renderLabels(container, leaves, labelSettings) {
     const enter = labels.enter()
         .append("text")
         .attr("text-anchor", "middle")
-        .attr("dominant-baseline", "central")
         .attr("pointer-events", "none");
 
     enter.merge(labels)
-        .text(d => d.data.name)
         .attr("font-weight", labelSettings.font_weight)
         .each(function(d, i) {
             const [cx, cy] = polygonCentroid(d.polygon);
-            const fontSize = sizeProportionally
+            const fontSizeEm = sizeProportionally
                 ? minSize + (maxSize - minSize) * Math.sqrt(areas[i] / maxArea)
                 : (labelSettings.font_size || 0.8);
             const el = d3.select(this);
-            el.attr("x", cx)
-                .attr("y", cy)
-                .attr("font-size", fontSize + "em")
+
+            // Set font size first so measurements are accurate
+            el.attr("font-size", fontSizeEm + "em")
                 .attr("fill", labelSettings.font_color);
 
             // Apply text outline
@@ -125,15 +188,54 @@ export function renderLabels(container, leaves, labelSettings) {
                     .attr("paint-order", null);
             }
 
+            // Compute the pixel line height from the font size
+            // Get the actual computed font size in pixels for line height calculation
+            const computedStyle = window.getComputedStyle(this);
+            const fontSizePx = parseFloat(computedStyle.fontSize) || 12;
+            const lineHeightPx = fontSizePx * LINE_HEIGHT;
+
+            // Clear existing content
+            el.text(null).selectAll("tspan").remove();
+
+            // Determine lines (wrap or single)
+            let lines;
+            if (shouldWrap) {
+                // Temporarily set text for measurement
+                this.textContent = d.data.name;
+                lines = wrapText(this, d.data.name, d.polygon, cx, cy, lineHeightPx, margin);
+                this.textContent = "";
+            } else {
+                lines = [d.data.name];
+            }
+
+            // Compute y-offsets so the text block is vertically centered at the centroid
+            const totalHeight = (lines.length - 1) * lineHeightPx;
+            const startY = cy - totalHeight / 2;
+
+            // Create tspan for each line
+            lines.forEach(function(line, lineIndex) {
+                el.append("tspan")
+                    .attr("x", cx)
+                    .attr("y", startY + lineIndex * lineHeightPx)
+                    .attr("dominant-baseline", "central")
+                    .text(line);
+            });
+
             // Determine label visibility
             let visible = true;
             if (showList && showList.size > 0) {
                 visible = showList.has(d.data.name);
             } else if (labelSettings.hide_small_labels) {
-                const textWidth = this.getComputedTextLength();
-                const margin = labelSettings.hide_margin != null ? labelSettings.hide_margin : 0;
-                const availableWidth = polygonWidthAtY(d.polygon, cy) * (1 - margin);
-                visible = textWidth <= availableWidth;
+                const marginFactor = 1 - margin;
+                // Check if any line overflows its available width at that y-position
+                visible = lines.every(function(line, lineIndex) {
+                    const lineY = startY + lineIndex * lineHeightPx;
+                    const availableWidth = polygonWidthAtY(d.polygon, lineY) * marginFactor;
+                    // Measure the tspan for this line
+                    const tspan = el.selectAll("tspan").nodes()[lineIndex];
+                    const lineWidth = tspan ? tspan.getComputedTextLength() : 0;
+                    return lineWidth <= availableWidth;
+                });
             }
             el.attr("visibility", visible ? "visible" : "hidden");
         });
