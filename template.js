@@ -31628,7 +31628,7 @@ Example valid ways of supplying a shape would be:
    * @param {Array} leaves - Hierarchy leaves with valid polygons.
    * @param {object} labelSettings - Label settings ({ show_labels }).
    */
-  function renderLabels(container, leaves, labelSettings) {
+  function renderLabels(container, leaves, labelSettings, animation_duration) {
       const sel = select(container);
 
       if (!labelSettings || !labelSettings.show_labels) {
@@ -31658,18 +31658,28 @@ Example valid ways of supplying a shape would be:
 
       const shouldWrap = labelSettings.wrap_labels !== false;
       const margin = labelSettings.hide_margin != null ? labelSettings.hide_margin : 0;
+      const duration = animation_duration || 0;
 
       const labels = g.selectAll("text")
           .data(leaves, d => d.data.name);
 
+      // EXIT
       labels.exit().remove();
 
+      // ENTER
       const enter = labels.enter()
           .append("text")
           .attr("text-anchor", "middle")
           .attr("pointer-events", "none");
 
-      enter.merge(labels)
+      if (duration > 0) {
+          enter.attr("opacity", 0);
+      }
+
+      // ENTER + UPDATE
+      const merged = enter.merge(labels);
+
+      merged
           .attr("font-weight", labelSettings.font_weight)
           .each(function(d, i) {
               const [cx, cy] = polygonCentroid(d.polygon);
@@ -31677,6 +31687,11 @@ Example valid ways of supplying a shape would be:
                   ? minSize + (maxSize - minSize) * Math.sqrt(areas[i] / maxArea)
                   : (labelSettings.font_size || 0.8);
               const el = select(this);
+
+              // Store previous centroid for transitioning
+              const prevCx = el.attr("data-cx") != null ? +el.attr("data-cx") : cx;
+              const prevCy = el.attr("data-cy") != null ? +el.attr("data-cy") : cy;
+              el.attr("data-cx", cx).attr("data-cy", cy);
 
               // Set font size first so measurements are accurate
               el.attr("font-size", fontSizeEm + "em")
@@ -31697,7 +31712,6 @@ Example valid ways of supplying a shape would be:
               }
 
               // Compute the pixel line height from the font size
-              // Get the actual computed font size in pixels for line height calculation
               const computedStyle = window.getComputedStyle(this);
               const fontSizePx = parseFloat(computedStyle.fontSize) || 12;
               const lineHeightPx = fontSizePx * LINE_HEIGHT;
@@ -31708,7 +31722,6 @@ Example valid ways of supplying a shape would be:
               // Determine lines (wrap or single)
               let lines;
               if (shouldWrap) {
-                  // Temporarily set text for measurement
                   this.textContent = d.data.name;
                   lines = wrapText(this, d.data.name, d.polygon, cx, cy, lineHeightPx, margin);
                   this.textContent = "";
@@ -31720,32 +31733,61 @@ Example valid ways of supplying a shape would be:
               const totalHeight = (lines.length - 1) * lineHeightPx;
               const startY = cy - totalHeight / 2;
 
-              // Create tspan for each line
-              lines.forEach(function(line, lineIndex) {
-                  el.append("tspan")
-                      .attr("x", cx)
-                      .attr("y", startY + lineIndex * lineHeightPx)
-                      .attr("dominant-baseline", "central")
-                      .text(line);
-              });
-
               // Determine label visibility
               let visible = true;
               if (showList && showList.size > 0) {
                   visible = showList.has(d.data.name);
               } else if (labelSettings.hide_small_labels) {
                   const marginFactor = 1 - margin;
-                  // Check if any line overflows its available width at that y-position
                   visible = lines.every(function(line, lineIndex) {
                       const lineY = startY + lineIndex * lineHeightPx;
                       const availableWidth = polygonWidthAtY(d.polygon, lineY) * marginFactor;
-                      // Measure the tspan for this line
-                      const tspan = el.selectAll("tspan").nodes()[lineIndex];
-                      const lineWidth = tspan ? tspan.getComputedTextLength() : 0;
+                      const tspanTemp = el.append("tspan").text(line);
+                      const lineWidth = tspanTemp.node().getComputedTextLength();
+                      tspanTemp.remove();
                       return lineWidth <= availableWidth;
                   });
               }
               el.attr("visibility", visible ? "visible" : "hidden");
+
+              if (duration > 0 && (prevCx !== cx || prevCy !== cy)) {
+                  // Create tspans at old positions first
+                  const prevStartY = prevCy - totalHeight / 2;
+                  lines.forEach(function(line, lineIndex) {
+                      el.append("tspan")
+                          .attr("x", prevCx)
+                          .attr("y", prevStartY + lineIndex * lineHeightPx)
+                          .attr("dominant-baseline", "central")
+                          .text(line);
+                  });
+
+                  // Transition each tspan to new position
+                  el.selectAll("tspan").each(function(_, lineIndex) {
+                      select(this)
+                          .transition()
+                          .duration(duration)
+                          .ease(cubicInOut)
+                          .attr("x", cx)
+                          .attr("y", startY + lineIndex * lineHeightPx);
+                  });
+
+                  // Fade in entering labels
+                  el.transition()
+                      .duration(duration)
+                      .ease(cubicInOut)
+                      .attr("opacity", 1);
+              } else {
+                  // No animation: set positions immediately
+                  lines.forEach(function(line, lineIndex) {
+                      el.append("tspan")
+                          .attr("x", cx)
+                          .attr("y", startY + lineIndex * lineHeightPx)
+                          .attr("dominant-baseline", "central")
+                          .text(line);
+                  });
+
+                  el.attr("opacity", 1);
+              }
           });
   }
 
@@ -31863,7 +31905,7 @@ Example valid ways of supplying a shape would be:
 
       configurePopup(popup, leaves, localization, number_format);
       renderCells(container, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration);
-      renderLabels(container, leaves, labelSettings);
+      renderLabels(container, leaves, labelSettings, animation_duration);
   }
 
   function update() {

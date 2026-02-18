@@ -122,5 +122,5 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
 
     configurePopup(popup, leaves, localization, number_format);
     renderCells(container, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration);
-    renderLabels(container, leaves, labelSettings);
+    renderLabels(container, leaves, labelSettings, animation_duration);
 }
