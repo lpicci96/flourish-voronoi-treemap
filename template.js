@@ -22843,6 +22843,7 @@ var template = (function (exports) {
           seed: 41,
           max_iterations: 50,
           convergence_ratio: 0.001,
+          min_weight_ratio: 0,
 
       },
 
@@ -31813,6 +31814,7 @@ Example valid ways of supplying a shape would be:
           .clip(clip)
           .convergenceRatio(voronoi_settings.convergence_ratio)
           .maxIterationCount(voronoi_settings.max_iterations)
+          .minWeightRatio(voronoi_settings.min_weight_ratio)
           .prng(seedrandom(voronoi_settings.seed));
 
       _voronoiTreemap(hierarchy);

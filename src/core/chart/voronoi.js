@@ -30,6 +30,7 @@ function computeLayout(hierarchy, voronoi_settings, height, width) {
         .clip(clip)
         .convergenceRatio(voronoi_settings.convergence_ratio)
         .maxIterationCount(voronoi_settings.max_iterations)
+        .minWeightRatio(voronoi_settings.min_weight_ratio)
         .prng(seedrandom(voronoi_settings.seed));
 
     _voronoiTreemap(hierarchy);

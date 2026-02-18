@@ -10,6 +10,7 @@ export default {
         seed: 41,
         max_iterations: 50,
         convergence_ratio: 0.001,
+        min_weight_ratio: 0,
 
     },
 

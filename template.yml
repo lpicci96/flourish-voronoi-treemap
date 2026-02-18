@@ -84,6 +84,14 @@ settings:
     max: 0.1
     step: 0.001
     show_if: voronoi_settings.advanced_settings
+  - property: voronoi_settings.min_weight_ratio
+    name: Min Weight Ratio
+    description: Sets a minimum cell weight as a fraction of the largest cell. Small cells below this threshold are inflated to the minimum, which prevents tiny slivers but redistributes space away from larger cells. Set to 0 for pure proportional sizing. Values range from 0 to 0.05.
+    type: number
+    min: 0
+    max: 0.05
+    step: 0.005
+    show_if: voronoi_settings.advanced_settings
 
   - Grid of charts
   - property: facets
