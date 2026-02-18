@@ -10,6 +10,7 @@ import { clipVoronoi } from "./clip";
 import { seedrandom } from "./data_formatting";
 import { getCellColor } from "./colors";
 import { configurePopup, getPopupData } from "./popup";
+import { transitionCells } from "./transitions";
 
 const _voronoiTreemap = voronoiTreemap();
 
@@ -53,7 +54,7 @@ function polygonPath(polygon) {
  * @param {object} popup - Flourish popup instance.
  * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
  */
-function renderCells(container, leaves, root, voronoi_settings, colors, popup, colorSettings) {
+function renderCells(container, leaves, root, voronoi_settings, colors, popup, colorSettings, animation_duration) {
     const sel = d3.select(container);
 
     let g = sel.selectAll("g.cells").data([null]);
@@ -61,24 +62,32 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
 
     popup.clickout();
 
-    g.selectAll("path")
-        .data(leaves, d => d.data.name)
-        .join("path")
-        .attr("d", d => polygonPath(d.polygon))
-        .attr("fill", d => getCellColor(d, root, colors, colorSettings))
-        .attr("stroke", voronoi_settings.border_color)
-        .attr("stroke-width", voronoi_settings.border_size)
-        .on("mouseover", function(event, d) {
-            const popupData = getPopupData(d);
-            popup.mouseover(this, popupData);
-        })
-        .on("mouseout", function() {
-            popup.mouseout();
-        })
-        .on("click", function(event, d) {
-            event.stopPropagation();
-            popup.click(this, getPopupData(d), d.data.name);
-        });
+    const duration = animation_duration || 0;
+
+    transitionCells({
+        selection: g,
+        leaves,
+        duration,
+        pathFn: d => polygonPath(d.polygon),
+        fillFn: d => getCellColor(d, root, colors, colorSettings),
+        applyStyle: sel => {
+            sel.attr("stroke", voronoi_settings.border_color)
+                .attr("stroke-width", voronoi_settings.border_size);
+        },
+        applyEvents: sel => {
+            sel.on("mouseover", function(event, d) {
+                    const popupData = getPopupData(d);
+                    popup.mouseover(this, popupData);
+                })
+                .on("mouseout", function() {
+                    popup.mouseout();
+                })
+                .on("click", function(event, d) {
+                    event.stopPropagation();
+                    popup.click(this, getPopupData(d), d.data.name);
+                });
+        }
+    });
 
     sel.on("click", function() {
         popup.clickout();
@@ -103,7 +112,7 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
  * @param {Function} number_format - Flourish number_format factory.
  * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
  */
-export function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings) {
+export function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration) {
     if (!hierarchy) return;
 
     computeLayout(hierarchy, voronoi_settings, height, width);
@@ -111,5 +120,5 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
     const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
 
     configurePopup(popup, leaves, localization, number_format);
-    renderCells(container, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings);
+    renderCells(container, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration);
 }
