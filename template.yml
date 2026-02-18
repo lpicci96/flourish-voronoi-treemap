@@ -96,6 +96,11 @@ settings:
     name: Show labels
     description: Show labels for the Voronoi polygons.
     type: boolean
+  - property: labels.hide_small_labels
+    name: Hide small labels
+    type: boolean
+    show_if: labels.show_labels
+#    styling
   - property: labels.size_proportionally
     name: Size labels proportionally
     description: Auto-size the labels based on the size of the polygons.
@@ -143,10 +148,7 @@ settings:
     type: color
     show_if:
       labels.show_labels: true
-  - property: labels.hide_small_labels
-    name: Hide small labels
-    type: boolean
-    show_if: labels.show_labels
+
 
   - Colours
   - property: colors

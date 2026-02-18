@@ -31609,9 +31609,13 @@ Example valid ways of supplying a shape would be:
                   .attr("fill", labelSettings.font_color);
 
               // Hide label if text is wider than available polygon space
-              const textWidth = this.getComputedTextLength();
-              const availableWidth = polygonWidthAtY(d.polygon, cy);
-              el.attr("visibility", textWidth > availableWidth ? "hidden" : "visible");
+              if (labelSettings.hide_small_labels) {
+                  const textWidth = this.getComputedTextLength();
+                  const availableWidth = polygonWidthAtY(d.polygon, cy);
+                  el.attr("visibility", textWidth > availableWidth ? "hidden" : "visible");
+              } else {
+                  el.attr("visibility", "visible");
+              }
           });
   }
 

@@ -107,8 +107,12 @@ export function renderLabels(container, leaves, labelSettings) {
                 .attr("fill", labelSettings.font_color);
 
             // Hide label if text is wider than available polygon space
-            const textWidth = this.getComputedTextLength();
-            const availableWidth = polygonWidthAtY(d.polygon, cy);
-            el.attr("visibility", textWidth > availableWidth ? "hidden" : "visible");
+            if (labelSettings.hide_small_labels) {
+                const textWidth = this.getComputedTextLength();
+                const availableWidth = polygonWidthAtY(d.polygon, cy);
+                el.attr("visibility", textWidth > availableWidth ? "hidden" : "visible");
+            } else {
+                el.attr("visibility", "visible");
+            }
         });
 }
