@@ -112,7 +112,7 @@ settings:
       labels.size_proportionally: false
       labels.show_labels: true
   - property: labels.min_font_size
-    name: Minimum font size
+    name: Min font size
     description: The minimum font size of the labels when sized proportionally to the polygons. Ensure that this value does not exceed the maximum font. If it does, the mid point of the font size range will be used for all labels to ensure rendering of the labels.
     type: number
     step: 0.1
@@ -121,7 +121,7 @@ settings:
       labels.size_proportionally: true
       labels.show_labels: true
   - property: labels.max_font_size
-    name: Minimum font size
+    name: Max font size
     description: The maximum font size of the labels when sized proportionally to the polygons. Ensure that this value is not less than the minimum font. If it does, the mid point of the font size range will be used for all labels to ensure rendering of the labels.
     type: number
     step: 0.1
