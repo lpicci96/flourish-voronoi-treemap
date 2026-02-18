@@ -55,7 +55,8 @@ export default {
         font_weight: "normal",
         font_color: "#000000",
         hide_small_labels: true,
-        show_list: ""
+        show_list: "",
+        hide_margin: 0.1
     }
 
 

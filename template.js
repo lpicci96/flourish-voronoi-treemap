@@ -22888,7 +22888,8 @@ var template = (function (exports) {
           font_weight: "normal",
           font_color: "#000000",
           hide_small_labels: true,
-          show_list: ""
+          show_list: "",
+          hide_margin: 0.1
       }
 
 
@@ -31620,7 +31621,8 @@ Example valid ways of supplying a shape would be:
                   visible = showList.has(d.data.name);
               } else if (labelSettings.hide_small_labels) {
                   const textWidth = this.getComputedTextLength();
-                  const availableWidth = polygonWidthAtY(d.polygon, cy);
+                  const margin = labelSettings.hide_margin != null ? labelSettings.hide_margin : 0;
+                  const availableWidth = polygonWidthAtY(d.polygon, cy) * (1 - margin);
                   visible = textWidth <= availableWidth;
               }
               el.attr("visibility", visible ? "visible" : "hidden");
