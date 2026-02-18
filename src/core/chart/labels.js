@@ -111,6 +111,20 @@ export function renderLabels(container, leaves, labelSettings) {
                 .attr("font-size", fontSize + "em")
                 .attr("fill", labelSettings.font_color);
 
+            // Apply text outline
+            if (labelSettings.show_outline) {
+                const outlineSize = labelSettings.outline_size != null ? labelSettings.outline_size : 0.3;
+                el.attr("stroke", labelSettings.outline_color || "#ffffff")
+                    .attr("stroke-width", outlineSize + "em")
+                    .attr("stroke-linejoin", "round")
+                    .attr("paint-order", "stroke");
+            } else {
+                el.attr("stroke", "none")
+                    .attr("stroke-width", null)
+                    .attr("stroke-linejoin", null)
+                    .attr("paint-order", null);
+            }
+
             // Determine label visibility
             let visible = true;
             if (showList && showList.size > 0) {

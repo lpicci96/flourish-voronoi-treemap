@@ -22889,7 +22889,10 @@ var template = (function (exports) {
           font_color: "#000000",
           hide_small_labels: true,
           show_list: "",
-          hide_margin: 0.1
+          hide_margin: 0.1,
+          show_outline: true,
+          outline_color: "#ffffff",
+          outline_size: 0.1
       }
 
 
@@ -31614,6 +31617,20 @@ Example valid ways of supplying a shape would be:
                   .attr("y", cy)
                   .attr("font-size", fontSize + "em")
                   .attr("fill", labelSettings.font_color);
+
+              // Apply text outline
+              if (labelSettings.show_outline) {
+                  const outlineSize = labelSettings.outline_size != null ? labelSettings.outline_size : 0.3;
+                  el.attr("stroke", labelSettings.outline_color || "#ffffff")
+                      .attr("stroke-width", outlineSize + "em")
+                      .attr("stroke-linejoin", "round")
+                      .attr("paint-order", "stroke");
+              } else {
+                  el.attr("stroke", "none")
+                      .attr("stroke-width", null)
+                      .attr("stroke-linejoin", null)
+                      .attr("paint-order", null);
+              }
 
               // Determine label visibility
               let visible = true;

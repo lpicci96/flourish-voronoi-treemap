@@ -56,7 +56,10 @@ export default {
         font_color: "#000000",
         hide_small_labels: true,
         show_list: "",
-        hide_margin: 0.1
+        hide_margin: 0.1,
+        show_outline: false,
+        outline_color: "#ffffff",
+        outline_size: 0.2
     }
 
 

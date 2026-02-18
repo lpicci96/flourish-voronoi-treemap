@@ -166,6 +166,27 @@ settings:
     type: color
     show_if:
       labels.show_labels: true
+  - property: labels.show_outline
+    name: Show outline
+    description: Show an outline around the labels, which can help to improve the readability of labels on top of similarly colored polygons.
+    type: boolean
+    show_if: labels.show_labels
+  - property: labels.outline_color
+    name: Outline color
+    description: The color of the label outline, which can help to improve the readability of labels on top of similarly colored polygons.
+    type: color
+    show_if:
+      labels.show_labels: true
+      labels.show_outline: true
+  - property: labels.outline_size
+    name: Outline size
+    description: The size of the label outline, which can help to improve the readability of labels on top of similarly colored polygons (in em).
+    type: number
+    min: 0
+    step: 0.1
+    show_if:
+      labels.show_labels: true
+      labels.show_outline: true
 
 
   - Colours
