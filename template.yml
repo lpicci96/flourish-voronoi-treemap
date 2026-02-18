@@ -98,8 +98,11 @@ settings:
     type: boolean
   - property: labels.hide_small_labels
     name: Hide small labels
+    description: Hide labels that do not fit within their corresponding polygon. This setting is overridden if specific labels are selected to be shown.
     type: boolean
     show_if: labels.show_labels
+    width: half
+
 #    styling
   - property: labels.size_proportionally
     name: Size labels proportionally

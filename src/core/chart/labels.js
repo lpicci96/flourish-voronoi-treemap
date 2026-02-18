@@ -73,6 +73,11 @@ export function renderLabels(container, leaves, labelSettings) {
     const areas = sizeProportionally ? leaves.map(d => polygonArea(d.polygon)) : null;
     const maxArea = sizeProportionally ? (d3.max(areas) || 1) : 1;
 
+    // Parse show_list into a set of names to filter by
+    const showList = labelSettings.show_list
+        ? new Set(labelSettings.show_list.split("\n").map(s => s.trim()).filter(Boolean))
+        : null;
+
     let minSize = labelSettings.min_font_size != null ? labelSettings.min_font_size : 0.4;
     let maxSize = labelSettings.max_font_size != null ? labelSettings.max_font_size : 1.2;
     if (minSize > maxSize) {
@@ -106,13 +111,15 @@ export function renderLabels(container, leaves, labelSettings) {
                 .attr("font-size", fontSize + "em")
                 .attr("fill", labelSettings.font_color);
 
-            // Hide label if text is wider than available polygon space
-            if (labelSettings.hide_small_labels) {
+            // Determine label visibility
+            let visible = true;
+            if (showList && showList.size > 0) {
+                visible = showList.has(d.data.name);
+            } else if (labelSettings.hide_small_labels) {
                 const textWidth = this.getComputedTextLength();
                 const availableWidth = polygonWidthAtY(d.polygon, cy);
-                el.attr("visibility", textWidth > availableWidth ? "hidden" : "visible");
-            } else {
-                el.attr("visibility", "visible");
+                visible = textWidth <= availableWidth;
             }
+            el.attr("visibility", visible ? "visible" : "hidden");
         });
 }
