@@ -11,6 +11,7 @@ import { seedrandom } from "./data_formatting";
 import { getCellColor } from "./colors";
 import { configurePopup, getPopupData } from "./popup";
 import { transitionCells } from "./transitions";
+import { renderLabels } from "./labels";
 
 const _voronoiTreemap = voronoiTreemap();
 
@@ -112,7 +113,7 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
  * @param {Function} number_format - Flourish number_format factory.
  * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
  */
-export function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration) {
+export function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings) {
     if (!hierarchy) return;
 
     computeLayout(hierarchy, voronoi_settings, height, width);
@@ -121,4 +122,5 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
 
     configurePopup(popup, leaves, localization, number_format);
     renderCells(container, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration);
+    renderLabels(container, leaves, labelSettings);
 }

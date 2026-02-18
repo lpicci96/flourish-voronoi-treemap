@@ -91,6 +91,45 @@ settings:
     show_if:
       data.data.facet: true
 
+  - Labels
+  - property: labels.show_labels
+    name: Show labels
+    description: Show labels for the Voronoi polygons.
+    type: boolean
+  - property: labels.size_proportionally
+    name: Size labels proportionally
+    description: Auto-size the labels based on the size of the polygons.
+    type: boolean
+    show_if: labels.show_labels
+    new_section: Styling
+  - property: labels.font_size
+    name: Font size
+    description: The font size of the labels.
+    type: number
+    step: 0.1
+    min: 0.1
+    show_if:
+      labels.size_proportionally: false
+      labels.show_labels: true
+  - property: labels.min_font_size
+    name: Minimum font size
+    description: The minimum font size of the labels when sized proportionally to the polygons. Ensure that this value does not exceed the maximum font. If it does, the mid point of the font size range will be used for all labels to ensure rendering of the labels.
+    type: number
+    step: 0.1
+    min: 0.1
+    show_if:
+      labels.size_proportionally: true
+      labels.show_labels: true
+  - property: labels.max_font_size
+    name: Minimum font size
+    description: The maximum font size of the labels when sized proportionally to the polygons. Ensure that this value is not less than the minimum font. If it does, the mid point of the font size range will be used for all labels to ensure rendering of the labels.
+    type: number
+    step: 0.1
+    min: 0.1
+    show_if:
+      labels.size_proportionally: true
+      labels.show_labels: true
+
   - Colours
   - property: colors
     import: "@flourish/colors"

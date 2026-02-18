@@ -44,5 +44,15 @@ export default {
 
     facets: {}, // facet module state properties
 
-    animation_duration: 800 // animation duration for transitions (in milliseconds)
+    animation_duration: 800, // animation duration for transitions (in milliseconds)
+
+    labels: {
+        show_labels: false,
+        size_proportionally: true,
+        font_size: 1,
+        min_font_size: 0.4,
+        max_font_size: 1.2,
+    }
+
+
 }
