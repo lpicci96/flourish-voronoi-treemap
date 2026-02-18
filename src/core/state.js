@@ -43,4 +43,6 @@ export default {
     },
 
     facets: {}, // facet module state properties
+
+    animation_duration: 800 // animation duration for transitions (in milliseconds)
 }

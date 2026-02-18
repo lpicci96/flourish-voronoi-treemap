@@ -3,6 +3,17 @@ All notable changes to this template will be documented in this file.
 
 ## [Unreleased]
 
+## [v0.2.0] - 2026-02-18
+
+### Added
+- Animation transitions for Voronoi cells using flubber for smooth polygon morphing
+- Animation duration setting to control transition speed (default 800ms, set to 0 to disable)
+- Transitions module for managing cell enter/update/exit animations
+- Data filter support
+
+### Changed
+- Updated rollup config to use `@rollup/plugin-node-resolve` and `@rollup/plugin-commonjs`
+
 
 ## [v0.1.0] - 2026-02-17
 

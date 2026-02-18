@@ -142,6 +142,14 @@ settings:
   - property: filter
     import: "@flourish/controls"
 
+  - Animations
+  - property: animation_duration
+    name: Animation Duration
+    description: The duration of transitions in milliseconds. Setting this to 0 will disable animations.
+    type: number
+    min: 0
+    step: 100
+
 
 data:
   - key: firstLevel
@@ -173,6 +181,7 @@ data:
     name: Filter
     type: column
     dataset: data
+    column: "Data::D"
     data_type:
       - string
     optional: true
