@@ -1,4 +1,5 @@
-import nodeResolve from "rollup-plugin-node-resolve";
+import nodeResolve from "@rollup/plugin-node-resolve";
+import commonjs from "@rollup/plugin-commonjs";
 import { uglify } from "rollup-plugin-uglify";
 
 export default {
@@ -11,6 +12,7 @@ export default {
   },
   plugins: [
     nodeResolve({ mainFields: ["module", "jsnext:main", "main"] }),
+    commonjs(),
     uglify(),
   ],
   /* Cyclic dependencies are allowed in ES6, and such imports occur
