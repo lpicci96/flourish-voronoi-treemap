@@ -1,6 +1,5 @@
 // TODO: Additional advanced settings - handling small values
 // TODO: Aggregation of values
-// TODO: Align chart left, center or right within section
 
 
 
@@ -24,7 +23,7 @@ const _voronoiTreemap = voronoiTreemap();
  * @param {number} width - Available width in pixels.
  */
 function computeLayout(hierarchy, voronoi_settings, height, width) {
-    const clip = clipVoronoi(voronoi_settings.clip_type, height, width);
+    const clip = clipVoronoi(voronoi_settings.clip_type, height, width, voronoi_settings.alignment);
 
     _voronoiTreemap
         .clip(clip)

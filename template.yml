@@ -58,6 +58,19 @@ settings:
       - "diamond"
       - "pentagon"
       - "hexagon"
+  - property: voronoi_settings.alignment
+    name: Alignment
+    type: string
+    style: buttons
+    width: half
+    choices:
+      - [ fa-align-left, left ]
+      - [ fa-align-center, center ]
+      - [ fa-align-right, right ]
+    hide_if:
+        voronoi_settings.clip_type:
+            - "rectangle"
+#  Advanced settings
   - property: voronoi_settings.advanced_settings
     name: Advanced Settings
     description: Show advanced settings for the voronoi tesselation algorithm and layout.
