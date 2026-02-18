@@ -22840,7 +22840,7 @@ var template = (function (exports) {
           border_size: 1,
           clip_type: "circle",
           advanced_settings: false,
-          seed: 42,
+          seed: 41,
           max_iterations: 50,
           convergence_ratio: 0.001,
 
