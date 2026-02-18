@@ -54,6 +54,7 @@ export default {
         max_font_size: 1.2,
         font_weight: "normal",
         font_color: "#000000",
+        hide_small_labels: true,
     }
 
 

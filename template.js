@@ -22887,6 +22887,7 @@ var template = (function (exports) {
           max_font_size: 1.2,
           font_weight: "normal",
           font_color: "#000000",
+          hide_small_labels: true,
       }
 
 
@@ -31532,6 +31533,28 @@ Example valid ways of supplying a shape would be:
   }
 
   /**
+   * Compute the horizontal width available inside a polygon at a given y-coordinate.
+   * Casts a horizontal ray at y and finds the min/max x intersections with polygon edges.
+   * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
+   * @param {number} y - The y-coordinate to measure width at.
+   * @returns {number} Available horizontal width, or 0 if no intersections found.
+   */
+  function polygonWidthAtY(polygon, y) {
+      const intersections = [];
+      const n = polygon.length;
+      for (let i = 0, j = n - 1; i < n; j = i++) {
+          const [x1, y1] = polygon[j];
+          const [x2, y2] = polygon[i];
+          if ((y1 <= y && y2 > y) || (y2 <= y && y1 > y)) {
+              const t = (y - y1) / (y2 - y1);
+              intersections.push(x1 + t * (x2 - x1));
+          }
+      }
+      if (intersections.length < 2) return 0;
+      return Math.max(...intersections) - Math.min(...intersections);
+  }
+
+  /**
    * Render text labels for Voronoi treemap leaves.
    * @param {SVGElement} container - Target SVG DOM element.
    * @param {Array} leaves - Hierarchy leaves with valid polygons.
@@ -31579,11 +31602,16 @@ Example valid ways of supplying a shape would be:
               const fontSize = sizeProportionally
                   ? minSize + (maxSize - minSize) * Math.sqrt(areas[i] / maxArea)
                   : (labelSettings.font_size || 0.8);
-              select(this)
-                  .attr("x", cx)
+              const el = select(this);
+              el.attr("x", cx)
                   .attr("y", cy)
                   .attr("font-size", fontSize + "em")
                   .attr("fill", labelSettings.font_color);
+
+              // Hide label if text is wider than available polygon space
+              const textWidth = this.getComputedTextLength();
+              const availableWidth = polygonWidthAtY(d.polygon, cy);
+              el.attr("visibility", textWidth > availableWidth ? "hidden" : "visible");
           });
   }
 
