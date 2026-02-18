@@ -3,6 +3,14 @@ All notable changes to this template will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Labels module with proportional/fixed font sizing, text wrapping, and overflow hiding
+- Label styling options: font weight, color, and text outline
+- Label hide margin, and show-specific-labels filter
+- Smooth label transitions that follow polygon animations
+- Exposed `minWeightRatio` advanced setting for minimum cell weight control
+
+
 ## [v0.2.0] - 2026-02-18
 
 ### Added
