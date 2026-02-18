@@ -22883,16 +22883,16 @@ var template = (function (exports) {
           show_labels: false,
           size_proportionally: true,
           font_size: 1,
-          min_font_size: 0.4,
-          max_font_size: 1.2,
+          min_font_size: 0.5,
+          max_font_size: 1.5,
           font_weight: "normal",
-          font_color: "#000000",
+          font_color: "#ffffff",
           hide_small_labels: true,
           show_list: "",
           hide_margin: 0.1,
           show_outline: false,
-          outline_color: "#ffffff",
-          outline_size: 0.2,
+          outline_color: "#000000",
+          outline_size: 0.1,
           wrap_labels: true
       }
 
