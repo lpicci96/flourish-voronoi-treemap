@@ -47,7 +47,7 @@ export default {
     animation_duration: 800, // animation duration for transitions (in milliseconds)
 
     labels: {
-        show_labels: false,
+        show_labels: true,
         size_proportionally: true,
         font_size: 1,
         min_font_size: 0.5,
