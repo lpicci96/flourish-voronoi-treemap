@@ -1,7 +1,14 @@
 # Changelog
 All notable changes to this template will be documented in this file.
 
+
 ## [Unreleased]
+
+
+## [v0.3.1] - 2026-02-19
+
+### Fixed
+- Removed debugging outlines on the SVG and container elements
 
 
 ## [v0.3.0] - 2026-02-19
