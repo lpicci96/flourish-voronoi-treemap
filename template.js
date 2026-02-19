@@ -22838,6 +22838,7 @@ var template = (function (exports) {
 
           border_color: "#ffffff",
           border_size: 1,
+          border_opacity: 1,
           clip_type: "circle",
           advanced_settings: false,
           seed: 41,
@@ -27829,13 +27830,13 @@ var template = (function (exports) {
   }
 
   /**
-   * Generate a diamond (4-sided regular polygon / rotated square) clipping polygon.
+   * Generate a rhombus (4-sided regular polygon / rotated square) clipping polygon.
    * @param {number} height - Available height in pixels.
    * @param {number} width - Available width in pixels.
    * @param {string} alignment - Horizontal alignment (left, center, right).
    * @returns {Array<number[]>} Polygon vertices.
    */
-  function diamondClip(height, width, alignment) {
+  function rhombusClip(height, width, alignment) {
       return regularPolygonClip(height, width, 4, alignment);
   }
 
@@ -27864,8 +27865,8 @@ var template = (function (exports) {
           return pentagonClip(height, width, alignment);
       }else if (shape === "hexagon") {
           return hexagonClip(height, width, alignment);
-      }else if (shape === "diamond") {
-          return diamondClip(height, width, alignment);
+      }else if (shape === "rhombus") {
+          return rhombusClip(height, width, alignment);
       }else {
           throw new Error("Unknown clip shape: " + shape);
       }
@@ -31887,7 +31888,8 @@ Example valid ways of supplying a shape would be:
           fillFn: d => getCellColor(d, root, colors, colorSettings),
           applyStyle: sel => {
               sel.attr("stroke", voronoi_settings.border_color)
-                  .attr("stroke-width", voronoi_settings.border_size);
+                  .attr("stroke-width", voronoi_settings.border_size)
+                  .attr("stroke-opacity", voronoi_settings.border_opacity);
           },
           applyEvents: sel => {
               sel.on("mouseover", function(event, d) {

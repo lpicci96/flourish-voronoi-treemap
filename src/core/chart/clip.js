@@ -123,13 +123,13 @@ function hexagonClip(height, width, alignment) {
 }
 
 /**
- * Generate a diamond (4-sided regular polygon / rotated square) clipping polygon.
+ * Generate a rhombus (4-sided regular polygon / rotated square) clipping polygon.
  * @param {number} height - Available height in pixels.
  * @param {number} width - Available width in pixels.
  * @param {string} alignment - Horizontal alignment (left, center, right).
  * @returns {Array<number[]>} Polygon vertices.
  */
-function diamondClip(height, width, alignment) {
+function rhombusClip(height, width, alignment) {
     return regularPolygonClip(height, width, 4, alignment);
 }
 
@@ -158,8 +158,8 @@ export function clipVoronoi(shape, height, width, alignment) {
         return pentagonClip(height, width, alignment);
     }else if (shape === "hexagon") {
         return hexagonClip(height, width, alignment);
-    }else if (shape === "diamond") {
-        return diamondClip(height, width, alignment);
+    }else if (shape === "rhombus") {
+        return rhombusClip(height, width, alignment);
     }else {
         throw new Error("Unknown clip shape: " + shape);
     }
