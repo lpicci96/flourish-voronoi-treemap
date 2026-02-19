@@ -26,15 +26,15 @@ A Voronoi tessellation divides a plane into regions based on distance to a set o
 
 The template accepts a flat dataset with up to two hierarchy levels:
 
-| Column | Required | Description |
-| ------ | -------- | ----------- |
-| **First level** | Yes | Top-level category (e.g. continent, industry) |
-| **Second level** | No | Sub-category nested within the first level |
-| **Values** | Yes | Numeric value determining cell size |
-| **Color category** | No | Category used to color the polygons (defaults to first level) |
-| **Filter** | No | Column used to filter displayed data |
-| **Grid of charts** | No | Column used to create a faceted grid of charts |
-| **Custom tooltip** | No | Custom text or HTML shown in the popup on hover/click |
+| Column             | Required | Description                                                              |
+|--------------------|----------|--------------------------------------------------------------------------|
+| **First level**    | Yes      | Top-level category (e.g. continent, industry)                            |
+| **Second level**   | No       | Sub-category nested within the first level (e.g. country, company)       |
+| **Values**         | Yes      | Numeric value determining cell size                                      |
+| **Color category** | No       | Category used to color the polygons (defaults to first level if not set) |
+| **Filter**         | No       | Column used to filter displayed data                                     |
+| **Grid of charts** | No       | Column used to create a faceted grid of charts                           |
+| **Custom tooltip** | No       | Custom text or HTML shown in the popup on hover/click                    |
 
 ---
 
@@ -50,16 +50,13 @@ Please get in touch with me for any bug reports or feature requests.
 
 ### Planned
 - Border rounding - option to round the corners of Voronoi cells for a softer look
-- Value aggregation — choose an aggregation method for duplicate entries (e.g. sum, average, none)
+- Value aggregation - choose an aggregation method for duplicate entries (e.g. sum, average, none)
 - Small multiple sizing - option to size small multiples based on the relative proportions of the facet data, rather than equally
 - Chart sizing options - support for aspect ratios and mobile responsive layouts
 
-### Unreleased
-- Added label support with proportional and fixed font sizing, text wrapping, and visibility control
-- Label styling: font weight, color, and text outline
-- Option to show only specific labels by name
-- Smooth label transitions during data updates
-- Exposed Min Weight Ratio setting to control minimum cell size
+### v0.3.0 — 2026-02-19
+- Added label support with proportional and fixed font sizing, text wrapping, custom visibility control, and styling options
+- Added advanced voronoi setting - Min Weight Ratio to control minimum cell size
 
 ### v0.2.0 — 2026-02-18
 - Added smooth animation transitions when data changes, using polygon morphing
