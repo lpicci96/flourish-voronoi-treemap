@@ -45,7 +45,10 @@ export default function() {
     filter_control.on("change", function() { update(); });
 
     svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.style.outline = "2px solid red";
+    // svg.style.display = "block";
     container.appendChild(svg);
+    container.style.outline = "2px solid green";
 
     chartGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
     chartGroup.setAttribute("class", "chart-container");

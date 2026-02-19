@@ -1,6 +1,5 @@
 // TODO: Additional advanced settings - handling small values
 // TODO: Aggregation of values
-// TODO: Align chart left, center or right within section
 
 
 
@@ -11,6 +10,7 @@ import { seedrandom } from "./data_formatting";
 import { getCellColor } from "./colors";
 import { configurePopup, getPopupData } from "./popup";
 import { transitionCells } from "./transitions";
+import { renderLabels } from "./labels";
 
 const _voronoiTreemap = voronoiTreemap();
 
@@ -23,12 +23,13 @@ const _voronoiTreemap = voronoiTreemap();
  * @param {number} width - Available width in pixels.
  */
 function computeLayout(hierarchy, voronoi_settings, height, width) {
-    const clip = clipVoronoi(voronoi_settings.clip_type, height, width);
+    const clip = clipVoronoi(voronoi_settings.clip_type, height, width, voronoi_settings.alignment);
 
     _voronoiTreemap
         .clip(clip)
         .convergenceRatio(voronoi_settings.convergence_ratio)
         .maxIterationCount(voronoi_settings.max_iterations)
+        .minWeightRatio(voronoi_settings.min_weight_ratio)
         .prng(seedrandom(voronoi_settings.seed));
 
     _voronoiTreemap(hierarchy);
@@ -72,7 +73,8 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
         fillFn: d => getCellColor(d, root, colors, colorSettings),
         applyStyle: sel => {
             sel.attr("stroke", voronoi_settings.border_color)
-                .attr("stroke-width", voronoi_settings.border_size);
+                .attr("stroke-width", voronoi_settings.border_size)
+                .attr("stroke-opacity", voronoi_settings.border_opacity);
         },
         applyEvents: sel => {
             sel.on("mouseover", function(event, d) {
@@ -112,7 +114,7 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
  * @param {Function} number_format - Flourish number_format factory.
  * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
  */
-export function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration) {
+export function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings) {
     if (!hierarchy) return;
 
     computeLayout(hierarchy, voronoi_settings, height, width);
@@ -121,4 +123,5 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
 
     configurePopup(popup, leaves, localization, number_format);
     renderCells(container, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration);
+    renderLabels(container, leaves, labelSettings, animation_duration);
 }

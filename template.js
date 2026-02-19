@@ -1906,6 +1906,19 @@ var template = (function (exports) {
 
   utcYear$1.range;
 
+  function max(values, valueof) {
+    let max;
+    {
+      for (const value of values) {
+        if (value != null
+            && (max < value || (max === undefined && value >= value))) {
+          max = value;
+        }
+      }
+    }
+    return max;
+  }
+
   function localDate$1(d) {
     if (0 <= d.y && d.y < 100) {
       var date = new Date(-1, d.m, d.d, d.H, d.M, d.S, d.L);
@@ -22825,11 +22838,14 @@ var template = (function (exports) {
 
           border_color: "#ffffff",
           border_size: 1,
+          border_opacity: 1,
           clip_type: "circle",
           advanced_settings: false,
-          seed: 42,
+          seed: 41,
           max_iterations: 50,
           convergence_ratio: 0.001,
+          min_weight_ratio: 0,
+          alignment: "center",
 
       },
 
@@ -22864,7 +22880,26 @@ var template = (function (exports) {
 
       facets: {}, // facet module state properties
 
-      animation_duration: 800 // animation duration for transitions (in milliseconds)
+      animation_duration: 800, // animation duration for transitions (in milliseconds)
+
+      labels: {
+          show_labels: true,
+          size_proportionally: true,
+          font_size: 1,
+          min_font_size: 0.5,
+          max_font_size: 1.5,
+          font_weight: "normal",
+          font_color: "#ffffff",
+          hide_small_labels: true,
+          show_list: "",
+          hide_margin: 0.1,
+          show_outline: false,
+          outline_color: "#000000",
+          outline_size: 0.1,
+          wrap_labels: true
+      }
+
+
   };
 
   var layout = init$6(state.layout);
@@ -27671,15 +27706,30 @@ var template = (function (exports) {
   }
 
   /**
-   * Generate a centered square clipping polygon that fits within the
+   * Compute horizontal offset for a shape given its width, the available width,
+   * and the desired alignment.
+   * @param {number} availableWidth - Total available width.
+   * @param {number} shapeWidth - Width of the shape.
+   * @param {string} alignment - "left", "center", or "right".
+   * @returns {number} Horizontal offset.
+   */
+  function alignOffsetX(availableWidth, shapeWidth, alignment) {
+      if (alignment === "left") return 0;
+      if (alignment === "right") return availableWidth - shapeWidth;
+      return (availableWidth - shapeWidth) / 2; // center
+  }
+
+  /**
+   * Generate a square clipping polygon that fits within the
    * given dimensions, using the shorter side as the square's edge length.
    * @param {number} height - Available height in pixels.
    * @param {number} width - Available width in pixels.
+   * @param {string} alignment - Horizontal alignment (left, center, right).
    * @returns {Array<number[]>} Polygon vertices (counterclockwise).
    */
-  function squareClip(height, width) {
+  function squareClip(height, width, alignment) {
       const side = Math.min(height, width);
-      const offsetX = (width - side) / 2;
+      const offsetX = alignOffsetX(width, side, alignment);
       const offsetY = (height - side) / 2;
       return [[offsetX, offsetY], [offsetX, offsetY + side], [offsetX + side, offsetY + side], [offsetX + side, offsetY]];
   }
@@ -27696,14 +27746,15 @@ var template = (function (exports) {
   }
 
   /**
-   * Generate a regular n-sided polygon centered and scaled to fit within
-   * the given dimensions. The first vertex is placed at the top.
+   * Generate a regular n-sided polygon scaled to fit within
+   * the given dimensions, aligned horizontally as specified.
    * @param {number} height - Available height in pixels.
    * @param {number} width - Available width in pixels.
    * @param {number} nSides - Number of polygon sides.
+   * @param {string} alignment - Horizontal alignment (left, center, right).
    * @returns {Array<number[]>} Polygon vertices.
    */
-  function regularPolygonClip(height, width, nSides) {
+  function regularPolygonClip(height, width, nSides, alignment) {
       // Generate unit polygon (r=1) centered at origin, first vertex at top
       const unitPoints = [];
       for (let i = 0; i < nSides; i++) {
@@ -27717,13 +27768,19 @@ var template = (function (exports) {
       const bboxW = Math.max(...xs) - Math.min(...xs);
       const bboxH = Math.max(...ys) - Math.min(...ys);
 
-      // Scale to fit available area, center the bounding box
+      // Scale to fit available area
       const scale = Math.min(width / bboxW, height / bboxH);
       const bboxCx = (Math.min(...xs) + Math.max(...xs)) / 2;
       const bboxCy = (Math.min(...ys) + Math.max(...ys)) / 2;
 
+      // Compute the shape's actual width after scaling
+      const scaledW = bboxW * scale;
+      const offsetX = alignOffsetX(width, scaledW, alignment);
+      // shapeCenterX is where the shape center should be placed
+      const shapeCenterX = offsetX + scaledW / 2;
+
       return unitPoints.map(([x, y]) => [
-          width / 2 + (x - bboxCx) * scale,
+          shapeCenterX + (x - bboxCx) * scale,
           height / 2 + (y - bboxCy) * scale
       ]);
   }
@@ -27732,77 +27789,84 @@ var template = (function (exports) {
    * Approximate a circle using a 64-sided regular polygon.
    * @param {number} height - Available height in pixels.
    * @param {number} width - Available width in pixels.
+   * @param {string} alignment - Horizontal alignment (left, center, right).
    * @returns {Array<number[]>} Polygon vertices.
    */
-  function circularClip(height, width) {
-      return regularPolygonClip(height, width, 64);
+  function circularClip(height, width, alignment) {
+      return regularPolygonClip(height, width, 64, alignment);
   }
 
   /**
    * Generate an equilateral triangle clipping polygon.
    * @param {number} height - Available height in pixels.
    * @param {number} width - Available width in pixels.
+   * @param {string} alignment - Horizontal alignment (left, center, right).
    * @returns {Array<number[]>} Polygon vertices.
    */
-  function triangleClip(height, width) {
-      return regularPolygonClip(height, width, 3);
+  function triangleClip(height, width, alignment) {
+      return regularPolygonClip(height, width, 3, alignment);
   }
 
   /**
    * Generate a regular pentagon clipping polygon.
    * @param {number} height - Available height in pixels.
    * @param {number} width - Available width in pixels.
+   * @param {string} alignment - Horizontal alignment (left, center, right).
    * @returns {Array<number[]>} Polygon vertices.
    */
-  function pentagonClip(height, width) {
-      return regularPolygonClip(height, width, 5);
+  function pentagonClip(height, width, alignment) {
+      return regularPolygonClip(height, width, 5, alignment);
   }
 
   /**
    * Generate a regular hexagon clipping polygon.
    * @param {number} height - Available height in pixels.
    * @param {number} width - Available width in pixels.
+   * @param {string} alignment - Horizontal alignment (left, center, right).
    * @returns {Array<number[]>} Polygon vertices.
    */
-  function hexagonClip(height, width) {
-      return regularPolygonClip(height, width, 6);
+  function hexagonClip(height, width, alignment) {
+      return regularPolygonClip(height, width, 6, alignment);
   }
 
   /**
-   * Generate a diamond (4-sided regular polygon / rotated square) clipping polygon.
+   * Generate a rhombus (4-sided regular polygon / rotated square) clipping polygon.
    * @param {number} height - Available height in pixels.
    * @param {number} width - Available width in pixels.
+   * @param {string} alignment - Horizontal alignment (left, center, right).
    * @returns {Array<number[]>} Polygon vertices.
    */
-  function diamondClip(height, width) {
-      return regularPolygonClip(height, width, 4);
+  function rhombusClip(height, width, alignment) {
+      return regularPolygonClip(height, width, 4, alignment);
   }
 
   /**
    * Return a clipping polygon for the requested shape, scaled to fit the
-   * given dimensions.
+   * given dimensions and aligned horizontally as specified.
    * @param {string} shape - Shape identifier (square, rectangle, circle, triangle, pentagon, hexagon, diamond).
    * @param {number} height - Available height in pixels.
    * @param {number} width - Available width in pixels.
+   * @param {string} [alignment="center"] - Horizontal alignment (left, center, right).
    * @returns {Array<number[]>} Clipping polygon vertices.
    * @throws {Error} If the shape is not recognised.
    */
-  function clipVoronoi(shape, height, width) {
+  function clipVoronoi(shape, height, width, alignment) {
+      alignment = alignment || "center";
 
       if (shape === "square") {
-          return squareClip(height, width);
+          return squareClip(height, width, alignment);
       }else if (shape === "rectangle") {
           return rectangularClip(height, width);
       }else if (shape === "circle") {
-          return circularClip(height, width);
+          return circularClip(height, width, alignment);
       }else if (shape === "triangle") {
-          return triangleClip(height, width);
+          return triangleClip(height, width, alignment);
       }else if (shape === "pentagon") {
-          return pentagonClip(height, width);
+          return pentagonClip(height, width, alignment);
       }else if (shape === "hexagon") {
-          return hexagonClip(height, width);
-      }else if (shape === "diamond") {
-          return diamondClip(height, width);
+          return hexagonClip(height, width, alignment);
+      }else if (shape === "rhombus") {
+          return rhombusClip(height, width, alignment);
       }else {
           throw new Error("Unknown clip shape: " + shape);
       }
@@ -27984,7 +28048,7 @@ var template = (function (exports) {
       return { ...leaf.data._row };
   }
 
-  function polygonArea(polygon) {
+  function polygonArea$1(polygon) {
     var i = -1,
         n = polygon.length,
         a,
@@ -30588,7 +30652,7 @@ Example valid ways of supplying a shape would be:
       points.pop();
     }
 
-    area = polygonArea(points);
+    area = polygonArea$1(points);
 
     // Make all rings clockwise
     if (area > 0) {
@@ -31476,9 +31540,291 @@ Example valid ways of supplying a shape would be:
       applyEvents(update);
   }
 
+  /**
+   * Compute the centroid of a polygon (average of all vertices).
+   * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
+   * @returns {number[]} [cx, cy] centroid coordinates.
+   */
+  function polygonCentroid(polygon) {
+      let cx = 0, cy = 0;
+      const n = polygon.length;
+      for (let i = 0; i < n; i++) {
+          cx += polygon[i][0];
+          cy += polygon[i][1];
+      }
+      return [cx / n, cy / n];
+  }
+
+  /**
+   * Compute the area of a polygon using the shoelace formula.
+   * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
+   * @returns {number} Absolute area of the polygon.
+   */
+  function polygonArea(polygon) {
+      let area = 0;
+      const n = polygon.length;
+      for (let i = 0, j = n - 1; i < n; j = i++) {
+          area += polygon[j][0] * polygon[i][1];
+          area -= polygon[i][0] * polygon[j][1];
+      }
+      return Math.abs(area / 2);
+  }
+
+  /**
+   * Compute the horizontal width available inside a polygon at a given y-coordinate.
+   * Casts a horizontal ray at y and finds the min/max x intersections with polygon edges.
+   * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
+   * @param {number} y - The y-coordinate to measure width at.
+   * @returns {number} Available horizontal width, or 0 if no intersections found.
+   */
+  function polygonWidthAtY(polygon, y) {
+      const intersections = [];
+      const n = polygon.length;
+      for (let i = 0, j = n - 1; i < n; j = i++) {
+          const [x1, y1] = polygon[j];
+          const [x2, y2] = polygon[i];
+          if ((y1 <= y && y2 > y) || (y2 <= y && y1 > y)) {
+              const t = (y - y1) / (y2 - y1);
+              intersections.push(x1 + t * (x2 - x1));
+          }
+      }
+      if (intersections.length < 2) return 0;
+      return Math.max(...intersections) - Math.min(...intersections);
+  }
+
+  const LINE_HEIGHT = 1.2; // line height in em units
+
+  /**
+   * Measure the pixel width of a string by temporarily setting it on a text element.
+   * @param {SVGTextElement} textNode - The SVG text element to use for measurement.
+   * @param {string} str - The string to measure.
+   * @returns {number} The computed text length in pixels.
+   */
+  function measureText(textNode, str) {
+      textNode.textContent = str;
+      return textNode.getComputedTextLength();
+  }
+
+  /**
+   * Wrap text into lines that fit within the polygon at each line's y-position.
+   * @param {SVGTextElement} textNode - The SVG text element (used for measuring).
+   * @param {string} text - The full label text.
+   * @param {Array<number[]>} polygon - The polygon coordinates.
+   * @param {number} cx - Centroid x.
+   * @param {number} cy - Centroid y.
+   * @param {number} lineHeightPx - Line height in pixels.
+   * @param {number} margin - Margin fraction (0–1) to shrink available width.
+   * @returns {string[]} Array of line strings.
+   */
+  function wrapText(textNode, text, polygon, cx, cy, lineHeightPx, margin) {
+      const words = text.split(/\s+/);
+      if (words.length <= 1) return [text];
+
+      // Try wrapping into increasing number of lines to find the best fit
+      const marginFactor = 1 - (margin || 0);
+
+      // Greedy line-breaking: build lines that fit the available width at each y-position
+      // First estimate how many lines we might need based on single-line overflow
+      const singleLineWidth = measureText(textNode, text);
+      const centroidWidth = polygonWidthAtY(polygon, cy) * marginFactor;
+      if (singleLineWidth <= centroidWidth) return [text];
+
+      const lines = [];
+      let currentLine = words[0];
+
+      for (let w = 1; w < words.length; w++) {
+          const testLine = currentLine + " " + words[w];
+          const testWidth = measureText(textNode, testLine);
+
+          // Estimate y-position for the current line to get available width
+          const numLinesSoFar = lines.length + 1;
+          const estimatedTotalLines = Math.ceil(words.length / Math.max(1, w / numLinesSoFar));
+          const lineY = cy + (lines.length - (estimatedTotalLines - 1) / 2) * lineHeightPx;
+          const availableWidth = polygonWidthAtY(polygon, lineY) * marginFactor;
+
+          if (testWidth > availableWidth && availableWidth > 0) {
+              lines.push(currentLine);
+              currentLine = words[w];
+          } else {
+              currentLine = testLine;
+          }
+      }
+      lines.push(currentLine);
+
+      return lines;
+  }
+
+  /**
+   * Render text labels for Voronoi treemap leaves.
+   * @param {SVGElement} container - Target SVG DOM element.
+   * @param {Array} leaves - Hierarchy leaves with valid polygons.
+   * @param {object} labelSettings - Label settings ({ show_labels }).
+   */
+  function renderLabels(container, leaves, labelSettings, animation_duration) {
+      const sel = select(container);
+
+      if (!labelSettings || !labelSettings.show_labels) {
+          sel.selectAll("g.labels").remove();
+          return;
+      }
+
+      let g = sel.selectAll("g.labels").data([null]);
+      g = g.enter().append("g").attr("class", "labels").merge(g);
+
+      const sizeProportionally = labelSettings.size_proportionally !== false;
+      const areas = sizeProportionally ? leaves.map(d => polygonArea(d.polygon)) : null;
+      const maxArea = sizeProportionally ? (max(areas) || 1) : 1;
+
+      // Parse show_list into a set of names to filter by
+      const showList = labelSettings.show_list
+          ? new Set(labelSettings.show_list.split("\n").map(s => s.trim()).filter(Boolean))
+          : null;
+
+      let minSize = labelSettings.min_font_size != null ? labelSettings.min_font_size : 0.4;
+      let maxSize = labelSettings.max_font_size != null ? labelSettings.max_font_size : 1.2;
+      if (minSize > maxSize) {
+          const mid = (minSize + maxSize) / 2;
+          minSize = mid;
+          maxSize = mid;
+      }
+
+      const shouldWrap = labelSettings.wrap_labels !== false;
+      const margin = labelSettings.hide_margin != null ? labelSettings.hide_margin : 0;
+      const duration = animation_duration || 0;
+
+      const labels = g.selectAll("text")
+          .data(leaves, d => d.data.name);
+
+      // EXIT
+      labels.exit().remove();
+
+      // ENTER
+      const enter = labels.enter()
+          .append("text")
+          .attr("text-anchor", "middle")
+          .attr("pointer-events", "none");
+
+      if (duration > 0) {
+          enter.attr("opacity", 0);
+      }
+
+      // ENTER + UPDATE
+      const merged = enter.merge(labels);
+
+      merged
+          .attr("font-weight", labelSettings.font_weight)
+          .each(function(d, i) {
+              const [cx, cy] = polygonCentroid(d.polygon);
+              const fontSizeEm = sizeProportionally
+                  ? minSize + (maxSize - minSize) * Math.sqrt(areas[i] / maxArea)
+                  : (labelSettings.font_size || 0.8);
+              const el = select(this);
+
+              // Store previous centroid for transitioning
+              const prevCx = el.attr("data-cx") != null ? +el.attr("data-cx") : cx;
+              const prevCy = el.attr("data-cy") != null ? +el.attr("data-cy") : cy;
+              el.attr("data-cx", cx).attr("data-cy", cy);
+
+              // Set font size first so measurements are accurate
+              el.attr("font-size", fontSizeEm + "em")
+                  .attr("fill", labelSettings.font_color);
+
+              // Apply text outline
+              if (labelSettings.show_outline) {
+                  const outlineSize = labelSettings.outline_size != null ? labelSettings.outline_size : 0.3;
+                  el.attr("stroke", labelSettings.outline_color || "#ffffff")
+                      .attr("stroke-width", outlineSize + "em")
+                      .attr("stroke-linejoin", "round")
+                      .attr("paint-order", "stroke");
+              } else {
+                  el.attr("stroke", "none")
+                      .attr("stroke-width", null)
+                      .attr("stroke-linejoin", null)
+                      .attr("paint-order", null);
+              }
+
+              // Compute the pixel line height from the font size
+              const computedStyle = window.getComputedStyle(this);
+              const fontSizePx = parseFloat(computedStyle.fontSize) || 12;
+              const lineHeightPx = fontSizePx * LINE_HEIGHT;
+
+              // Clear existing content
+              el.text(null).selectAll("tspan").remove();
+
+              // Determine lines (wrap or single)
+              let lines;
+              if (shouldWrap) {
+                  this.textContent = d.data.name;
+                  lines = wrapText(this, d.data.name, d.polygon, cx, cy, lineHeightPx, margin);
+                  this.textContent = "";
+              } else {
+                  lines = [d.data.name];
+              }
+
+              // Compute y-offsets so the text block is vertically centered at the centroid
+              const totalHeight = (lines.length - 1) * lineHeightPx;
+              const startY = cy - totalHeight / 2;
+
+              // Determine label visibility
+              let visible = true;
+              if (showList && showList.size > 0) {
+                  visible = showList.has(d.data.name);
+              } else if (labelSettings.hide_small_labels) {
+                  const marginFactor = 1 - margin;
+                  visible = lines.every(function(line, lineIndex) {
+                      const lineY = startY + lineIndex * lineHeightPx;
+                      const availableWidth = polygonWidthAtY(d.polygon, lineY) * marginFactor;
+                      const tspanTemp = el.append("tspan").text(line);
+                      const lineWidth = tspanTemp.node().getComputedTextLength();
+                      tspanTemp.remove();
+                      return lineWidth <= availableWidth;
+                  });
+              }
+              el.attr("visibility", visible ? "visible" : "hidden");
+
+              if (duration > 0 && (prevCx !== cx || prevCy !== cy)) {
+                  // Create tspans at old positions first
+                  const prevStartY = prevCy - totalHeight / 2;
+                  lines.forEach(function(line, lineIndex) {
+                      el.append("tspan")
+                          .attr("x", prevCx)
+                          .attr("y", prevStartY + lineIndex * lineHeightPx)
+                          .attr("dominant-baseline", "central")
+                          .text(line);
+                  });
+
+                  // Transition each tspan to new position
+                  el.selectAll("tspan").each(function(_, lineIndex) {
+                      select(this)
+                          .transition()
+                          .duration(duration)
+                          .ease(cubicInOut)
+                          .attr("x", cx)
+                          .attr("y", startY + lineIndex * lineHeightPx);
+                  });
+
+                  // Fade in entering labels
+                  el.transition()
+                      .duration(duration)
+                      .ease(cubicInOut)
+                      .attr("opacity", 1);
+              } else {
+                  // No animation: set positions immediately
+                  lines.forEach(function(line, lineIndex) {
+                      el.append("tspan")
+                          .attr("x", cx)
+                          .attr("y", startY + lineIndex * lineHeightPx)
+                          .attr("dominant-baseline", "central")
+                          .text(line);
+                  });
+
+                  el.attr("opacity", 1);
+              }
+          });
+  }
+
   // TODO: Additional advanced settings - handling small values
   // TODO: Aggregation of values
-  // TODO: Align chart left, center or right within section
 
 
   const _voronoiTreemap = voronoiTreemap();
@@ -31492,12 +31838,13 @@ Example valid ways of supplying a shape would be:
    * @param {number} width - Available width in pixels.
    */
   function computeLayout(hierarchy, voronoi_settings, height, width) {
-      const clip = clipVoronoi(voronoi_settings.clip_type, height, width);
+      const clip = clipVoronoi(voronoi_settings.clip_type, height, width, voronoi_settings.alignment);
 
       _voronoiTreemap
           .clip(clip)
           .convergenceRatio(voronoi_settings.convergence_ratio)
           .maxIterationCount(voronoi_settings.max_iterations)
+          .minWeightRatio(voronoi_settings.min_weight_ratio)
           .prng(seedrandom(voronoi_settings.seed));
 
       _voronoiTreemap(hierarchy);
@@ -31541,7 +31888,8 @@ Example valid ways of supplying a shape would be:
           fillFn: d => getCellColor(d, root, colors, colorSettings),
           applyStyle: sel => {
               sel.attr("stroke", voronoi_settings.border_color)
-                  .attr("stroke-width", voronoi_settings.border_size);
+                  .attr("stroke-width", voronoi_settings.border_size)
+                  .attr("stroke-opacity", voronoi_settings.border_opacity);
           },
           applyEvents: sel => {
               sel.on("mouseover", function(event, d) {
@@ -31581,7 +31929,7 @@ Example valid ways of supplying a shape would be:
    * @param {Function} number_format - Flourish number_format factory.
    * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
    */
-  function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration) {
+  function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings) {
       if (!hierarchy) return;
 
       computeLayout(hierarchy, voronoi_settings, height, width);
@@ -31590,6 +31938,7 @@ Example valid ways of supplying a shape would be:
 
       configurePopup(popup, leaves, localization, number_format);
       renderCells(container, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration);
+      renderLabels(container, leaves, labelSettings, animation_duration);
   }
 
   function update() {
@@ -31687,7 +32036,7 @@ Example valid ways of supplying a shape would be:
           .update(function(facet) {
               const item = facet.data;
               if (!item || !item.hierarchy) return;
-              drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration);
+              drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels);
           });
 
       sizeSvg();
@@ -31737,7 +32086,10 @@ Example valid ways of supplying a shape would be:
       filter_control.on("change", function() { update(); });
 
       svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.style.outline = "2px solid red";
+      // svg.style.display = "block";
       container.appendChild(svg);
+      container.style.outline = "2px solid green";
 
       chartGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
       chartGroup.setAttribute("class", "chart-container");

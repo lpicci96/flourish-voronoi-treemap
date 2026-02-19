@@ -5,11 +5,14 @@ export default {
 
         border_color: "#ffffff",
         border_size: 1,
+        border_opacity: 1,
         clip_type: "circle",
         advanced_settings: false,
-        seed: 42,
+        seed: 41,
         max_iterations: 50,
         convergence_ratio: 0.001,
+        min_weight_ratio: 0,
+        alignment: "center",
 
     },
 
@@ -44,5 +47,24 @@ export default {
 
     facets: {}, // facet module state properties
 
-    animation_duration: 800 // animation duration for transitions (in milliseconds)
+    animation_duration: 800, // animation duration for transitions (in milliseconds)
+
+    labels: {
+        show_labels: true,
+        size_proportionally: true,
+        font_size: 1,
+        min_font_size: 0.5,
+        max_font_size: 1.5,
+        font_weight: "normal",
+        font_color: "#ffffff",
+        hide_small_labels: true,
+        show_list: "",
+        hide_margin: 0.1,
+        show_outline: false,
+        outline_color: "#000000",
+        outline_size: 0.1,
+        wrap_labels: true
+    }
+
+
 }
