@@ -5,7 +5,6 @@ export default {
 
         border_color: "#ffffff",
         border_size: 1,
-        border_opacity: 1,
         clip_type: "circle",
         advanced_settings: false,
         seed: 41,

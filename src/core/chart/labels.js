@@ -156,7 +156,16 @@ export function renderLabels(container, leaves, labelSettings, animation_duratio
         .data(leaves, d => d.data.name);
 
     // EXIT
-    labels.exit().remove();
+    if (duration > 0) {
+        labels.exit()
+            .transition()
+            .duration(duration)
+            .ease(d3.easeCubicInOut)
+            .attr("opacity", 0)
+            .remove();
+    } else {
+        labels.exit().remove();
+    }
 
     // ENTER
     const enter = labels.enter()

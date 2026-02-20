@@ -68,8 +68,7 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
         fillFn: d => getCellColor(d, root, colors, colorSettings),
         applyStyle: sel => {
             sel.attr("stroke", voronoi_settings.border_color)
-                .attr("stroke-width", voronoi_settings.border_size)
-                .attr("stroke-opacity", voronoi_settings.border_opacity);
+                .attr("stroke-width", voronoi_settings.border_size);
         },
         applyEvents: sel => {
             sel.on("mouseover", function(event, d) {

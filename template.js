@@ -22838,7 +22838,6 @@ var template = (function (exports) {
 
           border_color: "#ffffff",
           border_size: 1,
-          border_opacity: 1,
           clip_type: "circle",
           advanced_settings: false,
           seed: 41,
@@ -31890,20 +31889,19 @@ Example valid ways of supplying a shape would be:
   /**
    * Apply transitions to a D3 join on voronoi cells.
    *
-   * Three layers:
+   * Four layers:
    * - `g.cell-fills`: straight polygon fills, clipped to the combined border
    *   shape via a `<clipPath>` when rounding is active.
-   * - `path.cell-border`: single combined border path (always set instantly).
+   * - `g.cell-borders`: per-cell border paths that morph with Flubber.
    * - `g.cell-hits`: invisible paths for mouse events.
    *
-   * Only fill and hit paths animate (when data changes shape). The border
-   * and clip path always update instantly so that style changes (color, size,
-   * rounding) are reflected without a morph animation.
+   * All per-cell layers (fills, borders, hits) animate with Flubber morphing.
+   * Entering cells fade in, exiting cells fade out. The clip path updates at
+   * the end of the transition so rounded borders stay visually correct.
    */
   function transitionCells({ selection, leaves, duration, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, fillFn, applyStyle, applyEvents }) {
 
       const polygons = leaves.map(d => d.polygon);
-      const combinedD = combinedBorderPath(polygons, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption);
       const needsClip = borderStyle !== "straight";
 
       // --- CLIP PATH setup ---
@@ -31923,29 +31921,59 @@ Example valid ways of supplying a shape would be:
           clipPathEl = defs.append("clipPath").attr("id", clipId);
           clipPathEl.append("path");
       }
-      clipPathEl.select("path").attr("d", needsClip ? combinedD : null);
+
+      // Helper to compute a cell's border path string
+      function cellBorderPath(d) {
+          return borderPath(d.polygon, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption);
+      }
 
       // --- Ensure layers exist in order ---
+      // Migrate from old single-path border to group-based borders
+      selection.select("path.cell-border").remove();
       if (selection.select("g.cell-fills").empty()) selection.append("g").attr("class", "cell-fills");
-      if (selection.select("path.cell-border").empty()) selection.append("path").attr("class", "cell-border");
+      if (selection.select("g.cell-borders").empty()) selection.append("g").attr("class", "cell-borders");
       if (selection.select("g.cell-hits").empty()) selection.append("g").attr("class", "cell-hits");
 
       const fillGroup = selection.select("g.cell-fills");
-      const borderEl = selection.select("path.cell-border");
+      const borderGroup = selection.select("g.cell-borders");
       const hitGroup = selection.select("g.cell-hits");
 
-      fillGroup.attr("clip-path", needsClip ? "url(#" + clipId + ")" : null);
+      // When animating with rounding, temporarily disable the clip so fills
+      // aren't clipped to the stale shape mid-morph. Re-enable after transition.
+      if (duration > 0 && needsClip) {
+          fillGroup.attr("clip-path", null);
+      } else {
+          fillGroup.attr("clip-path", needsClip ? "url(#" + clipId + ")" : null);
+      }
 
       const key = d => d.data.name;
 
       // --- FILL LAYER ---
       const fillJoin = fillGroup.selectAll("path").data(leaves, key);
-      fillJoin.exit().remove();
 
-      fillJoin.enter().append("path")
+      if (duration > 0) {
+          fillJoin.exit()
+              .transition()
+              .duration(duration)
+              .ease(cubicInOut)
+              .attr("opacity", 0)
+              .remove();
+      } else {
+          fillJoin.exit().remove();
+      }
+
+      const fillEnter = fillJoin.enter().append("path")
           .attr("d", d => polygonToPath(d.polygon))
           .attr("fill", fillFn)
           .attr("stroke", "none");
+
+      if (duration > 0) {
+          fillEnter.attr("opacity", 0)
+              .transition()
+              .duration(duration)
+              .ease(cubicInOut)
+              .attr("opacity", 1);
+      }
 
       const fillUpdate = fillJoin;
       if (duration > 0) {
@@ -31971,15 +31999,82 @@ Example valid ways of supplying a shape would be:
               .attr("stroke", "none");
       }
 
-      // --- BORDER LAYER (always instant) ---
-      borderEl
-          .attr("d", combinedD)
+      // --- BORDER LAYER (per-cell paths with Flubber morphing) ---
+      const borderJoin = borderGroup.selectAll("path").data(leaves, key);
+
+      if (duration > 0) {
+          borderJoin.exit()
+              .transition()
+              .duration(duration)
+              .ease(cubicInOut)
+              .attr("opacity", 0)
+              .remove();
+      } else {
+          borderJoin.exit().remove();
+      }
+
+      const borderEnter = borderJoin.enter().append("path")
+          .attr("d", cellBorderPath)
           .attr("fill", "none");
-      applyStyle(borderEl);
+      applyStyle(borderEnter);
+
+      if (duration > 0) {
+          borderEnter.attr("opacity", 0)
+              .transition()
+              .duration(duration)
+              .ease(cubicInOut)
+              .attr("opacity", 1);
+      }
+
+      const borderUpdate = borderJoin;
+      if (duration > 0) {
+          borderUpdate.each(function(d) {
+              const el = select(this);
+              const oldPath = el.attr("d");
+              const newPath = cellBorderPath(d);
+              const morph = flubberInterpolate(oldPath, newPath, { maxSegmentLength: 10 });
+
+              el.transition()
+                  .duration(duration)
+                  .ease(cubicInOut)
+                  .attrTween("d", () => morph)
+                  .on("end", function() {
+                      select(this).attr("d", cellBorderPath(d));
+                  });
+          });
+          applyStyle(borderUpdate);
+      } else {
+          borderUpdate
+              .attr("d", cellBorderPath)
+              .attr("fill", "none");
+          applyStyle(borderUpdate);
+      }
+
+      // Update clip path after transitions complete (or instantly if no animation)
+      if (duration > 0 && needsClip) {
+          const combinedD = combinedBorderPath(polygons, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption);
+          timeout$1(function() {
+              clipPathEl.select("path").attr("d", combinedD);
+              fillGroup.attr("clip-path", "url(#" + clipId + ")");
+          }, duration);
+      } else {
+          const combinedD = needsClip
+              ? combinedBorderPath(polygons, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption)
+              : null;
+          clipPathEl.select("path").attr("d", combinedD);
+      }
 
       // --- HIT LAYER ---
       const hitJoin = hitGroup.selectAll("path").data(leaves, key);
-      hitJoin.exit().remove();
+
+      if (duration > 0) {
+          hitJoin.exit()
+              .transition()
+              .duration(duration)
+              .remove();
+      } else {
+          hitJoin.exit().remove();
+      }
 
       const hitEnter = hitJoin.enter().append("path")
           .attr("d", d => polygonToPath(d.polygon))
@@ -32168,7 +32263,16 @@ Example valid ways of supplying a shape would be:
           .data(leaves, d => d.data.name);
 
       // EXIT
-      labels.exit().remove();
+      if (duration > 0) {
+          labels.exit()
+              .transition()
+              .duration(duration)
+              .ease(cubicInOut)
+              .attr("opacity", 0)
+              .remove();
+      } else {
+          labels.exit().remove();
+      }
 
       // ENTER
       const enter = labels.enter()
@@ -32355,8 +32459,7 @@ Example valid ways of supplying a shape would be:
           fillFn: d => getCellColor(d, root, colors, colorSettings),
           applyStyle: sel => {
               sel.attr("stroke", voronoi_settings.border_color)
-                  .attr("stroke-width", voronoi_settings.border_size)
-                  .attr("stroke-opacity", voronoi_settings.border_opacity);
+                  .attr("stroke-width", voronoi_settings.border_size);
           },
           applyEvents: sel => {
               sel.on("mouseover", function(event, d) {
