@@ -22897,7 +22897,7 @@ var template = (function (exports) {
           hide_small_labels: true,
           show_list: "",
           hide_margin: 0.1,
-          show_outline: false,
+          show_outline: true,
           outline_color: "#000000",
           outline_size: 0.1,
           wrap_labels: true
