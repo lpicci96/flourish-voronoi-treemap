@@ -5,6 +5,24 @@ All notable changes to this template will be documented in this file.
 ## [Unreleased]
 
 
+## [v0.4.0] - 2026-02-20
+
+### Added
+- Border rounding styles: straight, rounded, and adaptive corner rounding with configurable radius, angle factor, and max edge consumption
+- Per-cell border transitions using Flubber morphing for smooth animations
+- Fade-in/fade-out transitions for entering and exiting cells and labels
+- Label outline enabled by default for improved readability
+
+### Changed
+- Increased default max iterations for Voronoi layout from 50 to 100 for more accurate polygon sizing
+- Simplified colour settings panel by removing unused numeric palette options
+- Removed border opacity setting (incompatible with per-cell border rendering)
+
+### Fixed
+- Colour domain now computed from all data rather than filtered subset, ensuring consistent colours across filter changes
+- Border transitions no longer snap to final position while cells are still morphing
+
+
 ## [v0.3.1] - 2026-02-19
 
 ### Fixed

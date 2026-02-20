@@ -5,14 +5,17 @@ export default {
 
         border_color: "#ffffff",
         border_size: 1,
-        border_opacity: 1,
         clip_type: "circle",
         advanced_settings: false,
         seed: 41,
-        max_iterations: 50,
+        max_iterations: 100,
         convergence_ratio: 0.001,
         min_weight_ratio: 0,
         alignment: "center",
+        border_rounding_style: "adaptive",
+        border_radius: 3,
+        max_angle_factor: 2.5,
+        max_edge_consumption: 0.6
 
     },
 
@@ -60,7 +63,7 @@ export default {
         hide_small_labels: true,
         show_list: "",
         hide_margin: 0.1,
-        show_outline: false,
+        show_outline: true,
         outline_color: "#000000",
         outline_size: 0.1,
         wrap_labels: true

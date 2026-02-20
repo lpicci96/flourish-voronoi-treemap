@@ -38,24 +38,6 @@ settings:
   # • "color" >> gives a color picker
 
   - Voronoi Treemap
-  - property: voronoi_settings.border_color
-    name: Border Color
-    description: The fill color for the polygon borders.
-    type: color
-  - property: voronoi_settings.border_size
-    name: Border Size
-    description: The size of the polygon borders.
-    type: number
-    min: 0
-    step: 0.1
-    max: 5
-  - property: voronoi_settings.border_opacity
-    name: Border opacity
-    description: Opacity of the polygon borders.
-    type: number
-    min: 0
-    step: 0.05
-    max: 1
   - property: voronoi_settings.clip_type
     name: Clipping Type
     description: The method used to clip the Voronoi polygons. Available options are "rectangle" (takes up all available horizontal space), "square", "circle", "triangle", "rhombus", "pentagon", and "hexagon".
@@ -94,8 +76,61 @@ settings:
       - [ fa-align-center, center ]
       - [ fa-align-right, right ]
     hide_if:
-        voronoi_settings.clip_type:
-            - "rectangle"
+      voronoi_settings.clip_type:
+        - "rectangle"
+
+  # border settings
+  - property: voronoi_settings.border_color
+    name: Border Color
+    description: The fill color for the polygon borders.
+    type: color
+    width: half
+    new_section: Borders
+  - property: voronoi_settings.border_size
+    name: Border Size
+    description: The size of the polygon borders.
+    type: number
+    min: 0
+    step: 0.1
+    max: 5
+    width: quarter
+  - property: voronoi_settings.border_rounding_style
+    name: Border rounding style
+    description: Controls how cell corners are drawn. "straight" draws sharp corners with no rounding, "rounded" creates uniform rounding applied equally to all corners, "adaptive" uses rounding that adapts to corner sharpness, smoothing acute angles more aggressively
+    type: string
+    width: half
+    choices:
+      - straight
+      - rounded
+      - adaptive
+  - property: voronoi_settings.border_radius
+    name: Border radius
+    description: The amount of border edge rounding in px. Only applies if the border rounding style is set to "rounded" or "adaptive".
+    type: number
+    min: 0
+    step: 0.1
+    show_if:
+      voronoi_settings.border_rounding_style: [rounded, adaptive]
+  - property: voronoi_settings.max_angle_factor
+    name: Max angle factor
+    description: Controls how much extra rounding is applied to sharp corners. Higher values smooth acute angles more while leaving wide angles subtle.
+    type: number
+    min: 1
+    max: 5
+    step: 0.1
+    show_if:
+      voronoi_settings.border_rounding_style: [ adaptive ]
+  - property: voronoi_settings.max_edge_consumption
+    name: Rounding reach
+    description: Maximum proportion of each edge that corner rounding can consume. Higher values allow rounder corners but may reduce visible straight edges.
+    type: number
+    min: 0.1
+    max: 0.95
+    step: 0.05
+    show_if:
+      voronoi_settings.border_rounding_style: [rounded, adaptive]
+
+
 #  Advanced settings
   - property: voronoi_settings.advanced_settings
     name: Advanced Settings
@@ -110,14 +145,14 @@ settings:
     show_if: voronoi_settings.advanced_settings
   - property: voronoi_settings.max_iterations
     name: Max Iterations
-    description: The maximum number of iterations for the Voronoi layout algorithm. Higher values may produce better layouts but take longer to compute. The recommended value is 50
+    description: The maximum number of iterations for the Voronoi layout algorithm. Higher values may produce better layouts but take longer to compute.
     type: number
     min: 1
-    max: 100
+    max: 200
     show_if: voronoi_settings.advanced_settings
   - property: voronoi_settings.convergence_ratio
     name: Convergence Ratio
-    description: The ratio used to determine when the Voronoi layout algorithm has converged. A lower value may produce better layouts but take longer to compute. The recommended value is 0.001
+    description: The ratio used to determine when the Voronoi layout algorithm has converged. A lower value may produce better layouts but take longer to compute.
     type: number
     min: 0.001
     max: 0.1
@@ -244,6 +279,9 @@ settings:
   - Colours
   - property: colors
     import: "@flourish/colors"
+    overrides:
+      - tag: numeric
+        show_if: false
   - property: colors.jitter_shade
     name: Jitter shade
     description: Jitter the shade of the second level hierarchy. This only applies if a second level column is provided and a colour category column is not provided. Jittering the shade can help to distinguish each polygon in the level and add visual appeal to the chart, but it may also make the colours less consistent across the hierarchy.

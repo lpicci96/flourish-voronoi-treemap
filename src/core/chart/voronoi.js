@@ -35,14 +35,6 @@ function computeLayout(hierarchy, voronoi_settings, height, width) {
     _voronoiTreemap(hierarchy);
 }
 
-/**
- * Convert a polygon (array of [x, y] points) to an SVG path `d` string.
- * @param {Array<number[]>} polygon - Array of coordinate pairs.
- * @returns {string} SVG path data string.
- */
-function polygonPath(polygon) {
-    return "M" + polygon.map(pt => pt[0] + "," + pt[1]).join("L") + "Z";
-}
 
 /**
  * Render (or update) Voronoi cells inside the given SVG container element.
@@ -69,12 +61,14 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
         selection: g,
         leaves,
         duration,
-        pathFn: d => polygonPath(d.polygon),
+        borderStyle: voronoi_settings.border_rounding_style,
+        borderRoundingSize: voronoi_settings.border_radius,
+        borderMaxAngleFactor: voronoi_settings.max_angle_factor,
+        borderMaxEdgeConsumption: voronoi_settings.max_edge_consumption,
         fillFn: d => getCellColor(d, root, colors, colorSettings),
         applyStyle: sel => {
             sel.attr("stroke", voronoi_settings.border_color)
-                .attr("stroke-width", voronoi_settings.border_size)
-                .attr("stroke-opacity", voronoi_settings.border_opacity);
+                .attr("stroke-width", voronoi_settings.border_size);
         },
         applyEvents: sel => {
             sel.on("mouseover", function(event, d) {
