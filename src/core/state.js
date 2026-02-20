@@ -8,7 +8,7 @@ export default {
         clip_type: "circle",
         advanced_settings: false,
         seed: 41,
-        max_iterations: 50,
+        max_iterations: 100,
         convergence_ratio: 0.001,
         min_weight_ratio: 0,
         alignment: "center",
