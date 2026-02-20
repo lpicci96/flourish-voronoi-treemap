@@ -64,6 +64,7 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
         borderStyle: voronoi_settings.border_rounding_style,
         borderRoundingSize: voronoi_settings.border_radius,
         borderMaxAngleFactor: voronoi_settings.max_angle_factor,
+        borderMaxEdgeConsumption: voronoi_settings.max_edge_consumption,
         fillFn: d => getCellColor(d, root, colors, colorSettings),
         applyStyle: sel => {
             sel.attr("stroke", voronoi_settings.border_color)

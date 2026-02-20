@@ -24,10 +24,10 @@ let clipIdCounter = 0;
  * and clip path always update instantly so that style changes (color, size,
  * rounding) are reflected without a morph animation.
  */
-export function transitionCells({ selection, leaves, duration, borderStyle, borderRoundingSize, borderMaxAngleFactor, fillFn, applyStyle, applyEvents }) {
+export function transitionCells({ selection, leaves, duration, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, fillFn, applyStyle, applyEvents }) {
 
     const polygons = leaves.map(d => d.polygon);
-    const combinedD = combinedBorderPath(polygons, borderStyle, borderRoundingSize, borderMaxAngleFactor);
+    const combinedD = combinedBorderPath(polygons, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption);
     const needsClip = borderStyle !== "straight";
 
     // --- CLIP PATH setup ---

@@ -79,7 +79,8 @@ function roundedPolygonPath(points, {
     radiusFn = null,
     maxAngleFactor = 2.5,
     convexOnly = false,
-    collinearThreshold = 0.15
+    collinearThreshold = 0.15,
+    maxEdgeConsumption = 0.66
 } = {}) {
     if (!points || points.length < 3) return "";
 
@@ -131,8 +132,8 @@ function roundedPolygonPath(points, {
         const distIn = availableDistance(pts, angles, i, -1);
         const distOut = availableDistance(pts, angles, i, +1);
 
-        const tIn = Math.min(desired, distIn / 1.5);
-        const tOut = Math.min(desired, distOut / 1.5);
+        const tIn = Math.min(desired, distIn * maxEdgeConsumption);
+        const tOut = Math.min(desired, distOut * maxEdgeConsumption);
 
         cuts[i] = {
             inPt: cutPoint(a, b, tIn),
@@ -171,17 +172,22 @@ function roundedPolygonPath(points, {
  * @param {number} [maxAngleFactor=2.5] - Cap for extra rounding on sharp angles (adaptive only).
  * @returns {string} SVG path data string.
  */
-export function borderPath(polygon, style, roundingSize, maxAngleFactor) {
+export function borderPath(polygon, style, roundingSize, maxAngleFactor, maxEdgeConsumption) {
     style = style || "straight";
 
     if (style === "straight") {
         return straightPath(polygon);
     } else if (style === "rounded") {
-        return roundedPolygonPath(polygon, { baseRadius: roundingSize, maxAngleFactor: 1 });
+        return roundedPolygonPath(polygon, {
+            baseRadius: roundingSize,
+            maxAngleFactor: 1,
+            maxEdgeConsumption: maxEdgeConsumption || 0.66
+        });
     } else if (style === "adaptive") {
         return roundedPolygonPath(polygon, {
             baseRadius: roundingSize,
-            maxAngleFactor: maxAngleFactor || 2.5
+            maxAngleFactor: maxAngleFactor || 2.5,
+            maxEdgeConsumption: maxEdgeConsumption || 0.66
         });
     } else {
         throw new Error("Unknown border rounding style: " + style);
@@ -231,12 +237,12 @@ function deduplicatedEdgePath(polygons) {
  * @param {number} [maxAngleFactor] - Cap for extra rounding on sharp angles.
  * @returns {string} SVG path data string.
  */
-export function combinedBorderPath(polygons, style, roundingSize, maxAngleFactor) {
+export function combinedBorderPath(polygons, style, roundingSize, maxAngleFactor, maxEdgeConsumption) {
     style = style || "straight";
 
     if (style === "straight") {
         return deduplicatedEdgePath(polygons);
     }
 
-    return polygons.map(polygon => borderPath(polygon, style, roundingSize, maxAngleFactor)).join("");
+    return polygons.map(polygon => borderPath(polygon, style, roundingSize, maxAngleFactor, maxEdgeConsumption)).join("");
 }

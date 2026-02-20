@@ -22846,9 +22846,10 @@ var template = (function (exports) {
           convergence_ratio: 0.001,
           min_weight_ratio: 0,
           alignment: "center",
-          border_rounding_style: "straight",
+          border_rounding_style: "adaptive",
           border_radius: 3,
-          max_angle_factor: 2.5
+          max_angle_factor: 2.5,
+          max_edge_consumption: 0.6
 
       },
 
@@ -31709,7 +31710,8 @@ Example valid ways of supplying a shape would be:
       radiusFn = null,
       maxAngleFactor = 2.5,
       convexOnly = false,
-      collinearThreshold = 0.15
+      collinearThreshold = 0.15,
+      maxEdgeConsumption = 0.66
   } = {}) {
       if (!points || points.length < 3) return "";
 
@@ -31761,8 +31763,8 @@ Example valid ways of supplying a shape would be:
           const distIn = availableDistance(pts, angles, i, -1);
           const distOut = availableDistance(pts, angles, i, 1);
 
-          const tIn = Math.min(desired, distIn / 1.5);
-          const tOut = Math.min(desired, distOut / 1.5);
+          const tIn = Math.min(desired, distIn * maxEdgeConsumption);
+          const tOut = Math.min(desired, distOut * maxEdgeConsumption);
 
           cuts[i] = {
               inPt: cutPoint(a, b, tIn),
@@ -31801,17 +31803,22 @@ Example valid ways of supplying a shape would be:
    * @param {number} [maxAngleFactor=2.5] - Cap for extra rounding on sharp angles (adaptive only).
    * @returns {string} SVG path data string.
    */
-  function borderPath(polygon, style, roundingSize, maxAngleFactor) {
+  function borderPath(polygon, style, roundingSize, maxAngleFactor, maxEdgeConsumption) {
       style = style || "straight";
 
       if (style === "straight") {
           return straightPath(polygon);
       } else if (style === "rounded") {
-          return roundedPolygonPath(polygon, { baseRadius: roundingSize, maxAngleFactor: 1 });
+          return roundedPolygonPath(polygon, {
+              baseRadius: roundingSize,
+              maxAngleFactor: 1,
+              maxEdgeConsumption: maxEdgeConsumption || 0.66
+          });
       } else if (style === "adaptive") {
           return roundedPolygonPath(polygon, {
               baseRadius: roundingSize,
-              maxAngleFactor: maxAngleFactor || 2.5
+              maxAngleFactor: maxAngleFactor || 2.5,
+              maxEdgeConsumption: maxEdgeConsumption || 0.66
           });
       } else {
           throw new Error("Unknown border rounding style: " + style);
@@ -31861,14 +31868,14 @@ Example valid ways of supplying a shape would be:
    * @param {number} [maxAngleFactor] - Cap for extra rounding on sharp angles.
    * @returns {string} SVG path data string.
    */
-  function combinedBorderPath(polygons, style, roundingSize, maxAngleFactor) {
+  function combinedBorderPath(polygons, style, roundingSize, maxAngleFactor, maxEdgeConsumption) {
       style = style || "straight";
 
       if (style === "straight") {
           return deduplicatedEdgePath(polygons);
       }
 
-      return polygons.map(polygon => borderPath(polygon, style, roundingSize, maxAngleFactor)).join("");
+      return polygons.map(polygon => borderPath(polygon, style, roundingSize, maxAngleFactor, maxEdgeConsumption)).join("");
   }
 
   /**
@@ -31893,10 +31900,10 @@ Example valid ways of supplying a shape would be:
    * and clip path always update instantly so that style changes (color, size,
    * rounding) are reflected without a morph animation.
    */
-  function transitionCells({ selection, leaves, duration, borderStyle, borderRoundingSize, borderMaxAngleFactor, fillFn, applyStyle, applyEvents }) {
+  function transitionCells({ selection, leaves, duration, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, fillFn, applyStyle, applyEvents }) {
 
       const polygons = leaves.map(d => d.polygon);
-      const combinedD = combinedBorderPath(polygons, borderStyle, borderRoundingSize, borderMaxAngleFactor);
+      const combinedD = combinedBorderPath(polygons, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption);
       const needsClip = borderStyle !== "straight";
 
       // --- CLIP PATH setup ---
@@ -32344,6 +32351,7 @@ Example valid ways of supplying a shape would be:
           borderStyle: voronoi_settings.border_rounding_style,
           borderRoundingSize: voronoi_settings.border_radius,
           borderMaxAngleFactor: voronoi_settings.max_angle_factor,
+          borderMaxEdgeConsumption: voronoi_settings.max_edge_consumption,
           fillFn: d => getCellColor(d, root, colors, colorSettings),
           applyStyle: sel => {
               sel.attr("stroke", voronoi_settings.border_color)
