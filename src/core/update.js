@@ -58,24 +58,14 @@ export default function() {
         return;
     }
 
-    // Compute global color domain across all facets
-    const allLeaves = [];
-    const allHierarchies = [...facetHierarchies.values()];
-    for (const h of allHierarchies) {
-        allLeaves.push(...h.leaves());
-    }
-    // Check if any leaf uses color_category
-    const hasColorCategory = allLeaves.some(d => d.data._row && d.data._row.color_category != null);
+    // Compute global color domain from ALL rows (before filtering) so that
+    // colors stay consistent when a filter is active.
+    const hasColorCategory = rows.some(d => d.color_category != null);
     let globalColorDomain;
     if (hasColorCategory) {
-        globalColorDomain = [...new Set(allLeaves.map(d => String(d.data._row.color_category)))];
+        globalColorDomain = [...new Set(rows.map(d => String(d.color_category)).filter(Boolean))];
     } else {
-        // Collect first-level children names from all hierarchies
-        const names = new Set();
-        for (const h of allHierarchies) {
-            (h.children || []).forEach(d => names.add(d.data.name));
-        }
-        globalColorDomain = [...names];
+        globalColorDomain = [...new Set(rows.map(d => d.firstLevel).filter(Boolean))];
     }
 
     // Update legend with global domain before layout so layout allocates space for it
