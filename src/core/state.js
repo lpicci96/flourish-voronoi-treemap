@@ -13,6 +13,9 @@ export default {
         convergence_ratio: 0.001,
         min_weight_ratio: 0,
         alignment: "center",
+        border_rounding_style: "straight",
+        border_radius: 3,
+        max_angle_factor: 2.5
 
     },
 

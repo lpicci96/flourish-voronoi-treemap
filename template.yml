@@ -42,6 +42,7 @@ settings:
     name: Border Color
     description: The fill color for the polygon borders.
     type: color
+    width: half
   - property: voronoi_settings.border_size
     name: Border Size
     description: The size of the polygon borders.
@@ -49,6 +50,7 @@ settings:
     min: 0
     step: 0.1
     max: 5
+    width: quarter
   - property: voronoi_settings.border_opacity
     name: Border opacity
     description: Opacity of the polygon borders.
@@ -56,6 +58,36 @@ settings:
     min: 0
     step: 0.05
     max: 1
+    width: quarter
+  - property: voronoi_settings.border_rounding_style
+    name: Border rounding style
+    description: Controls how cell corners are drawn. "straight" draws sharp corners with no rounding, "rounded" creates uniform rounding applied equally to all corners, "adaptive" uses rounding that adapts to corner sharpness, smoothing acute angles more aggressively
+    type: string
+    width: half
+    choices:
+      - straight
+      - rounded
+      - adaptive
+  - property: voronoi_settings.border_radius
+    name: Border radius
+    description: The amount of border edge rounding in px. Only applies if the border rounding style is set to "rounded" or "adaptive".
+    type: number
+    min: 0
+    step: 0.1
+    show_if:
+      voronoi_settings.border_rounding_style: [rounded, adaptive]
+  - property: voronoi_settings.max_angle_factor
+    name: Max angle factor
+    description: Controls how much extra rounding is applied to sharp corners. Higher values smooth acute angles more while leaving wide angles subtle.
+    type: number
+    min: 1
+    max: 5
+    step: 0.1
+    show_if:
+      voronoi_settings.border_rounding_style: [ adaptive ]
+
+
+
   - property: voronoi_settings.clip_type
     name: Clipping Type
     description: The method used to clip the Voronoi polygons. Available options are "rectangle" (takes up all available horizontal space), "square", "circle", "triangle", "rhombus", "pentagon", and "hexagon".
