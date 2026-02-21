@@ -363,7 +363,7 @@ data:
     dataset: data
     column: "Data::C"
     data_type:
-      - string
+      - number
 
   - key: filter
     name: Filter

@@ -47,6 +47,10 @@ Please get in touch with me for any bug reports or feature requests.
 - Chart sizing options - support for aspect ratios and mobile responsive layouts
 - Label improvements - better positioning, additional custom positioning options, support for contrasting text colours, and custom exclusion filter
 
+
+**v0.4.1 - 2026-02-21**
+- Set data type requirement for value column to number
+
 **v0.4.0 - 2026-02-20**
 - Added border rounding styles: straight, rounded, and adaptive with configurable radius and angle settings
 - Smooth per-cell border transitions that morph in sync with cell fills

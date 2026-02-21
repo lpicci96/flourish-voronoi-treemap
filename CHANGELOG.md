@@ -5,6 +5,12 @@ All notable changes to this template will be documented in this file.
 ## [Unreleased]
 
 
+## [v0.4.1] - 2026-02-21
+
+### Fixed
+- Data type for value column changed to requires numeric type instead of string
+
+
 ## [v0.4.0] - 2026-02-20
 
 ### Added
