@@ -52,6 +52,174 @@ function polygonWidthAtY(polygon, y) {
     return Math.max(...intersections) - Math.min(...intersections);
 }
 
+/**
+ * Ray-casting point-in-polygon test.
+ * @param {number} px - Test point x.
+ * @param {number} py - Test point y.
+ * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
+ * @returns {boolean} True if point is inside the polygon.
+ */
+function pointInPolygon(px, py, polygon) {
+    let inside = false;
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+        const xi = polygon[i][0], yi = polygon[i][1];
+        const xj = polygon[j][0], yj = polygon[j][1];
+        if ((yi > py) !== (yj > py) && px < (xj - xi) * (py - yi) / (yj - yi) + xi) {
+            inside = !inside;
+        }
+    }
+    return inside;
+}
+
+/**
+ * Minimum signed distance from a point to the polygon boundary.
+ * Positive if inside, negative if outside.
+ * @param {number} px - Test point x.
+ * @param {number} py - Test point y.
+ * @param {Array<{ax:number,ay:number,bx:number,by:number}>} edges - Pre-computed edges.
+ * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
+ * @returns {number} Signed distance to nearest edge.
+ */
+function pointToPolygonSignedDist(px, py, edges, polygon) {
+    let minDist = Infinity;
+    for (let i = 0; i < edges.length; i++) {
+        const e = edges[i];
+        const dx = e.bx - e.ax, dy = e.by - e.ay;
+        const lenSq = dx * dx + dy * dy;
+        let t = lenSq > 0 ? ((px - e.ax) * dx + (py - e.ay) * dy) / lenSq : 0;
+        if (t < 0) t = 0; else if (t > 1) t = 1;
+        const cx = e.ax + t * dx - px, cy = e.ay + t * dy - py;
+        const dist = Math.sqrt(cx * cx + cy * cy);
+        if (dist < minDist) minDist = dist;
+    }
+    return pointInPolygon(px, py, polygon) ? minDist : -minDist;
+}
+
+/**
+ * Area-weighted centroid using the shoelace cross-product approach.
+ * Falls back to vertex-average centroid for degenerate polygons.
+ * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
+ * @returns {number[]} [cx, cy] centroid coordinates.
+ */
+function polygonAreaCentroid(polygon) {
+    let cx = 0, cy = 0, area = 0;
+    const n = polygon.length;
+    for (let i = 0, j = n - 1; i < n; j = i++) {
+        const cross = polygon[j][0] * polygon[i][1] - polygon[i][0] * polygon[j][1];
+        cx += (polygon[j][0] + polygon[i][0]) * cross;
+        cy += (polygon[j][1] + polygon[i][1]) * cross;
+        area += cross;
+    }
+    if (Math.abs(area) < 1e-10) return polygonCentroid(polygon);
+    area /= 2;
+    const factor = 1 / (6 * area);
+    return [cx * factor, cy * factor];
+}
+
+/**
+ * Compute the pole of inaccessibility — the center of the largest inscribed circle.
+ * Uses an iterative grid-subdivision approach with a max-heap priority queue.
+ * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
+ * @param {number} precision - Convergence threshold in pixels (default 1).
+ * @returns {{x: number, y: number, distance: number}} Pole coordinates and inscribed circle radius.
+ */
+function poleOfInaccessibility(polygon, precision) {
+    precision = precision || 1;
+    const n = polygon.length;
+
+    // Bounding box
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for (let i = 0; i < n; i++) {
+        if (polygon[i][0] < minX) minX = polygon[i][0];
+        if (polygon[i][1] < minY) minY = polygon[i][1];
+        if (polygon[i][0] > maxX) maxX = polygon[i][0];
+        if (polygon[i][1] > maxY) maxY = polygon[i][1];
+    }
+
+    const width = maxX - minX, height = maxY - minY;
+    const cellSize = Math.min(width, height);
+
+    if (cellSize === 0) {
+        return { x: minX, y: minY, distance: 0 };
+    }
+
+    // Pre-compute edges
+    var edges = [];
+    for (let i = 0, j = n - 1; i < n; j = i++) {
+        edges.push({ ax: polygon[j][0], ay: polygon[j][1], bx: polygon[i][0], by: polygon[i][1] });
+    }
+
+    // Inline binary max-heap keyed on cell.max
+    var heap = [];
+    function heapPush(cell) {
+        heap.push(cell);
+        var i = heap.length - 1;
+        while (i > 0) {
+            var parent = (i - 1) >> 1;
+            if (heap[parent].max >= heap[i].max) break;
+            var tmp = heap[parent]; heap[parent] = heap[i]; heap[i] = tmp;
+            i = parent;
+        }
+    }
+    function heapPop() {
+        var top = heap[0];
+        var last = heap.pop();
+        if (heap.length > 0) {
+            heap[0] = last;
+            var i = 0, len = heap.length;
+            while (true) {
+                var left = 2 * i + 1, right = 2 * i + 2, largest = i;
+                if (left < len && heap[left].max > heap[largest].max) largest = left;
+                if (right < len && heap[right].max > heap[largest].max) largest = right;
+                if (largest === i) break;
+                var tmp = heap[i]; heap[i] = heap[largest]; heap[largest] = tmp;
+                i = largest;
+            }
+        }
+        return top;
+    }
+
+    function makeCell(x, y, half) {
+        var dist = pointToPolygonSignedDist(x, y, edges, polygon);
+        return { x: x, y: y, half: half, dist: dist, max: dist + half * Math.SQRT2 };
+    }
+
+    // Seed grid cells
+    var half = cellSize / 2;
+    for (var x = minX; x < maxX; x += cellSize) {
+        for (var y = minY; y < maxY; y += cellSize) {
+            heapPush(makeCell(x + half, y + half, half));
+        }
+    }
+
+    // Seed with vertex-average and area-weighted centroids
+    var vc = polygonCentroid(polygon);
+    var bestCell = makeCell(vc[0], vc[1], 0);
+
+    var ac = polygonAreaCentroid(polygon);
+    var acCell = makeCell(ac[0], ac[1], 0);
+    if (acCell.dist > bestCell.dist) bestCell = acCell;
+
+    while (heap.length > 0) {
+        var cell = heapPop();
+
+        // Update best if this cell center is better
+        if (cell.dist > bestCell.dist) bestCell = cell;
+
+        // Prune: if upper bound can't beat current best by more than precision, stop
+        if (cell.max - bestCell.dist <= precision) break;
+
+        // Subdivide
+        half = cell.half / 2;
+        heapPush(makeCell(cell.x - half, cell.y - half, half));
+        heapPush(makeCell(cell.x + half, cell.y - half, half));
+        heapPush(makeCell(cell.x - half, cell.y + half, half));
+        heapPush(makeCell(cell.x + half, cell.y + half, half));
+    }
+
+    return { x: bestCell.x, y: bestCell.y, distance: bestCell.dist };
+}
+
 const LINE_HEIGHT = 1.2; // line height in em units
 
 /**
@@ -183,7 +351,8 @@ export function renderLabels(container, leaves, labelSettings, animation_duratio
     merged
         .attr("font-weight", labelSettings.font_weight)
         .each(function(d, i) {
-            const [cx, cy] = polygonCentroid(d.polygon);
+            const pole = poleOfInaccessibility(d.polygon, 1);
+            const cx = pole.x, cy = pole.y, inscribedRadius = pole.distance;
             const fontSizeEm = sizeProportionally
                 ? minSize + (maxSize - minSize) * Math.sqrt(areas[i] / maxArea)
                 : (labelSettings.font_size || 0.8);
@@ -239,15 +408,19 @@ export function renderLabels(container, leaves, labelSettings, animation_duratio
             if (showList && showList.size > 0) {
                 visible = showList.has(d.data.name);
             } else if (labelSettings.hide_small_labels) {
-                const marginFactor = 1 - margin;
-                visible = lines.every(function(line, lineIndex) {
-                    const lineY = startY + lineIndex * lineHeightPx;
-                    const availableWidth = polygonWidthAtY(d.polygon, lineY) * marginFactor;
-                    const tspanTemp = el.append("tspan").text(line);
-                    const lineWidth = tspanTemp.node().getComputedTextLength();
-                    tspanTemp.remove();
-                    return lineWidth <= availableWidth;
-                });
+                if (inscribedRadius * 2 < fontSizePx * LINE_HEIGHT) {
+                    visible = false;
+                } else {
+                    const marginFactor = 1 - margin;
+                    visible = lines.every(function(line, lineIndex) {
+                        const lineY = startY + lineIndex * lineHeightPx;
+                        const availableWidth = polygonWidthAtY(d.polygon, lineY) * marginFactor;
+                        const tspanTemp = el.append("tspan").text(line);
+                        const lineWidth = tspanTemp.node().getComputedTextLength();
+                        tspanTemp.remove();
+                        return lineWidth <= availableWidth;
+                    });
+                }
             }
             el.attr("visibility", visible ? "visible" : "hidden");
 
