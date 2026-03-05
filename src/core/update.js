@@ -3,7 +3,8 @@ import state from "./state";
 import { layout, colors, legend_container, legend_categorical, popup, localization, number_format, controls_container, filter_control, facets } from "../init";
 import { sizeSvg, svg, updateLegend, updateControlStyles } from "./draw";
 import { drawVoronoi } from "./chart/voronoi";
-import { processData, getFilterOptions } from "./chart/data_formatting"
+import { processData, getFilterOptions } from "./chart/data_formatting";
+import { updateChartHeight } from "./chart/sizing";
 
 export default function() {
     const rows = Array.isArray(data) ? data : data.data;
@@ -73,6 +74,7 @@ export default function() {
     layout.update();
 
     const width = layout.getPrimaryWidth();
+    updateChartHeight(state.voronoi_settings.chart_height, state.voronoi_settings.clip_type, width);
     const height = layout.getPrimaryHeight();
 
     // Build facet data array

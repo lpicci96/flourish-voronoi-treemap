@@ -38,6 +38,16 @@ settings:
   # • "color" >> gives a color picker
 
   - Voronoi Treemap
+  - property: voronoi_settings.chart_height
+    name: Height mode
+    type: string
+    choices:
+      - auto
+      - square
+      - match clip
+      - custom
+
+
   - property: voronoi_settings.clip_type
     name: Clipping Type
     description: The method used to clip the Voronoi polygons. Available options are "rectangle" (takes up all available horizontal space), "square", "circle", "triangle", "rhombus", "pentagon", and "hexagon".
@@ -75,9 +85,9 @@ settings:
       - [ fa-align-left, left ]
       - [ fa-align-center, center ]
       - [ fa-align-right, right ]
-    hide_if:
-      voronoi_settings.clip_type:
-        - "rectangle"
+    show_if:
+      voronoi_settings.clip_type: [square, circle, triangle, pentagon, hexagon, rhombus]
+      voronoi_settings.chart_height: [auto, custom]
 
   # cell gap settings
   - property: voronoi_settings.gap

@@ -2,6 +2,7 @@ export default {
 
     // Voronoi chart specific settings
     voronoi_settings: {
+        chart_height: "auto",
 
         gap: 1,
         clip_type: "circle",
