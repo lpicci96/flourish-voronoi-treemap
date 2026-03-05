@@ -21,10 +21,9 @@ const _voronoiTreemap = voronoiTreemap();
  * @param {object} voronoi_settings - Layout settings (clip_type, convergence_ratio, max_iterations, seed).
  * @param {number} height - Available height in pixels.
  * @param {number} width - Available width in pixels.
+ * @param {Array} clip - Clipping polygon vertices.
  */
-function computeLayout(hierarchy, voronoi_settings, height, width) {
-    const clip = clipVoronoi(voronoi_settings.clip_type, height, width, voronoi_settings.alignment);
-
+function computeLayout(hierarchy, voronoi_settings, height, width, clip) {
     _voronoiTreemap
         .clip(clip)
         .convergenceRatio(voronoi_settings.convergence_ratio)
@@ -33,6 +32,24 @@ function computeLayout(hierarchy, voronoi_settings, height, width) {
         .prng(seedrandom(voronoi_settings.seed));
 
     _voronoiTreemap(hierarchy);
+}
+
+/**
+ * Compute the horizontal translation needed to shift a centered shape
+ * to the desired alignment position.
+ * @param {Array} clip - Centered clipping polygon vertices.
+ * @param {number} width - Available width in pixels.
+ * @param {string} alignment - Desired alignment (left, center, right).
+ * @returns {number} Horizontal offset in pixels.
+ */
+function getAlignmentOffset(clip, width, alignment) {
+    if (!alignment || alignment === "center") return 0;
+    const xs = clip.map(p => p[0]);
+    const shapeWidth = Math.max(...xs) - Math.min(...xs);
+    const centeredOffsetX = (width - shapeWidth) / 2;
+    if (alignment === "left") return -centeredOffsetX;
+    if (alignment === "right") return centeredOffsetX;
+    return 0;
 }
 
 
@@ -111,11 +128,22 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
 export function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings) {
     if (!hierarchy) return;
 
-    computeLayout(hierarchy, voronoi_settings, height, width);
+    // Always compute layout with centered clip so cell shapes stay consistent
+    // regardless of alignment setting. Alignment is applied as a translation.
+    const clip = clipVoronoi(voronoi_settings.clip_type, height, width, "center");
+    computeLayout(hierarchy, voronoi_settings, height, width, clip);
 
+    const alignX = getAlignmentOffset(clip, width, voronoi_settings.alignment);
+
+    const sel = d3.select(container);
+    let alignGroup = sel.selectAll("g.align-group").data([null]);
+    alignGroup = alignGroup.enter().append("g").attr("class", "align-group").merge(alignGroup);
+    alignGroup.attr("transform", alignX !== 0 ? "translate(" + alignX + ", 0)" : null);
+
+    const alignNode = alignGroup.node();
     const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
 
     configurePopup(popup, leaves, localization, number_format);
-    renderCells(container, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration);
-    renderLabels(container, leaves, labelSettings, animation_duration);
+    renderCells(alignNode, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration);
+    renderLabels(alignNode, leaves, labelSettings, animation_duration);
 }
