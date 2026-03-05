@@ -40,6 +40,7 @@ settings:
   - Voronoi Treemap
   - property: voronoi_settings.chart_height
     name: Height mode
+    description: "Controls the height of the chart area. <b>Auto</b> uses the default Flourish height. <b>Square</b> makes the chart as tall as it is wide. <b>Match clip</b> adjusts the height to fit the selected clipping shape with no wasted space. <b>Custom</b> lets you set a specific aspect ratio for desktop and mobile."
     type: string
     choices:
       - auto
