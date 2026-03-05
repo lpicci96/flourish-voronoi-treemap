@@ -147,8 +147,8 @@ settings:
     name: Max Iterations
     description: The maximum number of iterations for the Voronoi layout algorithm. Higher values may produce better layouts but take longer to compute.
     type: number
-    min: 1
-    max: 200
+    min: 10
+    max: 300
     show_if: voronoi_settings.advanced_settings
   - property: voronoi_settings.convergence_ratio
     name: Convergence Ratio
