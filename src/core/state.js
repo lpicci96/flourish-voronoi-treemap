@@ -57,6 +57,7 @@ export default {
 
     labels: {
         show_labels: true,
+        auto_contrast: false,
         size_proportionally: true,
         font_size: 1,
         min_font_size: 0.5,

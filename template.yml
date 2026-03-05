@@ -283,11 +283,17 @@ settings:
         - "normal"
         - "bold"
     width: half
+  - property: labels.auto_contrast
+    name: Auto contrast
+    description: Automatically set label color to black or white based on the background color of each cell.
+    type: boolean
+    show_if: labels.show_labels
   - property: labels.font_color
     name: Font color
     type: color
     show_if:
       labels.show_labels: true
+      labels.auto_contrast: false
   - property: labels.show_outline
     name: Show outline
     description: Show an outline around the labels, which can help to improve the readability of labels on top of similarly colored polygons.
@@ -300,6 +306,7 @@ settings:
     show_if:
       labels.show_labels: true
       labels.show_outline: true
+      labels.auto_contrast: false
   - property: labels.outline_size
     name: Outline size
     description: The size of the label outline, which can help to improve the readability of labels on top of similarly colored polygons (in em).

@@ -159,5 +159,5 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
     }
 
     renderCells(alignNode, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration);
-    renderLabels(alignNode, leaves, labelSettings, animation_duration);
+    renderLabels(alignNode, leaves, labelSettings, animation_duration, hierarchy, colors, colorSettings);
 }

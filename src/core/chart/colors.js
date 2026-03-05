@@ -44,14 +44,25 @@ export function jitterColor(baseColor, leafName, amount) {
  * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
  * @returns {string} Resolved hex color string.
  */
-export function getCellColor(leaf, root, colors, colorSettings) {
-    let baseColor;
+/**
+ * Resolve the base (un-jittered) fill color for a Voronoi cell.
+ * Uses `color_category` when present, otherwise falls back to the
+ * first-level parent name.
+ * @param {object} leaf - d3-hierarchy leaf node.
+ * @param {object} root - d3-hierarchy root node.
+ * @param {object} colors - Flourish color scale instance.
+ * @returns {string} Base color string (before jitter).
+ */
+export function getBaseColor(leaf, root, colors) {
     if (leaf.data._row && leaf.data._row.color_category != null) {
-        baseColor = colors.getColor(String(leaf.data._row.color_category));
-    } else {
-        const firstLevel = leaf.parent === root ? leaf.data.name : leaf.parent.data.name;
-        baseColor = colors.getColor(firstLevel);
+        return colors.getColor(String(leaf.data._row.color_category));
     }
+    const firstLevel = leaf.parent === root ? leaf.data.name : leaf.parent.data.name;
+    return colors.getColor(firstLevel);
+}
+
+export function getCellColor(leaf, root, colors, colorSettings) {
+    var baseColor = getBaseColor(leaf, root, colors);
 
     // Apply jitter to second-level leaves, but not when color_category is used
     const hasColorCategory = leaf.data._row && leaf.data._row.color_category != null;
@@ -59,6 +70,23 @@ export function getCellColor(leaf, root, colors, colorSettings) {
         return jitterColor(baseColor, leaf.data.name, colorSettings.jitter_amount != null ? colorSettings.jitter_amount : 0.1);
     }
     return baseColor;
+}
+
+/**
+ * Determine whether a color is perceptually "pale" (light background).
+ * Linearizes sRGB channels and computes WCAG relative luminance.
+ * @param {string} hex - CSS color string (hex, rgb, etc.).
+ * @returns {boolean} True if the color's relative luminance exceeds 0.179.
+ */
+export function isPaleColor(hex) {
+    const c = d3.rgb(hex);
+    // Linearize sRGB channels
+    function linearize(v) {
+        v = v / 255;
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    }
+    const L = 0.2126 * linearize(c.r) + 0.7152 * linearize(c.g) + 0.0722 * linearize(c.b);
+    return L > 0.179;
 }
 
 /**

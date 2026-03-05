@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { getBaseColor, isPaleColor } from "./colors";
 
 /**
  * Compute the centroid of a polygon (average of all vertices).
@@ -288,7 +289,7 @@ function wrapText(textNode, text, polygon, cx, cy, lineHeightPx, margin) {
  * @param {Array} leaves - Hierarchy leaves with valid polygons.
  * @param {object} labelSettings - Label settings ({ show_labels }).
  */
-export function renderLabels(container, leaves, labelSettings, animation_duration) {
+export function renderLabels(container, leaves, labelSettings, animation_duration, hierarchy, colors, colorSettings) {
     const sel = d3.select(container);
 
     if (!labelSettings || !labelSettings.show_labels) {
@@ -366,14 +367,24 @@ export function renderLabels(container, leaves, labelSettings, animation_duratio
             const prevCy = el.attr("data-cy") != null ? +el.attr("data-cy") : cy;
             el.attr("data-cx", cx).attr("data-cy", cy);
 
+            // Determine label fill and outline colors
+            var fillColor = labelSettings.font_color;
+            var outlineColor = labelSettings.outline_color || "#ffffff";
+            if (labelSettings.auto_contrast && hierarchy && colors) {
+                var baseColor = getBaseColor(d, hierarchy, colors);
+                var pale = isPaleColor(baseColor);
+                fillColor = pale ? "#000000" : "#ffffff";
+                outlineColor = pale ? "#ffffff" : "#000000";
+            }
+
             // Set font size first so measurements are accurate
             el.attr("font-size", fontSizeEm + "em")
-                .attr("fill", labelSettings.font_color);
+                .attr("fill", fillColor);
 
             // Apply text outline
             if (labelSettings.show_outline) {
                 const outlineSize = labelSettings.outline_size != null ? labelSettings.outline_size : 0.3;
-                el.attr("stroke", labelSettings.outline_color || "#ffffff")
+                el.attr("stroke", outlineColor)
                     .attr("stroke-width", outlineSize + "em")
                     .attr("stroke-linejoin", "round")
                     .attr("paint-order", "stroke");
