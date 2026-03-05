@@ -483,6 +483,25 @@ data:
       - number
     optional: true
 
+  - key: label_override
+    name: Label override
+    description: Optional column to override the label displayed on each cell. If not provided, the hierarchy level name is used.
+    type: column
+    dataset: data
+    data_type:
+      - string
+    optional: true
+    column: "Data::D"
 
+  - key: value_label_override
+    name: Value label override
+    description: Optional column to override the value label displayed below the name label. If not provided, the formatted numeric value is used.
+    type: column
+    dataset: data
+    data_type:
+      - string
+      - number
+    optional: true
+    column: "Data::E"
 
 

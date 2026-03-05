@@ -309,6 +309,13 @@ export function renderLabels(container, leaves, labelSettings, animation_duratio
         ? new Set(labelSettings.show_list.split("\n").map(s => s.trim()).filter(Boolean))
         : null;
 
+    function getLabelText(d) {
+        if (d.data._row && d.data._row.label_override != null) {
+            return String(d.data._row.label_override);
+        }
+        return d.data.name;
+    }
+
     let minSize = labelSettings.min_font_size != null ? labelSettings.min_font_size : 0.4;
     let maxSize = labelSettings.max_font_size != null ? labelSettings.max_font_size : 1.2;
     if (minSize > maxSize) {
@@ -406,23 +413,38 @@ export function renderLabels(container, leaves, labelSettings, animation_duratio
             // Determine lines (wrap or single)
             let lines;
             if (shouldWrap) {
-                this.textContent = d.data.name;
-                lines = wrapText(this, d.data.name, d.polygon, cx, cy, lineHeightPx, margin);
+                this.textContent = getLabelText(d);
+                lines = wrapText(this, getLabelText(d), d.polygon, cx, cy, lineHeightPx, margin);
                 this.textContent = "";
             } else {
-                lines = [d.data.name];
+                lines = [getLabelText(d)];
             }
 
             // Optionally append value line if there is enough vertical space
-            let valueLineIndex = -1;
+            let valueLineStart = -1;
             if (labelSettings.show_value_labels && d._formattedValue != null) {
                 const nameLineCount = lines.length;
-                const totalWithValue = nameLineCount + 1;
+
+                // Wrap value text if wrapping is enabled
+                var valueLines;
+                if (shouldWrap) {
+                    // Temporarily set the smaller value font size for accurate measurement
+                    var prevFontSize = this.style.fontSize;
+                    this.style.fontSize = (fontSizePx * valueLabelSize) + "px";
+                    this.textContent = d._formattedValue;
+                    valueLines = wrapText(this, d._formattedValue, d.polygon, cx, cy, lineHeightPx, margin);
+                    this.textContent = "";
+                    this.style.fontSize = prevFontSize;
+                } else {
+                    valueLines = [d._formattedValue];
+                }
+
+                const totalWithValue = nameLineCount + valueLines.length;
                 const neededHeight = (totalWithValue - 1) * lineHeightPx;
                 // Check if the inscribed circle diameter can fit all lines
                 if (inscribedRadius * 2 >= neededHeight + fontSizePx) {
-                    valueLineIndex = lines.length;
-                    lines.push(d._formattedValue);
+                    valueLineStart = lines.length;
+                    valueLines.forEach(function(vl) { lines.push(vl); });
                 }
             }
 
@@ -460,7 +482,7 @@ export function renderLabels(container, leaves, labelSettings, animation_duratio
                         .attr("y", prevStartY + lineIndex * lineHeightPx)
                         .attr("dominant-baseline", "central")
                         .text(line);
-                    if (lineIndex === valueLineIndex) {
+                    if (valueLineStart >= 0 && lineIndex >= valueLineStart) {
                         tspan.attr("font-size", valueLabelSize + "em").attr("opacity", valueLabelOpacity).attr("font-weight", valueLabelWeight);
                     }
                 });
@@ -488,7 +510,7 @@ export function renderLabels(container, leaves, labelSettings, animation_duratio
                         .attr("y", startY + lineIndex * lineHeightPx)
                         .attr("dominant-baseline", "central")
                         .text(line);
-                    if (lineIndex === valueLineIndex) {
+                    if (valueLineStart >= 0 && lineIndex >= valueLineStart) {
                         tspan.attr("font-size", valueLabelSize + "em").attr("opacity", valueLabelOpacity).attr("font-weight", valueLabelWeight);
                     }
                 });

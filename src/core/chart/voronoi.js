@@ -154,7 +154,11 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
     if (labelSettings && labelSettings.show_value_labels) {
         var formatter = number_format(localization.getFormatterFunction());
         leaves.forEach(function(d) {
-            d._formattedValue = formatter(d.data.value);
+            if (d.data._row && d.data._row.value_label_override != null) {
+                d._formattedValue = String(d.data._row.value_label_override);
+            } else {
+                d._formattedValue = formatter(d.data.value);
+            }
         });
     }
 
