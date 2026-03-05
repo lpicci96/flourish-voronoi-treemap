@@ -491,7 +491,6 @@ data:
     data_type:
       - string
     optional: true
-    column: "Data::D"
 
   - key: value_label_override
     name: Value label override
@@ -502,6 +501,5 @@ data:
       - string
       - number
     optional: true
-    column: "Data::E"
 
 
