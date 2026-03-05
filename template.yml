@@ -311,6 +311,47 @@ settings:
       labels.show_outline: true
 
 
+  - property: labels.show_value_labels
+    name: Show value labels
+    description: Show the formatted data value below the category name label.
+    type: boolean
+    show_if: labels.show_labels
+    width: full
+    new_section: Value labels
+  - property: labels.value_label_size
+    name: Value label size
+    description: Proportional size of the value label relative to the name label.
+    type: number
+    min: 0.3
+    max: 1.5
+    step: 0.05
+    show_if:
+      labels.show_value_labels: true
+      labels.show_labels: true
+    width: half
+  - property: labels.value_label_opacity
+    name: Value label opacity
+    description: Opacity of the value label.
+    type: number
+    min: 0
+    max: 1
+    step: 0.05
+    show_if:
+      labels.show_value_labels: true
+      labels.show_labels: true
+    width: half
+  - property: labels.value_label_weight
+    name: Value label weight
+    type: string
+    show_if:
+      labels.show_value_labels: true
+      labels.show_labels: true
+    choices:
+        - "normal"
+        - "bold"
+    width: half
+
+
   - Colours
   - property: colors
     import: "@flourish/colors"

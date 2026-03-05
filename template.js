@@ -19432,7 +19432,11 @@ var template = (function (exports) {
           show_outline: true,
           outline_color: "#000000",
           outline_size: 0.1,
-          wrap_labels: true
+          wrap_labels: true,
+          show_value_labels: false,
+          value_label_size: 0.85,
+          value_label_opacity: 0.8,
+          value_label_weight: "normal"
       }
 
 
@@ -29053,6 +29057,9 @@ var template = (function (exports) {
       const shouldWrap = labelSettings.wrap_labels !== false;
       const margin = labelSettings.hide_margin != null ? labelSettings.hide_margin : 0;
       const duration = animation_duration || 0;
+      const valueLabelSize = labelSettings.value_label_size != null ? labelSettings.value_label_size : 0.85;
+      const valueLabelOpacity = labelSettings.value_label_opacity != null ? labelSettings.value_label_opacity : 0.8;
+      const valueLabelWeight = labelSettings.value_label_weight || "normal";
 
       const labels = g.selectAll("text")
           .data(leaves, d => d.data.name);
@@ -29133,6 +29140,19 @@ var template = (function (exports) {
                   lines = [d.data.name];
               }
 
+              // Optionally append value line if there is enough vertical space
+              let valueLineIndex = -1;
+              if (labelSettings.show_value_labels && d._formattedValue != null) {
+                  const nameLineCount = lines.length;
+                  const totalWithValue = nameLineCount + 1;
+                  const neededHeight = (totalWithValue - 1) * lineHeightPx;
+                  // Check if the inscribed circle diameter can fit all lines
+                  if (inscribedRadius * 2 >= neededHeight + fontSizePx) {
+                      valueLineIndex = lines.length;
+                      lines.push(d._formattedValue);
+                  }
+              }
+
               // Compute y-offsets so the text block is vertically centered at the centroid
               const totalHeight = (lines.length - 1) * lineHeightPx;
               const startY = cy - totalHeight / 2;
@@ -29162,11 +29182,14 @@ var template = (function (exports) {
                   // Create tspans at old positions first
                   const prevStartY = prevCy - totalHeight / 2;
                   lines.forEach(function(line, lineIndex) {
-                      el.append("tspan")
+                      var tspan = el.append("tspan")
                           .attr("x", prevCx)
                           .attr("y", prevStartY + lineIndex * lineHeightPx)
                           .attr("dominant-baseline", "central")
                           .text(line);
+                      if (lineIndex === valueLineIndex) {
+                          tspan.attr("font-size", valueLabelSize + "em").attr("opacity", valueLabelOpacity).attr("font-weight", valueLabelWeight);
+                      }
                   });
 
                   // Transition each tspan to new position
@@ -29187,11 +29210,14 @@ var template = (function (exports) {
               } else {
                   // No animation: set positions immediately
                   lines.forEach(function(line, lineIndex) {
-                      el.append("tspan")
+                      var tspan = el.append("tspan")
                           .attr("x", cx)
                           .attr("y", startY + lineIndex * lineHeightPx)
                           .attr("dominant-baseline", "central")
                           .text(line);
+                      if (lineIndex === valueLineIndex) {
+                          tspan.attr("font-size", valueLabelSize + "em").attr("opacity", valueLabelOpacity).attr("font-weight", valueLabelWeight);
+                      }
                   });
 
                   el.attr("opacity", 1);
@@ -29340,6 +29366,15 @@ var template = (function (exports) {
       const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
 
       configurePopup(popup, leaves, localization, number_format);
+
+      // Pre-format values on leaves for value labels
+      if (labelSettings && labelSettings.show_value_labels) {
+          var formatter = number_format(localization.getFormatterFunction());
+          leaves.forEach(function(d) {
+              d._formattedValue = formatter(d.data.value);
+          });
+      }
+
       renderCells(alignNode, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration);
       renderLabels(alignNode, leaves, labelSettings, animation_duration);
   }

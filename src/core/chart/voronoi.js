@@ -149,6 +149,15 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
     const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
 
     configurePopup(popup, leaves, localization, number_format);
+
+    // Pre-format values on leaves for value labels
+    if (labelSettings && labelSettings.show_value_labels) {
+        var formatter = number_format(localization.getFormatterFunction());
+        leaves.forEach(function(d) {
+            d._formattedValue = formatter(d.data.value);
+        });
+    }
+
     renderCells(alignNode, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration);
     renderLabels(alignNode, leaves, labelSettings, animation_duration);
 }
