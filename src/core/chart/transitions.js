@@ -1,5 +1,4 @@
 import * as d3 from "d3";
-import { interpolate as flubberInterpolate } from "flubber";
 import { borderPath } from "./border";
 
 /**
@@ -10,17 +9,51 @@ function polygonToPath(polygon) {
 }
 
 /**
+ * Resample a polygon to exactly `count` evenly-spaced points along its perimeter.
+ * Used to align two polygons with different vertex counts for smooth interpolation.
+ */
+function resamplePolygon(polygon, count) {
+    const n = polygon.length;
+    if (n === count) return polygon;
+    if (n === 0 || count === 0) return polygon;
+
+    // Compute cumulative perimeter distances
+    const cumLen = [0];
+    for (let i = 0; i < n; i++) {
+        const a = polygon[i];
+        const b = polygon[(i + 1) % n];
+        cumLen.push(cumLen[i] + Math.hypot(b[0] - a[0], b[1] - a[1]));
+    }
+    const total = cumLen[n];
+    if (total < 1e-10) return polygon;
+
+    const result = [];
+    for (let i = 0; i < count; i++) {
+        const dist = (i / count) * total;
+        // Find the edge segment containing this distance
+        let seg = 0;
+        while (seg < n - 1 && cumLen[seg + 1] < dist) seg++;
+        const segLen = cumLen[seg + 1] - cumLen[seg];
+        const t = segLen > 0 ? (dist - cumLen[seg]) / segLen : 0;
+        const a = polygon[seg];
+        const b = polygon[(seg + 1) % n];
+        result.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]);
+    }
+    return result;
+}
+
+/**
  * Apply transitions to a D3 join on voronoi cells.
  *
  * Two layers:
- * - `g.cell-fills`: inset + rounded polygon fills (background shows through gaps).
- *   Animated with Flubber morphing. Entering cells fade in, exiting cells fade out.
- * - `g.cell-hits`: invisible paths using original (non-inset) polygons for
- *   full click/hover coverage. Updated instantly (no animation needed).
+ * - `g.cell-fills`: inset + rounded polygon fills with smooth polygon morphing.
+ * - `g.cell-hits`: invisible paths for click/hover (updated instantly).
+ *
+ * Entering cells fade in, exiting cells fade out, updating cells morph
+ * via point-by-point interpolation with inset+rounding applied each frame.
  */
 export function transitionCells({ selection, leaves, duration, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, gap, fillFn, applyEvents }) {
 
-    // Helper to compute a cell's fill path (inset + rounding applied)
     function cellFillPath(d) {
         return borderPath(d.polygon, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, gap);
     }
@@ -34,58 +67,71 @@ export function transitionCells({ selection, leaves, duration, borderStyle, bord
 
     const key = d => d.data.name;
 
-    // --- FILL LAYER (animated) ---
+    // --- FILL LAYER ---
     const fillJoin = fillGroup.selectAll("path").data(leaves, key);
 
+    // EXIT
     if (duration > 0) {
         fillJoin.exit()
-            .transition()
-            .duration(duration)
-            .ease(d3.easeCubicInOut)
+            .transition().duration(duration).ease(d3.easeCubicInOut)
             .attr("opacity", 0)
             .remove();
     } else {
         fillJoin.exit().remove();
     }
 
+    // ENTER
     const fillEnter = fillJoin.enter().append("path")
         .attr("d", cellFillPath)
         .attr("fill", fillFn)
-        .attr("stroke", "none");
+        .attr("stroke", "none")
+        .each(function(d) { this.__polygon = d.polygon; });
 
     if (duration > 0) {
         fillEnter.attr("opacity", 0)
-            .transition()
-            .duration(duration)
-            .ease(d3.easeCubicInOut)
+            .transition().duration(duration).ease(d3.easeCubicInOut)
             .attr("opacity", 1);
     }
 
-    const fillUpdate = fillJoin;
+    // UPDATE (morph polygon points with inset+rounding applied each frame)
     if (duration > 0) {
-        fillUpdate.each(function(d) {
+        fillJoin.each(function(d) {
             const el = d3.select(this);
-            const oldPath = el.attr("d");
-            const newPath = cellFillPath(d);
-            const morph = flubberInterpolate(oldPath, newPath, { maxSegmentLength: 10 });
+            const oldPoly = this.__polygon || d.polygon;
+            const newPoly = d.polygon;
+            const count = Math.max(oldPoly.length, newPoly.length, 8);
+            const oldResampled = resamplePolygon(oldPoly, count);
+            const newResampled = resamplePolygon(newPoly, count);
 
             el.transition()
                 .duration(duration)
                 .ease(d3.easeCubicInOut)
-                .attrTween("d", () => morph)
+                .attrTween("d", function() {
+                    return function(t) {
+                        const interp = oldResampled.map(function(pt, i) {
+                            return [
+                                pt[0] + (newResampled[i][0] - pt[0]) * t,
+                                pt[1] + (newResampled[i][1] - pt[1]) * t
+                            ];
+                        });
+                        return borderPath(interp, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, gap);
+                    };
+                })
                 .attr("fill", fillFn)
                 .on("end", function() {
+                    this.__polygon = d.polygon;
                     d3.select(this).attr("d", cellFillPath(d));
                 });
         });
     } else {
-        fillUpdate
+        fillJoin
             .attr("d", cellFillPath)
             .attr("fill", fillFn)
-            .attr("stroke", "none");
+            .attr("stroke", "none")
+            .each(function(d) { this.__polygon = d.polygon; });
     }
 
-    // --- HIT LAYER (instant update, no animation needed — layer is invisible) ---
+    // --- HIT LAYER (instant — invisible layer) ---
     const hitJoin = hitGroup.selectAll("path").data(leaves, key);
     hitJoin.exit().remove();
 

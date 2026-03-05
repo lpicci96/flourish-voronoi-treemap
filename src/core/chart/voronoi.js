@@ -135,7 +135,15 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
     const sel = d3.select(container);
     let alignGroup = sel.selectAll("g.align-group").data([null]);
     alignGroup = alignGroup.enter().append("g").attr("class", "align-group").merge(alignGroup);
-    alignGroup.attr("transform", alignX !== 0 ? "translate(" + alignX + ", 0)" : null);
+
+    const duration = animation_duration || 0;
+    const alignTransform = "translate(" + (alignX || 0) + ", 0)";
+    if (duration > 0) {
+        alignGroup.transition().duration(duration).ease(d3.easeCubicInOut)
+            .attr("transform", alignTransform);
+    } else {
+        alignGroup.attr("transform", alignTransform);
+    }
 
     const alignNode = alignGroup.node();
     const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
