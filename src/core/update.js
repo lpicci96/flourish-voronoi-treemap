@@ -74,7 +74,7 @@ export default function() {
     layout.update();
 
     const width = layout.getPrimaryWidth();
-    updateChartHeight(state.voronoi_settings.chart_height, state.voronoi_settings.clip_type, width);
+    updateChartHeight(state.voronoi_settings, width);
     const height = layout.getPrimaryHeight();
 
     // Build facet data array

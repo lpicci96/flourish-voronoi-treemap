@@ -19366,6 +19366,9 @@ var template = (function (exports) {
       // Voronoi chart specific settings
       voronoi_settings: {
           chart_height: "auto",
+          chart_aspect_ratio_desktop: 1,
+          chart_aspect_ratio_mobile: 1,
+          chart_breakpoint: 600,
 
           gap: 1,
           clip_type: "circle",
@@ -29201,16 +29204,24 @@ var template = (function (exports) {
       return bboxH / bboxW;
   }
 
-  function updateChartHeight(chartHeight, clipType, width) {
+  function updateChartHeight(voronoiSettings, width) {
+      var chartHeight = voronoiSettings.chart_height;
+
       if (chartHeight === "square") {
           layout.setHeight(width);
       } else if (chartHeight === "match clip") {
-          var ratio = getShapeAspectRatio(clipType);
+          var ratio = getShapeAspectRatio(voronoiSettings.clip_type);
           if (ratio !== null) {
               layout.setHeight(Math.round(width * ratio));
           } else {
               layout.setHeight(null);
           }
+      } else if (chartHeight === "custom") {
+          var isMobile = window.innerWidth < voronoiSettings.chart_breakpoint;
+          var aspectRatio = isMobile
+              ? voronoiSettings.chart_aspect_ratio_mobile
+              : voronoiSettings.chart_aspect_ratio_desktop;
+          layout.setHeight(Math.round(width * aspectRatio));
       } else {
           layout.setHeight(null);
       }
@@ -29284,7 +29295,7 @@ var template = (function (exports) {
       layout.update();
 
       const width = layout.getPrimaryWidth();
-      updateChartHeight(state.voronoi_settings.chart_height, state.voronoi_settings.clip_type, width);
+      updateChartHeight(state.voronoi_settings, width);
       const height = layout.getPrimaryHeight();
 
       // Build facet data array

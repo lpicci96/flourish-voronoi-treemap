@@ -33,16 +33,24 @@ function getShapeAspectRatio(shape) {
     return bboxH / bboxW;
 }
 
-export function updateChartHeight(chartHeight, clipType, width) {
+export function updateChartHeight(voronoiSettings, width) {
+    var chartHeight = voronoiSettings.chart_height;
+
     if (chartHeight === "square") {
         layout.setHeight(width);
     } else if (chartHeight === "match clip") {
-        var ratio = getShapeAspectRatio(clipType);
+        var ratio = getShapeAspectRatio(voronoiSettings.clip_type);
         if (ratio !== null) {
             layout.setHeight(Math.round(width * ratio));
         } else {
             layout.setHeight(null);
         }
+    } else if (chartHeight === "custom") {
+        var isMobile = window.innerWidth < voronoiSettings.chart_breakpoint;
+        var aspectRatio = isMobile
+            ? voronoiSettings.chart_aspect_ratio_mobile
+            : voronoiSettings.chart_aspect_ratio_desktop;
+        layout.setHeight(Math.round(width * aspectRatio));
     } else {
         layout.setHeight(null);
     }

@@ -3,6 +3,9 @@ export default {
     // Voronoi chart specific settings
     voronoi_settings: {
         chart_height: "auto",
+        chart_aspect_ratio_desktop: 1,
+        chart_aspect_ratio_mobile: 1,
+        chart_breakpoint: 600,
 
         gap: 1,
         clip_type: "circle",
