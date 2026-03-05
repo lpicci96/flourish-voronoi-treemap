@@ -3,8 +3,7 @@ export default {
     // Voronoi chart specific settings
     voronoi_settings: {
 
-        border_color: "#ffffff",
-        border_size: 1,
+        gap: 1,
         clip_type: "circle",
         advanced_settings: false,
         seed: 41,

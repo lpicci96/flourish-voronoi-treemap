@@ -82,11 +82,8 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
         borderRoundingSize: voronoi_settings.border_radius,
         borderMaxAngleFactor: voronoi_settings.max_angle_factor,
         borderMaxEdgeConsumption: voronoi_settings.max_edge_consumption,
+        gap: voronoi_settings.gap,
         fillFn: d => getCellColor(d, root, colors, colorSettings),
-        applyStyle: sel => {
-            sel.attr("stroke", voronoi_settings.border_color)
-                .attr("stroke-width", voronoi_settings.border_size);
-        },
         applyEvents: sel => {
             sel.on("mouseover", function(event, d) {
                     const popupData = getPopupData(d);

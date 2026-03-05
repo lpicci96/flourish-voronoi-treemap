@@ -19366,8 +19366,7 @@ var template = (function (exports) {
       // Voronoi chart specific settings
       voronoi_settings: {
 
-          border_color: "#ffffff",
-          border_size: 1,
+          gap: 1,
           clip_type: "circle",
           advanced_settings: false,
           seed: 41,
@@ -31697,6 +31696,86 @@ Example valid ways of supplying a shape would be:
 
   requireEarcut();
 
+  // ── Polygon inset ───────────────────────────────────────────────────────
+
+  /**
+   * Inset a convex polygon inward by `amount` pixels.
+   * Each edge is offset inward by `amount / 2` (so two adjacent cells
+   * produce a full `amount` gap between them). Consecutive offset edges
+   * are intersected to obtain new vertices.
+   *
+   * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
+   * @param {number} amount - Total gap size in pixels.
+   * @returns {Array<number[]>} Inset polygon (array of [x, y] pairs).
+   */
+  function insetPolygon(polygon, amount) {
+      if (!polygon || polygon.length < 3 || !amount) return polygon;
+
+      const half = amount / 2;
+      const n = polygon.length;
+
+      // Determine winding via signed area (shoelace formula).
+      // In screen coords (y-down): positive = clockwise, negative = counter-clockwise.
+      let signedArea2 = 0;
+      for (let i = 0; i < n; i++) {
+          const a = polygon[i];
+          const b = polygon[(i + 1) % n];
+          signedArea2 += (a[0] * b[1] - b[0] * a[1]);
+      }
+      // In screen coords (y-down): positive area = CCW, inward normal = (-dy, dx)
+      // negative area = CW, inward normal = (dy, -dx)
+      const sign = signedArea2 > 0 ? -1 : 1;
+
+      // Compute inward-offset edges
+      const edges = [];
+      for (let i = 0; i < n; i++) {
+          const a = polygon[i];
+          const b = polygon[(i + 1) % n];
+          const dx = b[0] - a[0];
+          const dy = b[1] - a[1];
+          const len = Math.hypot(dx, dy);
+          if (len < 1e-10) continue;
+          // Inward normal: CW → (dy, -dx), CCW → (-dy, dx)
+          const nx = sign * dy / len;
+          const ny = sign * -dx / len;
+          edges.push({
+              ax: a[0] + nx * half,
+              ay: a[1] + ny * half,
+              bx: b[0] + nx * half,
+              by: b[1] + ny * half
+          });
+      }
+
+      if (edges.length < 3) return polygon;
+
+      // Intersect consecutive offset edges to get inset vertices
+      const result = [];
+      for (let i = 0; i < edges.length; i++) {
+          const e1 = edges[i];
+          const e2 = edges[(i + 1) % edges.length];
+          const pt = lineLineIntersection(
+              e1.ax, e1.ay, e1.bx, e1.by,
+              e2.ax, e2.ay, e2.bx, e2.by
+          );
+          if (pt) {
+              result.push(pt);
+          }
+      }
+
+      return result.length >= 3 ? result : polygon;
+  }
+
+  /**
+   * Intersect two lines (not segments) defined by two points each.
+   * Returns [x, y] or null if parallel.
+   */
+  function lineLineIntersection(x1, y1, x2, y2, x3, y3, x4, y4) {
+      const denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+      if (Math.abs(denom) < 1e-10) return null;
+      const t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom;
+      return [x1 + t * (x2 - x1), y1 + t * (y2 - y1)];
+  }
+
   // ── Per-cell path generators ────────────────────────────────────────────
 
   /**
@@ -31867,21 +31946,24 @@ Example valid ways of supplying a shape would be:
    * @param {string} [style="straight"] - Border rounding style.
    * @param {number} [roundingSize] - Rounding radius in pixels.
    * @param {number} [maxAngleFactor=2.5] - Cap for extra rounding on sharp angles (adaptive only).
+   * @param {number} [maxEdgeConsumption=0.66] - Max proportion of edge consumed by rounding.
+   * @param {number} [gap=0] - Gap size in pixels (polygon is inset by gap/2).
    * @returns {string} SVG path data string.
    */
-  function borderPath(polygon, style, roundingSize, maxAngleFactor, maxEdgeConsumption) {
+  function borderPath(polygon, style, roundingSize, maxAngleFactor, maxEdgeConsumption, gap) {
       style = style || "straight";
+      const inset = gap ? insetPolygon(polygon, gap) : polygon;
 
       if (style === "straight") {
-          return straightPath(polygon);
+          return straightPath(inset);
       } else if (style === "rounded") {
-          return roundedPolygonPath(polygon, {
+          return roundedPolygonPath(inset, {
               baseRadius: roundingSize,
               maxAngleFactor: 1,
               maxEdgeConsumption: maxEdgeConsumption || 0.66
           });
       } else if (style === "adaptive") {
-          return roundedPolygonPath(polygon, {
+          return roundedPolygonPath(inset, {
               baseRadius: roundingSize,
               maxAngleFactor: maxAngleFactor || 2.5,
               maxEdgeConsumption: maxEdgeConsumption || 0.66
@@ -31891,131 +31973,39 @@ Example valid ways of supplying a shape would be:
       }
   }
 
-  // ── Combined path for all cells ─────────────────────────────────────────
-
   /**
-   * Canonical edge key so [A,B] and [B,A] produce the same string.
-   */
-  function edgeKey(a, b) {
-      if (a[0] < b[0] || (a[0] === b[0] && a[1] < b[1])) {
-          return a[0] + "," + a[1] + "-" + b[0] + "," + b[1];
-      }
-      return b[0] + "," + b[1] + "-" + a[0] + "," + a[1];
-  }
-
-  /**
-   * Deduplicated straight edges as individual M...L segments.
-   */
-  function deduplicatedEdgePath(polygons) {
-      const seen = new Set();
-      const parts = [];
-      for (const polygon of polygons) {
-          const n = polygon.length;
-          for (let i = 0; i < n; i++) {
-              const a = polygon[i];
-              const b = polygon[(i + 1) % n];
-              const key = edgeKey(a, b);
-              if (!seen.has(key)) {
-                  seen.add(key);
-                  parts.push("M" + a[0] + "," + a[1] + "L" + b[0] + "," + b[1]);
-              }
-          }
-      }
-      return parts.join("");
-  }
-
-  /**
-   * Build a single combined SVG path for all cell borders.
-   * Straight borders use edge deduplication (each shared edge drawn once).
-   * Other styles concatenate per-cell paths via borderPath.
-   * @param {Array<Array<number[]>>} polygons - All cell polygons.
-   * @param {string} [style="straight"] - Border rounding style.
-   * @param {number} [roundingSize] - Rounding radius.
-   * @param {number} [maxAngleFactor] - Cap for extra rounding on sharp angles.
-   * @returns {string} SVG path data string.
-   */
-  function combinedBorderPath(polygons, style, roundingSize, maxAngleFactor, maxEdgeConsumption) {
-      style = style || "straight";
-
-      if (style === "straight") {
-          return deduplicatedEdgePath(polygons);
-      }
-
-      return polygons.map(polygon => borderPath(polygon, style, roundingSize, maxAngleFactor, maxEdgeConsumption)).join("");
-  }
-
-  /**
-   * Build an SVG path `d` string from a polygon.
+   * Build an SVG path `d` string from a polygon (no inset, no rounding).
    */
   function polygonToPath(polygon) {
       return "M" + polygon.map(pt => pt[0] + "," + pt[1]).join("L") + "Z";
   }
 
-  let clipIdCounter = 0;
-
   /**
    * Apply transitions to a D3 join on voronoi cells.
    *
-   * Four layers:
-   * - `g.cell-fills`: straight polygon fills, clipped to the combined border
-   *   shape via a `<clipPath>` when rounding is active.
-   * - `g.cell-borders`: per-cell border paths that morph with Flubber.
-   * - `g.cell-hits`: invisible paths for mouse events.
-   *
-   * All per-cell layers (fills, borders, hits) animate with Flubber morphing.
-   * Entering cells fade in, exiting cells fade out. The clip path updates at
-   * the end of the transition so rounded borders stay visually correct.
+   * Two layers:
+   * - `g.cell-fills`: inset + rounded polygon fills (background shows through gaps).
+   *   Animated with Flubber morphing. Entering cells fade in, exiting cells fade out.
+   * - `g.cell-hits`: invisible paths using original (non-inset) polygons for
+   *   full click/hover coverage. Updated instantly (no animation needed).
    */
-  function transitionCells({ selection, leaves, duration, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, fillFn, applyStyle, applyEvents }) {
+  function transitionCells({ selection, leaves, duration, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, gap, fillFn, applyEvents }) {
 
-      const polygons = leaves.map(d => d.polygon);
-      const needsClip = borderStyle !== "straight";
-
-      // --- CLIP PATH setup ---
-      const svgNode = selection.node().ownerSVGElement || selection.node();
-      const svg = select(svgNode);
-      if (svg.select("defs").empty()) svg.insert("defs", ":first-child");
-      const defs = svg.select("defs");
-
-      let clipId = selection.attr("data-clip-id");
-      if (!clipId) {
-          clipId = "voronoi-fill-clip-" + (clipIdCounter++);
-          selection.attr("data-clip-id", clipId);
-      }
-
-      let clipPathEl = defs.select("#" + clipId);
-      if (clipPathEl.empty()) {
-          clipPathEl = defs.append("clipPath").attr("id", clipId);
-          clipPathEl.append("path");
-      }
-
-      // Helper to compute a cell's border path string
-      function cellBorderPath(d) {
-          return borderPath(d.polygon, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption);
+      // Helper to compute a cell's fill path (inset + rounding applied)
+      function cellFillPath(d) {
+          return borderPath(d.polygon, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, gap);
       }
 
       // --- Ensure layers exist in order ---
-      // Migrate from old single-path border to group-based borders
-      selection.select("path.cell-border").remove();
       if (selection.select("g.cell-fills").empty()) selection.append("g").attr("class", "cell-fills");
-      if (selection.select("g.cell-borders").empty()) selection.append("g").attr("class", "cell-borders");
       if (selection.select("g.cell-hits").empty()) selection.append("g").attr("class", "cell-hits");
 
       const fillGroup = selection.select("g.cell-fills");
-      const borderGroup = selection.select("g.cell-borders");
       const hitGroup = selection.select("g.cell-hits");
-
-      // When animating with rounding, temporarily disable the clip so fills
-      // aren't clipped to the stale shape mid-morph. Re-enable after transition.
-      if (duration > 0 && needsClip) {
-          fillGroup.attr("clip-path", null);
-      } else {
-          fillGroup.attr("clip-path", needsClip ? "url(#" + clipId + ")" : null);
-      }
 
       const key = d => d.data.name;
 
-      // --- FILL LAYER ---
+      // --- FILL LAYER (animated) ---
       const fillJoin = fillGroup.selectAll("path").data(leaves, key);
 
       if (duration > 0) {
@@ -32030,7 +32020,7 @@ Example valid ways of supplying a shape would be:
       }
 
       const fillEnter = fillJoin.enter().append("path")
-          .attr("d", d => polygonToPath(d.polygon))
+          .attr("d", cellFillPath)
           .attr("fill", fillFn)
           .attr("stroke", "none");
 
@@ -32047,7 +32037,7 @@ Example valid ways of supplying a shape would be:
           fillUpdate.each(function(d) {
               const el = select(this);
               const oldPath = el.attr("d");
-              const newPath = polygonToPath(d.polygon);
+              const newPath = cellFillPath(d);
               const morph = flubberInterpolate(oldPath, newPath, { maxSegmentLength: 10 });
 
               el.transition()
@@ -32056,122 +32046,29 @@ Example valid ways of supplying a shape would be:
                   .attrTween("d", () => morph)
                   .attr("fill", fillFn)
                   .on("end", function() {
-                      select(this).attr("d", polygonToPath(d.polygon));
+                      select(this).attr("d", cellFillPath(d));
                   });
           });
       } else {
           fillUpdate
-              .attr("d", d => polygonToPath(d.polygon))
+              .attr("d", cellFillPath)
               .attr("fill", fillFn)
               .attr("stroke", "none");
       }
 
-      // --- BORDER LAYER (per-cell paths with Flubber morphing) ---
-      const borderJoin = borderGroup.selectAll("path").data(leaves, key);
-
-      if (duration > 0) {
-          borderJoin.exit()
-              .transition()
-              .duration(duration)
-              .ease(cubicInOut)
-              .attr("opacity", 0)
-              .remove();
-      } else {
-          borderJoin.exit().remove();
-      }
-
-      const borderEnter = borderJoin.enter().append("path")
-          .attr("d", cellBorderPath)
-          .attr("fill", "none");
-      applyStyle(borderEnter);
-
-      if (duration > 0) {
-          borderEnter.attr("opacity", 0)
-              .transition()
-              .duration(duration)
-              .ease(cubicInOut)
-              .attr("opacity", 1);
-      }
-
-      const borderUpdate = borderJoin;
-      if (duration > 0) {
-          borderUpdate.each(function(d) {
-              const el = select(this);
-              const oldPath = el.attr("d");
-              const newPath = cellBorderPath(d);
-              const morph = flubberInterpolate(oldPath, newPath, { maxSegmentLength: 10 });
-
-              el.transition()
-                  .duration(duration)
-                  .ease(cubicInOut)
-                  .attrTween("d", () => morph)
-                  .on("end", function() {
-                      select(this).attr("d", cellBorderPath(d));
-                  });
-          });
-          applyStyle(borderUpdate);
-      } else {
-          borderUpdate
-              .attr("d", cellBorderPath)
-              .attr("fill", "none");
-          applyStyle(borderUpdate);
-      }
-
-      // Update clip path after transitions complete (or instantly if no animation)
-      if (duration > 0 && needsClip) {
-          const combinedD = combinedBorderPath(polygons, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption);
-          timeout$1(function() {
-              clipPathEl.select("path").attr("d", combinedD);
-              fillGroup.attr("clip-path", "url(#" + clipId + ")");
-          }, duration);
-      } else {
-          const combinedD = needsClip
-              ? combinedBorderPath(polygons, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption)
-              : null;
-          clipPathEl.select("path").attr("d", combinedD);
-      }
-
-      // --- HIT LAYER ---
+      // --- HIT LAYER (instant update, no animation needed — layer is invisible) ---
       const hitJoin = hitGroup.selectAll("path").data(leaves, key);
+      hitJoin.exit().remove();
 
-      if (duration > 0) {
-          hitJoin.exit()
-              .transition()
-              .duration(duration)
-              .remove();
-      } else {
-          hitJoin.exit().remove();
-      }
-
-      const hitEnter = hitJoin.enter().append("path")
+      hitJoin.enter().append("path")
           .attr("d", d => polygonToPath(d.polygon))
           .attr("fill", "transparent")
-          .attr("stroke", "none");
-      applyEvents(hitEnter);
+          .attr("stroke", "none")
+          .call(applyEvents);
 
-      const hitUpdate = hitJoin;
-      if (duration > 0) {
-          hitUpdate.each(function(d) {
-              const el = select(this);
-              const oldPath = el.attr("d");
-              const newPath = polygonToPath(d.polygon);
-              const morph = flubberInterpolate(oldPath, newPath, { maxSegmentLength: 10 });
-
-              el.transition()
-                  .duration(duration)
-                  .ease(cubicInOut)
-                  .attrTween("d", () => morph)
-                  .on("end", function() {
-                      select(this).attr("d", polygonToPath(d.polygon));
-                  });
-          });
-      } else {
-          hitUpdate
-              .attr("d", d => polygonToPath(d.polygon))
-              .attr("fill", "transparent")
-              .attr("stroke", "none");
-      }
-      applyEvents(hitUpdate);
+      hitJoin
+          .attr("d", d => polygonToPath(d.polygon))
+          .call(applyEvents);
   }
 
   /**
@@ -32540,11 +32437,8 @@ Example valid ways of supplying a shape would be:
           borderRoundingSize: voronoi_settings.border_radius,
           borderMaxAngleFactor: voronoi_settings.max_angle_factor,
           borderMaxEdgeConsumption: voronoi_settings.max_edge_consumption,
+          gap: voronoi_settings.gap,
           fillFn: d => getCellColor(d, root, colors, colorSettings),
-          applyStyle: sel => {
-              sel.attr("stroke", voronoi_settings.border_color)
-                  .attr("stroke-width", voronoi_settings.border_size);
-          },
           applyEvents: sel => {
               sel.on("mouseover", function(event, d) {
                       const popupData = getPopupData(d);
