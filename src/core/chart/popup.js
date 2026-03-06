@@ -5,12 +5,13 @@
  * @param {Array} leaves - Array of d3-hierarchy leaf nodes.
  * @param {object} localization - Flourish localization instance.
  * @param {Function} number_format - Flourish number_format factory.
+ * @param {object} dataColumnNames - Flourish SDK column_names mapping (binding key → actual CSV header).
  */
-export function configurePopup(popup, leaves, localization, number_format) {
+export function configurePopup(popup, leaves, localization, number_format, dataColumnNames) {
     const sampleRow = leaves[0] && leaves[0].data._row;
     if (!sampleRow) return;
 
-    const nameMap = {
+    const fallbackNames = {
         firstLevel: "First level",
         secondLevel: "Second level",
         values: "Values",
@@ -20,7 +21,7 @@ export function configurePopup(popup, leaves, localization, number_format) {
 
     const columnNames = {};
     Object.keys(sampleRow).forEach(key => {
-        columnNames[key] = nameMap[key] || key;
+        columnNames[key] = (dataColumnNames && dataColumnNames[key]) || fallbackNames[key] || key;
     });
 
     const formatter = number_format(localization.getFormatterFunction());

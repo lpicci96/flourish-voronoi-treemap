@@ -28311,12 +28311,13 @@ var template = (function (exports) {
    * @param {Array} leaves - Array of d3-hierarchy leaf nodes.
    * @param {object} localization - Flourish localization instance.
    * @param {Function} number_format - Flourish number_format factory.
+   * @param {object} dataColumnNames - Flourish SDK column_names mapping (binding key → actual CSV header).
    */
-  function configurePopup(popup, leaves, localization, number_format) {
+  function configurePopup(popup, leaves, localization, number_format, dataColumnNames) {
       const sampleRow = leaves[0] && leaves[0].data._row;
       if (!sampleRow) return;
 
-      const nameMap = {
+      const fallbackNames = {
           firstLevel: "First level",
           secondLevel: "Second level",
           values: "Values",
@@ -28326,7 +28327,7 @@ var template = (function (exports) {
 
       const columnNames = {};
       Object.keys(sampleRow).forEach(key => {
-          columnNames[key] = nameMap[key] || key;
+          columnNames[key] = (dataColumnNames && dataColumnNames[key]) || fallbackNames[key] || key;
       });
 
       const formatter = number_format(localization.getFormatterFunction());
@@ -29411,7 +29412,7 @@ var template = (function (exports) {
    * @param {Function} number_format - Flourish number_format factory.
    * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
    */
-  function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings) {
+  function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings, dataColumnNames) {
       if (!hierarchy) return;
 
       // Always compute layout with centered clip so cell shapes stay consistent
@@ -29437,7 +29438,7 @@ var template = (function (exports) {
       const alignNode = alignGroup.node();
       const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
 
-      configurePopup(popup, leaves, localization, number_format);
+      configurePopup(popup, leaves, localization, number_format, dataColumnNames);
 
       // Pre-format values on leaves for value labels
       if (labelSettings && labelSettings.show_value_labels) {
@@ -29513,6 +29514,7 @@ var template = (function (exports) {
 
   function update() {
       const rows = Array.isArray(data) ? data : data.data;
+      const dataColumnNames = rows.column_names || {};
 
       // Update filter control with unique values from the filter column
       const filterOptions = getFilterOptions(rows);
@@ -29597,7 +29599,7 @@ var template = (function (exports) {
           .update(function(facet) {
               const item = facet.data;
               if (!item || !item.hierarchy) return;
-              drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels);
+              drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels, dataColumnNames);
           });
 
       sizeSvg();
