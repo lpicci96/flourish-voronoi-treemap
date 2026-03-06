@@ -19,6 +19,12 @@ space-filling layout that avoids the rigid rectangular shapes of traditional tre
 - The layout algorithm is iterative and may produce slightly different results depending on the random seed
 - Very small values can result in tiny, hard-to-read polygons
 
+**Border Rounding**
+
+Cell borders can be rendered with rounded corners using the "rounded adaptive" style. The rounding algorithm works by cutting back each polygon edge by a configurable radius (capped to a fraction of the edge length) and inserting a quadratic Bézier curve at each corner, using the original vertex as the control point. This produces smooth, tangent-continuous corners while preserving the straight segments along longer edges.
+
+When a Voronoi edge is too short for effective rounding (shorter than half the radius), the two quadratic corners flanking it are merged into a single cubic Bézier curve that uses both original vertices as control points. This avoids visual artefacts on tiny edges while keeping every vertex in the path, so the curve still faithfully follows the cell boundary.
+
 The template accepts a flat dataset with up to two hierarchy levels:
 
 | Column                 | Required | Description                                                              |
