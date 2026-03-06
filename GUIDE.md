@@ -21,15 +21,17 @@ space-filling layout that avoids the rigid rectangular shapes of traditional tre
 
 The template accepts a flat dataset with up to two hierarchy levels:
 
-| Column             | Required | Description                                                              |
-|--------------------|----------|--------------------------------------------------------------------------|
-| **First level**    | Yes      | Top-level category (e.g. continent, industry)                            |
-| **Second level**   | No       | Sub-category nested within the first level (e.g. country, company)       |
-| **Values**         | Yes      | Numeric value determining cell size                                      |
-| **Color category** | No       | Category used to color the polygons (defaults to first level if not set) |
-| **Filter**         | No       | Column used to filter displayed data                                     |
-| **Grid of charts** | No       | Column used to create a faceted grid of charts                           |
-| **Custom tooltip** | No       | Custom text or HTML shown in the popup on hover/click                    |
+| Column                 | Required | Description                                                              |
+|------------------------|----------|--------------------------------------------------------------------------|
+| **First level**        | Yes      | Top-level category (e.g. continent, industry)                            |
+| **Second level**       | No       | Sub-category nested within the first level (e.g. country, company)       |
+| **Values**             | Yes      | Numeric value determining cell size                                      |
+| **Color category**     | No       | Category used to color the polygons (defaults to first level if not set) |
+| **Filter**             | No       | Column used to filter displayed data                                     |
+| **Grid of charts**     | No       | Column used to create a faceted grid of charts                           |
+| **Custom tooltip**     | No       | Custom text or HTML shown in the popup on hover/click                    |
+| **Custom label**       | No       | Custom text for cell labels (defaults to category name)                  |
+| **Custom value label** | No       | Custom text for value labels (defaults to formatted value)               |
 
 
 This template was created by [Luca Picci](https://lpicci96.github.io/LucaPicci/). The default dataset uses population data from the [World Bank World Development Indicators (WDI)](https://datatopics.worldbank.org/world-development-indicators/) database.
@@ -44,9 +46,16 @@ Please get in touch with me for any bug reports or feature requests.
 **Planned**
 - Value aggregation - choose an aggregation method for duplicate entries (e.g. sum, average, none)
 - Small multiple sizing - option to size small multiples based on the relative proportions of the facet data, rather than equally
-- Chart sizing options - support for aspect ratios and mobile responsive layouts
-- Label improvements - better positioning, additional custom positioning options, support for contrasting text colours, and custom exclusion filter
 
+**v0.5.0 - 2026-03-06**
+- Added value labels with configurable rendering for Voronoi cells
+- Added label and value label override for individual cells
+- Added auto contrast for label colours based on cell background
+- Improved label positioning using pole of inaccessibility calculation
+- Added chart height configuration with aspect ratio and breakpoint settings
+- Improved transition mechanism
+- Replaced borders with cell gap approach using inset polygons
+- Removed fade-in/fade-out transitions
 
 **v0.4.1 - 2026-02-21**
 - Set data type requirement for value column to number

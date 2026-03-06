@@ -5,6 +5,23 @@ All notable changes to this template will be documented in this file.
 ## [Unreleased]
 
 
+## [v0.5.0] - 2026-03-06
+
+### Added
+- Value labels with configurable rendering for Voronoi cells
+- Label and value label override functionality for individual cells
+- Auto contrast for label colours based on cell background
+- Pole of inaccessibility calculation for improved label positioning and visibility
+- Chart height configuration with aspect ratio and breakpoint settings
+- Alignment options for Voronoi cells within the layout
+
+### Changed
+- Replaced Flubber dependency with custom polygon morphing using resampling for better point alignment
+- Replaced border properties with cell gap approach using inset polygons
+- Removed fade-in/fade-out transitions in favour of instant cell appearance
+- Updated default convergence and weight ratio settings for Voronoi layout
+
+
 ## [v0.4.1] - 2026-02-21
 
 ### Fixed
