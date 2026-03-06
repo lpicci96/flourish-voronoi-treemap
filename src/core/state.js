@@ -2,7 +2,7 @@ export default {
 
     // Voronoi chart specific settings
     voronoi_settings: {
-        chart_height: "auto",
+        chart_height: "match clip",
         chart_aspect_ratio_desktop: 1,
         chart_aspect_ratio_mobile: 1,
         chart_breakpoint: 600,
@@ -15,7 +15,7 @@ export default {
         convergence_ratio: 0.005,
         min_weight_ratio: 0.01,
         alignment: "center",
-        border_rounding_style: "straight",
+        border_rounding_style: "adaptive rounding",
         border_radius: 1,
         border_rounding_reach: 0.45
 

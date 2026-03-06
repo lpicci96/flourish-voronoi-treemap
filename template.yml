@@ -121,14 +121,14 @@ settings:
 
   # cell gap settings
   - property: voronoi_settings.gap
-    name: Cell gap
+    name: Gap
     description: Gap between cells as a percentage of chart size. Scales proportionally across screen sizes.
     type: number
     min: 0
     max: 0.5
     step: 0.05
-    width: quarter
-    new_section: Cell gaps
+    width: full
+    new_section: Borders and rounding
   - property: voronoi_settings.border_rounding_style
     name: Border rounding style
     description: Controls how cell corners are drawn. "straight" draws sharp corners, "adaptive rounding" smooths corners with quadratic Bézier curves that naturally adapt to each corner's geometry.
