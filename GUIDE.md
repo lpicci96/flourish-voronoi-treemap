@@ -54,6 +54,11 @@ Please reach out for any bug reports or feature requests.
 - Small multiple sizing - option to size small multiples based on the relative proportions of the facet data, rather than equally
 
 **v0.5.0 - 2026-03-06**
+- Re-implemented adaptive border rounding with an improved algorithm: corners are smoothed using quadratic Bézier curves with the original vertex as the control point, preserving straight segments along longer edges
+- Added automatic merging of short-edge corners — when a Voronoi edge is too short for effective rounding, the two flanking quadratic corners are merged into a single cubic Bézier curve using both vertices as control points, avoiding visual artefacts on tiny edges
+- Added configurable border radius setting (percentage of chart size) that scales proportionally across screen sizes
+- Added rounding reach setting to control the maximum fraction of each edge that corner rounding can consume
+- Border rounding now applies consistently across fill, border, and hit layers during transitions
 - Added adaptive number formatting for value labels and popups. When data spans multiple orders of magnitude (e.g. millions and billions), each value is independently scaled to the most readable suffix (K, M, B, T). Enable it under **Number formatting > Advanced > Adaptive number formatting**. Suffixes are customisable for language flexibility. The existing prefix and decimal places settings still apply; the suffix and multiply/divide settings are bypassed when adaptive mode is on.
 - Added value labels with configurable rendering for Voronoi cells
 - Added label and value label override for individual cells

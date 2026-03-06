@@ -15,8 +15,14 @@ All notable changes to this template will be documented in this file.
 - Pole of inaccessibility calculation for improved label positioning and visibility
 - Chart height configuration with aspect ratio and breakpoint settings
 - Alignment options for Voronoi cells within the layout
+- Rounding reach setting to control the maximum fraction of each edge that corner rounding can consume
 
 ### Changed
+- Re-implemented adaptive border rounding with an improved algorithm: corners are smoothed using quadratic Bézier curves with the original vertex as the control point, preserving straight segments along longer edges
+- Added automatic merging of short-edge corners — when a Voronoi edge is too short for effective rounding, the two flanking quadratic corners are merged into a single cubic Bézier curve using both vertices as control points, avoiding visual artefacts on tiny edges
+- Border radius setting now uses a percentage of chart size for proportional scaling across screen sizes
+- Renamed "rounded adaptive" border style to "adaptive rounding" for consistency
+- Border rounding now applies consistently across fill, border, and hit layers during transitions
 - Replaced Flubber dependency with custom polygon morphing using resampling for better point alignment
 - Replaced border properties with cell gap approach using inset polygons
 - Removed fade-in/fade-out transitions in favour of instant cell appearance
