@@ -21,6 +21,9 @@ All notable changes to this template will be documented in this file.
 - Removed fade-in/fade-out transitions in favour of instant cell appearance
 - Updated default convergence and weight ratio settings for Voronoi layout
 
+### Fixed
+- Popups now display actual CSV column headers instead of generic binding names (e.g. "Continent" instead of "First level")
+
 
 ## [v0.4.1] - 2026-02-21
 

@@ -56,6 +56,7 @@ Please get in touch with me for any bug reports or feature requests.
 - Improved transition mechanism
 - Replaced borders with cell gap approach using inset polygons
 - Removed fade-in/fade-out transitions
+- Fixed popups to display actual CSV column headers instead of generic binding names
 
 **v0.4.1 - 2026-02-21**
 - Set data type requirement for value column to number
