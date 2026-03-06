@@ -194,7 +194,7 @@ export function borderPath(polygon, style, gap, radiusPx, reach) {
     style = style || "straight";
     var inset = gap ? insetPolygon(polygon, gap) : polygon;
 
-    if (style === "rounded adaptive" && radiusPx > 0) {
+    if (style === "adaptive rounding" && radiusPx > 0) {
         return roundedPath(inset, radiusPx, reach || 0.45);
     }
     return straightPath(inset);
