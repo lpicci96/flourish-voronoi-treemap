@@ -251,7 +251,7 @@ function roundedPolygonPath(points, {
  * @param {number} [roundingSize] - Rounding radius in pixels.
  * @param {number} [maxAngleFactor=2.5] - Cap for extra rounding on sharp angles (adaptive only).
  * @param {number} [maxEdgeConsumption=0.66] - Max proportion of edge consumed by rounding.
- * @param {number} [gap=0] - Gap size in pixels (polygon is inset by gap/2).
+ * @param {number} [gap=0] - Resolved gap size in pixels (polygon is inset by gap/2).
  * @returns {string} SVG path data string.
  */
 export function borderPath(polygon, style, roundingSize, maxAngleFactor, maxEdgeConsumption, gap) {

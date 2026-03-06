@@ -19370,7 +19370,7 @@ var template = (function (exports) {
           chart_aspect_ratio_mobile: 1,
           chart_breakpoint: 600,
 
-          gap: 1,
+          gap: 0.15,
           clip_type: "circle",
           advanced_settings: false,
           seed: 41,
@@ -28697,7 +28697,7 @@ var template = (function (exports) {
    * @param {number} [roundingSize] - Rounding radius in pixels.
    * @param {number} [maxAngleFactor=2.5] - Cap for extra rounding on sharp angles (adaptive only).
    * @param {number} [maxEdgeConsumption=0.66] - Max proportion of edge consumed by rounding.
-   * @param {number} [gap=0] - Gap size in pixels (polygon is inset by gap/2).
+   * @param {number} [gap=0] - Resolved gap size in pixels (polygon is inset by gap/2).
    * @returns {string} SVG path data string.
    */
   function borderPath(polygon, style, roundingSize, maxAngleFactor, maxEdgeConsumption, gap) {
@@ -29454,7 +29454,7 @@ var template = (function (exports) {
    * @param {object} popup - Flourish popup instance.
    * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
    */
-  function renderCells(container, leaves, root, voronoi_settings, colors, popup, colorSettings, animation_duration) {
+  function renderCells(container, leaves, root, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx) {
       const sel = select(container);
 
       let g = sel.selectAll("g.cells").data([null]);
@@ -29472,7 +29472,7 @@ var template = (function (exports) {
           borderRoundingSize: voronoi_settings.border_radius,
           borderMaxAngleFactor: voronoi_settings.max_angle_factor,
           borderMaxEdgeConsumption: voronoi_settings.max_edge_consumption,
-          gap: voronoi_settings.gap,
+          gap: gapPx,
           fillFn: d => getCellColor(d, root, colors, colorSettings),
           applyEvents: sel => {
               sel.on("mouseover", function(event, d) {
@@ -29557,7 +29557,10 @@ var template = (function (exports) {
           });
       }
 
-      renderCells(alignNode, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration);
+      // Convert proportional gap (percentage of shorter dimension) to pixels
+      var gapPx = voronoi_settings.gap ? voronoi_settings.gap / 100 * Math.min(width, height) : 0;
+
+      renderCells(alignNode, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx);
       renderLabels(alignNode, leaves, labelSettings, animation_duration, hierarchy, colors);
   }
 

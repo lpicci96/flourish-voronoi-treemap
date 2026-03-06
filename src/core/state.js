@@ -7,7 +7,7 @@ export default {
         chart_aspect_ratio_mobile: 1,
         chart_breakpoint: 600,
 
-        gap: 1,
+        gap: 0.15,
         clip_type: "circle",
         advanced_settings: false,
         seed: 41,

@@ -122,11 +122,11 @@ settings:
   # cell gap settings
   - property: voronoi_settings.gap
     name: Cell gap
-    description: Gap between cells in pixels. The background shows through the gaps.
+    description: Gap between cells as a percentage of chart size. Scales proportionally across screen sizes.
     type: number
     min: 0
-    max: 10
-    step: 0.1
+    max: 2
+    step: 0.05
     width: quarter
     new_section: Cell gaps
   - property: voronoi_settings.border_rounding_style
