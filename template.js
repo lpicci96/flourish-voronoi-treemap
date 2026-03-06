@@ -19379,7 +19379,7 @@ var template = (function (exports) {
           min_weight_ratio: 0.01,
           alignment: "center",
           border_rounding_style: "straight",
-          border_radius: 1.5,
+          border_radius: 1,
           border_rounding_reach: 0.45
 
       },
@@ -28389,6 +28389,13 @@ var template = (function (exports) {
    * Straight L segments run along the edge between cutback points, and
    * Q curves round each corner using the vertex as the control point.
    *
+   * When a Voronoi edge is too short for effective rounding (shorter than
+   * half the radius), the two Q corners flanking it are merged into a
+   * single cubic Bézier that uses both original vertices as control points.
+   * This keeps every vertex in the path while placing curve endpoints on
+   * the adjacent long edges where the cutback is large enough for smooth
+   * rounding.
+   *
    * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
    * @param {number} radius - Maximum cutback distance from each vertex (px).
    * @param {number} reach - Max fraction of each edge that rounding can consume (0–0.5).
@@ -28397,8 +28404,9 @@ var template = (function (exports) {
   function roundedPath(polygon, radius, reach) {
       if (!polygon || polygon.length < 3) return straightPath(polygon);
       var n = polygon.length;
+      var minEdge = radius * 0.5;
 
-      // For each edge, compute depart (near start) and arrive (near end) points
+      // For each edge, compute depart (near start), arrive (near end), and length
       var edges = [];
       for (var i = 0; i < n; i++) {
           var a = polygon[i];
@@ -28410,23 +28418,55 @@ var template = (function (exports) {
               dx: a[0] + (b[0] - a[0]) * t,
               dy: a[1] + (b[1] - a[1]) * t,
               ax: b[0] + (a[0] - b[0]) * t,
-              ay: b[1] + (a[1] - b[1]) * t
+              ay: b[1] + (a[1] - b[1]) * t,
+              len: len
           });
       }
 
-      // Start at depart point of first edge
-      var d = "M" + edges[0].dx + "," + edges[0].dy;
+      // Find a starting edge that is not short so merges don't wrap the start
+      var start = 0;
+      for (var s = 0; s < n; s++) {
+          if (edges[s].len >= minEdge) { start = s; break; }
+      }
 
-      for (var i = 0; i < n; i++) {
-          var nextI = (i + 1) % n;
+      var d = "M" + edges[start].dx + "," + edges[start].dy;
+
+      var processed = 0;
+      var i = start;
+      while (processed < n) {
           var edge = edges[i];
+          var nextI = (i + 1) % n;
           var nextEdge = edges[nextI];
           var vertex = polygon[nextI];
 
           // Straight line along edge to arrive point
           d += "L" + edge.ax + "," + edge.ay;
-          // Quadratic Bézier around corner vertex
-          d += "Q" + vertex[0] + "," + vertex[1] + " " + nextEdge.dx + "," + nextEdge.dy;
+
+          // Check if the next edge is too short for effective rounding
+          if (nextEdge.len >= minEdge || processed >= n - 1) {
+              // Normal: quadratic Bézier around corner vertex
+              d += "Q" + vertex[0] + "," + vertex[1] + " " + nextEdge.dx + "," + nextEdge.dy;
+              i = nextI;
+              processed++;
+          } else {
+              var afterI = (nextI + 1) % n;
+              var afterEdge = edges[afterI];
+              // Single short edge followed by a long edge: merge both corners
+              // into one cubic Bézier that keeps both vertices as control points
+              if (afterEdge.len >= minEdge || processed >= n - 2) {
+                  var afterVertex = polygon[afterI];
+                  d += "C" + vertex[0] + "," + vertex[1] + " " +
+                       afterVertex[0] + "," + afterVertex[1] + " " +
+                       afterEdge.dx + "," + afterEdge.dy;
+                  i = afterI;
+                  processed += 2;
+              } else {
+                  // Chain of short edges: fall back to normal Q
+                  d += "Q" + vertex[0] + "," + vertex[1] + " " + nextEdge.dx + "," + nextEdge.dy;
+                  i = nextI;
+                  processed++;
+              }
+          }
       }
 
       d += "Z";
@@ -28448,7 +28488,7 @@ var template = (function (exports) {
       style = style || "straight";
       var inset = gap ? insetPolygon(polygon, gap) : polygon;
 
-      if (style === "adaptive" && radiusPx > 0) {
+      if (style === "rounded adaptive" && radiusPx > 0) {
           return roundedPath(inset, radiusPx, reach || 0.45);
       }
       return straightPath(inset);

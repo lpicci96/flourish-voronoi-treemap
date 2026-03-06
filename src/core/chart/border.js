@@ -88,49 +88,19 @@ function straightPath(polygon) {
 }
 
 /**
- * Closed cubic B-spline path from an array of control points.
- * Produces C2-continuous curves — curvature transitions are smooth
- * everywhere, eliminating the visible kinks that quadratic Bézier
- * curves produce at the junction between straight and curved segments.
- *
- * Each segment j uses control points P[j-1], P[j], P[j+1], P[j+2]
- * (indices mod m) and is converted to a cubic Bézier (C command).
- *
- * @param {Array<number[]>} pts - Control points.
- * @returns {string} SVG path data string.
- */
-function basisClosedPath(pts) {
-    var m = pts.length;
-    if (m < 3) return straightPath(pts);
-
-    function P(i) { return pts[((i % m) + m) % m]; }
-
-    var pm1 = P(-1), p0 = P(0), p1 = P(1);
-    var d = "M" + ((pm1[0] + 4 * p0[0] + p1[0]) / 6) + "," +
-                  ((pm1[1] + 4 * p0[1] + p1[1]) / 6);
-
-    for (var j = 0; j < m; j++) {
-        var pj = P(j);
-        var pn = P(j + 1);
-        var pn2 = P(j + 2);
-
-        d += "C" +
-            ((2 * pj[0] + pn[0]) / 3) + "," + ((2 * pj[1] + pn[1]) / 3) + "," +
-            ((pj[0] + 2 * pn[0]) / 3) + "," + ((pj[1] + 2 * pn[1]) / 3) + "," +
-            ((pj[0] + 4 * pn[0] + pn2[0]) / 6) + "," + ((pj[1] + 4 * pn[1] + pn2[1]) / 6);
-    }
-
-    d += "Z";
-    return d;
-}
-
-/**
  * Rounded polygon path using straight edges and quadratic Bézier corners.
  *
  * For each edge, cutback points are placed at `radius` distance (or
  * `reach` fraction of edge length, whichever is smaller) from each vertex.
  * Straight L segments run along the edge between cutback points, and
  * Q curves round each corner using the vertex as the control point.
+ *
+ * When a Voronoi edge is too short for effective rounding (shorter than
+ * half the radius), the two Q corners flanking it are merged into a
+ * single cubic Bézier that uses both original vertices as control points.
+ * This keeps every vertex in the path while placing curve endpoints on
+ * the adjacent long edges where the cutback is large enough for smooth
+ * rounding.
  *
  * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
  * @param {number} radius - Maximum cutback distance from each vertex (px).
@@ -140,8 +110,9 @@ function basisClosedPath(pts) {
 function roundedPath(polygon, radius, reach) {
     if (!polygon || polygon.length < 3) return straightPath(polygon);
     var n = polygon.length;
+    var minEdge = radius * 0.5;
 
-    // For each edge, compute depart (near start) and arrive (near end) points
+    // For each edge, compute depart (near start), arrive (near end), and length
     var edges = [];
     for (var i = 0; i < n; i++) {
         var a = polygon[i];
@@ -153,23 +124,55 @@ function roundedPath(polygon, radius, reach) {
             dx: a[0] + (b[0] - a[0]) * t,
             dy: a[1] + (b[1] - a[1]) * t,
             ax: b[0] + (a[0] - b[0]) * t,
-            ay: b[1] + (a[1] - b[1]) * t
+            ay: b[1] + (a[1] - b[1]) * t,
+            len: len
         });
     }
 
-    // Start at depart point of first edge
-    var d = "M" + edges[0].dx + "," + edges[0].dy;
+    // Find a starting edge that is not short so merges don't wrap the start
+    var start = 0;
+    for (var s = 0; s < n; s++) {
+        if (edges[s].len >= minEdge) { start = s; break; }
+    }
 
-    for (var i = 0; i < n; i++) {
-        var nextI = (i + 1) % n;
+    var d = "M" + edges[start].dx + "," + edges[start].dy;
+
+    var processed = 0;
+    var i = start;
+    while (processed < n) {
         var edge = edges[i];
+        var nextI = (i + 1) % n;
         var nextEdge = edges[nextI];
         var vertex = polygon[nextI];
 
         // Straight line along edge to arrive point
         d += "L" + edge.ax + "," + edge.ay;
-        // Quadratic Bézier around corner vertex
-        d += "Q" + vertex[0] + "," + vertex[1] + " " + nextEdge.dx + "," + nextEdge.dy;
+
+        // Check if the next edge is too short for effective rounding
+        if (nextEdge.len >= minEdge || processed >= n - 1) {
+            // Normal: quadratic Bézier around corner vertex
+            d += "Q" + vertex[0] + "," + vertex[1] + " " + nextEdge.dx + "," + nextEdge.dy;
+            i = nextI;
+            processed++;
+        } else {
+            var afterI = (nextI + 1) % n;
+            var afterEdge = edges[afterI];
+            // Single short edge followed by a long edge: merge both corners
+            // into one cubic Bézier that keeps both vertices as control points
+            if (afterEdge.len >= minEdge || processed >= n - 2) {
+                var afterVertex = polygon[afterI];
+                d += "C" + vertex[0] + "," + vertex[1] + " " +
+                     afterVertex[0] + "," + afterVertex[1] + " " +
+                     afterEdge.dx + "," + afterEdge.dy;
+                i = afterI;
+                processed += 2;
+            } else {
+                // Chain of short edges: fall back to normal Q
+                d += "Q" + vertex[0] + "," + vertex[1] + " " + nextEdge.dx + "," + nextEdge.dy;
+                i = nextI;
+                processed++;
+            }
+        }
     }
 
     d += "Z";
@@ -191,7 +194,7 @@ export function borderPath(polygon, style, gap, radiusPx, reach) {
     style = style || "straight";
     var inset = gap ? insetPolygon(polygon, gap) : polygon;
 
-    if (style === "adaptive" && radiusPx > 0) {
+    if (style === "rounded adaptive" && radiusPx > 0) {
         return roundedPath(inset, radiusPx, reach || 0.45);
     }
     return straightPath(inset);
