@@ -7,6 +7,17 @@ In a Voronoi treemap, this technique is adapted so that regions (cells) have are
 proportional to the data values, not just equal distances. The result is an organic, 
 space-filling layout that avoids the rigid rectangular shapes of traditional treemaps.
 
+**How the Algorithm Works**
+
+The layout is computed by the d3-voronoi-treemap algorithm, which iteratively adjusts a weighted Voronoi diagram until each cell's area converges to be proportional to its data value. Seed points are placed inside the clipping shape and assigned weights derived from the target areas. On each iteration the algorithm recomputes the Voronoi diagram and nudges weights and positions to reduce the total area error. The process stops when the error falls below the **convergence ratio** or the **max iterations** limit is reached — whichever comes first.
+
+**Interpreting Polygon Areas**
+
+Cell areas are intended to be proportional to the data values, but the result is an approximation. Two settings affect how closely areas match the underlying data:
+
+- **Convergence ratio / max iterations** — Lower convergence ratios and higher iteration counts produce more accurate proportions, at the cost of longer computation times.
+- **Min weight ratio** — Sets a floor on cell weights as a fraction of the largest weight. Any value below this floor is inflated to the minimum. This prevents cells from becoming invisibly small, but redistributes area away from larger cells. For datasets with a wide value range (e.g. millions alongside billions), even a small min weight ratio can noticeably inflate the smallest cells. Set it to 0 for pure proportional sizing, though very small cells may become difficult to see or interact with.
+
 **When to Use It**
 
 - Showing proportional part-to-whole relationships (e.g. market share, population distribution)
