@@ -446,26 +446,47 @@ export function renderLabels(container, leaves, labelSettings, animation_duratio
             }
 
             // Compute y-offsets so the text block is vertically centered at the centroid
-            const totalHeight = (lines.length - 1) * lineHeightPx;
-            const startY = cy - totalHeight / 2;
+            let totalHeight = (lines.length - 1) * lineHeightPx;
+            let startY = cy - totalHeight / 2;
+
+            // Check whether all lines fit within the polygon
+            function checkLinesFit(linesToCheck, blockStartY, halfFont, marginFactor) {
+                return linesToCheck.every(function(line, lineIndex) {
+                    const lineY = blockStartY + lineIndex * lineHeightPx;
+                    // Sample polygon width at the top, center, and bottom of the text line
+                    const widthTop = polygonWidthAtY(d.polygon, lineY - halfFont);
+                    const widthCenter = polygonWidthAtY(d.polygon, lineY);
+                    const widthBottom = polygonWidthAtY(d.polygon, lineY + halfFont);
+                    const availableWidth = Math.min(widthTop, widthCenter, widthBottom) * marginFactor;
+                    if (availableWidth <= 0) return false;
+                    const tspanTemp = el.append("tspan").text(line);
+                    const lineWidth = tspanTemp.node().getComputedTextLength();
+                    tspanTemp.remove();
+                    return lineWidth <= availableWidth;
+                });
+            }
 
             // Determine label visibility
             let visible = true;
             if (showList && showList.size > 0) {
                 visible = showList.has(d.data.name);
             } else if (labelSettings.hide_small_labels) {
-                if (inscribedRadius * 2 < fontSizePx * LINE_HEIGHT) {
+                const marginFactor = 1 - margin;
+                // Quick reject: cell too small to fit a single line of text
+                if (inscribedRadius * 2 * marginFactor < fontSizePx) {
                     visible = false;
                 } else {
-                    const marginFactor = 1 - margin;
-                    visible = lines.every(function(line, lineIndex) {
-                        const lineY = startY + lineIndex * lineHeightPx;
-                        const availableWidth = polygonWidthAtY(d.polygon, lineY) * marginFactor;
-                        const tspanTemp = el.append("tspan").text(line);
-                        const lineWidth = tspanTemp.node().getComputedTextLength();
-                        tspanTemp.remove();
-                        return lineWidth <= availableWidth;
-                    });
+                    const halfFont = fontSizePx / 2;
+                    visible = checkLinesFit(lines, startY, halfFont, marginFactor);
+
+                    // If check failed and value lines were added, retry with name lines only
+                    if (!visible && valueLineStart >= 0) {
+                        lines.length = valueLineStart;
+                        valueLineStart = -1;
+                        totalHeight = (lines.length - 1) * lineHeightPx;
+                        startY = cy - totalHeight / 2;
+                        visible = checkLinesFit(lines, startY, halfFont, marginFactor);
+                    }
                 }
             }
             el.attr("visibility", visible ? "visible" : "hidden");
