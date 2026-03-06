@@ -8,6 +8,7 @@ All notable changes to this template will be documented in this file.
 ## [v0.5.0] - 2026-03-06
 
 ### Added
+- Adaptive number formatting: per-value magnitude scaling (K, M, B, T) with customisable suffixes, found under Number formatting > Advanced
 - Value labels with configurable rendering for Voronoi cells
 - Label and value label override functionality for individual cells
 - Auto contrast for label colours based on cell background

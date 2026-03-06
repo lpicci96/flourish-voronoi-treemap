@@ -36,7 +36,7 @@ The template accepts a flat dataset with up to two hierarchy levels:
 
 This template was created by [Luca Picci](https://lpicci96.github.io/LucaPicci/). The default dataset uses population data from the [World Bank World Development Indicators (WDI)](https://datatopics.worldbank.org/world-development-indicators/) database.
 
-Please get in touch with me for any bug reports or feature requests.
+Please reach out for any bug reports or feature requests.
 
 ---
 
@@ -48,6 +48,7 @@ Please get in touch with me for any bug reports or feature requests.
 - Small multiple sizing - option to size small multiples based on the relative proportions of the facet data, rather than equally
 
 **v0.5.0 - 2026-03-06**
+- Added adaptive number formatting for value labels and popups. When data spans multiple orders of magnitude (e.g. millions and billions), each value is independently scaled to the most readable suffix (K, M, B, T). Enable it under **Number formatting > Advanced > Adaptive number formatting**. Suffixes are customisable for language flexibility. The existing prefix and decimal places settings still apply; the suffix and multiply/divide settings are bypassed when adaptive mode is on.
 - Added value labels with configurable rendering for Voronoi cells
 - Added label and value label override for individual cells
 - Added auto contrast for label colours based on cell background
