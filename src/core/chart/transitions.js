@@ -118,6 +118,7 @@ export function transitionCells({ selection, leaves, duration, borderStyle, bord
                     };
                 })
                 .attr("fill", fillFn)
+                .attr("opacity", 1)
                 .on("end", function() {
                     this.__polygon = d.polygon;
                     d3.select(this).attr("d", cellFillPath(d));
@@ -128,6 +129,7 @@ export function transitionCells({ selection, leaves, duration, borderStyle, bord
             .attr("d", cellFillPath)
             .attr("fill", fillFn)
             .attr("stroke", "none")
+            .attr("opacity", 1)
             .each(function(d) { this.__polygon = d.polygon; });
     }
 

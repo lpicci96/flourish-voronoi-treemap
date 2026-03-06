@@ -28739,6 +28739,7 @@ var template = (function (exports) {
                       };
                   })
                   .attr("fill", fillFn)
+                  .attr("opacity", 1)
                   .on("end", function() {
                       this.__polygon = d.polygon;
                       select(this).attr("d", cellFillPath(d));
@@ -28749,6 +28750,7 @@ var template = (function (exports) {
               .attr("d", cellFillPath)
               .attr("fill", fillFn)
               .attr("stroke", "none")
+              .attr("opacity", 1)
               .each(function(d) { this.__polygon = d.polygon; });
       }
 
