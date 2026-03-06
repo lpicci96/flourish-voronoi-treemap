@@ -26,10 +26,22 @@ export default {
 
     // layout module state properties
     layout: {
+        body_font: {
+            name: "Roboto Condensed",
+            url: "https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap",
+        },
         footer_note: `Flourish template by <a href="https://lpicci96.github.io/LucaPicci/" Luca Picci" target="_blank">Luca Picci</a>`,
     },
     // color module state properties
     colors: {
+        categorical_palette: [
+            "#0e6fc4", // blue
+            "#0a9e9c", // green
+            "#a60737", // red
+            "#f28907", // orange
+            "#823cec", // purple
+
+        ],
         jitter_shade: true, // custom property to jitter shade
         jitter_amount: 0.1, // amount to jitter shade by (0 to 1)
     },
