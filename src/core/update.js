@@ -93,7 +93,7 @@ export default function() {
         .update(function(facet) {
             const item = facet.data;
             if (!item || !item.hierarchy) return;
-            drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels, dataColumnNames);
+            drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels, state.number_format, dataColumnNames);
         });
 
     sizeSvg();

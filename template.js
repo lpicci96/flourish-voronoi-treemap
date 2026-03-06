@@ -19437,7 +19437,17 @@ var template = (function (exports) {
           show_value_labels: true,
           value_label_size: 0.85,
           value_label_opacity: 0.8,
-          value_label_weight: "normal"
+          value_label_weight: "normal",
+          adaptive_format: false,
+          adaptive_space: true,
+          scale_thousands: true,
+          scale_thousands_suffix: "K",
+          scale_millions: true,
+          scale_millions_suffix: "M",
+          scale_billions: true,
+          scale_billions_suffix: "B",
+          scale_trillions: true,
+          scale_trillions_suffix: "T"
       }
 
 
@@ -28305,15 +28315,100 @@ var template = (function (exports) {
   }
 
   /**
+   * Create an adaptive number formatter that selects the most appropriate
+   * magnitude suffix (K, M, B, T) for each value independently.
+   *
+   * @param {object} localization - Flourish localization instance.
+   * @param {object} labelSettings - The state.labels settings object.
+   * @param {object} numberFormatState - The raw state.number_format object (prefix, strip_zeros, negative_sign).
+   * @returns {function} A function (value) => formatted string.
+   */
+  function createAdaptiveFormatter(localization, labelSettings, numberFormatState) {
+      var scales = [];
+
+      if (labelSettings.scale_trillions) {
+          scales.push({ divisor: 1e12, suffix: labelSettings.scale_trillions_suffix || "T" });
+      }
+      if (labelSettings.scale_billions) {
+          scales.push({ divisor: 1e9, suffix: labelSettings.scale_billions_suffix || "B" });
+      }
+      if (labelSettings.scale_millions) {
+          scales.push({ divisor: 1e6, suffix: labelSettings.scale_millions_suffix || "M" });
+      }
+      if (labelSettings.scale_thousands) {
+          scales.push({ divisor: 1e3, suffix: labelSettings.scale_thousands_suffix || "K" });
+      }
+
+      // Scales are ordered largest-first so the first match wins
+      var n_dec = numberFormatState && numberFormatState.n_dec != null ? numberFormatState.n_dec : 2;
+      var decimals = n_dec >= 0 ? Math.floor(n_dec) : 0;
+      var space = labelSettings.adaptive_space ? " " : "";
+      var prefix = (numberFormatState && numberFormatState.prefix) || "";
+      var stripZeros = numberFormatState && numberFormatState.strip_zeros;
+      var negativeSign = (numberFormatState && numberFormatState.negative_sign) || "minus";
+
+      // getFormatterFunction() returns a d3 format factory: specifier -> formatter
+      var formatFactory = localization.getFormatterFunction();
+      var scaledFormatter = formatFactory(",." + decimals + "f");
+      var plainFormatter = formatFactory(",f");
+
+      return function(value) {
+          if (value == null || isNaN(value)) return "";
+
+          var isNegative = value < 0;
+          var abs = Math.abs(value);
+          var chosenScale = null;
+
+          for (var i = 0; i < scales.length; i++) {
+              if (abs >= scales[i].divisor) {
+                  chosenScale = scales[i];
+                  break;
+              }
+          }
+
+          var formatted;
+          if (chosenScale) {
+              var divided = abs / chosenScale.divisor;
+              formatted = scaledFormatter(divided);
+              if (stripZeros) formatted = stripTrailingZeros(formatted);
+              formatted = formatted + space + chosenScale.suffix;
+          } else {
+              // Below all enabled thresholds — format as plain number
+              formatted = plainFormatter(abs);
+              if (stripZeros) formatted = stripTrailingZeros(formatted);
+          }
+
+          // Assemble with prefix and negative sign
+          if (isNegative) {
+              if (negativeSign === "parentheses") {
+                  return "(" + prefix + formatted + ")";
+              }
+              return "-" + prefix + formatted;
+          }
+
+          return prefix + formatted;
+      };
+  }
+
+  function stripTrailingZeros(s) {
+      if (s.indexOf(".") === -1) return s;
+      s = s.replace(/0+$/, "");
+      s = s.replace(/\.$/, "");
+      return s;
+  }
+
+  /**
    * Configure a Flourish popup instance with column names and number
    * formatters derived from the current set of leaves.
    * @param {object} popup - Flourish popup instance.
    * @param {Array} leaves - Array of d3-hierarchy leaf nodes.
    * @param {object} localization - Flourish localization instance.
    * @param {Function} number_format - Flourish number_format factory.
+   * @param {object} labelSettings - The state.labels settings object.
+   * @param {object} numberFormatState - The raw state.number_format object.
    * @param {object} dataColumnNames - Flourish SDK column_names mapping (binding key → actual CSV header).
    */
-  function configurePopup(popup, leaves, localization, number_format, dataColumnNames) {
+  function configurePopup(popup, leaves, localization, number_format, labelSettings, numberFormatState, dataColumnNames) {
       const sampleRow = leaves[0] && leaves[0].data._row;
       if (!sampleRow) return;
 
@@ -28330,7 +28425,12 @@ var template = (function (exports) {
           columnNames[key] = (dataColumnNames && dataColumnNames[key]) || fallbackNames[key] || key;
       });
 
-      const formatter = number_format(localization.getFormatterFunction());
+      var formatter;
+      if (labelSettings && labelSettings.adaptive_format) {
+          formatter = createAdaptiveFormatter(localization, labelSettings, numberFormatState);
+      } else {
+          formatter = number_format(localization.getFormatterFunction());
+      }
       const formatters = { values: formatter };
 
       popup.setColumnNames(columnNames);
@@ -29412,7 +29512,7 @@ var template = (function (exports) {
    * @param {Function} number_format - Flourish number_format factory.
    * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
    */
-  function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings, dataColumnNames) {
+  function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings, number_format_state, dataColumnNames) {
       if (!hierarchy) return;
 
       // Always compute layout with centered clip so cell shapes stay consistent
@@ -29438,11 +29538,16 @@ var template = (function (exports) {
       const alignNode = alignGroup.node();
       const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
 
-      configurePopup(popup, leaves, localization, number_format, dataColumnNames);
+      configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames);
 
       // Pre-format values on leaves for value labels
       if (labelSettings && labelSettings.show_value_labels) {
-          var formatter = number_format(localization.getFormatterFunction());
+          var formatter;
+          if (labelSettings.adaptive_format) {
+              formatter = createAdaptiveFormatter(localization, labelSettings, number_format_state);
+          } else {
+              formatter = number_format(localization.getFormatterFunction());
+          }
           leaves.forEach(function(d) {
               if (d.data._row && d.data._row.value_label_override != null) {
                   d._formattedValue = String(d.data._row.value_label_override);
@@ -29599,7 +29704,7 @@ var template = (function (exports) {
           .update(function(facet) {
               const item = facet.data;
               if (!item || !item.hierarchy) return;
-              drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels, dataColumnNames);
+              drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels, state.number_format, dataColumnNames);
           });
 
       sizeSvg();

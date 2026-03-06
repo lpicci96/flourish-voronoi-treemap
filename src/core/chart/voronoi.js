@@ -11,6 +11,7 @@ import { getCellColor } from "./colors";
 import { configurePopup, getPopupData } from "./popup";
 import { transitionCells } from "./transitions";
 import { renderLabels } from "./labels";
+import { createAdaptiveFormatter } from "./number_formatting";
 
 const _voronoiTreemap = voronoiTreemap();
 
@@ -122,7 +123,7 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
  * @param {Function} number_format - Flourish number_format factory.
  * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
  */
-export function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings, dataColumnNames) {
+export function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings, number_format_state, dataColumnNames) {
     if (!hierarchy) return;
 
     // Always compute layout with centered clip so cell shapes stay consistent
@@ -148,11 +149,16 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
     const alignNode = alignGroup.node();
     const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
 
-    configurePopup(popup, leaves, localization, number_format, dataColumnNames);
+    configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames);
 
     // Pre-format values on leaves for value labels
     if (labelSettings && labelSettings.show_value_labels) {
-        var formatter = number_format(localization.getFormatterFunction());
+        var formatter;
+        if (labelSettings.adaptive_format) {
+            formatter = createAdaptiveFormatter(localization, labelSettings, number_format_state);
+        } else {
+            formatter = number_format(localization.getFormatterFunction());
+        }
         leaves.forEach(function(d) {
             if (d.data._row && d.data._row.value_label_override != null) {
                 d._formattedValue = String(d.data._row.value_label_override);

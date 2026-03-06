@@ -394,6 +394,91 @@ settings:
     import: "@flourish/number-localization"
   - property: number_format
     import: "@flourish/number-formatter"
+    overrides:
+      - property: suffix
+        show_if:
+          labels.adaptive_format: false
+      - property: transform_labels
+        show_if:
+          number_format.advanced: true
+          labels.adaptive_format: false
+
+  - property: labels.adaptive_format
+    name: Adaptive number formatting
+    description: Automatically scale each value to the most appropriate magnitude suffix (K, M, B, T). When enabled, the suffix setting above is bypassed.
+    type: boolean
+    width: full
+    show_if:
+      number_format.advanced: true
+    new_section: Adaptive number formatting
+  - property: labels.adaptive_space
+    name: Space before suffix
+    description: Add a space between the number and the suffix.
+    type: boolean
+    width: full
+    show_if:
+      number_format.advanced: true
+      labels.adaptive_format: true
+  - property: labels.scale_trillions
+    name: Trillions
+    type: boolean
+    width: half
+    show_if:
+      number_format.advanced: true
+      labels.adaptive_format: true
+  - property: labels.scale_trillions_suffix
+    name: Trillions suffix
+    type: string
+    width: half
+    show_if:
+      number_format.advanced: true
+      labels.adaptive_format: true
+#      labels.scale_trillions: true
+  - property: labels.scale_billions
+    name: Billions
+    type: boolean
+    width: half
+    show_if:
+      number_format.advanced: true
+      labels.adaptive_format: true
+  - property: labels.scale_billions_suffix
+    name: Billions suffix
+    type: string
+    width: half
+    show_if:
+      number_format.advanced: true
+      labels.adaptive_format: true
+#      labels.scale_billions: true
+  - property: labels.scale_millions
+    name: Millions
+    type: boolean
+    width: half
+    show_if:
+      number_format.advanced: true
+      labels.adaptive_format: true
+  - property: labels.scale_millions_suffix
+    name: Millions suffix
+    type: string
+    width: half
+    show_if:
+      number_format.advanced: true
+      labels.adaptive_format: true
+#      labels.scale_millions: true
+  - property: labels.scale_thousands
+    name: Thousands
+    type: boolean
+    width: half
+    show_if:
+      number_format.advanced: true
+      labels.adaptive_format: true
+  - property: labels.scale_thousands_suffix
+    name: Thousands suffix
+    type: string
+    width: half
+    show_if:
+      number_format.advanced: true
+      labels.adaptive_format: true
+#      labels.scale_thousands: true
 
   # imported modules
   - property: layout

@@ -74,7 +74,17 @@ export default {
         show_value_labels: true,
         value_label_size: 0.85,
         value_label_opacity: 0.8,
-        value_label_weight: "normal"
+        value_label_weight: "normal",
+        adaptive_format: false,
+        adaptive_space: true,
+        scale_thousands: true,
+        scale_thousands_suffix: "K",
+        scale_millions: true,
+        scale_millions_suffix: "M",
+        scale_billions: true,
+        scale_billions_suffix: "B",
+        scale_trillions: true,
+        scale_trillions_suffix: "T"
     }
 
 
