@@ -5,6 +5,13 @@ All notable changes to this template will be documented in this file.
 ## [Unreleased]
 
 
+## [v0.5.1] - 2026-03-06
+
+### Changed
+- Removed arbitrary caps on advanced voronoi settings (max iterations, convergence ratio, min weight ratio) to allow finer user control
+- Added documentation on the voronoi tessellation algorithm and interpreting polygon areas
+
+
 ## [v0.5.0] - 2026-03-06
 
 ### Added

@@ -68,6 +68,10 @@ Please reach out for any bug reports or feature requests.
 - Value aggregation - choose an aggregation method for duplicate entries (e.g. sum, average, none)
 - Small multiple sizing - option to size small multiples based on the relative proportions of the facet data, rather than equally
 
+**v0.5.1 - 2026-03-06**
+- Removed arbitrary caps on advanced voronoi settings (max iterations, convergence ratio, min weight ratio) to allow finer user control
+- Added documentation on the voronoi tessellation algorithm and interpreting polygon areas
+
 **v0.5.0 - 2026-03-06**
 - Re-implemented adaptive border rounding with an improved algorithm: corners are smoothed using quadratic Bézier curves with the original vertex as the control point, preserving straight segments along longer edges
 - Added automatic merging of short-edge corners — when a Voronoi edge is too short for effective rounding, the two flanking quadratic corners are merged into a single cubic Bézier curve using both vertices as control points, avoiding visual artefacts on tiny edges
