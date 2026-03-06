@@ -19425,7 +19425,7 @@ var template = (function (exports) {
           font_size: 1,
           min_font_size: 0.5,
           max_font_size: 1.5,
-          font_weight: "normal",
+          font_weight: "bold",
           font_color: "#ffffff",
           hide_small_labels: true,
           show_list: "",
@@ -19434,7 +19434,7 @@ var template = (function (exports) {
           outline_color: "#000000",
           outline_size: 0.1,
           wrap_labels: true,
-          show_value_labels: false,
+          show_value_labels: true,
           value_label_size: 0.85,
           value_label_opacity: 0.8,
           value_label_weight: "normal"
