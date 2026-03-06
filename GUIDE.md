@@ -25,6 +25,10 @@ Cell borders can be rendered with rounded corners using the "adaptive rounding" 
 
 When a Voronoi edge is too short for effective rounding (shorter than half the radius), the two quadratic corners flanking it are merged into a single cubic Bézier curve that uses both original vertices as control points. This avoids visual artefacts on tiny edges while keeping every vertex in the path, so the curve still faithfully follows the cell boundary.
 
+**Colour Jittering**
+
+When using a two-level hierarchy without a colour category column, all child cells within a parent group share the same base colour. Colour jittering adds a subtle, deterministic lightness shift to each child cell, making it easier to distinguish individual polygons within a group. The shift is derived from a hash of the cell's name, so the same cell always gets the same adjustment — no randomness between redraws. The jitter amount controls the maximum lightness variation (0–0.5); the default of 0.1 provides gentle differentiation without compromising the overall colour scheme. Jittering is automatically disabled when a colour category column is provided, since cells already have distinct colours.
+
 The template accepts a flat dataset with up to two hierarchy levels:
 
 | Column                 | Required | Description                                                              |
