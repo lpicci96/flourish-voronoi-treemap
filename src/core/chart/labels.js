@@ -352,9 +352,6 @@ export function renderLabels(container, leaves, labelSettings, animation_duratio
         .attr("text-anchor", "middle")
         .attr("pointer-events", "none");
 
-    if (duration > 0) {
-        enter.attr("opacity", 0);
-    }
 
     // ENTER + UPDATE
     const merged = enter.merge(labels);

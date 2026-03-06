@@ -17,7 +17,6 @@ function resamplePolygon(polygon, count) {
     if (n === count) return polygon;
     if (n === 0 || count === 0) return polygon;
 
-    // Compute cumulative perimeter distances
     const cumLen = [0];
     for (let i = 0; i < n; i++) {
         const a = polygon[i];
@@ -30,7 +29,6 @@ function resamplePolygon(polygon, count) {
     const result = [];
     for (let i = 0; i < count; i++) {
         const dist = (i / count) * total;
-        // Find the edge segment containing this distance
         let seg = 0;
         while (seg < n - 1 && cumLen[seg + 1] < dist) seg++;
         const segLen = cumLen[seg + 1] - cumLen[seg];
@@ -49,8 +47,8 @@ function resamplePolygon(polygon, count) {
  * - `g.cell-fills`: inset + rounded polygon fills with smooth polygon morphing.
  * - `g.cell-hits`: invisible paths for click/hover (updated instantly).
  *
- * Entering cells fade in, exiting cells fade out, updating cells morph
- * via point-by-point interpolation with inset+rounding applied each frame.
+ * Entering cells appear instantly. Updating cells morph via point-by-point
+ * interpolation. Exiting cells fade out.
  */
 export function transitionCells({ selection, leaves, duration, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, gap, fillFn, applyEvents }) {
 
@@ -80,20 +78,14 @@ export function transitionCells({ selection, leaves, duration, borderStyle, bord
         fillJoin.exit().remove();
     }
 
-    // ENTER
-    const fillEnter = fillJoin.enter().append("path")
+    // ENTER — always instant, no fade-in
+    fillJoin.enter().append("path")
         .attr("d", cellFillPath)
         .attr("fill", fillFn)
         .attr("stroke", "none")
         .each(function(d) { this.__polygon = d.polygon; });
 
-    if (duration > 0) {
-        fillEnter.attr("opacity", 0)
-            .transition().duration(duration).ease(d3.easeCubicInOut)
-            .attr("opacity", 1);
-    }
-
-    // UPDATE (morph polygon points with inset+rounding applied each frame)
+    // UPDATE
     if (duration > 0) {
         fillJoin.each(function(d) {
             const el = d3.select(this);
@@ -129,7 +121,6 @@ export function transitionCells({ selection, leaves, duration, borderStyle, bord
             .attr("d", cellFillPath)
             .attr("fill", fillFn)
             .attr("stroke", "none")
-            .attr("opacity", 1)
             .each(function(d) { this.__polygon = d.polygon; });
     }
 
