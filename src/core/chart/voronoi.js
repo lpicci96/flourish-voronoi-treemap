@@ -65,7 +65,7 @@ function getAlignmentOffset(clip, width, alignment) {
  * @param {object} popup - Flourish popup instance.
  * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
  */
-function renderCells(container, leaves, root, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx) {
+function renderCells(container, leaves, root, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx, radiusPx) {
     const sel = d3.select(container);
 
     let g = sel.selectAll("g.cells").data([null]);
@@ -79,7 +79,10 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
         selection: g,
         leaves,
         duration,
+        borderStyle: voronoi_settings.border_rounding_style,
         gap: gapPx,
+        radiusPx: radiusPx,
+        reach: voronoi_settings.border_rounding_reach,
         fillFn: d => getCellColor(d, root, colors, colorSettings),
         applyEvents: sel => {
             sel.on("mouseover", function(event, d) {
@@ -167,6 +170,9 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
     // Convert proportional gap (percentage of shorter dimension) to pixels
     var gapPx = voronoi_settings.gap ? voronoi_settings.gap / 100 * Math.min(width, height) : 0;
 
-    renderCells(alignNode, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx);
+    // Convert proportional border radius (percentage of shorter dimension) to pixels
+    var radiusPx = voronoi_settings.border_radius ? voronoi_settings.border_radius / 100 * Math.min(width, height) : 0;
+
+    renderCells(alignNode, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx, radiusPx);
     renderLabels(alignNode, leaves, labelSettings, animation_duration, hierarchy, colors, colorSettings);
 }

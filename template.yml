@@ -131,11 +131,32 @@ settings:
     new_section: Cell gaps
   - property: voronoi_settings.border_rounding_style
     name: Border rounding style
-    description: Controls how cell corners are drawn.
+    description: Controls how cell corners are drawn. "straight" draws sharp corners, "adaptive" smooths corners with quadratic Bézier curves that naturally adapt to each corner's geometry.
     type: string
     width: half
     choices:
       - straight
+      - adaptive
+  - property: voronoi_settings.border_radius
+    name: Border radius
+    description: Rounding radius as a percentage of chart size. Scales proportionally across screen sizes.
+    type: number
+    min: 0
+    max: 5
+    step: 0.1
+    width: quarter
+    show_if:
+      voronoi_settings.border_rounding_style: adaptive
+  - property: voronoi_settings.border_rounding_reach
+    name: Rounding reach
+    description: Maximum fraction of each edge that corner rounding can consume. Higher values allow rounder corners on short edges but reduce visible straight segments.
+    type: number
+    min: 0.05
+    max: 0.5
+    step: 0.05
+    width: quarter
+    show_if:
+      voronoi_settings.border_rounding_style: adaptive
 
 
 #  Advanced settings

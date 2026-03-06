@@ -19378,7 +19378,9 @@ var template = (function (exports) {
           convergence_ratio: 0.005,
           min_weight_ratio: 0.01,
           alignment: "center",
-          border_rounding_style: "straight"
+          border_rounding_style: "straight",
+          border_radius: 1.5,
+          border_rounding_reach: 0.45
 
       },
 
@@ -28370,7 +28372,7 @@ var template = (function (exports) {
       return [x1 + t * (x2 - x1), y1 + t * (y2 - y1)];
   }
 
-  // ── Per-cell path generator ─────────────────────────────────────────────
+  // ── Per-cell path generators ────────────────────────────────────────────
 
   /**
    * Straight polygon path: M...L...L...Z
@@ -28380,13 +28382,86 @@ var template = (function (exports) {
   }
 
   /**
+   * Rounded polygon path using quadratic Bézier curves at each corner.
+   * The original vertex becomes the Bézier control point, guaranteeing
+   * tangent continuity with both adjacent edges. Near-straight vertices
+   * naturally produce near-straight curves with no special-case logic.
+   *
+   * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
+   * @param {number} radius - Maximum cutback distance from each vertex (px).
+   * @param {number} reach - Max fraction of each edge that rounding can consume (0–1).
+   * @returns {string} SVG path data string with L and Q commands.
+   */
+  function roundedPath(polygon, radius, reach) {
+      if (!polygon || polygon.length < 3) return straightPath(polygon);
+
+      var n = polygon.length;
+
+      // Precompute edge lengths
+      var edgeLens = new Array(n);
+      for (var i = 0; i < n; i++) {
+          var a = polygon[i];
+          var b = polygon[(i + 1) % n];
+          edgeLens[i] = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      }
+
+      // For each vertex, compute cutback along incoming and outgoing edges.
+      // lenIn = length of edge from prev→curr (edge index: (i-1+n)%n)
+      // lenOut = length of edge from curr→next (edge index: i)
+      var inPts = new Array(n);
+      var outPts = new Array(n);
+
+      for (var i = 0; i < n; i++) {
+          var prev = polygon[(i - 1 + n) % n];
+          var curr = polygon[i];
+          var next = polygon[(i + 1) % n];
+
+          var lenIn = edgeLens[(i - 1 + n) % n];
+          var lenOut = edgeLens[i];
+
+          var cutIn = lenIn > 0 ? Math.min(radius, lenIn * reach) : 0;
+          var cutOut = lenOut > 0 ? Math.min(radius, lenOut * reach) : 0;
+
+          inPts[i] = cutIn > 0
+              ? [curr[0] + (prev[0] - curr[0]) / lenIn * cutIn,
+                 curr[1] + (prev[1] - curr[1]) / lenIn * cutIn]
+              : curr;
+
+          outPts[i] = cutOut > 0
+              ? [curr[0] + (next[0] - curr[0]) / lenOut * cutOut,
+                 curr[1] + (next[1] - curr[1]) / lenOut * cutOut]
+              : curr;
+      }
+
+      // Build path: L to inPt, Q through vertex to outPt
+      var d = "M" + inPts[0][0] + "," + inPts[0][1];
+      for (var i = 0; i < n; i++) {
+          var curr = polygon[i];
+          d += "L" + inPts[i][0] + "," + inPts[i][1];
+          d += "Q" + curr[0] + "," + curr[1] + "," + outPts[i][0] + "," + outPts[i][1];
+      }
+      d += "Z";
+      return d;
+  }
+
+  // ── Single dispatcher ───────────────────────────────────────────────────
+
+  /**
    * Return an SVG path `d` string for a single polygon.
    * @param {Array<number[]>} polygon - Array of coordinate pairs.
+   * @param {string} [style="straight"] - Border rounding style.
    * @param {number} [gap=0] - Resolved gap size in pixels (polygon is inset by gap/2).
+   * @param {number} [radiusPx=0] - Rounding radius in pixels.
+   * @param {number} [reach=0.45] - Max fraction of each edge consumed by rounding.
    * @returns {string} SVG path data string.
    */
-  function borderPath(polygon, gap) {
-      const inset = gap ? insetPolygon(polygon, gap) : polygon;
+  function borderPath(polygon, style, gap, radiusPx, reach) {
+      style = style || "straight";
+      var inset = gap ? insetPolygon(polygon, gap) : polygon;
+
+      if (style === "adaptive" && radiusPx > 0) {
+          return roundedPath(inset, radiusPx, reach || 0.45);
+      }
       return straightPath(inset);
   }
 
@@ -28439,10 +28514,10 @@ var template = (function (exports) {
    * Entering cells appear instantly. Updating cells morph via point-by-point
    * interpolation. Exiting cells fade out.
    */
-  function transitionCells({ selection, leaves, duration, gap, fillFn, applyEvents }) {
+  function transitionCells({ selection, leaves, duration, borderStyle, gap, radiusPx, reach, fillFn, applyEvents }) {
 
       function cellFillPath(d) {
-          return borderPath(d.polygon, gap);
+          return borderPath(d.polygon, borderStyle, gap, radiusPx, reach);
       }
 
       // --- Ensure layers exist in order ---
@@ -28495,7 +28570,7 @@ var template = (function (exports) {
                                   pt[1] + (newResampled[i][1] - pt[1]) * t
                               ];
                           });
-                          return borderPath(interp, gap);
+                          return borderPath(interp, borderStyle, gap, radiusPx, reach);
                       };
                   })
                   .attr("fill", fillFn)
@@ -29121,7 +29196,7 @@ var template = (function (exports) {
    * @param {object} popup - Flourish popup instance.
    * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
    */
-  function renderCells(container, leaves, root, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx) {
+  function renderCells(container, leaves, root, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx, radiusPx) {
       const sel = select(container);
 
       let g = sel.selectAll("g.cells").data([null]);
@@ -29135,7 +29210,10 @@ var template = (function (exports) {
           selection: g,
           leaves,
           duration,
+          borderStyle: voronoi_settings.border_rounding_style,
           gap: gapPx,
+          radiusPx: radiusPx,
+          reach: voronoi_settings.border_rounding_reach,
           fillFn: d => getCellColor(d, root, colors, colorSettings),
           applyEvents: sel => {
               sel.on("mouseover", function(event, d) {
@@ -29223,7 +29301,10 @@ var template = (function (exports) {
       // Convert proportional gap (percentage of shorter dimension) to pixels
       var gapPx = voronoi_settings.gap ? voronoi_settings.gap / 100 * Math.min(width, height) : 0;
 
-      renderCells(alignNode, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx);
+      // Convert proportional border radius (percentage of shorter dimension) to pixels
+      var radiusPx = voronoi_settings.border_radius ? voronoi_settings.border_radius / 100 * Math.min(width, height) : 0;
+
+      renderCells(alignNode, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx, radiusPx);
       renderLabels(alignNode, leaves, labelSettings, animation_duration, hierarchy, colors);
   }
 
