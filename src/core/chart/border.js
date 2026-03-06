@@ -88,64 +88,90 @@ function straightPath(polygon) {
 }
 
 /**
- * Rounded polygon path using quadratic Bézier curves at each corner.
- * The original vertex becomes the Bézier control point, guaranteeing
- * tangent continuity with both adjacent edges. Near-straight vertices
- * naturally produce near-straight curves with no special-case logic.
+ * Closed cubic B-spline path from an array of control points.
+ * Produces C2-continuous curves — curvature transitions are smooth
+ * everywhere, eliminating the visible kinks that quadratic Bézier
+ * curves produce at the junction between straight and curved segments.
+ *
+ * Each segment j uses control points P[j-1], P[j], P[j+1], P[j+2]
+ * (indices mod m) and is converted to a cubic Bézier (C command).
+ *
+ * @param {Array<number[]>} pts - Control points.
+ * @returns {string} SVG path data string.
+ */
+function basisClosedPath(pts) {
+    var m = pts.length;
+    if (m < 3) return straightPath(pts);
+
+    function P(i) { return pts[((i % m) + m) % m]; }
+
+    var pm1 = P(-1), p0 = P(0), p1 = P(1);
+    var d = "M" + ((pm1[0] + 4 * p0[0] + p1[0]) / 6) + "," +
+                  ((pm1[1] + 4 * p0[1] + p1[1]) / 6);
+
+    for (var j = 0; j < m; j++) {
+        var pj = P(j);
+        var pn = P(j + 1);
+        var pn2 = P(j + 2);
+
+        d += "C" +
+            ((2 * pj[0] + pn[0]) / 3) + "," + ((2 * pj[1] + pn[1]) / 3) + "," +
+            ((pj[0] + 2 * pn[0]) / 3) + "," + ((pj[1] + 2 * pn[1]) / 3) + "," +
+            ((pj[0] + 4 * pn[0] + pn2[0]) / 6) + "," + ((pj[1] + 4 * pn[1] + pn2[1]) / 6);
+    }
+
+    d += "Z";
+    return d;
+}
+
+/**
+ * Rounded polygon path using straight edges and quadratic Bézier corners.
+ *
+ * For each edge, cutback points are placed at `radius` distance (or
+ * `reach` fraction of edge length, whichever is smaller) from each vertex.
+ * Straight L segments run along the edge between cutback points, and
+ * Q curves round each corner using the vertex as the control point.
  *
  * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
  * @param {number} radius - Maximum cutback distance from each vertex (px).
- * @param {number} reach - Max fraction of each edge that rounding can consume (0–1).
- * @returns {string} SVG path data string with L and Q commands.
+ * @param {number} reach - Max fraction of each edge that rounding can consume (0–0.5).
+ * @returns {string} SVG path data string.
  */
 function roundedPath(polygon, radius, reach) {
     if (!polygon || polygon.length < 3) return straightPath(polygon);
-
     var n = polygon.length;
 
-    // Precompute edge lengths
-    var edgeLens = new Array(n);
+    // For each edge, compute depart (near start) and arrive (near end) points
+    var edges = [];
     for (var i = 0; i < n; i++) {
         var a = polygon[i];
         var b = polygon[(i + 1) % n];
-        edgeLens[i] = Math.hypot(b[0] - a[0], b[1] - a[1]);
+        var len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+        var cut = len > 0 ? Math.min(radius, len * reach) : 0;
+        var t = len > 0 ? cut / len : 0;
+        edges.push({
+            dx: a[0] + (b[0] - a[0]) * t,
+            dy: a[1] + (b[1] - a[1]) * t,
+            ax: b[0] + (a[0] - b[0]) * t,
+            ay: b[1] + (a[1] - b[1]) * t
+        });
     }
 
-    // For each vertex, compute cutback along incoming and outgoing edges.
-    // lenIn = length of edge from prev→curr (edge index: (i-1+n)%n)
-    // lenOut = length of edge from curr→next (edge index: i)
-    var inPts = new Array(n);
-    var outPts = new Array(n);
+    // Start at depart point of first edge
+    var d = "M" + edges[0].dx + "," + edges[0].dy;
 
     for (var i = 0; i < n; i++) {
-        var prev = polygon[(i - 1 + n) % n];
-        var curr = polygon[i];
-        var next = polygon[(i + 1) % n];
+        var nextI = (i + 1) % n;
+        var edge = edges[i];
+        var nextEdge = edges[nextI];
+        var vertex = polygon[nextI];
 
-        var lenIn = edgeLens[(i - 1 + n) % n];
-        var lenOut = edgeLens[i];
-
-        var cutIn = lenIn > 0 ? Math.min(radius, lenIn * reach) : 0;
-        var cutOut = lenOut > 0 ? Math.min(radius, lenOut * reach) : 0;
-
-        inPts[i] = cutIn > 0
-            ? [curr[0] + (prev[0] - curr[0]) / lenIn * cutIn,
-               curr[1] + (prev[1] - curr[1]) / lenIn * cutIn]
-            : curr;
-
-        outPts[i] = cutOut > 0
-            ? [curr[0] + (next[0] - curr[0]) / lenOut * cutOut,
-               curr[1] + (next[1] - curr[1]) / lenOut * cutOut]
-            : curr;
+        // Straight line along edge to arrive point
+        d += "L" + edge.ax + "," + edge.ay;
+        // Quadratic Bézier around corner vertex
+        d += "Q" + vertex[0] + "," + vertex[1] + " " + nextEdge.dx + "," + nextEdge.dy;
     }
 
-    // Build path: L to inPt, Q through vertex to outPt
-    var d = "M" + inPts[0][0] + "," + inPts[0][1];
-    for (var i = 0; i < n; i++) {
-        var curr = polygon[i];
-        d += "L" + inPts[i][0] + "," + inPts[i][1];
-        d += "Q" + curr[0] + "," + curr[1] + "," + outPts[i][0] + "," + outPts[i][1];
-    }
     d += "Z";
     return d;
 }
