@@ -50,10 +50,10 @@ function resamplePolygon(polygon, count) {
  * Entering cells appear instantly. Updating cells morph via point-by-point
  * interpolation. Exiting cells fade out.
  */
-export function transitionCells({ selection, leaves, duration, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, gap, fillFn, applyEvents }) {
+export function transitionCells({ selection, leaves, duration, gap, fillFn, applyEvents }) {
 
     function cellFillPath(d) {
-        return borderPath(d.polygon, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, gap);
+        return borderPath(d.polygon, gap);
     }
 
     // --- Ensure layers exist in order ---
@@ -106,7 +106,7 @@ export function transitionCells({ selection, leaves, duration, borderStyle, bord
                                 pt[1] + (newResampled[i][1] - pt[1]) * t
                             ];
                         });
-                        return borderPath(interp, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, gap);
+                        return borderPath(interp, gap);
                     };
                 })
                 .attr("fill", fillFn)

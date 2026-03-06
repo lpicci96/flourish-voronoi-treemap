@@ -19378,10 +19378,7 @@ var template = (function (exports) {
           convergence_ratio: 0.005,
           min_weight_ratio: 0.01,
           alignment: "center",
-          border_rounding_style: "adaptive",
-          border_radius: 3,
-          max_angle_factor: 2.5,
-          max_edge_consumption: 0.6
+          border_rounding_style: "straight"
 
       },
 
@@ -21351,159 +21348,6 @@ var template = (function (exports) {
 
   selection$2.prototype.interrupt = selection_interrupt$2;
   selection$2.prototype.transition = selection_transition$2;
-
-  const pi = Math.PI,
-      tau = 2 * pi,
-      epsilon$1 = 1e-6,
-      tauEpsilon = tau - epsilon$1;
-
-  function append(strings) {
-    this._ += strings[0];
-    for (let i = 1, n = strings.length; i < n; ++i) {
-      this._ += arguments[i] + strings[i];
-    }
-  }
-
-  function appendRound(digits) {
-    let d = Math.floor(digits);
-    if (!(d >= 0)) throw new Error(`invalid digits: ${digits}`);
-    if (d > 15) return append;
-    const k = 10 ** d;
-    return function(strings) {
-      this._ += strings[0];
-      for (let i = 1, n = strings.length; i < n; ++i) {
-        this._ += Math.round(arguments[i] * k) / k + strings[i];
-      }
-    };
-  }
-
-  class Path {
-    constructor(digits) {
-      this._x0 = this._y0 = // start of current subpath
-      this._x1 = this._y1 = null; // end of current subpath
-      this._ = "";
-      this._append = digits == null ? append : appendRound(digits);
-    }
-    moveTo(x, y) {
-      this._append`M${this._x0 = this._x1 = +x},${this._y0 = this._y1 = +y}`;
-    }
-    closePath() {
-      if (this._x1 !== null) {
-        this._x1 = this._x0, this._y1 = this._y0;
-        this._append`Z`;
-      }
-    }
-    lineTo(x, y) {
-      this._append`L${this._x1 = +x},${this._y1 = +y}`;
-    }
-    quadraticCurveTo(x1, y1, x, y) {
-      this._append`Q${+x1},${+y1},${this._x1 = +x},${this._y1 = +y}`;
-    }
-    bezierCurveTo(x1, y1, x2, y2, x, y) {
-      this._append`C${+x1},${+y1},${+x2},${+y2},${this._x1 = +x},${this._y1 = +y}`;
-    }
-    arcTo(x1, y1, x2, y2, r) {
-      x1 = +x1, y1 = +y1, x2 = +x2, y2 = +y2, r = +r;
-
-      // Is the radius negative? Error.
-      if (r < 0) throw new Error(`negative radius: ${r}`);
-
-      let x0 = this._x1,
-          y0 = this._y1,
-          x21 = x2 - x1,
-          y21 = y2 - y1,
-          x01 = x0 - x1,
-          y01 = y0 - y1,
-          l01_2 = x01 * x01 + y01 * y01;
-
-      // Is this path empty? Move to (x1,y1).
-      if (this._x1 === null) {
-        this._append`M${this._x1 = x1},${this._y1 = y1}`;
-      }
-
-      // Or, is (x1,y1) coincident with (x0,y0)? Do nothing.
-      else if (!(l01_2 > epsilon$1));
-
-      // Or, are (x0,y0), (x1,y1) and (x2,y2) collinear?
-      // Equivalently, is (x1,y1) coincident with (x2,y2)?
-      // Or, is the radius zero? Line to (x1,y1).
-      else if (!(Math.abs(y01 * x21 - y21 * x01) > epsilon$1) || !r) {
-        this._append`L${this._x1 = x1},${this._y1 = y1}`;
-      }
-
-      // Otherwise, draw an arc!
-      else {
-        let x20 = x2 - x0,
-            y20 = y2 - y0,
-            l21_2 = x21 * x21 + y21 * y21,
-            l20_2 = x20 * x20 + y20 * y20,
-            l21 = Math.sqrt(l21_2),
-            l01 = Math.sqrt(l01_2),
-            l = r * Math.tan((pi - Math.acos((l21_2 + l01_2 - l20_2) / (2 * l21 * l01))) / 2),
-            t01 = l / l01,
-            t21 = l / l21;
-
-        // If the start tangent is not coincident with (x0,y0), line to.
-        if (Math.abs(t01 - 1) > epsilon$1) {
-          this._append`L${x1 + t01 * x01},${y1 + t01 * y01}`;
-        }
-
-        this._append`A${r},${r},0,0,${+(y01 * x20 > x01 * y20)},${this._x1 = x1 + t21 * x21},${this._y1 = y1 + t21 * y21}`;
-      }
-    }
-    arc(x, y, r, a0, a1, ccw) {
-      x = +x, y = +y, r = +r, ccw = !!ccw;
-
-      // Is the radius negative? Error.
-      if (r < 0) throw new Error(`negative radius: ${r}`);
-
-      let dx = r * Math.cos(a0),
-          dy = r * Math.sin(a0),
-          x0 = x + dx,
-          y0 = y + dy,
-          cw = 1 ^ ccw,
-          da = ccw ? a0 - a1 : a1 - a0;
-
-      // Is this path empty? Move to (x0,y0).
-      if (this._x1 === null) {
-        this._append`M${x0},${y0}`;
-      }
-
-      // Or, is (x0,y0) not coincident with the previous point? Line to (x0,y0).
-      else if (Math.abs(this._x1 - x0) > epsilon$1 || Math.abs(this._y1 - y0) > epsilon$1) {
-        this._append`L${x0},${y0}`;
-      }
-
-      // Is this arc empty? We’re done.
-      if (!r) return;
-
-      // Does the angle go the wrong way? Flip the direction.
-      if (da < 0) da = da % tau + tau;
-
-      // Is this a complete circle? Draw two arcs to complete the circle.
-      if (da > tauEpsilon) {
-        this._append`A${r},${r},0,1,${cw},${x - dx},${y - dy}A${r},${r},0,1,${cw},${this._x1 = x0},${this._y1 = y0}`;
-      }
-
-      // Is this arc non-empty? Draw an arc!
-      else if (da > epsilon$1) {
-        this._append`A${r},${r},0,${+(da >= pi)},${cw},${this._x1 = x + r * Math.cos(a1)},${this._y1 = y + r * Math.sin(a1)}`;
-      }
-    }
-    rect(x, y, w, h) {
-      this._append`M${this._x0 = this._x1 = +x},${this._y0 = this._y1 = +y}h${w = +w}v${+h}h${-w}Z`;
-    }
-    toString() {
-      return this._;
-    }
-  }
-
-  function path() {
-    return new Path;
-  }
-
-  // Allow instanceof d3.path
-  path.prototype = Path.prototype;
 
   function count(node) {
     var sum = 0,
@@ -28526,7 +28370,7 @@ var template = (function (exports) {
       return [x1 + t * (x2 - x1), y1 + t * (y2 - y1)];
   }
 
-  // ── Per-cell path generators ────────────────────────────────────────────
+  // ── Per-cell path generator ─────────────────────────────────────────────
 
   /**
    * Straight polygon path: M...L...L...Z
@@ -28536,191 +28380,14 @@ var template = (function (exports) {
   }
 
   /**
-   * Compute the turn angle at each vertex of a polygon.
-   * Returns an array of { theta, isNearCollinear } for each vertex.
-   * theta is the interior angle in radians (0–π).
-   */
-  function computeVertexAngles(pts, collinearThreshold) {
-      const n = pts.length;
-      const angles = new Array(n);
-      for (let i = 0; i < n; i++) {
-          const a = pts[(i - 1 + n) % n];
-          const b = pts[i];
-          const c = pts[(i + 1) % n];
-
-          const ux = a[0] - b[0], uy = a[1] - b[1];
-          const vx = c[0] - b[0], vy = c[1] - b[1];
-          const lu = Math.hypot(ux, uy);
-          const lv = Math.hypot(vx, vy);
-
-          if (lu < 1e-6 || lv < 1e-6) {
-              angles[i] = { theta: Math.PI, isNearCollinear: true };
-              continue;
-          }
-
-          const dot = (ux * vx + uy * vy) / (lu * lv);
-          const theta = Math.acos(Math.max(-1, Math.min(1, dot)));
-          angles[i] = {
-              theta,
-              isNearCollinear: Math.abs(theta - Math.PI) < collinearThreshold
-          };
-      }
-      return angles;
-  }
-
-  /**
-   * Walk along the polygon from vertex `start` in direction `dir` (+1 or -1),
-   * summing edge lengths until we reach a vertex that is a real corner
-   * (not near-collinear). Returns the total distance available for rounding.
-   */
-  function availableDistance(pts, angles, start, dir) {
-      const n = pts.length;
-      let dist = 0;
-      let i = start;
-      // Walk over consecutive near-collinear vertices
-      while (true) {
-          const next = (i + dir + n) % n;
-          const dx = pts[next][0] - pts[i][0];
-          const dy = pts[next][1] - pts[i][1];
-          dist += Math.hypot(dx, dy);
-          // Stop if the next vertex is a real corner (or we've looped back)
-          if (!angles[next].isNearCollinear || next === start) break;
-          i = next;
-      }
-      return dist;
-  }
-
-  /**
-   * Rounded polygon path using quadratic Bézier curves at each corner.
-   * Adapts rounding per-corner based on angle sharpness and edge lengths.
-   *
-   * Near-collinear vertices (angle ≈ 180°) are passed through as straight
-   * line segments. For real corners, the available rounding distance is
-   * computed by walking past near-collinear neighbors to find the distance
-   * to the next real corner, so short intermediate edges don't bottleneck
-   * the rounding.
-   */
-  function roundedPolygonPath(points, {
-      baseRadius = 10,
-      radiusFn = null,
-      maxAngleFactor = 2.5,
-      convexOnly = false,
-      collinearThreshold = 0.15,
-      maxEdgeConsumption = 0.66
-  } = {}) {
-      if (!points || points.length < 3) return "";
-
-      const n0 = points.length;
-      const pts =
-          points[0][0] === points[n0 - 1][0] && points[0][1] === points[n0 - 1][1]
-              ? points.slice(0, -1)
-              : points.slice();
-      const n = pts.length;
-
-      const angles = computeVertexAngles(pts, collinearThreshold);
-      const path$1 = path();
-
-      const cutPoint = (a, b, t) => {
-          const dx = a[0] - b[0], dy = a[1] - b[1];
-          const L = Math.hypot(dx, dy) || 1;
-          return [b[0] + (dx / L) * t, b[1] + (dy / L) * t];
-      };
-
-      const cuts = new Array(n);
-      for (let i = 0; i < n; i++) {
-          const b = pts[i];
-
-          // Near-collinear vertices: pass through, no rounding
-          if (angles[i].isNearCollinear) {
-              cuts[i] = { inPt: b, outPt: b, vertex: b, passThrough: true };
-              continue;
-          }
-
-          const a = pts[(i - 1 + n) % n];
-          const c = pts[(i + 1) % n];
-
-          const ux = a[0] - b[0], uy = a[1] - b[1];
-          const vx = c[0] - b[0], vy = c[1] - b[1];
-          const crossZ = ux * vy - uy * vx;
-          const isConvex = crossZ < 0;
-
-          if (convexOnly && !isConvex) {
-              cuts[i] = { inPt: b, outPt: b, vertex: b, passThrough: true };
-              continue;
-          }
-
-          const { theta } = angles[i];
-          const r = Math.max(0, radiusFn ? +radiusFn(i, b, a, c) : baseRadius);
-          const angleFactor = Math.min(maxAngleFactor, Math.PI / Math.max(theta, 0.01));
-          const desired = r * angleFactor;
-
-          // Walk past near-collinear neighbors to find available distance
-          const distIn = availableDistance(pts, angles, i, -1);
-          const distOut = availableDistance(pts, angles, i, 1);
-
-          const tIn = Math.min(desired, distIn * maxEdgeConsumption);
-          const tOut = Math.min(desired, distOut * maxEdgeConsumption);
-
-          cuts[i] = {
-              inPt: cutPoint(a, b, tIn),
-              outPt: cutPoint(c, b, tOut),
-              vertex: b,
-              passThrough: false
-          };
-      }
-
-      // Build path
-      const firstCut = cuts[0];
-      const startPt = firstCut.passThrough ? firstCut.vertex : firstCut.inPt;
-      path$1.moveTo(startPt[0], startPt[1]);
-
-      for (let i = 0; i < n; i++) {
-          const { inPt, outPt, vertex, passThrough } = cuts[i];
-          if (passThrough) {
-              path$1.lineTo(vertex[0], vertex[1]);
-          } else {
-              path$1.lineTo(inPt[0], inPt[1]);
-              path$1.quadraticCurveTo(vertex[0], vertex[1], outPt[0], outPt[1]);
-          }
-      }
-      path$1.closePath();
-      return path$1.toString();
-  }
-
-  // ── Single dispatcher for per-cell paths ────────────────────────────────
-
-  /**
    * Return an SVG path `d` string for a single polygon.
-   * This is the sole style dispatcher — all style-specific logic lives here.
    * @param {Array<number[]>} polygon - Array of coordinate pairs.
-   * @param {string} [style="straight"] - Border rounding style.
-   * @param {number} [roundingSize] - Rounding radius in pixels.
-   * @param {number} [maxAngleFactor=2.5] - Cap for extra rounding on sharp angles (adaptive only).
-   * @param {number} [maxEdgeConsumption=0.66] - Max proportion of edge consumed by rounding.
    * @param {number} [gap=0] - Resolved gap size in pixels (polygon is inset by gap/2).
    * @returns {string} SVG path data string.
    */
-  function borderPath(polygon, style, roundingSize, maxAngleFactor, maxEdgeConsumption, gap) {
-      style = style || "straight";
+  function borderPath(polygon, gap) {
       const inset = gap ? insetPolygon(polygon, gap) : polygon;
-
-      if (style === "straight") {
-          return straightPath(inset);
-      } else if (style === "rounded") {
-          return roundedPolygonPath(inset, {
-              baseRadius: roundingSize,
-              maxAngleFactor: 1,
-              maxEdgeConsumption: maxEdgeConsumption || 0.66
-          });
-      } else if (style === "adaptive") {
-          return roundedPolygonPath(inset, {
-              baseRadius: roundingSize,
-              maxAngleFactor: maxAngleFactor || 2.5,
-              maxEdgeConsumption: maxEdgeConsumption || 0.66
-          });
-      } else {
-          throw new Error("Unknown border rounding style: " + style);
-      }
+      return straightPath(inset);
   }
 
   /**
@@ -28772,10 +28439,10 @@ var template = (function (exports) {
    * Entering cells appear instantly. Updating cells morph via point-by-point
    * interpolation. Exiting cells fade out.
    */
-  function transitionCells({ selection, leaves, duration, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, gap, fillFn, applyEvents }) {
+  function transitionCells({ selection, leaves, duration, gap, fillFn, applyEvents }) {
 
       function cellFillPath(d) {
-          return borderPath(d.polygon, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, gap);
+          return borderPath(d.polygon, gap);
       }
 
       // --- Ensure layers exist in order ---
@@ -28828,7 +28495,7 @@ var template = (function (exports) {
                                   pt[1] + (newResampled[i][1] - pt[1]) * t
                               ];
                           });
-                          return borderPath(interp, borderStyle, borderRoundingSize, borderMaxAngleFactor, borderMaxEdgeConsumption, gap);
+                          return borderPath(interp, gap);
                       };
                   })
                   .attr("fill", fillFn)
@@ -29468,10 +29135,6 @@ var template = (function (exports) {
           selection: g,
           leaves,
           duration,
-          borderStyle: voronoi_settings.border_rounding_style,
-          borderRoundingSize: voronoi_settings.border_radius,
-          borderMaxAngleFactor: voronoi_settings.max_angle_factor,
-          borderMaxEdgeConsumption: voronoi_settings.max_edge_consumption,
           gap: gapPx,
           fillFn: d => getCellColor(d, root, colors, colorSettings),
           applyEvents: sel => {

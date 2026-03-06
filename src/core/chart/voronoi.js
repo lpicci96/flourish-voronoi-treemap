@@ -79,10 +79,6 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
         selection: g,
         leaves,
         duration,
-        borderStyle: voronoi_settings.border_rounding_style,
-        borderRoundingSize: voronoi_settings.border_radius,
-        borderMaxAngleFactor: voronoi_settings.max_angle_factor,
-        borderMaxEdgeConsumption: voronoi_settings.max_edge_consumption,
         gap: gapPx,
         fillFn: d => getCellColor(d, root, colors, colorSettings),
         applyEvents: sel => {
