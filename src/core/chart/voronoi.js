@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 // v2: Additional advanced settings - handling small values
 // v2: Aggregation of values
 // v2: Enhanced convergence logging for small multiples (facet name, aggregated report)

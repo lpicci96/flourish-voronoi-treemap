@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 import { layout, colors, legend_container, legend_categorical, controls_container, filter_control, facets, controlsStyle, buttonStyle, dropdownStyle, sliderStyle } from "../init";
 import state from "./state";
 import update from "./update";

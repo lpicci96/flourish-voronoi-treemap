@@ -19361,6 +19361,10 @@ var template = (function (exports) {
   	return new Facets(state);
   }
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
   var state = {
 
       // Voronoi chart specific settings
@@ -19464,6 +19468,11 @@ var template = (function (exports) {
 
   };
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
   var layout = init$7(state.layout);
   var colors = init$6(state.colors);
   var legend_container = createLegendContainer(state.legend_container);
@@ -19479,6 +19488,10 @@ var template = (function (exports) {
   var controls_container = createControlsContainer(state.controls_container);
   var filter_control = createControls(state.filter);
   var facets = initFacets(state.facets);
+
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
   var data = {};
 
@@ -27858,6 +27871,10 @@ var template = (function (exports) {
     return _voronoiTreemap;
   }
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
   /**
    * Compute horizontal offset for a shape given its width, the available width,
    * and the desired alignment.
@@ -28025,6 +28042,11 @@ var template = (function (exports) {
       }
   }
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
   /**
    * Create a seeded pseudo-random number generator (mulberry32).
    * Keeps the Voronoi layout stable across redraws for a given seed.
@@ -28113,6 +28135,11 @@ var template = (function (exports) {
       return hierarchy(rootData)
           .sum(d => d.value);
   }
+
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 
   /**
    * Compute a deterministic 32-bit integer hash from a string.
@@ -28203,6 +28230,10 @@ var template = (function (exports) {
       return L > 0.179;
   }
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
   /**
    * Create an adaptive number formatter that selects the most appropriate
    * magnitude suffix (K, M, B, T) for each value independently.
@@ -28286,6 +28317,11 @@ var template = (function (exports) {
       return s;
   }
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
   /**
    * Configure a Flourish popup instance with column names and number
    * formatters derived from the current set of leaves.
@@ -28334,6 +28370,10 @@ var template = (function (exports) {
   function getPopupData(leaf) {
       return { ...leaf.data._row };
   }
+
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
   // ── Polygon inset ───────────────────────────────────────────────────────
 
@@ -28537,6 +28577,11 @@ var template = (function (exports) {
       return straightPath(inset);
   }
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
   /**
    * Build an SVG path `d` string from a polygon (no inset, no rounding).
    */
@@ -28674,6 +28719,11 @@ var template = (function (exports) {
           .attr("d", d => polygonToPath(d.polygon))
           .call(applyEvents);
   }
+
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 
   /**
    * Compute the centroid of a polygon (average of all vertices).
@@ -29212,6 +29262,11 @@ var template = (function (exports) {
           });
   }
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
   /**
    * Post-hoc convergence check that mirrors how d3-voronoi-treemap works
    * internally: each internal node's children are laid out independently
@@ -29311,9 +29366,9 @@ var template = (function (exports) {
       }
   }
 
-  // v2: Additional advanced settings - handling small values
-  // v2: Aggregation of values
-  // v2: Enhanced convergence logging for small multiples (facet name, aggregated report)
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 
   const _voronoiTreemap = voronoiTreemap();
@@ -29486,6 +29541,11 @@ var template = (function (exports) {
       renderLabels(alignNode, leaves, labelSettings, animation_duration, hierarchy, colors);
   }
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
   /**
    * Compute the natural height/width ratio for a clip shape.
    * Uses the same vertex generation logic as clip.js.
@@ -29541,6 +29601,11 @@ var template = (function (exports) {
           layout.setHeight(null);
       }
   }
+
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 
   function update() {
       const rows = Array.isArray(data) ? data : data.data;
@@ -29635,6 +29700,11 @@ var template = (function (exports) {
       sizeSvg();
       popup.update();
   }
+
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 
   let svg;
   let chartGroup;
