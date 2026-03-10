@@ -13,7 +13,8 @@
   ],
   "scripts": {
     "build": "rollup -c",
-    "less": "lessc --plugin=less-plugin-clean-css --source-map less/style.less static/style.css"
+    "less": "lessc --plugin=less-plugin-clean-css --source-map less/style.less static/style.css",
+    "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@flourish/colors": "^8.0.0",

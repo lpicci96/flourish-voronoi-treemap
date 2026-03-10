@@ -40,6 +40,7 @@ export function processData(data) {
 
     const hasTwoLevels = !!rows[0].secondLevel;
 
+    let negativeWarned = false;
     let rootData;
     if (hasTwoLevels) {
         const grouped = {};
@@ -52,21 +53,35 @@ export function processData(data) {
             name: "root",
             children: Object.keys(grouped).map(key => ({
                 name: key,
-                children: grouped[key].map(d => ({
-                    name: d.secondLevel,
-                    value: +d.values || 0,
-                    _row: d
-                }))
+                children: grouped[key].map(d => {
+                    const v = parseFloat(d.values);
+                    const value = isNaN(v) ? 0 : v;
+                    if (value < 0) {
+                        if (!negativeWarned) {
+                            console.warn("Voronoi: negative value(s) found in data — treating as 0");
+                            negativeWarned = true;
+                        }
+                        return { name: d.secondLevel, value: 0, _row: d };
+                    }
+                    return { name: d.secondLevel, value: value, _row: d };
+                })
             }))
         };
     } else {
         rootData = {
             name: "root",
-            children: rows.map(d => ({
-                name: d.firstLevel,
-                value: +d.values || 0,
-                _row: d
-            }))
+            children: rows.map(d => {
+                const v = parseFloat(d.values);
+                const value = isNaN(v) ? 0 : v;
+                if (value < 0) {
+                    if (!negativeWarned) {
+                        console.warn("Voronoi: negative value(s) found in data — treating as 0");
+                        negativeWarned = true;
+                    }
+                    return { name: d.firstLevel, value: 0, _row: d };
+                }
+                return { name: d.firstLevel, value: value, _row: d };
+            })
         };
     }
 
