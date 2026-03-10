@@ -1,4 +1,4 @@
-entity_name,region,value,gender
+Country,Region,Population,Gender
 Afghanistan,Asia,21532540,male
 Afghanistan,Asia,21114952,female
 Afghanistan,Asia,42647492,total

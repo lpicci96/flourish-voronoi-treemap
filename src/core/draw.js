@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 import { layout, colors, legend_container, legend_categorical, controls_container, filter_control, facets, controlsStyle, buttonStyle, dropdownStyle, sliderStyle } from "../init";
 import state from "./state";
 import update from "./update";
@@ -45,10 +49,7 @@ export default function() {
     filter_control.on("change", function() { update(); });
 
     svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    // svg.style.outline = "2px solid red"; // Debugging outline to visualize SVG boundaries
-    // svg.style.display = "block";
     container.appendChild(svg);
-    // container.style.outline = "2px solid green"; // Debugging outline to visualize container boundaries
 
     chartGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
     chartGroup.setAttribute("class", "chart-container");
@@ -57,5 +58,5 @@ export default function() {
     facets.appendTo(chartGroup);
 
     update();
-    window.onresize = function () { update(); };
+    window.addEventListener("resize", function() { update(); });
 }

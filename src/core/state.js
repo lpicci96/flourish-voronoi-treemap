@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 export default {
 
     // Voronoi chart specific settings
@@ -13,7 +17,7 @@ export default {
         seed: 41,
         max_iterations: 100,
         convergence_ratio: 0.005,
-        min_weight_ratio: 0.01,
+        min_weight_ratio: 0.005,
         alignment: "center",
         border_rounding_style: "adaptive rounding",
         border_radius: 1,
@@ -30,7 +34,7 @@ export default {
             name: "Roboto Condensed",
             url: "https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap",
         },
-        footer_note: `Flourish template by <a href="https://lpicci96.github.io/LucaPicci/" Luca Picci" target="_blank">Luca Picci</a>`,
+        footer_note: `Flourish template by <a href="https://lpicci96.github.io/LucaPicci/" target="_blank">Luca Picci</a>`,
     },
     // color module state properties
     colors: {
@@ -86,7 +90,7 @@ export default {
         value_label_size: 0.85,
         value_label_opacity: 0.8,
         value_label_weight: "normal",
-        adaptive_format: false,
+        adaptive_format: true,
         adaptive_space: true,
         scale_thousands: true,
         scale_thousands_suffix: "K",

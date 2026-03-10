@@ -19361,6 +19361,10 @@ var template = (function (exports) {
   	return new Facets(state);
   }
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
   var state = {
 
       // Voronoi chart specific settings
@@ -19376,7 +19380,7 @@ var template = (function (exports) {
           seed: 41,
           max_iterations: 100,
           convergence_ratio: 0.005,
-          min_weight_ratio: 0.01,
+          min_weight_ratio: 0.005,
           alignment: "center",
           border_rounding_style: "adaptive rounding",
           border_radius: 1,
@@ -19393,7 +19397,7 @@ var template = (function (exports) {
               name: "Roboto Condensed",
               url: "https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap",
           },
-          footer_note: `Flourish template by <a href="https://lpicci96.github.io/LucaPicci/" Luca Picci" target="_blank">Luca Picci</a>`,
+          footer_note: `Flourish template by <a href="https://lpicci96.github.io/LucaPicci/" target="_blank">Luca Picci</a>`,
       },
       // color module state properties
       colors: {
@@ -19449,7 +19453,7 @@ var template = (function (exports) {
           value_label_size: 0.85,
           value_label_opacity: 0.8,
           value_label_weight: "normal",
-          adaptive_format: false,
+          adaptive_format: true,
           adaptive_space: true,
           scale_thousands: true,
           scale_thousands_suffix: "K",
@@ -19463,6 +19467,11 @@ var template = (function (exports) {
 
 
   };
+
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 
   var layout = init$7(state.layout);
   var colors = init$6(state.colors);
@@ -19479,6 +19488,10 @@ var template = (function (exports) {
   var controls_container = createControlsContainer(state.controls_container);
   var filter_control = createControls(state.filter);
   var facets = initFacets(state.facets);
+
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
   var data = {};
 
@@ -21816,6 +21829,22 @@ var template = (function (exports) {
 
   var interpolateTransformCss = interpolateTransform(parseCss, "px, ", "px)", "deg)");
   var interpolateTransformSvg = interpolateTransform(parseSvg, ", ", ")", ")");
+
+  function area(polygon) {
+    var i = -1,
+        n = polygon.length,
+        a,
+        b = polygon[n - 1],
+        area = 0;
+
+    while (++i < n) {
+      a = b;
+      b = polygon[i];
+      area += a[1] * b[0] - a[0] * b[1];
+    }
+
+    return area / 2;
+  }
 
   var xhtml$1 = "http://www.w3.org/1999/xhtml";
 
@@ -27842,6 +27871,10 @@ var template = (function (exports) {
     return _voronoiTreemap;
   }
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
   /**
    * Compute horizontal offset for a shape given its width, the available width,
    * and the desired alignment.
@@ -28009,6 +28042,11 @@ var template = (function (exports) {
       }
   }
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
   /**
    * Create a seeded pseudo-random number generator (mulberry32).
    * Keeps the Voronoi layout stable across redraws for a given seed.
@@ -28049,6 +28087,7 @@ var template = (function (exports) {
 
       const hasTwoLevels = !!rows[0].secondLevel;
 
+      let negativeWarned = false;
       let rootData;
       if (hasTwoLevels) {
           const grouped = {};
@@ -28061,27 +28100,46 @@ var template = (function (exports) {
               name: "root",
               children: Object.keys(grouped).map(key => ({
                   name: key,
-                  children: grouped[key].map(d => ({
-                      name: d.secondLevel,
-                      value: +d.values || 0,
-                      _row: d
-                  }))
+                  children: grouped[key].map(d => {
+                      const v = parseFloat(d.values);
+                      const value = isNaN(v) ? 0 : v;
+                      if (value < 0) {
+                          if (!negativeWarned) {
+                              console.warn("Voronoi: negative value(s) found in data — treating as 0");
+                              negativeWarned = true;
+                          }
+                          return { name: d.secondLevel, value: 0, _row: d };
+                      }
+                      return { name: d.secondLevel, value: value, _row: d };
+                  })
               }))
           };
       } else {
           rootData = {
               name: "root",
-              children: rows.map(d => ({
-                  name: d.firstLevel,
-                  value: +d.values || 0,
-                  _row: d
-              }))
+              children: rows.map(d => {
+                  const v = parseFloat(d.values);
+                  const value = isNaN(v) ? 0 : v;
+                  if (value < 0) {
+                      if (!negativeWarned) {
+                          console.warn("Voronoi: negative value(s) found in data — treating as 0");
+                          negativeWarned = true;
+                      }
+                      return { name: d.firstLevel, value: 0, _row: d };
+                  }
+                  return { name: d.firstLevel, value: value, _row: d };
+              })
           };
       }
 
       return hierarchy(rootData)
           .sum(d => d.value);
   }
+
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 
   /**
    * Compute a deterministic 32-bit integer hash from a string.
@@ -28172,6 +28230,10 @@ var template = (function (exports) {
       return L > 0.179;
   }
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
   /**
    * Create an adaptive number formatter that selects the most appropriate
    * magnitude suffix (K, M, B, T) for each value independently.
@@ -28255,6 +28317,11 @@ var template = (function (exports) {
       return s;
   }
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
   /**
    * Configure a Flourish popup instance with column names and number
    * formatters derived from the current set of leaves.
@@ -28303,6 +28370,10 @@ var template = (function (exports) {
   function getPopupData(leaf) {
       return { ...leaf.data._row };
   }
+
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
   // ── Polygon inset ───────────────────────────────────────────────────────
 
@@ -28506,6 +28577,11 @@ var template = (function (exports) {
       return straightPath(inset);
   }
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
   /**
    * Build an SVG path `d` string from a polygon (no inset, no rounding).
    */
@@ -28643,6 +28719,11 @@ var template = (function (exports) {
           .attr("d", d => polygonToPath(d.polygon))
           .call(applyEvents);
   }
+
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 
   /**
    * Compute the centroid of a polygon (average of all vertices).
@@ -29181,8 +29262,113 @@ var template = (function (exports) {
           });
   }
 
-  // TODO: Additional advanced settings - handling small values
-  // TODO: Aggregation of values
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
+  /**
+   * Post-hoc convergence check that mirrors how d3-voronoi-treemap works
+   * internally: each internal node's children are laid out independently
+   * within the parent's polygon, so convergence is checked per group.
+   * Reports two metrics per group:
+   *   - Convergence: error against min-weight-inflated targets (did the algorithm converge?)
+   *   - Visual accuracy: error against original data values (does the visual match the data?)
+   * Uses d3.polygonArea — the same shoelace function the library uses.
+   * @param {object} hierarchy - d3-hierarchy root node after layout.
+   * @param {number} targetRatio - Maximum acceptable error ratio (e.g. 0.01).
+   * @param {number} minWeightRatio - Min weight ratio used by the algorithm.
+   */
+  function checkConvergence(hierarchy, targetRatio, minWeightRatio) {
+      var groups = [];
+
+      hierarchy.each(function(node) {
+          if (!node.children || node.children.length === 0) return;
+          if (!node.polygon) return;
+
+          var parentArea = Math.abs(area(node.polygon));
+          if (parentArea === 0) return;
+
+          var children = node.children.filter(function(c) { return c.polygon && c.polygon.length > 0; });
+          if (children.length === 0) return;
+
+          // Visual accuracy: error against original values
+          var totalValue = children.reduce(function(s, c) { return s + c.value; }, 0);
+          var visualError = 0;
+          if (totalValue > 0) {
+              visualError = children.reduce(function(s, c) {
+                  var expectedArea = (c.value / totalValue) * parentArea;
+                  var actualArea = Math.abs(area(c.polygon));
+                  return s + Math.abs(actualArea - expectedArea);
+              }, 0) / parentArea;
+          }
+
+          // Convergence: error against min-weight-inflated targets (matching library logic)
+          var maxValue = children.reduce(function(m, c) { return Math.max(m, c.value); }, -Infinity);
+          var minAllowedWeight = maxValue * minWeightRatio;
+          var totalInflated = children.reduce(function(s, c) { return s + Math.max(c.value, minAllowedWeight); }, 0);
+          var convergenceError = 0;
+          if (totalInflated > 0) {
+              convergenceError = children.reduce(function(s, c) {
+                  var inflatedWeight = Math.max(c.value, minAllowedWeight);
+                  var expectedArea = (inflatedWeight / totalInflated) * parentArea;
+                  var actualArea = Math.abs(area(c.polygon));
+                  return s + Math.abs(actualArea - expectedArea);
+              }, 0) / parentArea;
+          }
+
+          groups.push({
+              name: node.parent ? node.data.name : "Top level",
+              convergenceError: convergenceError,
+              visualError: visualError
+          });
+      });
+
+      if (groups.length === 0) return;
+
+      var avgConvergence = groups.reduce(function(s, g) { return s + g.convergenceError; }, 0) / groups.length;
+      var avgVisual = groups.reduce(function(s, g) { return s + g.visualError; }, 0) / groups.length;
+
+      // Find longest group name for alignment
+      var maxNameLen = groups.reduce(function(m, g) { return Math.max(m, g.name.length); }, 0);
+      maxNameLen = Math.max(maxNameLen, "Overall".length);
+
+      function pad(str, len) { while (str.length < len) str += " "; return str; }
+
+      var lines = [
+          "Voronoi layout (convergence target: " + (targetRatio * 100).toFixed(1) + "%, min weight ratio: " + minWeightRatio + ")",
+          "  " + pad("Group", maxNameLen) + "   Area error   Converged"
+      ];
+      groups.forEach(function(g) {
+          var convStatus = g.convergenceError <= targetRatio ? "✓" : "✗";
+          lines.push(
+              "  " + pad(g.name, maxNameLen) +
+              "   " + pad((g.visualError * 100).toFixed(1) + "%", 10) +
+              "   " + (g.convergenceError * 100).toFixed(1) + "% " + convStatus
+          );
+      });
+      lines.push(
+          "  " + pad("Overall", maxNameLen) +
+          "   " + pad((avgVisual * 100).toFixed(1) + "%", 10) +
+          "   " + (avgConvergence * 100).toFixed(1) + "%"
+      );
+
+      var hasNotConverged = groups.some(function(g) { return g.convergenceError > targetRatio; });
+      if (hasNotConverged) {
+          lines.push("  ✗ = did not converge, try increasing max iterations");
+      }
+
+      var hasHighVisualError = groups.some(function(g) { return g.visualError > 0.1; });
+      if (hasHighVisualError) {
+          console.warn(lines.join("\n"));
+      } else {
+          console.log(lines.join("\n"));
+      }
+  }
+
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 
   const _voronoiTreemap = voronoiTreemap();
@@ -29257,11 +29443,11 @@ var template = (function (exports) {
           reach: voronoi_settings.border_rounding_reach,
           fillFn: d => getCellColor(d, root, colors, colorSettings),
           applyEvents: sel => {
-              sel.on("mouseover", function(event, d) {
+              sel.on("pointerenter", function(event, d) {
                       const popupData = getPopupData(d);
                       popup.mouseover(this, popupData);
                   })
-                  .on("mouseout", function() {
+                  .on("pointerleave", function() {
                       popup.mouseout();
                   })
                   .on("click", function(event, d) {
@@ -29318,7 +29504,13 @@ var template = (function (exports) {
       }
 
       const alignNode = alignGroup.node();
-      const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
+      const allLeaves = hierarchy.leaves();
+      const leaves = allLeaves.filter(d => d.polygon && d.polygon.length > 0);
+      if (leaves.length < allLeaves.length) {
+          console.warn(`Voronoi: ${allLeaves.length - leaves.length} cell(s) dropped due to missing polygons`);
+      }
+
+      checkConvergence(hierarchy, voronoi_settings.convergence_ratio, voronoi_settings.min_weight_ratio);
 
       configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames);
 
@@ -29348,6 +29540,11 @@ var template = (function (exports) {
       renderCells(alignNode, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx, radiusPx);
       renderLabels(alignNode, leaves, labelSettings, animation_duration, hierarchy, colors);
   }
+
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 
   /**
    * Compute the natural height/width ratio for a clip shape.
@@ -29404,6 +29601,11 @@ var template = (function (exports) {
           layout.setHeight(null);
       }
   }
+
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 
   function update() {
       const rows = Array.isArray(data) ? data : data.data;
@@ -29499,6 +29701,11 @@ var template = (function (exports) {
       popup.update();
   }
 
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
   let svg;
   let chartGroup;
 
@@ -29542,10 +29749,7 @@ var template = (function (exports) {
       filter_control.on("change", function() { update(); });
 
       svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      // svg.style.outline = "2px solid red"; // Debugging outline to visualize SVG boundaries
-      // svg.style.display = "block";
       container.appendChild(svg);
-      // container.style.outline = "2px solid green"; // Debugging outline to visualize container boundaries
 
       chartGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
       chartGroup.setAttribute("class", "chart-container");
@@ -29554,7 +29758,7 @@ var template = (function (exports) {
       facets.appendTo(chartGroup);
 
       update();
-      window.onresize = function () { update(); };
+      window.addEventListener("resize", function() { update(); });
   }
 
   exports.data = data;

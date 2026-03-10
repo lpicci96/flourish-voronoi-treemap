@@ -18,6 +18,17 @@ Cell areas are intended to be proportional to the data values, but the result is
 - **Convergence ratio / max iterations** — Lower convergence ratios and higher iteration counts produce more accurate proportions, at the cost of longer computation times.
 - **Min weight ratio** — Sets a floor on cell weights as a fraction of the largest weight. Any value below this floor is inflated to the minimum. This prevents cells from becoming invisibly small, but redistributes area away from larger cells. For datasets with a wide value range (e.g. millions alongside billions), even a small min weight ratio can noticeably inflate the smallest cells. Set it to 0 for pure proportional sizing, though very small cells may become difficult to see or interact with.
 
+**Layout Diagnostics**
+
+After each layout, the template logs a convergence report to the browser console. This helps diagnose whether cell areas accurately represent the data. The report shows two metrics for each hierarchy group:
+
+- **Area error** — How far each group's cell areas are from the true data proportions. This is the most important metric: it tells you whether what the user sees matches the underlying data. High area error is typically caused by the min weight ratio inflating small cells.
+- **Converged** — Whether the algorithm reached its internal target (accounting for min weight ratio). If a group shows ✗, the algorithm ran out of iterations before converging — increasing max iterations may help. If a group shows ✓ but still has high area error, the gap is from min weight ratio inflation, and more iterations won't help.
+
+A console warning is raised when any group exceeds 10% area error, indicating that cell areas may be visually misleading. Below that threshold, the report is logged as informational only.
+
+Datasets with extreme value ranges (e.g. populations spanning thousands to billions) will naturally have higher area error due to the min weight ratio floor. To reduce this, lower the min weight ratio (at the cost of smaller cells becoming harder to see) or reduce the range in your data.
+
 **When to Use It**
 
 - Showing proportional part-to-whole relationships (e.g. market share, population distribution)
@@ -64,11 +75,21 @@ Please reach out for any bug reports or feature requests.
 ## Changelog
 
 
-**Planned**
+**Planned for v2**
 - Value aggregation - choose an aggregation method for duplicate entries (e.g. sum, average, none)
 - Small multiple sizing - option to size small multiples based on the relative proportions of the facet data, rather than equally
+- Enhanced convergence logging for small multiples
 
-**v0.5.1 - 2026-03-06**
+**v0.6.0 - 2026-03-10**
+- Improved data handling: zero values are now preserved correctly, and negative values are clamped to zero with a console warning
+- Added layout convergence diagnostics — the browser console now logs a per-group report showing area error and convergence status after each layout, with a warning when any group exceeds 10% area error
+- Added touch and pen support for popups — cells now respond to pointer events on mobile and tablet devices
+- Added pointer cursor on cell hover
+- Lowered default min weight ratio from 0.01 to 0.005 for better visual accuracy with wide-range datasets
+- Enabled adaptive number formatting by default for value labels and popups
+- Updated default dataset to include only sovereign nation states, with clearer column names (Country, Region, Population)
+
+
 - Removed arbitrary caps on advanced voronoi settings (max iterations, convergence ratio, min weight ratio) to allow finer user control
 - Added documentation on the voronoi tessellation algorithm and interpreting polygon areas
 

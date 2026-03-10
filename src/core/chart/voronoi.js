@@ -1,5 +1,10 @@
-// TODO: Additional advanced settings - handling small values
-// TODO: Aggregation of values
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+// v2: Additional advanced settings - handling small values
+// v2: Aggregation of values
+// v2: Enhanced convergence logging for small multiples (facet name, aggregated report)
 
 
 
@@ -12,6 +17,7 @@ import { configurePopup, getPopupData } from "./popup";
 import { transitionCells } from "./transitions";
 import { renderLabels } from "./labels";
 import { createAdaptiveFormatter } from "./number_formatting";
+import { checkConvergence } from "./convergence";
 
 const _voronoiTreemap = voronoiTreemap();
 
@@ -85,11 +91,11 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
         reach: voronoi_settings.border_rounding_reach,
         fillFn: d => getCellColor(d, root, colors, colorSettings),
         applyEvents: sel => {
-            sel.on("mouseover", function(event, d) {
+            sel.on("pointerenter", function(event, d) {
                     const popupData = getPopupData(d);
                     popup.mouseover(this, popupData);
                 })
-                .on("mouseout", function() {
+                .on("pointerleave", function() {
                     popup.mouseout();
                 })
                 .on("click", function(event, d) {
@@ -146,7 +152,13 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
     }
 
     const alignNode = alignGroup.node();
-    const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
+    const allLeaves = hierarchy.leaves();
+    const leaves = allLeaves.filter(d => d.polygon && d.polygon.length > 0);
+    if (leaves.length < allLeaves.length) {
+        console.warn(`Voronoi: ${allLeaves.length - leaves.length} cell(s) dropped due to missing polygons`);
+    }
+
+    checkConvergence(hierarchy, voronoi_settings.convergence_ratio, voronoi_settings.min_weight_ratio);
 
     configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames);
 
