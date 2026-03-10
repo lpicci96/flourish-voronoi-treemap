@@ -4,7 +4,7 @@
   "description": "A Voronoi treemap template for Flourish",
   "main": "template.js",
   "author": "Luca Picci",
-  "license": "MIT",
+  "license": "MPL-2.0",
   "keywords": [
     "flourish",
     "voronoi",
