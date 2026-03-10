@@ -86,7 +86,7 @@ export default {
         value_label_size: 0.85,
         value_label_opacity: 0.8,
         value_label_weight: "normal",
-        adaptive_format: false,
+        adaptive_format: true,
         adaptive_space: true,
         scale_thousands: true,
         scale_thousands_suffix: "K",
