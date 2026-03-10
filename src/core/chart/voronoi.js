@@ -146,7 +146,11 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
     }
 
     const alignNode = alignGroup.node();
-    const leaves = hierarchy.leaves().filter(d => d.polygon && d.polygon.length > 0);
+    const allLeaves = hierarchy.leaves();
+    const leaves = allLeaves.filter(d => d.polygon && d.polygon.length > 0);
+    if (leaves.length < allLeaves.length) {
+        console.warn(`Voronoi: ${allLeaves.length - leaves.length} cell(s) dropped due to missing polygons`);
+    }
 
     configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames);
 
