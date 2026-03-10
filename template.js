@@ -29214,6 +29214,7 @@ var template = (function (exports) {
 
   // TODO: Additional advanced settings - handling small values
   // TODO: Aggregation of values
+  // TODO: Enhanced convergence logging for small multiples (facet name, aggregated report)
 
 
   const _voronoiTreemap = voronoiTreemap();
@@ -29288,11 +29289,11 @@ var template = (function (exports) {
           reach: voronoi_settings.border_rounding_reach,
           fillFn: d => getCellColor(d, root, colors, colorSettings),
           applyEvents: sel => {
-              sel.on("mouseover", function(event, d) {
+              sel.on("pointerenter", function(event, d) {
                       const popupData = getPopupData(d);
                       popup.mouseover(this, popupData);
                   })
-                  .on("mouseout", function() {
+                  .on("pointerleave", function() {
                       popup.mouseout();
                   })
                   .on("click", function(event, d) {
