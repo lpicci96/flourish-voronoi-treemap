@@ -122,26 +122,8 @@ The template accepts a flat CSV with up to two hierarchy levels:
 
 ## License
 
-This project is licensed under the [Mozilla Public License 2.0](LICENSE) (MPL-2.0).
+[Mozilla Public License 2.0](LICENSE) (MPL-2.0). This template was built as a public good for the data visualisation community. You may use, modify, and distribute it freely — if you modify any MPL-licensed file, those changes must be shared under the same terms.
 
-You are free to use, modify, and distribute this code. If you modify any of the source files, you must make your modifications available under the same MPL-2.0 terms. This ensures that improvements to the template remain open and accessible to the community.
+MPL-2.0 is a file-level copyleft licence: modifications to these source files stay open, but the licence permits combination with differently-licensed code — including the proprietary Flourish SDK and `@flourish/*` modules, which retain their own licences ([SDK](https://github.com/kiln/flourish-sdk/blob/master/LICENSE.md), [FCL](https://flourish.studio/terms/fcl/), [Terms](https://flourish.studio/terms/)).
 
-### Why MPL-2.0?
-
-This template was built as a public good for the data visualisation community. The MPL-2.0 was chosen deliberately to ensure that enhancements to this code stay open source, while remaining compatible with the Flourish SDK and its associated component licenses (which are proprietary). Unlike the GPL, MPL-2.0 operates at the file level — your modifications to MPL-licensed files must stay open, but the licence allows combination with differently-licensed dependencies like the Flourish SDK.
-
-### Flourish platform and SDK
-
-This template is designed for the [Flourish](https://flourish.studio/) platform and depends on the Flourish SDK and several `@flourish/*` modules. These dependencies are licensed separately under Flourish's own terms:
-
-- [Flourish SDK License](https://github.com/kiln/flourish-sdk/blob/master/LICENSE.md)
-- [Flourish Component License (FCL)](https://flourish.studio/terms/fcl/)
-- [Flourish Terms and Conditions](https://flourish.studio/terms/)
-
-The MPL-2.0 licence applies to the template source code in this repository (the contents of `src/`, `less/`, and configuration files authored by the contributor). It does not apply to the Flourish SDK, `@flourish/*` modules, or other third-party dependencies, which retain their own licences.
-
-### Contributing
-
-Contributions are welcome. By submitting a pull request, you agree that your contributions will be licensed under MPL-2.0.
-
-© Luca Picci
+Contributions are welcome — by opening a pull request you agree to license your changes under MPL-2.0.
