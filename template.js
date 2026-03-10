@@ -29373,12 +29373,34 @@ var template = (function (exports) {
       var avgConvergence = groups.reduce(function(s, g) { return s + g.convergenceError; }, 0) / groups.length;
       var avgVisual = groups.reduce(function(s, g) { return s + g.visualError; }, 0) / groups.length;
 
-      var lines = ["Voronoi layout (target: " + (targetRatio * 100).toFixed(1) + "%, min weight ratio: " + minWeightRatio + ")"];
+      // Find longest group name for alignment
+      var maxNameLen = groups.reduce(function(m, g) { return Math.max(m, g.name.length); }, 0);
+      maxNameLen = Math.max(maxNameLen, "Overall".length);
+
+      function pad(str, len) { while (str.length < len) str += " "; return str; }
+
+      var lines = [
+          "Voronoi layout (convergence target: " + (targetRatio * 100).toFixed(1) + "%, min weight ratio: " + minWeightRatio + ")",
+          "  " + pad("Group", maxNameLen) + "   Area error   Converged"
+      ];
       groups.forEach(function(g) {
           var convStatus = g.convergenceError <= targetRatio ? "✓" : "✗";
-          lines.push("  " + g.name + ": converged " + (g.convergenceError * 100).toFixed(1) + "% " + convStatus + " | visual accuracy " + (g.visualError * 100).toFixed(1) + "%");
+          lines.push(
+              "  " + pad(g.name, maxNameLen) +
+              "   " + pad((g.visualError * 100).toFixed(1) + "%", 10) +
+              "   " + (g.convergenceError * 100).toFixed(1) + "% " + convStatus
+          );
       });
-      lines.push("  Average: converged " + (avgConvergence * 100).toFixed(1) + "% | visual accuracy " + (avgVisual * 100).toFixed(1) + "%");
+      lines.push(
+          "  " + pad("Overall", maxNameLen) +
+          "   " + pad((avgVisual * 100).toFixed(1) + "%", 10) +
+          "   " + (avgConvergence * 100).toFixed(1) + "%"
+      );
+
+      var hasNotConverged = groups.some(function(g) { return g.convergenceError > targetRatio; });
+      if (hasNotConverged) {
+          lines.push("  ✗ = did not converge, try increasing max iterations");
+      }
 
       var hasHighVisualError = groups.some(function(g) { return g.visualError > 0.1; });
       if (hasHighVisualError) {
