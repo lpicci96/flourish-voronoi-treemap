@@ -29557,10 +29557,7 @@ var template = (function (exports) {
       filter_control.on("change", function() { update(); });
 
       svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      // svg.style.outline = "2px solid red"; // Debugging outline to visualize SVG boundaries
-      // svg.style.display = "block";
       container.appendChild(svg);
-      // container.style.outline = "2px solid green"; // Debugging outline to visualize container boundaries
 
       chartGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
       chartGroup.setAttribute("class", "chart-container");
@@ -29569,7 +29566,7 @@ var template = (function (exports) {
       facets.appendTo(chartGroup);
 
       update();
-      window.onresize = function () { update(); };
+      window.addEventListener("resize", function() { update(); });
   }
 
   exports.data = data;
