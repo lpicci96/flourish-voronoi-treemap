@@ -1,28 +1,18 @@
 # Flourish Voronoi Treemap
 
-A [Flourish](https://flourish.studio/) visualization template that renders hierarchical data as proportional Voronoi tessellations. Each polygon's area represents a data value, producing an organic, space-filling layout that avoids the rigid rectangles of traditional treemaps.
-
-Built on [D3](https://d3js.org/) and [d3-voronoi-treemap](https://github.com/nicenumber/d3-voronoi-treemap), bundled with Rollup, styled with LESS. Targets the Flourish SDK v3.
-
-## Prerequisites
-
-- Node.js 24.12.x / npm 11.x (see `engines` in `package.json`)
-- [Flourish SDK](https://developers.flourish.studio/sdk/) (`@nicenumber/flourish-sdk`) installed globally for local preview
+A [Flourish](https://flourish.studio/) visualization template that renders hierarchical data as proportional Voronoi tessellations — an 
+organic, space-filling alternative to traditional rectangular treemaps. Built on [D3](https://d3js.org/) and 
+[d3-voronoi-treemap](https://github.com/Kcnarf/d3-voronoi-treemap).
 
 ## Getting started
 
+Requires Node.js 24+ and the [Flourish SDK](https://github.com/kiln/flourish-sdk) installed globally.
+
 ```bash
-# Install dependencies
-npm install
-
-# Build JavaScript bundle (src/ → template.js)
-npm run build
-
-# Compile LESS styles (less/style.less → static/style.css)
-npm run less
-
-# Preview locally (requires Flourish SDK)
-flourish run
+npm install            # Install dependencies
+npm run build          # Bundle src/ → template.js
+npm run less           # Compile less/style.less → static/style.css
+flourish run           # Preview locally
 ```
 
 ## Project structure
@@ -74,56 +64,23 @@ update()
   └── popup.update()                        → popup.js
 ```
 
-## Data format
-
-The template accepts a flat CSV with up to two hierarchy levels:
-
-| Column | Required | Description |
-|---|---|---|
-| **First level** | Yes | Top-level category (e.g. continent, industry) |
-| **Second level** | No | Sub-category within the first level |
-| **Values** | Yes | Numeric value determining cell size |
-| **Color category** | No | Category for coloring (defaults to first level) |
-| **Filter** | No | Column used to filter displayed data |
-| **Grid of charts** | No | Column used to create faceted small multiples |
-| **Custom tooltip** | No | Custom text/HTML shown in the popup on hover |
-| **Custom label** | No | Override text for cell labels |
-| **Custom value label** | No | Override text for value labels |
-
 ## Key conventions
 
-- **Build artifacts are tracked in git** — `template.js`, `template.js.map`, `static/style.css`, and `static/style.css.map` are compiled outputs. Rebuild after source changes.
+- **Build artifacts are tracked** — rebuild `template.js` and `static/style.css` after source changes.
 - **Edit LESS, not CSS** — modify `less/style.less`, then run `npm run less`.
-- **Seeded PRNG** — Voronoi layouts use a Mulberry32 seeded RNG for reproducibility. The seed is configurable in `state.voronoi_settings.seed`.
-- **Deterministic color jitter** — child cell color variation is derived from a string hash, so the same cell always gets the same lightness shift.
-- **Polygon morphing** — animation uses point-resampled polygon interpolation; set `animation_duration` to `0` to disable.
-- **Three-layer SVG rendering** — each cell is drawn on three layers (fill, border, hit) for independent styling and invisible interaction targets.
-- **`template.yml`** defines all user-facing settings and data bindings for the Flourish platform. This is the source of truth for the settings panel.
-
-## Dependencies
-
-### Core
-- **d3** (v7) — scales, selections, hierarchy, color manipulation
-- **d3-voronoi-treemap** — weighted Voronoi tessellation algorithm
-
-### Flourish modules
-- `@flourish/layout` — page layout, header/footer, responsive sizing
-- `@flourish/colors` — color scale management
-- `@flourish/legend` — categorical color legend
-- `@flourish/info-popup` — hover/click popups
-- `@flourish/controls` — filter UI controls
-- `@flourish/facets` — small multiple grid support
-- `@flourish/number-formatter` / `@flourish/number-localization` — number display
-- `@flourish/ui-styles` — control styling
-
-### Build tools
-- **Rollup** (v4) with `@rollup/plugin-node-resolve`, `@rollup/plugin-commonjs`, `rollup-plugin-uglify`
-- **LESS** with `less-plugin-clean-css`
+- **Seeded PRNG** — layouts use Mulberry32 for reproducibility (configurable via `state.voronoi_settings.seed`).
+- **`template.yml`** is the source of truth for all user-facing settings and data bindings.
 
 ## License
 
-[Mozilla Public License 2.0](LICENSE) (MPL-2.0). This template was built as a public good for the data visualisation community. You may use, modify, and distribute it freely — if you modify any MPL-licensed file, those changes must be shared under the same terms.
+[Mozilla Public License 2.0](LICENSE) (MPL-2.0). This template was built as a public good for the data visualisation 
+community. You may use, modify, and distribute it freely — if you modify any MPL-licensed file, those changes must be 
+shared under the same terms.
 
-MPL-2.0 is a file-level copyleft licence: modifications to these source files stay open, but the licence permits combination with differently-licensed code — including the proprietary Flourish SDK and `@flourish/*` modules, which retain their own licences ([SDK](https://github.com/kiln/flourish-sdk/blob/master/LICENSE.md), [FCL](https://flourish.studio/terms/fcl/), [Terms](https://flourish.studio/terms/)).
+MPL-2.0 is a file-level copyleft licence: modifications to these source files stay open, but the licence permits 
+combination with differently-licensed code — including the proprietary Flourish SDK and `@flourish/*` modules, which 
+retain their own licences ([SDK](https://github.com/kiln/flourish-sdk/blob/master/LICENSE.md),
+[FCL](https://flourish.studio/terms/fcl/), 
+[Terms](https://flourish.studio/terms/)).
 
 Contributions are welcome — by opening a pull request you agree to license your changes under MPL-2.0.
