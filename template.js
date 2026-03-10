@@ -19376,7 +19376,7 @@ var template = (function (exports) {
           seed: 41,
           max_iterations: 100,
           convergence_ratio: 0.005,
-          min_weight_ratio: 0.01,
+          min_weight_ratio: 0.005,
           alignment: "center",
           border_rounding_style: "adaptive rounding",
           border_radius: 1,
