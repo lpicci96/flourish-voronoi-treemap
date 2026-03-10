@@ -55,26 +55,20 @@ Zambia,Africa,21314956
 Zimbabwe,Africa,16634373
 Antigua and Barbuda,Americas,93772
 Argentina,Americas,45696159
-Aruba,Americas,107995
 "Bahamas, The",Americas,401283
 Barbados,Americas,282467
 Belize,Americas,417072
-Bermuda,Americas,64636
 Bolivia,Americas,12413315
 Brazil,Americas,211998573
-British Virgin Islands,Americas,39471
 Canada,Americas,41288599
-Cayman Islands,Americas,74457
 Chile,Americas,19764771
 Colombia,Americas,52886363
 Costa Rica,Americas,5129910
 Cuba,Americas,10979783
-Curacao,Americas,155967
 Dominica,Americas,66205
 Dominican Republic,Americas,11427557
 Ecuador,Americas,18135478
 El Salvador,Americas,6338193
-Greenland,Americas,56836
 Grenada,Americas,117207
 Guatemala,Americas,18406359
 Guyana,Americas,831087
@@ -86,18 +80,14 @@ Nicaragua,Americas,6916140
 Panama,Americas,4515577
 Paraguay,Americas,6929153
 Peru,Americas,34217848
-Sint Maarten (Dutch part),Americas,43350
 St. Kitts and Nevis,Americas,46843
 St. Lucia,Americas,179744
-St. Martin (French part),Americas,26129
 St. Vincent and the Grenadines,Americas,100616
 Suriname,Americas,634431
 Trinidad and Tobago,Americas,1368333
-Turks and Caicos Islands,Americas,46535
 United States,Americas,340110988
 Uruguay,Americas,3386588
 "Venezuela, RB",Americas,28405543
-Virgin Islands (U.S.),Americas,104377
 Afghanistan,Asia,42647492
 Armenia,Asia,3033500
 Azerbaijan,Asia,10202830
@@ -109,7 +99,6 @@ Cambodia,Asia,17638801
 China,Asia,1408975000
 Cyprus,Asia,1358282
 Georgia,Asia,3699557
-"Hong Kong SAR, China",Asia,7524100
 India,Asia,1450935791
 Indonesia,Asia,283487931
 "Iran, Islamic Rep.",Asia,91567738
@@ -124,7 +113,6 @@ Kuwait,Asia,4897263
 Kyrgyz Republic,Asia,7221868
 Lao PDR,Asia,7769819
 Lebanon,Asia,5805962
-"Macao SAR, China",Asia,687000
 Malaysia,Asia,35557673
 Maldives,Asia,527799
 Mongolia,Asia,3524788
@@ -158,16 +146,13 @@ Croatia,Europe,3866200
 Czechia,Europe,10905028
 Denmark,Europe,5976992
 Estonia,Europe,1372341
-Faroe Islands,Europe,54681
 Finland,Europe,5619911
 France,Europe,68551653
 Germany,Europe,83516593
-Gibraltar,Europe,39329
 Greece,Europe,10405134
 Hungary,Europe,9562065
 Iceland,Europe,386506
 Ireland,Europe,5395790
-Isle of Man,Europe,84160
 Italy,Europe,58952704
 Kosovo,Europe,1594353
 Latvia,Europe,1866124
@@ -194,18 +179,13 @@ Sweden,Europe,10569709
 Switzerland,Europe,9005582
 Ukraine,Europe,37860221
 United Kingdom,Europe,69226000
-American Samoa,Oceania,46765
 Australia,Oceania,27196812
 Fiji,Oceania,928784
-French Polynesia,Oceania,281807
-Guam,Oceania,167777
 Kiribati,Oceania,134518
 Marshall Islands,Oceania,37548
 "Micronesia, Fed. Sts.",Oceania,113160
 Nauru,Oceania,11947
-New Caledonia,Oceania,292639
 New Zealand,Oceania,5287500
-Northern Mariana Islands,Oceania,44278
 Palau,Oceania,17695
 Papua New Guinea,Oceania,10576502
 Samoa,Oceania,218019
