@@ -75,9 +75,10 @@ Please reach out for any bug reports or feature requests.
 ## Changelog
 
 
-**Planned**
+**Planned for v2**
 - Value aggregation - choose an aggregation method for duplicate entries (e.g. sum, average, none)
 - Small multiple sizing - option to size small multiples based on the relative proportions of the facet data, rather than equally
+- Enhanced convergence logging for small multiples
 
 **v0.5.1 - 2026-03-06**
 - Removed arbitrary caps on advanced voronoi settings (max iterations, convergence ratio, min weight ratio) to allow finer user control
