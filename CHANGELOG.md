@@ -2,7 +2,28 @@
 All notable changes to this template will be documented in this file.
 
 
-## [Unreleased]
+## [v0.6.0] - 2026-03-10
+
+### Added
+- Post-hoc layout convergence diagnostics (`convergence.js`): per-group report using `d3.polygonArea` showing area error (vs original values) and convergence status (vs min-weight-inflated targets), with console warning when any group exceeds 10% area error
+- Warning for dropped Voronoi cells due to missing polygons
+- Warning for negative values in data (clamped to zero)
+- Pointer cursor on cell hover (`style.less`)
+- Unit tests for convergence check (`tests/convergence.test.mjs`): 9 tests covering single-level, two-level, min weight ratio effects, and edge cases
+- Layout Diagnostics section in GUIDE.md
+
+### Changed
+- Value parsing: replaced `+d.values || 0` with `parseFloat` + `isNaN` check to preserve zero as a valid value (`data_formatting.js`)
+- Popup events: `mouseover`/`mouseout` → `pointerenter`/`pointerleave` for cross-device support (`voronoi.js`)
+- Default `min_weight_ratio`: 0.01 → 0.005 for better visual accuracy with wide-range datasets (`state.js`)
+- Default `adaptive_format`: false → true for readable value labels out of the box (`state.js`)
+- Default dataset: removed 20 non-nation-state entries (territories, SARs, dependencies); renamed columns to Country, Region, Population (`data/Data.csv`, `data/Data_filter.csv`)
+- Extracted `checkConvergence` from `voronoi.js` into standalone `convergence.js` module
+- Updated TODO comments to reference v2 scope (`voronoi.js`)
+- Updated planned features in GUIDE.md to target v2
+
+### Removed
+- Debug comment lines in `draw.js`
 
 
 ## [v0.5.1] - 2026-03-06

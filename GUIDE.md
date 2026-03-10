@@ -80,7 +80,16 @@ Please reach out for any bug reports or feature requests.
 - Small multiple sizing - option to size small multiples based on the relative proportions of the facet data, rather than equally
 - Enhanced convergence logging for small multiples
 
-**v0.5.1 - 2026-03-06**
+**v0.6.0 - 2026-03-10**
+- Improved data handling: zero values are now preserved correctly, and negative values are clamped to zero with a console warning
+- Added layout convergence diagnostics — the browser console now logs a per-group report showing area error and convergence status after each layout, with a warning when any group exceeds 10% area error
+- Added touch and pen support for popups — cells now respond to pointer events on mobile and tablet devices
+- Added pointer cursor on cell hover
+- Lowered default min weight ratio from 0.01 to 0.005 for better visual accuracy with wide-range datasets
+- Enabled adaptive number formatting by default for value labels and popups
+- Updated default dataset to include only sovereign nation states, with clearer column names (Country, Region, Population)
+
+
 - Removed arbitrary caps on advanced voronoi settings (max iterations, convergence ratio, min weight ratio) to allow finer user control
 - Added documentation on the voronoi tessellation algorithm and interpreting polygon areas
 

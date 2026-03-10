@@ -44,6 +44,7 @@ flourish run
 │           ├── border.js          # Straight, rounded, and adaptive border rounding
 │           ├── clip.js            # Clipping polygons for 8 shapes (circle, rect, etc.)
 │           ├── transitions.js     # Polygon morphing across fill/border/hit layers
+│           ├── convergence.js     # Post-hoc layout convergence diagnostics
 │           ├── popup.js           # Maps leaf data to Flourish info-popup columns
 │           ├── number_formatting.js # Adaptive magnitude-based number formatting
 │           └── sizing.js          # Chart dimension and aspect ratio calculations
