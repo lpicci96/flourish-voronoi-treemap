@@ -18,6 +18,17 @@ Cell areas are intended to be proportional to the data values, but the result is
 - **Convergence ratio / max iterations** — Lower convergence ratios and higher iteration counts produce more accurate proportions, at the cost of longer computation times.
 - **Min weight ratio** — Sets a floor on cell weights as a fraction of the largest weight. Any value below this floor is inflated to the minimum. This prevents cells from becoming invisibly small, but redistributes area away from larger cells. For datasets with a wide value range (e.g. millions alongside billions), even a small min weight ratio can noticeably inflate the smallest cells. Set it to 0 for pure proportional sizing, though very small cells may become difficult to see or interact with.
 
+**Layout Diagnostics**
+
+After each layout, the template logs a convergence report to the browser console. This helps diagnose whether cell areas accurately represent the data. The report shows two metrics for each hierarchy group:
+
+- **Area error** — How far each group's cell areas are from the true data proportions. This is the most important metric: it tells you whether what the user sees matches the underlying data. High area error is typically caused by the min weight ratio inflating small cells.
+- **Converged** — Whether the algorithm reached its internal target (accounting for min weight ratio). If a group shows ✗, the algorithm ran out of iterations before converging — increasing max iterations may help. If a group shows ✓ but still has high area error, the gap is from min weight ratio inflation, and more iterations won't help.
+
+A console warning is raised when any group exceeds 10% area error, indicating that cell areas may be visually misleading. Below that threshold, the report is logged as informational only.
+
+Datasets with extreme value ranges (e.g. populations spanning thousands to billions) will naturally have higher area error due to the min weight ratio floor. To reduce this, lower the min weight ratio (at the cost of smaller cells becoming harder to see) or reduce the range in your data.
+
 **When to Use It**
 
 - Showing proportional part-to-whole relationships (e.g. market share, population distribution)
