@@ -29212,9 +29212,9 @@ var template = (function (exports) {
           });
   }
 
-  // TODO: Additional advanced settings - handling small values
-  // TODO: Aggregation of values
-  // TODO: Enhanced convergence logging for small multiples (facet name, aggregated report)
+  // v2: Additional advanced settings - handling small values
+  // v2: Aggregation of values
+  // v2: Enhanced convergence logging for small multiples (facet name, aggregated report)
 
 
   const _voronoiTreemap = voronoiTreemap();
