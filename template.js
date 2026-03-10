@@ -21817,6 +21817,22 @@ var template = (function (exports) {
   var interpolateTransformCss = interpolateTransform(parseCss, "px, ", "px)", "deg)");
   var interpolateTransformSvg = interpolateTransform(parseSvg, ", ", ")", ")");
 
+  function area(polygon) {
+    var i = -1,
+        n = polygon.length,
+        a,
+        b = polygon[n - 1],
+        area = 0;
+
+    while (++i < n) {
+      a = b;
+      b = polygon[i];
+      area += a[1] * b[0] - a[0] * b[1];
+    }
+
+    return area / 2;
+  }
+
   var xhtml$1 = "http://www.w3.org/1999/xhtml";
 
   var namespaces$1 = {
@@ -29296,6 +29312,83 @@ var template = (function (exports) {
   }
 
   /**
+   * Post-hoc convergence check that mirrors how d3-voronoi-treemap works
+   * internally: each internal node's children are laid out independently
+   * within the parent's polygon, so convergence is checked per group.
+   * Reports two metrics per group:
+   *   - Convergence: error against min-weight-inflated targets (did the algorithm converge?)
+   *   - Visual accuracy: error against original data values (does the visual match the data?)
+   * Uses d3.polygonArea — the same shoelace function the library uses.
+   * @param {object} hierarchy - d3-hierarchy root node after layout.
+   * @param {number} targetRatio - Maximum acceptable error ratio (e.g. 0.01).
+   * @param {number} minWeightRatio - Min weight ratio used by the algorithm.
+   */
+  function checkConvergence(hierarchy, targetRatio, minWeightRatio) {
+      var groups = [];
+
+      hierarchy.each(function(node) {
+          if (!node.children || node.children.length === 0) return;
+          if (!node.polygon) return;
+
+          var parentArea = Math.abs(area(node.polygon));
+          if (parentArea === 0) return;
+
+          var children = node.children.filter(function(c) { return c.polygon && c.polygon.length > 0; });
+          if (children.length === 0) return;
+
+          // Visual accuracy: error against original values
+          var totalValue = children.reduce(function(s, c) { return s + c.value; }, 0);
+          var visualError = 0;
+          if (totalValue > 0) {
+              visualError = children.reduce(function(s, c) {
+                  var expectedArea = (c.value / totalValue) * parentArea;
+                  var actualArea = Math.abs(area(c.polygon));
+                  return s + Math.abs(actualArea - expectedArea);
+              }, 0) / parentArea;
+          }
+
+          // Convergence: error against min-weight-inflated targets (matching library logic)
+          var maxValue = children.reduce(function(m, c) { return Math.max(m, c.value); }, -Infinity);
+          var minAllowedWeight = maxValue * minWeightRatio;
+          var totalInflated = children.reduce(function(s, c) { return s + Math.max(c.value, minAllowedWeight); }, 0);
+          var convergenceError = 0;
+          if (totalInflated > 0) {
+              convergenceError = children.reduce(function(s, c) {
+                  var inflatedWeight = Math.max(c.value, minAllowedWeight);
+                  var expectedArea = (inflatedWeight / totalInflated) * parentArea;
+                  var actualArea = Math.abs(area(c.polygon));
+                  return s + Math.abs(actualArea - expectedArea);
+              }, 0) / parentArea;
+          }
+
+          groups.push({
+              name: node.parent ? node.data.name : "Top level",
+              convergenceError: convergenceError,
+              visualError: visualError
+          });
+      });
+
+      if (groups.length === 0) return;
+
+      var avgConvergence = groups.reduce(function(s, g) { return s + g.convergenceError; }, 0) / groups.length;
+      var avgVisual = groups.reduce(function(s, g) { return s + g.visualError; }, 0) / groups.length;
+
+      var lines = ["Voronoi layout (target: " + (targetRatio * 100).toFixed(1) + "%, min weight ratio: " + minWeightRatio + ")"];
+      groups.forEach(function(g) {
+          var convStatus = g.convergenceError <= targetRatio ? "✓" : "✗";
+          lines.push("  " + g.name + ": converged " + (g.convergenceError * 100).toFixed(1) + "% " + convStatus + " | visual accuracy " + (g.visualError * 100).toFixed(1) + "%");
+      });
+      lines.push("  Average: converged " + (avgConvergence * 100).toFixed(1) + "% | visual accuracy " + (avgVisual * 100).toFixed(1) + "%");
+
+      var hasHighVisualError = groups.some(function(g) { return g.visualError > 0.1; });
+      if (hasHighVisualError) {
+          console.warn(lines.join("\n"));
+      } else {
+          console.log(lines.join("\n"));
+      }
+  }
+
+  /**
    * Main entry point: compute the Voronoi treemap layout, configure popups,
    * and render cells into the given SVG container.
    * @param {SVGElement} container - Target SVG DOM element (svg or g).
@@ -29338,6 +29431,8 @@ var template = (function (exports) {
       if (leaves.length < allLeaves.length) {
           console.warn(`Voronoi: ${allLeaves.length - leaves.length} cell(s) dropped due to missing polygons`);
       }
+
+      checkConvergence(hierarchy, voronoi_settings.convergence_ratio, voronoi_settings.min_weight_ratio);
 
       configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames);
 
