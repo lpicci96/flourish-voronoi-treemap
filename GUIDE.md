@@ -74,16 +74,17 @@ Please reach out for any bug reports or feature requests.
 
 ## Changelog
 
+**Planned for v2**
+- Value aggregation - choose an aggregation method for duplicate entries (e.g. sum, average, none)
+- Small multiple sizing - option to size small multiples based on the relative proportions of the facet data, rather than equally
+- Enhanced convergence logging for small multiples
+
 
 **v0.7.0 - 2026-03-11**
 - Reduced default colour jitter amount from 0.1 to 0.05 for subtler child-cell variation
 - Pointer cursor on cells is now conditional — only shown when popup mode is not "none"
 - Debounced resize handler (150ms) to avoid redundant voronoi recomputations during window resizing
 
-**Planned for v2**
-- Value aggregation - choose an aggregation method for duplicate entries (e.g. sum, average, none)
-- Small multiple sizing - option to size small multiples based on the relative proportions of the facet data, rather than equally
-- Enhanced convergence logging for small multiples
 
 **v0.6.0 - 2026-03-10**
 - Improved data handling: zero values are now preserved correctly, and negative values are clamped to zero with a console warning
@@ -93,8 +94,6 @@ Please reach out for any bug reports or feature requests.
 - Lowered default min weight ratio from 0.01 to 0.005 for better visual accuracy with wide-range datasets
 - Enabled adaptive number formatting by default for value labels and popups
 - Updated default dataset to include only sovereign nation states, with clearer column names (Country, Region, Population)
-
-
 - Removed arbitrary caps on advanced voronoi settings (max iterations, convergence ratio, min weight ratio) to allow finer user control
 - Added documentation on the voronoi tessellation algorithm and interpreting polygon areas
 
