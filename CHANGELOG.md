@@ -2,6 +2,14 @@
 All notable changes to this template will be documented in this file.
 
 
+## [v0.7.1] - 2026-03-11
+
+### Changed
+- Label filter mode: replaced single "Show specific labels" whitelist with a 3-mode dropdown (None / Show only / Hide) supporting both whitelist and blacklist filtering
+- Hide mode now respects the "Hide small labels" geometric check for remaining visible labels
+- Moved "Wrap labels" setting to the Styling section of the labels settings panel
+
+
 ## [v0.7.0] - 2026-03-11
 
 ### Changed

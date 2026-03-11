@@ -80,6 +80,11 @@ Please reach out for any bug reports or feature requests.
 - Enhanced convergence logging for small multiples
 
 
+**v0.7.1 - 2026-03-11**
+- Label filter mode: replaced single "Show specific labels" whitelist with a 3-mode dropdown (None / Show only / Hide) supporting both whitelist and blacklist filtering
+- Hide mode now respects the "Hide small labels" geometric check for remaining visible labels
+- Moved "Wrap labels" setting to the Styling section of the labels settings panel
+
 **v0.7.0 - 2026-03-11**
 - Reduced default colour jitter amount from 0.1 to 0.05 for subtler child-cell variation
 - Pointer cursor on cells is now conditional — only shown when popup mode is not "none"
