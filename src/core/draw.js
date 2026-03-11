@@ -58,5 +58,12 @@ export default function() {
     facets.appendTo(chartGroup);
 
     update();
-    window.addEventListener("resize", function() { update(); });
+    var resizeTimer;
+    var ready = false;
+    setTimeout(function() { ready = true; }, 500);
+    window.addEventListener("resize", function() {
+        if (!ready) return;
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() { update(); }, 150);
+    });
 }
