@@ -29457,6 +29457,9 @@ var template = (function (exports) {
           }
       });
 
+      var isInteractive = popup.mode() !== "none";
+      g.selectAll(".cell-hits path").style("cursor", isInteractive ? "pointer" : "default");
+
       sel.on("click", function() {
           popup.clickout();
       });
@@ -29758,7 +29761,14 @@ var template = (function (exports) {
       facets.appendTo(chartGroup);
 
       update();
-      window.addEventListener("resize", function() { update(); });
+      var resizeTimer;
+      var ready = false;
+      setTimeout(function() { ready = true; }, 500);
+      window.addEventListener("resize", function() {
+          if (!ready) return;
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(function() { update(); }, 150);
+      });
   }
 
   exports.data = data;
