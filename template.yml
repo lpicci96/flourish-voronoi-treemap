@@ -235,11 +235,6 @@ settings:
     show_if:
       labels.show_labels: true
       labels.label_filter_mode: [show, hide]
-  - property: labels.wrap_labels
-    name: Wrap labels
-    description: Wrap labels that do not fit within their corresponding polygon.
-    type: boolean
-    show_if: labels.show_labels
 
 #    styling
   - property: labels.size_proportionally
@@ -317,6 +312,11 @@ settings:
     show_if:
       labels.show_labels: true
       labels.show_outline: true
+  - property: labels.wrap_labels
+    name: Wrap labels
+    description: Wrap labels that do not fit within their corresponding polygon.
+    type: boolean
+    show_if: labels.show_labels
 
 
   - property: labels.show_value_labels
