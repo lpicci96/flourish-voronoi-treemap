@@ -105,6 +105,9 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
         }
     });
 
+    var isInteractive = popup.mode() !== "none";
+    g.selectAll(".cell-hits path").style("cursor", isInteractive ? "pointer" : "default");
+
     sel.on("click", function() {
         popup.clickout();
     });

@@ -58,5 +58,23 @@ export default function() {
     facets.appendTo(chartGroup);
 
     update();
-    window.addEventListener("resize", function() { update(); });
+    var resizeTimer;
+    var settled = false;
+    setTimeout(function() { settled = true; }, 500);
+    window.addEventListener("resize", function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            if (!settled) {
+                // Layout is still settling after initial draw —
+                // re-render instantly (no animation) to correct dimensions
+                var saved = state.animation_duration;
+                state.animation_duration = 0;
+                update();
+                state.animation_duration = saved;
+                settled = true;
+            } else {
+                update();
+            }
+        }, 150);
+    });
 }
