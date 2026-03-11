@@ -49,7 +49,7 @@ When a Voronoi edge is too short for effective rounding (shorter than half the r
 
 **Colour Jittering**
 
-When using a two-level hierarchy without a colour category column, all child cells within a parent group share the same base colour. Colour jittering adds a subtle, deterministic lightness shift to each child cell, making it easier to distinguish individual polygons within a group. The shift is derived from a hash of the cell's name, so the same cell always gets the same adjustment — no randomness between redraws. The jitter amount controls the maximum lightness variation (0–0.5); the default of 0.1 provides gentle differentiation without compromising the overall colour scheme. Jittering is automatically disabled when a colour category column is provided, since cells already have distinct colours.
+When using a two-level hierarchy without a colour category column, all child cells within a parent group share the same base colour. Colour jittering adds a subtle, deterministic lightness shift to each child cell, making it easier to distinguish individual polygons within a group. The shift is derived from a hash of the cell's name, so the same cell always gets the same adjustment — no randomness between redraws. The jitter amount controls the maximum lightness variation (0–0.5); the default of 0.05 provides subtle differentiation without compromising the overall colour scheme. Jittering is automatically disabled when a colour category column is provided, since cells already have distinct colours.
 
 The template accepts a flat dataset with up to two hierarchy levels:
 
@@ -74,6 +74,11 @@ Please reach out for any bug reports or feature requests.
 
 ## Changelog
 
+
+**v0.7.0 - 2026-03-11**
+- Reduced default colour jitter amount from 0.1 to 0.05 for subtler child-cell variation
+- Pointer cursor on cells is now conditional — only shown when popup mode is not "none"
+- Debounced resize handler (150ms) to avoid redundant voronoi recomputations during window resizing
 
 **Planned for v2**
 - Value aggregation - choose an aggregation method for duplicate entries (e.g. sum, average, none)

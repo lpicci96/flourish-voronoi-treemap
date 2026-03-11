@@ -2,6 +2,14 @@
 All notable changes to this template will be documented in this file.
 
 
+## [v0.7.0] - 2026-03-11
+
+### Changed
+- Reduced default colour jitter amount from 0.1 to 0.05 for subtler child-cell variation
+- Pointer cursor on cells is now conditional — only shown when popup mode is not "none"
+- Debounced resize handler (150ms) to avoid redundant voronoi recomputations during window resizing
+
+
 ## [v0.6.0] - 2026-03-10
 
 ### Added
