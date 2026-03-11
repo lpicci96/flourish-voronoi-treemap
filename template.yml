@@ -362,11 +362,11 @@ settings:
     new_section: Advanced
   - property: colors.jitter_amount
     name: Jitter amount
-    description: The amount by which to jitter the shade of the second level hierarchy. The recommended value is 0.1
+    description: The amount by which to jitter the shade of the second level hierarchy. The recommended value is 0.05
     type: number
     min: 0
-    max: 0.5
-    step: 0.05
+    max: 0.3
+    step: 0.025
     show_if: colors.jitter_shade
 
   - Legend
