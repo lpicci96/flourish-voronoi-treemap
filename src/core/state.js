@@ -80,6 +80,7 @@ export default {
         font_weight: "bold",
         font_color: "#ffffff",
         hide_small_labels: true,
+        label_filter_mode: "none",
         show_list: "",
         hide_margin: 0.1,
         show_outline: true,

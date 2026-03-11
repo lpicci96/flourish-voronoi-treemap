@@ -308,8 +308,9 @@ export function renderLabels(container, leaves, labelSettings, animation_duratio
     const areas = sizeProportionally ? leaves.map(d => polygonArea(d.polygon)) : null;
     const maxArea = sizeProportionally ? (d3.max(areas) || 1) : 1;
 
-    // Parse show_list into a set of names to filter by
-    const showList = labelSettings.show_list
+    // Parse label filter mode and list
+    const filterMode = labelSettings.label_filter_mode || "none";
+    const filterList = (filterMode !== "none" && labelSettings.show_list)
         ? new Set(labelSettings.show_list.split("\n").map(s => s.trim()).filter(Boolean))
         : null;
 
@@ -472,9 +473,14 @@ export function renderLabels(container, leaves, labelSettings, animation_duratio
 
             // Determine label visibility
             let visible = true;
-            if (showList && showList.size > 0) {
-                visible = showList.has(d.data.name);
-            } else if (labelSettings.hide_small_labels) {
+            if (filterList && filterList.size > 0) {
+                if (filterMode === "show") {
+                    visible = filterList.has(d.data.name);
+                } else if (filterMode === "hide") {
+                    visible = !filterList.has(d.data.name);
+                }
+            }
+            if (visible && labelSettings.hide_small_labels) {
                 const marginFactor = 1 - margin;
                 // Quick reject: cell too small to fit a single line of text
                 if (inscribedRadius * 2 * marginFactor < fontSizePx) {

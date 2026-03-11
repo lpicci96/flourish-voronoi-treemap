@@ -219,11 +219,22 @@ settings:
     show_if:
        labels.hide_small_labels: true
        labels.show_labels: true
-  - property: labels.show_list
-    name: Show specific labels
-    description: Show only specific labels. List the labels to display (e.g. "China") one per line. This setting overrides the "Hide small labels" setting.
-    type: code
+  - property: labels.label_filter_mode
+    name: Label filter
+    description: "Control which labels are shown. <b>None</b>: no filtering. <b>Show only</b>: show only listed labels. <b>Hide</b>: hide listed labels."
+    type: string
+    choices:
+      - none
+      - show
+      - hide
     show_if: labels.show_labels
+  - property: labels.show_list
+    name: Labels list
+    description: List the label names (one per line) to show or hide based on the selected filter mode.
+    type: code
+    show_if:
+      labels.show_labels: true
+      labels.label_filter_mode: [show, hide]
   - property: labels.wrap_labels
     name: Wrap labels
     description: Wrap labels that do not fit within their corresponding polygon.
