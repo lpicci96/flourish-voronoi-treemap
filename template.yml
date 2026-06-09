@@ -569,6 +569,13 @@ data:
       - number
     optional: true
 
+  - key: info
+    name: Info for popups
+    description: Extra columns to include in popup and panel content. Add any number of columns; each appears as a labelled row using its column header. Leave empty to show none.
+    dataset: data
+    type: columns
+    columns: "data::"
+
   - key: label_override
     name: Label override
     description: Optional column to override the label displayed on each cell. If not provided, the hierarchy level name is used.

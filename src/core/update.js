@@ -13,6 +13,7 @@ import { updateChartHeight } from "./chart/sizing";
 export default function() {
     const rows = Array.isArray(data) ? data : data.data;
     const dataColumnNames = rows.column_names || {};
+    const dataMetadata = rows.metadata || {};
 
     // Update filter control with unique values from the filter column
     const filterOptions = getFilterOptions(rows);
@@ -97,7 +98,7 @@ export default function() {
         .update(function(facet) {
             const item = facet.data;
             if (!item || !item.hierarchy) return;
-            drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels, state.number_format, dataColumnNames);
+            drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels, state.number_format, dataColumnNames, dataMetadata);
         });
 
     sizeSvg();

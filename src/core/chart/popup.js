@@ -14,8 +14,9 @@ import { createAdaptiveFormatter } from "./number_formatting";
  * @param {object} labelSettings - The state.labels settings object.
  * @param {object} numberFormatState - The raw state.number_format object.
  * @param {object} dataColumnNames - Flourish SDK column_names mapping (binding key → actual CSV header).
+ * @param {object} dataMetadata - Flourish SDK metadata mapping (binding key → per-column metadata, e.g. output_format_id).
  */
-export function configurePopup(popup, leaves, localization, number_format, labelSettings, numberFormatState, dataColumnNames) {
+export function configurePopup(popup, leaves, localization, number_format, labelSettings, numberFormatState, dataColumnNames, dataMetadata) {
     const sampleRow = leaves[0] && leaves[0].data._row;
     if (!sampleRow) return;
 
@@ -39,6 +40,19 @@ export function configurePopup(popup, leaves, localization, number_format, label
         formatter = number_format(localization.getFormatterFunction());
     }
     const formatters = { values: formatter };
+
+    // Build a parallel formatters array for the multi-column `info` binding.
+    // Each element uses the column's output_format_id metadata when available
+    // (info-popup resolves it via getFormatter), otherwise a string passthrough.
+    const infoHeaders = dataColumnNames && dataColumnNames.info;
+    if (Array.isArray(infoHeaders) && infoHeaders.length) {
+        const infoMeta = dataMetadata && Array.isArray(dataMetadata.info) ? dataMetadata.info : [];
+        formatters.info = infoHeaders.map(function(_, i) {
+            return (infoMeta[i] && infoMeta[i].output_format_id)
+                ? infoMeta[i]                                  // {output_format_id} — info-popup resolves it
+                : function(v) { return v == null ? "" : String(v); };  // string / passthrough
+        });
+    }
 
     popup.setColumnNames(columnNames);
     popup.setFormatters(formatters);
