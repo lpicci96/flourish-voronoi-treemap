@@ -2,6 +2,24 @@
 All notable changes to this template will be documented in this file.
 
 
+## [v0.7.2] - 2026-06-09
+
+### Fixed
+- Cells and labels with duplicate names (common in two-level hierarchies, e.g. a shared "Other" leaf under multiple groups) no longer collide in the D3 data join and disappear — the join is now keyed on each leaf's full ancestor path (`transitions.js`, `labels.js`)
+- Adaptive value-label formatter: values below the smallest enabled scale (e.g. `500` with K/M/B/T scaling) no longer render with six decimal places; the plain formatter now respects the configured decimals (`number_formatting.js`)
+- Colour jitter: lightness is now clamped to a safe band (0.15–0.85) instead of [0, 1], so jitter on already-light or already-dark base colours can no longer flatten to near-white/near-black or drift far enough to read as a different category (`colors.js`)
+
+### Changed
+- Pointer cursor on cells is now shown only when the popup is genuinely clickable (mode `panel` or `both`); hover-only popups (`popup`) keep the default cursor (`voronoi.js`)
+- Label font sizing now reads each cell's area directly from its polygon rather than via a parallel-array index, removing a fragile ordering assumption (`labels.js`)
+
+### Added
+- Unit tests for `number_formatting`, `colors`, `clip`, and `border` (63 new tests; total now 88) including regression guards for the formatter-decimals and colour-jitter fixes (`tests/`)
+
+### Internal
+- Removed dead alignment code from `clip.js` (alignment is applied as a post-layout translation in `voronoi.js`, so clip shapes are always generated centred)
+
+
 ## [v0.7.1] - 2026-03-11
 
 ### Changed

@@ -80,6 +80,13 @@ Please reach out for any bug reports or feature requests.
 - Enhanced convergence logging for small multiples
 
 
+**v0.7.2 - 2026-06-09**
+- Fixed cells/labels disappearing when two leaves shared the same name (common in two-level hierarchies)
+- Fixed value labels showing six decimal places for small numbers below the K/M/B/T scaling threshold
+- Colour jitter now stays within a safe lightness range so child-cell shading never flattens to near-black/white or reads as a different category
+- Pointer cursor now appears only when the popup is actually clickable (panel modes), not for hover-only popups
+- Added unit tests for number formatting, colours, clip shapes, and borders
+
 **v0.7.1 - 2026-03-11**
 - Label filter mode: replaced single "Show specific labels" whitelist with a 3-mode dropdown (None / Show only / Hide) supporting both whitelist and blacklist filtering
 - Hide mode now respects the "Hide small labels" geometric check for remaining visible labels
