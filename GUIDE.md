@@ -62,7 +62,6 @@ The template accepts a flat dataset with up to two hierarchy levels:
 | **Filter**             | No       | Column used to filter displayed data                                     |
 | **Grid of charts**     | No       | Column used to create a faceted grid of charts                           |
 | **Custom tooltip**     | No       | Custom text or HTML shown in the popup on hover/click                    |
-| **Info for popups**    | No       | Any number of extra columns to show in the popup/panel, one labelled row each |
 | **Custom label**       | No       | Custom text for cell labels (defaults to category name)                  |
 | **Custom value label** | No       | Custom text for value labels (defaults to formatted value)               |
 
@@ -83,7 +82,6 @@ Please reach out for any bug reports or feature requests.
 
 **Unreleased**
 - Added **Group spacing** — set a larger gap between first-level groups than between sibling cells to visually separate top-level categories (two-level data only)
-- Added **Info for popups** — an optional binding to include any number of extra columns in the popup/panel, each shown as a labelled row
 - Fixed cells/labels disappearing when two leaves shared the same name (common in two-level hierarchies)
 - Fixed value labels showing six decimal places for small numbers below the K/M/B/T scaling threshold
 - Colour jitter now stays within a safe lightness range so child-cell shading never flattens to near-black/white or reads as a different category

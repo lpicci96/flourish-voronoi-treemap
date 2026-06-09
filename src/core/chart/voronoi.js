@@ -136,7 +136,7 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
  * @param {Function} number_format - Flourish number_format factory.
  * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
  */
-export function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings, number_format_state, dataColumnNames, dataMetadata) {
+export function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings, number_format_state, dataColumnNames) {
     if (!hierarchy) return;
 
     // Always compute layout with centered clip so cell shapes stay consistent
@@ -168,7 +168,7 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
 
     checkConvergence(hierarchy, voronoi_settings.convergence_ratio, voronoi_settings.min_weight_ratio);
 
-    configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames, dataMetadata);
+    configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames);
 
     // Pre-format values on leaves for value labels
     if (labelSettings && labelSettings.show_value_labels) {

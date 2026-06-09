@@ -19515,7 +19515,7 @@ var template = (function (exports) {
           chart_breakpoint: 600,
 
           gap: 0.15,
-          group_gap: 0.6,
+          group_gap: 0.3,
           clip_type: "circle",
           advanced_settings: false,
           seed: 41,
@@ -28744,9 +28744,8 @@ var template = (function (exports) {
    * @param {object} labelSettings - The state.labels settings object.
    * @param {object} numberFormatState - The raw state.number_format object.
    * @param {object} dataColumnNames - Flourish SDK column_names mapping (binding key → actual CSV header).
-   * @param {object} dataMetadata - Flourish SDK metadata mapping (binding key → per-column metadata, e.g. output_format_id).
    */
-  function configurePopup(popup, leaves, localization, number_format, labelSettings, numberFormatState, dataColumnNames, dataMetadata) {
+  function configurePopup(popup, leaves, localization, number_format, labelSettings, numberFormatState, dataColumnNames) {
       const sampleRow = leaves[0] && leaves[0].data._row;
       if (!sampleRow) return;
 
@@ -28770,19 +28769,6 @@ var template = (function (exports) {
           formatter = number_format(localization.getFormatterFunction());
       }
       const formatters = { values: formatter };
-
-      // Build a parallel formatters array for the multi-column `info` binding.
-      // Each element uses the column's output_format_id metadata when available
-      // (info-popup resolves it via getFormatter), otherwise a string passthrough.
-      const infoHeaders = dataColumnNames && dataColumnNames.info;
-      if (Array.isArray(infoHeaders) && infoHeaders.length) {
-          const infoMeta = dataMetadata && Array.isArray(dataMetadata.info) ? dataMetadata.info : [];
-          formatters.info = infoHeaders.map(function(_, i) {
-              return (infoMeta[i] && infoMeta[i].output_format_id)
-                  ? infoMeta[i]                                  // {output_format_id} — info-popup resolves it
-                  : function(v) { return v == null ? "" : String(v); };  // string / passthrough
-          });
-      }
 
       popup.setColumnNames(columnNames);
       popup.setFormatters(formatters);
@@ -29716,7 +29702,7 @@ var template = (function (exports) {
    * @param {Function} number_format - Flourish number_format factory.
    * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
    */
-  function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings, number_format_state, dataColumnNames, dataMetadata) {
+  function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings, number_format_state, dataColumnNames) {
       if (!hierarchy) return;
 
       // Always compute layout with centered clip so cell shapes stay consistent
@@ -29748,7 +29734,7 @@ var template = (function (exports) {
 
       checkConvergence(hierarchy, voronoi_settings.convergence_ratio, voronoi_settings.min_weight_ratio);
 
-      configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames, dataMetadata);
+      configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames);
 
       // Pre-format values on leaves for value labels
       if (labelSettings && labelSettings.show_value_labels) {
@@ -29863,7 +29849,6 @@ var template = (function (exports) {
   function update() {
       const rows = Array.isArray(data) ? data : data.data;
       const dataColumnNames = rows.column_names || {};
-      const dataMetadata = rows.metadata || {};
 
       // Update filter control with unique values from the filter column
       const filterOptions = getFilterOptions(rows);
@@ -29948,7 +29933,7 @@ var template = (function (exports) {
           .update(function(facet) {
               const item = facet.data;
               if (!item || !item.hierarchy) return;
-              drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels, state.number_format, dataColumnNames, dataMetadata);
+              drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels, state.number_format, dataColumnNames);
           });
 
       sizeSvg();

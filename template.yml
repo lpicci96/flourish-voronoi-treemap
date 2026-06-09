@@ -131,10 +131,10 @@ settings:
     new_section: Borders and rounding
   - property: voronoi_settings.group_gap
     name: Group spacing
-    description: Extra gap between first-level groups, as a percentage of the chart's shorter side. Only applies when a second-level column is provided. Set larger than Gap to visually separate top-level categories.
+    description: Extra gap between first-level groups, as a percentage of chart size. Only applies when a second-level column is provided. Set larger than Gap to visually separate top-level categories.
     type: number
     min: 0
-    max: 1.5
+    max: 0.5
     step: 0.05
     width: full
   - property: voronoi_settings.border_rounding_style
@@ -576,13 +576,6 @@ data:
       - string
       - number
     optional: true
-
-  - key: info
-    name: Info for popups
-    description: Extra columns to include in popup and panel content. Add any number of columns; each appears as a labelled row using its column header. Leave empty to show none.
-    dataset: data
-    type: columns
-    columns: "data::"
 
   - key: label_override
     name: Label override
