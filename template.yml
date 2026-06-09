@@ -131,7 +131,7 @@ settings:
     new_section: Borders and rounding
   - property: voronoi_settings.group_gap
     name: Group spacing
-    description: Extra gap between first-level groups, as a percentage of chart size. Only applies when a second-level column is provided. Set larger than Gap to visually separate top-level categories.
+    description: Extra gap between first-level groups, as a percentage of chart size. Only applies when a second-level column is provided. Set larger than Gap to visually separate top-level categories. Defaults to 0.3 (a little larger than the cell Gap).
     type: number
     min: 0
     max: 0.5

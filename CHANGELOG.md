@@ -14,7 +14,7 @@ All notable changes to this template will be documented in this file.
 - Label font sizing now reads each cell's area directly from its polygon rather than via a parallel-array index, removing a fragile ordering assumption (`labels.js`)
 
 ### Added
-- **Group spacing** (`group_gap`): a new setting that adds a larger gap between first-level groups than between sibling cells, so top-level categories read as separated clusters. Insets each first-level group polygon and clips its leaves to it; only applies to two-level data and is a no-op when set to 0 (`state.js`, `voronoi.js`, `transitions.js`, `border.js`, `template.yml`)
+- **Group spacing** (`group_gap`): a new setting that adds a larger gap between first-level groups than between sibling cells, so top-level categories read as separated clusters. Expressed as a percentage of chart size on the same 0–0.5 range as Gap, defaulting to 0.3 (a little larger than the 0.15 cell gap). Insets each first-level group polygon and clips its leaves to it; only applies to two-level data and is a no-op when set to 0 (`state.js`, `voronoi.js`, `transitions.js`, `border.js`, `template.yml`)
 - Unit tests for `number_formatting`, `colors`, `clip`, and `border` (72 new tests; total now 97) including regression guards for the formatter-decimals and colour-jitter fixes and coverage of the new convex-clip helper (`tests/`)
 
 ### Internal
