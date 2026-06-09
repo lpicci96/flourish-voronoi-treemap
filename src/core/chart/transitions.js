@@ -67,7 +67,7 @@ export function transitionCells({ selection, leaves, duration, borderStyle, gap,
     const fillGroup = selection.select("g.cell-fills");
     const hitGroup = selection.select("g.cell-hits");
 
-    const key = d => d.data.name;
+    const key = d => d.ancestors().map(n => n.data.name).reverse().join("\0");
 
     // --- FILL LAYER ---
     const fillJoin = fillGroup.selectAll("path").data(leaves, key);
