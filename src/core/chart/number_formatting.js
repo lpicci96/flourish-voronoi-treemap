@@ -38,7 +38,7 @@ export function createAdaptiveFormatter(localization, labelSettings, numberForma
     // getFormatterFunction() returns a d3 format factory: specifier -> formatter
     var formatFactory = localization.getFormatterFunction();
     var scaledFormatter = formatFactory(",." + decimals + "f");
-    var plainFormatter = formatFactory(",f");
+    var plainFormatter = formatFactory(",." + decimals + "f");
 
     return function(value) {
         if (value == null || isNaN(value)) return "";
