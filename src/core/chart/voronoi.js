@@ -105,8 +105,11 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
         }
     });
 
-    var isInteractive = popup.mode() !== "none";
-    g.selectAll(".cell-hits path").style("cursor", isInteractive ? "pointer" : "default");
+    // Only "panel" and "both" modes open a clickable panel on click; "popup"
+    // is hover-only and "none" shows nothing, so neither should use a pointer.
+    var mode = popup.mode();
+    var isClickable = mode === "panel" || mode === "both";
+    g.selectAll(".cell-hits path").style("cursor", isClickable ? "pointer" : "default");
 
     sel.on("click", function() {
         popup.clickout();
