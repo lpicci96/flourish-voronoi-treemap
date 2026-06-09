@@ -82,6 +82,87 @@ function lineLineIntersection(x1, y1, x2, y2, x3, y3, x4, y4) {
     return [x1 + t * (x2 - x1), y1 + t * (y2 - y1)];
 }
 
+// ── Convex polygon clip ─────────────────────────────────────────────────
+
+/**
+ * Clip a convex subject polygon against a convex clip polygon
+ * (Sutherland–Hodgman). Both polygons are assumed convex.
+ *
+ * Winding is detected from the clip polygon's signed area so that the
+ * "inside" half-plane test is consistent regardless of the clip's
+ * orientation (works in screen coords, y-down).
+ *
+ * If the clipped result has fewer than 3 vertices (no or degenerate
+ * overlap), the original `subjectPolygon` is returned as a fallback —
+ * matching insetPolygon's passthrough behavior.
+ *
+ * @param {Array<number[]>} subjectPolygon - Convex polygon to be clipped.
+ * @param {Array<number[]>} clipPolygon - Convex clipping polygon.
+ * @returns {Array<number[]>} Clipped polygon (array of [x, y] pairs).
+ */
+export function clipConvex(subjectPolygon, clipPolygon) {
+    if (!subjectPolygon || subjectPolygon.length < 3) return subjectPolygon;
+    if (!clipPolygon || clipPolygon.length < 3) return subjectPolygon;
+
+    const m = clipPolygon.length;
+
+    // Signed area of clip polygon (shoelace). In screen coords (y-down):
+    // positive = CCW, negative = CW. We orient the inside test accordingly.
+    let signedArea2 = 0;
+    for (let i = 0; i < m; i++) {
+        const a = clipPolygon[i];
+        const b = clipPolygon[(i + 1) % m];
+        signedArea2 += (a[0] * b[1] - b[0] * a[1]);
+    }
+    // For an edge a→b, the cross product (b-a) × (p-a) has a consistent sign
+    // for points on the interior side. The sign depends on winding.
+    const insideSign = signedArea2 > 0 ? 1 : -1;
+
+    function cross(a, b, p) {
+        return (b[0] - a[0]) * (p[1] - a[1]) - (b[1] - a[1]) * (p[0] - a[0]);
+    }
+    function inside(a, b, p) {
+        // On-edge (≈0) counts as inside.
+        return cross(a, b, p) * insideSign >= -1e-9;
+    }
+
+    let output = subjectPolygon;
+
+    for (let i = 0; i < m; i++) {
+        const a = clipPolygon[i];
+        const b = clipPolygon[(i + 1) % m];
+        const input = output;
+        output = [];
+        if (input.length === 0) break;
+
+        for (let j = 0; j < input.length; j++) {
+            const cur = input[j];
+            const prev = input[(j + input.length - 1) % input.length];
+            const curIn = inside(a, b, cur);
+            const prevIn = inside(a, b, prev);
+
+            if (curIn) {
+                if (!prevIn) {
+                    const pt = lineLineIntersection(
+                        prev[0], prev[1], cur[0], cur[1],
+                        a[0], a[1], b[0], b[1]
+                    );
+                    if (pt) output.push(pt);
+                }
+                output.push(cur);
+            } else if (prevIn) {
+                const pt = lineLineIntersection(
+                    prev[0], prev[1], cur[0], cur[1],
+                    a[0], a[1], b[0], b[1]
+                );
+                if (pt) output.push(pt);
+            }
+        }
+    }
+
+    return output.length >= 3 ? output : subjectPolygon;
+}
+
 // ── Per-cell path generators ────────────────────────────────────────────
 
 /**
@@ -192,11 +273,14 @@ function roundedPath(polygon, radius, reach) {
  * @param {number} [gap=0] - Resolved gap size in pixels (polygon is inset by gap/2).
  * @param {number} [radiusPx=0] - Rounding radius in pixels.
  * @param {number} [reach=0.45] - Max fraction of each edge consumed by rounding.
+ * @param {Array<number[]>} [clipPolygon] - Optional convex polygon to clip to
+ *        before insetting. When absent, behavior is identical to before.
  * @returns {string} SVG path data string.
  */
-export function borderPath(polygon, style, gap, radiusPx, reach) {
+export function borderPath(polygon, style, gap, radiusPx, reach, clipPolygon) {
     style = style || "straight";
-    var inset = gap ? insetPolygon(polygon, gap) : polygon;
+    var clipped = clipPolygon ? clipConvex(polygon, clipPolygon) : polygon;
+    var inset = gap ? insetPolygon(clipped, gap) : clipped;
 
     if (style === "adaptive rounding" && radiusPx > 0) {
         return roundedPath(inset, radiusPx, reach || 0.45);

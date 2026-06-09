@@ -12,6 +12,7 @@ export default {
         chart_breakpoint: 600,
 
         gap: 0.15,
+        group_gap: 0.6,
         clip_type: "circle",
         advanced_settings: false,
         seed: 41,

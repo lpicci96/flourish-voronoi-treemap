@@ -54,10 +54,11 @@ function resamplePolygon(polygon, count) {
  * Entering cells appear instantly. Updating cells morph via point-by-point
  * interpolation. Exiting cells fade out.
  */
-export function transitionCells({ selection, leaves, duration, borderStyle, gap, radiusPx, reach, fillFn, applyEvents }) {
+export function transitionCells({ selection, leaves, duration, borderStyle, gap, radiusPx, reach, insetGroupByParent, fillFn, applyEvents }) {
 
     function cellFillPath(d) {
-        return borderPath(d.polygon, borderStyle, gap, radiusPx, reach);
+        var clipPoly = insetGroupByParent ? insetGroupByParent.get(d.parent) : null;
+        return borderPath(d.polygon, borderStyle, gap, radiusPx, reach, clipPoly);
     }
 
     // --- Ensure layers exist in order ---
@@ -103,6 +104,7 @@ export function transitionCells({ selection, leaves, duration, borderStyle, gap,
                 .duration(duration)
                 .ease(d3.easeCubicInOut)
                 .attrTween("d", function() {
+                    const clipPoly = insetGroupByParent ? insetGroupByParent.get(d.parent) : null;
                     return function(t) {
                         const interp = oldResampled.map(function(pt, i) {
                             return [
@@ -110,7 +112,7 @@ export function transitionCells({ selection, leaves, duration, borderStyle, gap,
                                 pt[1] + (newResampled[i][1] - pt[1]) * t
                             ];
                         });
-                        return borderPath(interp, borderStyle, gap, radiusPx, reach);
+                        return borderPath(interp, borderStyle, gap, radiusPx, reach, clipPoly);
                     };
                 })
                 .attr("fill", fillFn)
