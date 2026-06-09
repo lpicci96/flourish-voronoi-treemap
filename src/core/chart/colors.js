@@ -31,9 +31,16 @@ export function jitterColor(baseColor, leafName, amount) {
     if (!amount || Number(amount) === 0) return baseColor;
     const hsl = d3.hsl(baseColor);
     // Use a deterministic hash to get a value centered between -0.5 and 0.5
+    // so the shift is symmetric around the base lightness (max delta ±amount/2).
     const raw = Math.abs(simpleHash(leafName));
     const hashVal = (raw % 1000) / 1000 - 0.5;
-    hsl.l = Math.max(0, Math.min(1, hsl.l + hashVal * amount));
+    const target = hsl.l + hashVal * amount;
+    // Clamp into a safe band rather than [0, 1]: reserving headroom from pure
+    // black/white prevents already-light/dark base colors from flattening to a
+    // flat extreme, keeping jittered leaves recognisable as the same category.
+    const SAFE_MIN = 0.15;
+    const SAFE_MAX = 0.85;
+    hsl.l = Math.max(SAFE_MIN, Math.min(SAFE_MAX, target));
     return hsl.formatHex();
 }
 
