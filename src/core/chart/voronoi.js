@@ -136,7 +136,7 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
 
     // Always compute layout with centered clip so cell shapes stay consistent
     // regardless of alignment setting. Alignment is applied as a translation.
-    const clip = clipVoronoi(voronoi_settings.clip_type, height, width, "center");
+    const clip = clipVoronoi(voronoi_settings.clip_type, height, width);
     computeLayout(hierarchy, voronoi_settings, height, width, clip);
 
     const alignX = getAlignmentOffset(clip, width, voronoi_settings.alignment);
