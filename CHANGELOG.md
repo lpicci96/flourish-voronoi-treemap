@@ -2,7 +2,7 @@
 All notable changes to this template will be documented in this file.
 
 
-## [v0.7.2] - 2026-06-09
+## [Unreleased]
 
 ### Fixed
 - Cells and labels with duplicate names (common in two-level hierarchies, e.g. a shared "Other" leaf under multiple groups) no longer collide in the D3 data join and disappear — the join is now keyed on each leaf's full ancestor path (`transitions.js`, `labels.js`)
@@ -18,6 +18,9 @@ All notable changes to this template will be documented in this file.
 
 ### Internal
 - Removed dead alignment code from `clip.js` (alignment is applied as a post-layout translation in `voronoi.js`, so clip shapes are always generated centred)
+
+### Documentation
+- Corrected the documented default colour jitter amount to 0.1 in GUIDE.md and the "Jitter amount" control description — both previously stated/recommended 0.05, which never matched the code (the default has always been 0.1)
 
 
 ## [v0.7.1] - 2026-03-11

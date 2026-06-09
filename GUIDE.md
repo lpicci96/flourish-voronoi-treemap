@@ -49,7 +49,7 @@ When a Voronoi edge is too short for effective rounding (shorter than half the r
 
 **Colour Jittering**
 
-When using a two-level hierarchy without a colour category column, all child cells within a parent group share the same base colour. Colour jittering adds a subtle, deterministic lightness shift to each child cell, making it easier to distinguish individual polygons within a group. The shift is derived from a hash of the cell's name, so the same cell always gets the same adjustment — no randomness between redraws. The jitter amount controls the maximum lightness variation (0–0.5); the default of 0.05 provides subtle differentiation without compromising the overall colour scheme. Jittering is automatically disabled when a colour category column is provided, since cells already have distinct colours.
+When using a two-level hierarchy without a colour category column, all child cells within a parent group share the same base colour. Colour jittering adds a subtle, deterministic lightness shift to each child cell, making it easier to distinguish individual polygons within a group. The shift is derived from a hash of the cell's name, so the same cell always gets the same adjustment — no randomness between redraws. The jitter amount controls the maximum lightness variation; the default of 0.1 provides subtle differentiation without compromising the overall colour scheme, and the resulting lightness is kept within a safe band (0.15–0.85) so it never flattens to near-black or near-white. Jittering is automatically disabled when a colour category column is provided, since cells already have distinct colours.
 
 The template accepts a flat dataset with up to two hierarchy levels:
 
@@ -80,12 +80,13 @@ Please reach out for any bug reports or feature requests.
 - Enhanced convergence logging for small multiples
 
 
-**v0.7.2 - 2026-06-09**
+**Unreleased**
 - Fixed cells/labels disappearing when two leaves shared the same name (common in two-level hierarchies)
 - Fixed value labels showing six decimal places for small numbers below the K/M/B/T scaling threshold
 - Colour jitter now stays within a safe lightness range so child-cell shading never flattens to near-black/white or reads as a different category
 - Pointer cursor now appears only when the popup is actually clickable (panel modes), not for hover-only popups
 - Added unit tests for number formatting, colours, clip shapes, and borders
+- Corrected the documented default colour jitter amount to 0.1 (was incorrectly stated as 0.05)
 
 **v0.7.1 - 2026-03-11**
 - Label filter mode: replaced single "Show specific labels" whitelist with a 3-mode dropdown (None / Show only / Hide) supporting both whitelist and blacklist filtering
