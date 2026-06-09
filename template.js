@@ -19515,6 +19515,7 @@ var template = (function (exports) {
           chart_breakpoint: 600,
 
           gap: 0.15,
+          group_gap: 0.6,
           clip_type: "circle",
           advanced_settings: false,
           seed: 41,
@@ -28160,6 +28161,296 @@ var template = (function (exports) {
    * License, v. 2.0. If a copy of the MPL was not distributed with this
    * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+  // ── Polygon inset ───────────────────────────────────────────────────────
+
+  /**
+   * Inset a convex polygon inward by `amount` pixels.
+   * Each edge is offset inward by `amount / 2` (so two adjacent cells
+   * produce a full `amount` gap between them). Consecutive offset edges
+   * are intersected to obtain new vertices.
+   *
+   * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
+   * @param {number} amount - Total gap size in pixels.
+   * @returns {Array<number[]>} Inset polygon (array of [x, y] pairs).
+   */
+  function insetPolygon(polygon, amount) {
+      if (!polygon || polygon.length < 3 || !amount) return polygon;
+
+      const half = amount / 2;
+      const n = polygon.length;
+
+      // Determine winding via signed area (shoelace formula).
+      // In screen coords (y-down): positive = clockwise, negative = counter-clockwise.
+      let signedArea2 = 0;
+      for (let i = 0; i < n; i++) {
+          const a = polygon[i];
+          const b = polygon[(i + 1) % n];
+          signedArea2 += (a[0] * b[1] - b[0] * a[1]);
+      }
+      // In screen coords (y-down): positive area = CCW, inward normal = (-dy, dx)
+      // negative area = CW, inward normal = (dy, -dx)
+      const sign = signedArea2 > 0 ? -1 : 1;
+
+      // Compute inward-offset edges
+      const edges = [];
+      for (let i = 0; i < n; i++) {
+          const a = polygon[i];
+          const b = polygon[(i + 1) % n];
+          const dx = b[0] - a[0];
+          const dy = b[1] - a[1];
+          const len = Math.hypot(dx, dy);
+          if (len < 1e-10) continue;
+          // Inward normal: CW → (dy, -dx), CCW → (-dy, dx)
+          const nx = sign * dy / len;
+          const ny = sign * -dx / len;
+          edges.push({
+              ax: a[0] + nx * half,
+              ay: a[1] + ny * half,
+              bx: b[0] + nx * half,
+              by: b[1] + ny * half
+          });
+      }
+
+      if (edges.length < 3) return polygon;
+
+      // Intersect consecutive offset edges to get inset vertices
+      const result = [];
+      for (let i = 0; i < edges.length; i++) {
+          const e1 = edges[i];
+          const e2 = edges[(i + 1) % edges.length];
+          const pt = lineLineIntersection(
+              e1.ax, e1.ay, e1.bx, e1.by,
+              e2.ax, e2.ay, e2.bx, e2.by
+          );
+          if (pt) {
+              result.push(pt);
+          }
+      }
+
+      return result.length >= 3 ? result : polygon;
+  }
+
+  /**
+   * Intersect two lines (not segments) defined by two points each.
+   * Returns [x, y] or null if parallel.
+   */
+  function lineLineIntersection(x1, y1, x2, y2, x3, y3, x4, y4) {
+      const denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+      if (Math.abs(denom) < 1e-10) return null;
+      const t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom;
+      return [x1 + t * (x2 - x1), y1 + t * (y2 - y1)];
+  }
+
+  // ── Convex polygon clip ─────────────────────────────────────────────────
+
+  /**
+   * Clip a convex subject polygon against a convex clip polygon
+   * (Sutherland–Hodgman). Both polygons are assumed convex.
+   *
+   * Winding is detected from the clip polygon's signed area so that the
+   * "inside" half-plane test is consistent regardless of the clip's
+   * orientation (works in screen coords, y-down).
+   *
+   * If the clipped result has fewer than 3 vertices (no or degenerate
+   * overlap), the original `subjectPolygon` is returned as a fallback —
+   * matching insetPolygon's passthrough behavior.
+   *
+   * @param {Array<number[]>} subjectPolygon - Convex polygon to be clipped.
+   * @param {Array<number[]>} clipPolygon - Convex clipping polygon.
+   * @returns {Array<number[]>} Clipped polygon (array of [x, y] pairs).
+   */
+  function clipConvex(subjectPolygon, clipPolygon) {
+      if (!subjectPolygon || subjectPolygon.length < 3) return subjectPolygon;
+      if (!clipPolygon || clipPolygon.length < 3) return subjectPolygon;
+
+      const m = clipPolygon.length;
+
+      // Signed area of clip polygon (shoelace). In screen coords (y-down):
+      // positive = CCW, negative = CW. We orient the inside test accordingly.
+      let signedArea2 = 0;
+      for (let i = 0; i < m; i++) {
+          const a = clipPolygon[i];
+          const b = clipPolygon[(i + 1) % m];
+          signedArea2 += (a[0] * b[1] - b[0] * a[1]);
+      }
+      // For an edge a→b, the cross product (b-a) × (p-a) has a consistent sign
+      // for points on the interior side. The sign depends on winding.
+      const insideSign = signedArea2 > 0 ? 1 : -1;
+
+      function cross(a, b, p) {
+          return (b[0] - a[0]) * (p[1] - a[1]) - (b[1] - a[1]) * (p[0] - a[0]);
+      }
+      function inside(a, b, p) {
+          // On-edge (≈0) counts as inside.
+          return cross(a, b, p) * insideSign >= -1e-9;
+      }
+
+      let output = subjectPolygon;
+
+      for (let i = 0; i < m; i++) {
+          const a = clipPolygon[i];
+          const b = clipPolygon[(i + 1) % m];
+          const input = output;
+          output = [];
+          if (input.length === 0) break;
+
+          for (let j = 0; j < input.length; j++) {
+              const cur = input[j];
+              const prev = input[(j + input.length - 1) % input.length];
+              const curIn = inside(a, b, cur);
+              const prevIn = inside(a, b, prev);
+
+              if (curIn) {
+                  if (!prevIn) {
+                      const pt = lineLineIntersection(
+                          prev[0], prev[1], cur[0], cur[1],
+                          a[0], a[1], b[0], b[1]
+                      );
+                      if (pt) output.push(pt);
+                  }
+                  output.push(cur);
+              } else if (prevIn) {
+                  const pt = lineLineIntersection(
+                      prev[0], prev[1], cur[0], cur[1],
+                      a[0], a[1], b[0], b[1]
+                  );
+                  if (pt) output.push(pt);
+              }
+          }
+      }
+
+      return output.length >= 3 ? output : subjectPolygon;
+  }
+
+  // ── Per-cell path generators ────────────────────────────────────────────
+
+  /**
+   * Straight polygon path: M...L...L...Z
+   */
+  function straightPath(polygon) {
+      return "M" + polygon.map(pt => pt[0] + "," + pt[1]).join("L") + "Z";
+  }
+
+  /**
+   * Rounded polygon path using straight edges and quadratic Bézier corners.
+   *
+   * For each edge, cutback points are placed at `radius` distance (or
+   * `reach` fraction of edge length, whichever is smaller) from each vertex.
+   * Straight L segments run along the edge between cutback points, and
+   * Q curves round each corner using the vertex as the control point.
+   *
+   * When a Voronoi edge is too short for effective rounding (shorter than
+   * half the radius), the two Q corners flanking it are merged into a
+   * single cubic Bézier that uses both original vertices as control points.
+   * This keeps every vertex in the path while placing curve endpoints on
+   * the adjacent long edges where the cutback is large enough for smooth
+   * rounding.
+   *
+   * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
+   * @param {number} radius - Maximum cutback distance from each vertex (px).
+   * @param {number} reach - Max fraction of each edge that rounding can consume (0–0.5).
+   * @returns {string} SVG path data string.
+   */
+  function roundedPath(polygon, radius, reach) {
+      if (!polygon || polygon.length < 3) return straightPath(polygon);
+      var n = polygon.length;
+      var minEdge = radius * 0.5;
+
+      // For each edge, compute depart (near start), arrive (near end), and length
+      var edges = [];
+      for (var i = 0; i < n; i++) {
+          var a = polygon[i];
+          var b = polygon[(i + 1) % n];
+          var len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+          var cut = len > 0 ? Math.min(radius, len * reach) : 0;
+          var t = len > 0 ? cut / len : 0;
+          edges.push({
+              dx: a[0] + (b[0] - a[0]) * t,
+              dy: a[1] + (b[1] - a[1]) * t,
+              ax: b[0] + (a[0] - b[0]) * t,
+              ay: b[1] + (a[1] - b[1]) * t,
+              len: len
+          });
+      }
+
+      // Find a starting edge that is not short so merges don't wrap the start
+      var start = 0;
+      for (var s = 0; s < n; s++) {
+          if (edges[s].len >= minEdge) { start = s; break; }
+      }
+
+      var d = "M" + edges[start].dx + "," + edges[start].dy;
+
+      var processed = 0;
+      var i = start;
+      while (processed < n) {
+          var edge = edges[i];
+          var nextI = (i + 1) % n;
+          var nextEdge = edges[nextI];
+          var vertex = polygon[nextI];
+
+          // Straight line along edge to arrive point
+          d += "L" + edge.ax + "," + edge.ay;
+
+          // Check if the next edge is too short for effective rounding
+          if (nextEdge.len >= minEdge || processed >= n - 1) {
+              // Normal: quadratic Bézier around corner vertex
+              d += "Q" + vertex[0] + "," + vertex[1] + " " + nextEdge.dx + "," + nextEdge.dy;
+              i = nextI;
+              processed++;
+          } else {
+              var afterI = (nextI + 1) % n;
+              var afterEdge = edges[afterI];
+              // Single short edge followed by a long edge: merge both corners
+              // into one cubic Bézier that keeps both vertices as control points
+              if (afterEdge.len >= minEdge || processed >= n - 2) {
+                  var afterVertex = polygon[afterI];
+                  d += "C" + vertex[0] + "," + vertex[1] + " " +
+                       afterVertex[0] + "," + afterVertex[1] + " " +
+                       afterEdge.dx + "," + afterEdge.dy;
+                  i = afterI;
+                  processed += 2;
+              } else {
+                  // Chain of short edges: fall back to normal Q
+                  d += "Q" + vertex[0] + "," + vertex[1] + " " + nextEdge.dx + "," + nextEdge.dy;
+                  i = nextI;
+                  processed++;
+              }
+          }
+      }
+
+      d += "Z";
+      return d;
+  }
+
+  // ── Single dispatcher ───────────────────────────────────────────────────
+
+  /**
+   * Return an SVG path `d` string for a single polygon.
+   * @param {Array<number[]>} polygon - Array of coordinate pairs.
+   * @param {string} [style="straight"] - Border rounding style.
+   * @param {number} [gap=0] - Resolved gap size in pixels (polygon is inset by gap/2).
+   * @param {number} [radiusPx=0] - Rounding radius in pixels.
+   * @param {number} [reach=0.45] - Max fraction of each edge consumed by rounding.
+   * @param {Array<number[]>} [clipPolygon] - Optional convex polygon to clip to
+   *        before insetting. When absent, behavior is identical to before.
+   * @returns {string} SVG path data string.
+   */
+  function borderPath(polygon, style, gap, radiusPx, reach, clipPolygon) {
+      style = style || "straight";
+      var clipped = clipPolygon ? clipConvex(polygon, clipPolygon) : polygon;
+      var inset = gap ? insetPolygon(clipped, gap) : clipped;
+
+      if (style === "adaptive rounding" && radiusPx > 0) {
+          return roundedPath(inset, radiusPx, reach || 0.45);
+      }
+      return straightPath(inset);
+  }
+
+  /* This Source Code Form is subject to the terms of the Mozilla Public
+   * License, v. 2.0. If a copy of the MPL was not distributed with this
+   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 
   /**
    * Create a seeded pseudo-random number generator (mulberry32).
@@ -28453,8 +28744,9 @@ var template = (function (exports) {
    * @param {object} labelSettings - The state.labels settings object.
    * @param {object} numberFormatState - The raw state.number_format object.
    * @param {object} dataColumnNames - Flourish SDK column_names mapping (binding key → actual CSV header).
+   * @param {object} dataMetadata - Flourish SDK metadata mapping (binding key → per-column metadata, e.g. output_format_id).
    */
-  function configurePopup(popup, leaves, localization, number_format, labelSettings, numberFormatState, dataColumnNames) {
+  function configurePopup(popup, leaves, localization, number_format, labelSettings, numberFormatState, dataColumnNames, dataMetadata) {
       const sampleRow = leaves[0] && leaves[0].data._row;
       if (!sampleRow) return;
 
@@ -28479,6 +28771,19 @@ var template = (function (exports) {
       }
       const formatters = { values: formatter };
 
+      // Build a parallel formatters array for the multi-column `info` binding.
+      // Each element uses the column's output_format_id metadata when available
+      // (info-popup resolves it via getFormatter), otherwise a string passthrough.
+      const infoHeaders = dataColumnNames && dataColumnNames.info;
+      if (Array.isArray(infoHeaders) && infoHeaders.length) {
+          const infoMeta = dataMetadata && Array.isArray(dataMetadata.info) ? dataMetadata.info : [];
+          formatters.info = infoHeaders.map(function(_, i) {
+              return (infoMeta[i] && infoMeta[i].output_format_id)
+                  ? infoMeta[i]                                  // {output_format_id} — info-popup resolves it
+                  : function(v) { return v == null ? "" : String(v); };  // string / passthrough
+          });
+      }
+
       popup.setColumnNames(columnNames);
       popup.setFormatters(formatters);
   }
@@ -28490,212 +28795,6 @@ var template = (function (exports) {
    */
   function getPopupData(leaf) {
       return { ...leaf.data._row };
-  }
-
-  /* This Source Code Form is subject to the terms of the Mozilla Public
-   * License, v. 2.0. If a copy of the MPL was not distributed with this
-   * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-
-  // ── Polygon inset ───────────────────────────────────────────────────────
-
-  /**
-   * Inset a convex polygon inward by `amount` pixels.
-   * Each edge is offset inward by `amount / 2` (so two adjacent cells
-   * produce a full `amount` gap between them). Consecutive offset edges
-   * are intersected to obtain new vertices.
-   *
-   * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
-   * @param {number} amount - Total gap size in pixels.
-   * @returns {Array<number[]>} Inset polygon (array of [x, y] pairs).
-   */
-  function insetPolygon(polygon, amount) {
-      if (!polygon || polygon.length < 3 || !amount) return polygon;
-
-      const half = amount / 2;
-      const n = polygon.length;
-
-      // Determine winding via signed area (shoelace formula).
-      // In screen coords (y-down): positive = clockwise, negative = counter-clockwise.
-      let signedArea2 = 0;
-      for (let i = 0; i < n; i++) {
-          const a = polygon[i];
-          const b = polygon[(i + 1) % n];
-          signedArea2 += (a[0] * b[1] - b[0] * a[1]);
-      }
-      // In screen coords (y-down): positive area = CCW, inward normal = (-dy, dx)
-      // negative area = CW, inward normal = (dy, -dx)
-      const sign = signedArea2 > 0 ? -1 : 1;
-
-      // Compute inward-offset edges
-      const edges = [];
-      for (let i = 0; i < n; i++) {
-          const a = polygon[i];
-          const b = polygon[(i + 1) % n];
-          const dx = b[0] - a[0];
-          const dy = b[1] - a[1];
-          const len = Math.hypot(dx, dy);
-          if (len < 1e-10) continue;
-          // Inward normal: CW → (dy, -dx), CCW → (-dy, dx)
-          const nx = sign * dy / len;
-          const ny = sign * -dx / len;
-          edges.push({
-              ax: a[0] + nx * half,
-              ay: a[1] + ny * half,
-              bx: b[0] + nx * half,
-              by: b[1] + ny * half
-          });
-      }
-
-      if (edges.length < 3) return polygon;
-
-      // Intersect consecutive offset edges to get inset vertices
-      const result = [];
-      for (let i = 0; i < edges.length; i++) {
-          const e1 = edges[i];
-          const e2 = edges[(i + 1) % edges.length];
-          const pt = lineLineIntersection(
-              e1.ax, e1.ay, e1.bx, e1.by,
-              e2.ax, e2.ay, e2.bx, e2.by
-          );
-          if (pt) {
-              result.push(pt);
-          }
-      }
-
-      return result.length >= 3 ? result : polygon;
-  }
-
-  /**
-   * Intersect two lines (not segments) defined by two points each.
-   * Returns [x, y] or null if parallel.
-   */
-  function lineLineIntersection(x1, y1, x2, y2, x3, y3, x4, y4) {
-      const denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-      if (Math.abs(denom) < 1e-10) return null;
-      const t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom;
-      return [x1 + t * (x2 - x1), y1 + t * (y2 - y1)];
-  }
-
-  // ── Per-cell path generators ────────────────────────────────────────────
-
-  /**
-   * Straight polygon path: M...L...L...Z
-   */
-  function straightPath(polygon) {
-      return "M" + polygon.map(pt => pt[0] + "," + pt[1]).join("L") + "Z";
-  }
-
-  /**
-   * Rounded polygon path using straight edges and quadratic Bézier corners.
-   *
-   * For each edge, cutback points are placed at `radius` distance (or
-   * `reach` fraction of edge length, whichever is smaller) from each vertex.
-   * Straight L segments run along the edge between cutback points, and
-   * Q curves round each corner using the vertex as the control point.
-   *
-   * When a Voronoi edge is too short for effective rounding (shorter than
-   * half the radius), the two Q corners flanking it are merged into a
-   * single cubic Bézier that uses both original vertices as control points.
-   * This keeps every vertex in the path while placing curve endpoints on
-   * the adjacent long edges where the cutback is large enough for smooth
-   * rounding.
-   *
-   * @param {Array<number[]>} polygon - Array of [x, y] coordinate pairs.
-   * @param {number} radius - Maximum cutback distance from each vertex (px).
-   * @param {number} reach - Max fraction of each edge that rounding can consume (0–0.5).
-   * @returns {string} SVG path data string.
-   */
-  function roundedPath(polygon, radius, reach) {
-      if (!polygon || polygon.length < 3) return straightPath(polygon);
-      var n = polygon.length;
-      var minEdge = radius * 0.5;
-
-      // For each edge, compute depart (near start), arrive (near end), and length
-      var edges = [];
-      for (var i = 0; i < n; i++) {
-          var a = polygon[i];
-          var b = polygon[(i + 1) % n];
-          var len = Math.hypot(b[0] - a[0], b[1] - a[1]);
-          var cut = len > 0 ? Math.min(radius, len * reach) : 0;
-          var t = len > 0 ? cut / len : 0;
-          edges.push({
-              dx: a[0] + (b[0] - a[0]) * t,
-              dy: a[1] + (b[1] - a[1]) * t,
-              ax: b[0] + (a[0] - b[0]) * t,
-              ay: b[1] + (a[1] - b[1]) * t,
-              len: len
-          });
-      }
-
-      // Find a starting edge that is not short so merges don't wrap the start
-      var start = 0;
-      for (var s = 0; s < n; s++) {
-          if (edges[s].len >= minEdge) { start = s; break; }
-      }
-
-      var d = "M" + edges[start].dx + "," + edges[start].dy;
-
-      var processed = 0;
-      var i = start;
-      while (processed < n) {
-          var edge = edges[i];
-          var nextI = (i + 1) % n;
-          var nextEdge = edges[nextI];
-          var vertex = polygon[nextI];
-
-          // Straight line along edge to arrive point
-          d += "L" + edge.ax + "," + edge.ay;
-
-          // Check if the next edge is too short for effective rounding
-          if (nextEdge.len >= minEdge || processed >= n - 1) {
-              // Normal: quadratic Bézier around corner vertex
-              d += "Q" + vertex[0] + "," + vertex[1] + " " + nextEdge.dx + "," + nextEdge.dy;
-              i = nextI;
-              processed++;
-          } else {
-              var afterI = (nextI + 1) % n;
-              var afterEdge = edges[afterI];
-              // Single short edge followed by a long edge: merge both corners
-              // into one cubic Bézier that keeps both vertices as control points
-              if (afterEdge.len >= minEdge || processed >= n - 2) {
-                  var afterVertex = polygon[afterI];
-                  d += "C" + vertex[0] + "," + vertex[1] + " " +
-                       afterVertex[0] + "," + afterVertex[1] + " " +
-                       afterEdge.dx + "," + afterEdge.dy;
-                  i = afterI;
-                  processed += 2;
-              } else {
-                  // Chain of short edges: fall back to normal Q
-                  d += "Q" + vertex[0] + "," + vertex[1] + " " + nextEdge.dx + "," + nextEdge.dy;
-                  i = nextI;
-                  processed++;
-              }
-          }
-      }
-
-      d += "Z";
-      return d;
-  }
-
-  // ── Single dispatcher ───────────────────────────────────────────────────
-
-  /**
-   * Return an SVG path `d` string for a single polygon.
-   * @param {Array<number[]>} polygon - Array of coordinate pairs.
-   * @param {string} [style="straight"] - Border rounding style.
-   * @param {number} [gap=0] - Resolved gap size in pixels (polygon is inset by gap/2).
-   * @param {number} [radiusPx=0] - Rounding radius in pixels.
-   * @param {number} [reach=0.45] - Max fraction of each edge consumed by rounding.
-   * @returns {string} SVG path data string.
-   */
-  function borderPath(polygon, style, gap, radiusPx, reach) {
-      style = style || "straight";
-      var inset = gap ? insetPolygon(polygon, gap) : polygon;
-
-      if (style === "adaptive rounding" && radiusPx > 0) {
-          return roundedPath(inset, radiusPx, reach || 0.45);
-      }
-      return straightPath(inset);
   }
 
   /* This Source Code Form is subject to the terms of the Mozilla Public
@@ -28752,10 +28851,11 @@ var template = (function (exports) {
    * Entering cells appear instantly. Updating cells morph via point-by-point
    * interpolation. Exiting cells fade out.
    */
-  function transitionCells({ selection, leaves, duration, borderStyle, gap, radiusPx, reach, fillFn, applyEvents }) {
+  function transitionCells({ selection, leaves, duration, borderStyle, gap, radiusPx, reach, insetGroupByParent, fillFn, applyEvents }) {
 
       function cellFillPath(d) {
-          return borderPath(d.polygon, borderStyle, gap, radiusPx, reach);
+          var clipPoly = insetGroupByParent ? insetGroupByParent.get(d.parent) : null;
+          return borderPath(d.polygon, borderStyle, gap, radiusPx, reach, clipPoly);
       }
 
       // --- Ensure layers exist in order ---
@@ -28801,6 +28901,7 @@ var template = (function (exports) {
                   .duration(duration)
                   .ease(cubicInOut)
                   .attrTween("d", function() {
+                      const clipPoly = insetGroupByParent ? insetGroupByParent.get(d.parent) : null;
                       return function(t) {
                           const interp = oldResampled.map(function(pt, i) {
                               return [
@@ -28808,7 +28909,7 @@ var template = (function (exports) {
                                   pt[1] + (newResampled[i][1] - pt[1]) * t
                               ];
                           });
-                          return borderPath(interp, borderStyle, gap, radiusPx, reach);
+                          return borderPath(interp, borderStyle, gap, radiusPx, reach, clipPoly);
                       };
                   })
                   .attr("fill", fillFn)
@@ -29551,7 +29652,7 @@ var template = (function (exports) {
    * @param {object} popup - Flourish popup instance.
    * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
    */
-  function renderCells(container, leaves, root, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx, radiusPx) {
+  function renderCells(container, leaves, root, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx, radiusPx, insetGroupByParent) {
       const sel = select(container);
 
       let g = sel.selectAll("g.cells").data([null]);
@@ -29569,6 +29670,7 @@ var template = (function (exports) {
           gap: gapPx,
           radiusPx: radiusPx,
           reach: voronoi_settings.border_rounding_reach,
+          insetGroupByParent: insetGroupByParent,
           fillFn: d => getCellColor(d, root, colors, colorSettings),
           applyEvents: sel => {
               sel.on("pointerenter", function(event, d) {
@@ -29614,7 +29716,7 @@ var template = (function (exports) {
    * @param {Function} number_format - Flourish number_format factory.
    * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
    */
-  function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings, number_format_state, dataColumnNames) {
+  function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings, number_format_state, dataColumnNames, dataMetadata) {
       if (!hierarchy) return;
 
       // Always compute layout with centered clip so cell shapes stay consistent
@@ -29646,7 +29748,7 @@ var template = (function (exports) {
 
       checkConvergence(hierarchy, voronoi_settings.convergence_ratio, voronoi_settings.min_weight_ratio);
 
-      configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames);
+      configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames, dataMetadata);
 
       // Pre-format values on leaves for value labels
       if (labelSettings && labelSettings.show_value_labels) {
@@ -29671,7 +29773,24 @@ var template = (function (exports) {
       // Convert proportional border radius (percentage of shorter dimension) to pixels
       var radiusPx = voronoi_settings.border_radius ? voronoi_settings.border_radius / 100 * Math.min(width, height) : 0;
 
-      renderCells(alignNode, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx, radiusPx);
+      // Larger gap between first-level groups (additive: group_gap + gap at group
+      // boundaries, gap within a group). Only applies to two-level data.
+      var groupGapPx = voronoi_settings.group_gap ? voronoi_settings.group_gap / 100 * Math.min(width, height) : 0;
+      var hasGroups = hierarchy.height >= 2;   // single-level: leaves are direct children of root
+
+      // Map each first-level group node to its inset group polygon. A leaf clips
+      // to its parent group's inset polygon before its own gap inset is applied.
+      var insetGroupByParent = null;
+      if (hasGroups && groupGapPx > 0 && hierarchy.children) {
+          insetGroupByParent = new Map();
+          hierarchy.children.forEach(function(g) {
+              if (g.polygon && g.polygon.length >= 3) {
+                  insetGroupByParent.set(g, insetPolygon(g.polygon, groupGapPx));
+              }
+          });
+      }
+
+      renderCells(alignNode, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx, radiusPx, insetGroupByParent);
       renderLabels(alignNode, leaves, labelSettings, animation_duration, hierarchy, colors);
   }
 
@@ -29744,6 +29863,7 @@ var template = (function (exports) {
   function update() {
       const rows = Array.isArray(data) ? data : data.data;
       const dataColumnNames = rows.column_names || {};
+      const dataMetadata = rows.metadata || {};
 
       // Update filter control with unique values from the filter column
       const filterOptions = getFilterOptions(rows);
@@ -29828,7 +29948,7 @@ var template = (function (exports) {
           .update(function(facet) {
               const item = facet.data;
               if (!item || !item.hierarchy) return;
-              drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels, state.number_format, dataColumnNames);
+              drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels, state.number_format, dataColumnNames, dataMetadata);
           });
 
       sizeSvg();

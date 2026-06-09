@@ -14,7 +14,9 @@ All notable changes to this template will be documented in this file.
 - Label font sizing now reads each cell's area directly from its polygon rather than via a parallel-array index, removing a fragile ordering assumption (`labels.js`)
 
 ### Added
-- Unit tests for `number_formatting`, `colors`, `clip`, and `border` (63 new tests; total now 88) including regression guards for the formatter-decimals and colour-jitter fixes (`tests/`)
+- **Group spacing** (`group_gap`): a new setting that adds a larger gap between first-level groups than between sibling cells, so top-level categories read as separated clusters. Insets each first-level group polygon and clips its leaves to it; only applies to two-level data and is a no-op when set to 0 (`state.js`, `voronoi.js`, `transitions.js`, `border.js`, `template.yml`)
+- **Info for popups** (`info`): a new optional `columns` binding that lets users add any number of extra columns to the popup/panel; each renders as a labelled row using its column header, with per-column number formatting from the dataset metadata. The existing single-column custom tooltip is unchanged (`popup.js`, `update.js`, `voronoi.js`, `template.yml`)
+- Unit tests for `number_formatting`, `colors`, `clip`, and `border` (72 new tests; total now 97) including regression guards for the formatter-decimals and colour-jitter fixes and coverage of the new convex-clip helper (`tests/`)
 
 ### Internal
 - Removed dead alignment code from `clip.js` (alignment is applied as a post-layout translation in `voronoi.js`, so clip shapes are always generated centred)
