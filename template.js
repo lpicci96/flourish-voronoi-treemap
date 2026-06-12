@@ -19542,16 +19542,16 @@ var template = (function (exports) {
       },
       // color module state properties
       colors: {
-          // Colourblind-safe categorical palette. Every colour is dark enough for
-          // legible white labels (WCAG contrast >= 4.5:1 against #fff) and the five
-          // remain distinguishable under deuteranopia, protanopia and tritanopia
-          // (min CIE76 ΔE >= ~22 across all three simulations).
+          // Original palette with the teal and orange deepened so all five clear
+          // legible white labels (WCAG contrast >= 4.5:1 against #fff). Blue, red
+          // and purple are unchanged. Stays distinguishable under red-green colour
+          // vision deficiency (min CIE76 ΔE ~24 deuteranopia / ~25 protanopia).
           categorical_palette: [
-              "#242bba", // blue
-              "#278463", // teal-green
-              "#8f7226", // ochre
-              "#733226", // brick red
-              "#592179", // plum
+              "#0e6fc4", // blue
+              "#0c7f7d", // teal
+              "#a60737", // red
+              "#b85800", // orange
+              "#823cec", // purple
 
           ],
           jitter_shade: true, // custom property to jitter shade
