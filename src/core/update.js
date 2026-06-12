@@ -13,6 +13,7 @@ import { updateChartHeight } from "./chart/sizing";
 export default function() {
     const rows = Array.isArray(data) ? data : data.data;
     const dataColumnNames = rows.column_names || {};
+    const dataMetadata = rows.metadata || {};
 
     // Update filter control with unique values from the filter column
     const filterOptions = getFilterOptions(rows);
@@ -88,16 +89,19 @@ export default function() {
         hierarchy: facetHierarchies.get(key)
     }));
 
-    // Drive the facets grid
+    // Drive the facets grid. Keep the facet module's own transitions in step
+    // with the cell/label animations (it defaults to 1000ms, which on load
+    // glides the facet container out of sync and causes a visible bounce).
     facets
         .data(facetData, d => d.name)
         .width(width)
         .height(height)
+        .duration(state.animation_duration || 0)
         .hideTitle("")
         .update(function(facet) {
             const item = facet.data;
             if (!item || !item.hierarchy) return;
-            drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels, state.number_format, dataColumnNames);
+            drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels, state.number_format, dataColumnNames, dataMetadata);
         });
 
     sizeSvg();

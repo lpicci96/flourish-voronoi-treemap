@@ -32,7 +32,7 @@ flourish run           # Preview locally
 │           ├── colors.js          # Color scale + deterministic hash-based jitter
 │           ├── labels.js          # Proportional/fixed font sizing, text wrapping
 │           ├── border.js          # Straight, rounded, and adaptive border rounding
-│           ├── clip.js            # Clipping polygons for 8 shapes (circle, rect, etc.)
+│           ├── clip.js            # Clipping polygons for 7 shapes (circle, rect, etc.)
 │           ├── transitions.js     # Polygon morphing across fill/border/hit layers
 │           ├── convergence.js     # Post-hoc layout convergence diagnostics
 │           ├── popup.js           # Maps leaf data to Flourish info-popup columns

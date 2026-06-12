@@ -35,7 +35,7 @@ export default {
             name: "Roboto Condensed",
             url: "https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap",
         },
-        footer_note: `Flourish template by <a href="https://lpicci96.github.io/LucaPicci/" target="_blank">Luca Picci</a>`,
+        footer_note: `Flourish template by <a href="https://lpicci96.github.io/LucaPicci/" target="_blank" rel="noopener noreferrer">Luca Picci</a>`,
     },
     // color module state properties
     colors: {

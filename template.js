@@ -19538,7 +19538,7 @@ var template = (function (exports) {
               name: "Roboto Condensed",
               url: "https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap",
           },
-          footer_note: `Flourish template by <a href="https://lpicci96.github.io/LucaPicci/" target="_blank">Luca Picci</a>`,
+          footer_note: `Flourish template by <a href="https://lpicci96.github.io/LucaPicci/" target="_blank" rel="noopener noreferrer">Luca Picci</a>`,
       },
       // color module state properties
       colors: {
@@ -28744,8 +28744,9 @@ var template = (function (exports) {
    * @param {object} labelSettings - The state.labels settings object.
    * @param {object} numberFormatState - The raw state.number_format object.
    * @param {object} dataColumnNames - Flourish SDK column_names mapping (binding key → actual CSV header).
+   * @param {object} dataMetadata - Flourish SDK metadata mapping (binding key → per-column metadata, e.g. output_format_id).
    */
-  function configurePopup(popup, leaves, localization, number_format, labelSettings, numberFormatState, dataColumnNames) {
+  function configurePopup(popup, leaves, localization, number_format, labelSettings, numberFormatState, dataColumnNames, dataMetadata) {
       const sampleRow = leaves[0] && leaves[0].data._row;
       if (!sampleRow) return;
 
@@ -28769,6 +28770,19 @@ var template = (function (exports) {
           formatter = number_format(localization.getFormatterFunction());
       }
       const formatters = { values: formatter };
+
+      // Build a parallel formatters array for the multi-column `info` binding.
+      // Each element uses the column's output_format_id metadata when available
+      // (info-popup resolves it via getFormatter), otherwise a string passthrough.
+      const infoHeaders = dataColumnNames && dataColumnNames.info;
+      if (Array.isArray(infoHeaders) && infoHeaders.length) {
+          const infoMeta = dataMetadata && Array.isArray(dataMetadata.info) ? dataMetadata.info : [];
+          formatters.info = infoHeaders.map(function(_, i) {
+              return (infoMeta[i] && infoMeta[i].output_format_id)
+                  ? infoMeta[i]                                  // {output_format_id} — info-popup resolves it
+                  : function(v) { return v == null ? "" : String(v); };  // string / passthrough
+          });
+      }
 
       popup.setColumnNames(columnNames);
       popup.setFormatters(formatters);
@@ -29702,7 +29716,7 @@ var template = (function (exports) {
    * @param {Function} number_format - Flourish number_format factory.
    * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
    */
-  function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings, number_format_state, dataColumnNames) {
+  function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings, number_format_state, dataColumnNames, dataMetadata) {
       if (!hierarchy) return;
 
       // Always compute layout with centered clip so cell shapes stay consistent
@@ -29734,7 +29748,7 @@ var template = (function (exports) {
 
       checkConvergence(hierarchy, voronoi_settings.convergence_ratio, voronoi_settings.min_weight_ratio);
 
-      configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames);
+      configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames, dataMetadata);
 
       // Pre-format values on leaves for value labels
       if (labelSettings && labelSettings.show_value_labels) {
@@ -29849,6 +29863,7 @@ var template = (function (exports) {
   function update() {
       const rows = Array.isArray(data) ? data : data.data;
       const dataColumnNames = rows.column_names || {};
+      const dataMetadata = rows.metadata || {};
 
       // Update filter control with unique values from the filter column
       const filterOptions = getFilterOptions(rows);
@@ -29924,16 +29939,19 @@ var template = (function (exports) {
           hierarchy: facetHierarchies.get(key)
       }));
 
-      // Drive the facets grid
+      // Drive the facets grid. Keep the facet module's own transitions in step
+      // with the cell/label animations (it defaults to 1000ms, which on load
+      // glides the facet container out of sync and causes a visible bounce).
       facets
           .data(facetData, d => d.name)
           .width(width)
           .height(height)
+          .duration(state.animation_duration || 0)
           .hideTitle("")
           .update(function(facet) {
               const item = facet.data;
               if (!item || !item.hierarchy) return;
-              drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels, state.number_format, dataColumnNames);
+              drawVoronoi(facet.node, item.hierarchy, facet.width, facet.height, state.voronoi_settings, colors, popup, localization, number_format, state.colors, state.animation_duration, state.labels, state.number_format, dataColumnNames, dataMetadata);
           });
 
       sizeSvg();
@@ -29996,7 +30014,16 @@ var template = (function (exports) {
 
       facets.appendTo(chartGroup);
 
+      // Initial render with animations disabled. On load the layout settles in
+      // stages (fonts, legend measurement, iframe resize), so animating the first
+      // paint — or the settling re-renders that follow — makes the chart visibly
+      // jump/disappear/reappear ("bounce"). Animations are enabled only once the
+      // layout has settled, for genuine user-driven updates.
+      var saved = state.animation_duration;
+      state.animation_duration = 0;
       update();
+      state.animation_duration = saved;
+
       var resizeTimer;
       var settled = false;
       setTimeout(function() { settled = true; }, 500);
@@ -30006,10 +30033,10 @@ var template = (function (exports) {
               if (!settled) {
                   // Layout is still settling after initial draw —
                   // re-render instantly (no animation) to correct dimensions
-                  var saved = state.animation_duration;
+                  var d = state.animation_duration;
                   state.animation_duration = 0;
                   update();
-                  state.animation_duration = saved;
+                  state.animation_duration = d;
                   settled = true;
               } else {
                   update();

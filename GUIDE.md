@@ -49,7 +49,7 @@ When a Voronoi edge is too short for effective rounding (shorter than half the r
 
 **Group Spacing**
 
-With a two-level hierarchy you can set a larger gap between first-level groups than between the sibling cells within a group, so the top-level categories read as visually separated clusters. The **Gap** setting controls the spacing between sibling cells; the **Group spacing** setting adds extra spacing around each first-level group. Both are expressed as a percentage of chart size and use the same range (0–0.5); Group spacing defaults to 0.3, a little larger than the 0.15 cell gap. Group spacing only applies to two-level data and has no effect when set to 0 or on a single-level hierarchy.
+With a two-level hierarchy you can set a larger gap between first-level groups than between the sibling cells within a group, so the top-level categories read as visually separated clusters. The **Cell gap** setting controls the spacing between sibling cells; the **Group gap** setting adds extra spacing around each first-level group. Both are expressed as a percentage of chart size and use the same range (0–0.5); Group gap defaults to 0.3, a little larger than the 0.15 cell gap. Group gap only applies to two-level data and has no effect when set to 0 or on a single-level hierarchy.
 
 **Colour Jittering**
 
@@ -62,17 +62,20 @@ The template accepts a flat dataset with up to two hierarchy levels:
 | **First level**        | Yes      | Top-level category (e.g. continent, industry)                            |
 | **Second level**       | No       | Sub-category nested within the first level (e.g. country, company)       |
 | **Values**             | Yes      | Numeric value determining cell size                                      |
-| **Color category**     | No       | Category used to color the polygons (defaults to first level if not set) |
+| **Colour category**    | No       | Category used to colour the polygons (defaults to first level if not set) |
 | **Filter**             | No       | Column used to filter displayed data                                     |
 | **Grid of charts**     | No       | Column used to create a faceted grid of charts                           |
 | **Custom tooltip**     | No       | Custom text or HTML shown in the popup on hover/click                    |
-| **Custom label**       | No       | Custom text for cell labels (defaults to category name)                  |
-| **Custom value label** | No       | Custom text for value labels (defaults to formatted value)               |
+| **Info for popups**    | No       | Any number of extra columns to show as labelled rows in the popup/panel  |
+| **Label override**     | No       | Custom text for cell labels (defaults to category name)                  |
+| **Value label override** | No     | Custom text for value labels (defaults to formatted value)               |
 
 
 This template was created by [Luca Picci](https://lpicci96.github.io/LucaPicci/). The default dataset uses population data from the [World Bank World Development Indicators (WDI)](https://datatopics.worldbank.org/world-development-indicators/) database.
 
-Please reach out for any bug reports or feature requests.
+Bug reports and feature requests are welcome on the [GitHub issue tracker](https://github.com/lpicci96/flourish-voronoi-treemap/issues).
+
+**A note on popups:** the Custom tooltip and Info for popups columns are rendered as HTML, so you can include formatting and links. Only bind data you trust to these columns — do not pass untrusted third-party content, as raw HTML in those columns will be rendered as-is.
 
 ---
 
@@ -84,8 +87,12 @@ Please reach out for any bug reports or feature requests.
 - Enhanced convergence logging for small multiples
 
 
-**Unreleased**
-- Added **Group spacing** — set a larger gap between first-level groups than between sibling cells to visually separate top-level categories (two-level data only; default 0.3)
+**v0.8.0 - 2026-06-12**
+- Added **Group gap** — set a larger gap between first-level groups than between sibling cells to visually separate top-level categories (two-level data only; default 0.3)
+- Added **Info for popups** — an optional binding for any number of extra columns, each shown as a labelled row in the popup and panel (numbers use the column's own formatting)
+- Fixed a bounce on load where the chart would briefly appear, jump, and re-render while the layout settled; the first paint is now drawn without animation
+- Renamed the **Gap** setting to **Cell gap** and **Group spacing** to **Group gap** for consistency
+- Tidied editor labels and descriptions for consistency (sentence case, British spelling, and added descriptions for the core data bindings)
 - Fixed cells/labels disappearing when two leaves shared the same name (common in two-level hierarchies)
 - Fixed value labels showing six decimal places for small numbers below the K/M/B/T scaling threshold
 - Colour jitter now stays within a safe lightness range so child-cell shading never flattens to near-black/white or reads as a different category

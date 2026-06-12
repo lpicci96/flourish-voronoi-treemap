@@ -2,26 +2,32 @@
 All notable changes to this template will be documented in this file.
 
 
-## [Unreleased]
+## [v0.8.0] - 2026-06-12
+
+### Added
+- **Info for popups** (`info`): a new optional `columns` data binding that lets users add any number of extra columns to the popup and panel; each renders as a labelled row using its column header, with per-column number formatting taken from the dataset metadata. The existing single-column custom tooltip is unchanged (`popup.js`, `update.js`, `voronoi.js`, `template.yml`)
+- **Group gap** (`group_gap`): a new setting that adds a larger gap between first-level groups than between sibling cells, so top-level categories read as separated clusters. Expressed as a percentage of chart size on the same 0–0.5 range as Cell gap, defaulting to 0.3 (a little larger than the 0.15 cell gap). Insets each first-level group polygon and clips its leaves to it; only applies to two-level data and is a no-op when set to 0 (`state.js`, `voronoi.js`, `transitions.js`, `border.js`, `template.yml`)
+- Unit tests for `number_formatting`, `colors`, `clip`, and `border` (72 new tests; total now 97) including regression guards for the formatter-decimals and colour-jitter fixes and coverage of the new convex-clip helper (`tests/`)
 
 ### Fixed
+- Load "bounce": the chart no longer briefly appears, jumps, and re-renders while the layout settles on load. The first paint is now drawn with animations disabled, and the facets module's animation duration is kept in step with the cell/label transitions (it previously animated its container at a fixed 1000ms, out of sync) (`draw.js`, `update.js`)
 - Cells and labels with duplicate names (common in two-level hierarchies, e.g. a shared "Other" leaf under multiple groups) no longer collide in the D3 data join and disappear — the join is now keyed on each leaf's full ancestor path (`transitions.js`, `labels.js`)
 - Adaptive value-label formatter: values below the smallest enabled scale (e.g. `500` with K/M/B/T scaling) no longer render with six decimal places; the plain formatter now respects the configured decimals (`number_formatting.js`)
 - Colour jitter: lightness is now clamped to a safe band (0.15–0.85) instead of [0, 1], so jitter on already-light or already-dark base colours can no longer flatten to near-white/near-black or drift far enough to read as a different category (`colors.js`)
 
 ### Changed
+- Renamed the **Gap** setting to **Cell gap** and **Group spacing** to **Group gap** for a consistent vocabulary across the spacing controls (`template.yml`)
+- Editor labels and descriptions tidied for consistency: sentence case throughout, British spelling, and added descriptions for the First level, Second level, Values, Filter, and Grid of charts data bindings (`template.yml`)
 - Pointer cursor on cells is now shown only when the popup is genuinely clickable (mode `panel` or `both`); hover-only popups (`popup`) keep the default cursor (`voronoi.js`)
 - Label font sizing now reads each cell's area directly from its polygon rather than via a parallel-array index, removing a fragile ordering assumption (`labels.js`)
-
-### Added
-- **Group spacing** (`group_gap`): a new setting that adds a larger gap between first-level groups than between sibling cells, so top-level categories read as separated clusters. Expressed as a percentage of chart size on the same 0–0.5 range as Gap, defaulting to 0.3 (a little larger than the 0.15 cell gap). Insets each first-level group polygon and clips its leaves to it; only applies to two-level data and is a no-op when set to 0 (`state.js`, `voronoi.js`, `transitions.js`, `border.js`, `template.yml`)
-- Unit tests for `number_formatting`, `colors`, `clip`, and `border` (72 new tests; total now 97) including regression guards for the formatter-decimals and colour-jitter fixes and coverage of the new convex-clip helper (`tests/`)
 
 ### Internal
 - Removed dead alignment code from `clip.js` (alignment is applied as a post-layout translation in `voronoi.js`, so clip shapes are always generated centred)
 
 ### Documentation
+- Added a note to GUIDE.md that the Custom tooltip and Info for popups columns render HTML, so only trusted data should be bound to them
 - Corrected the documented default colour jitter amount to 0.1 in GUIDE.md and the "Jitter amount" control description — both previously stated/recommended 0.05, which never matched the code (the default has always been 0.1)
+- Corrected README clip-shape count (7 shapes, not 8)
 
 
 ## [v0.7.1] - 2026-03-11
