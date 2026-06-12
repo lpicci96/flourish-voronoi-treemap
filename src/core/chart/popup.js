@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { createAdaptiveFormatter } from "./number_formatting";
+import { getValueFormatter } from "./number_formatting";
 
 /**
  * Configure a Flourish popup instance with column names and number
@@ -33,12 +33,7 @@ export function configurePopup(popup, leaves, localization, number_format, label
         columnNames[key] = (dataColumnNames && dataColumnNames[key]) || fallbackNames[key] || key;
     });
 
-    var formatter;
-    if (labelSettings && labelSettings.adaptive_format) {
-        formatter = createAdaptiveFormatter(localization, labelSettings, numberFormatState);
-    } else {
-        formatter = number_format(localization.getFormatterFunction());
-    }
+    const formatter = getValueFormatter(localization, number_format, labelSettings, numberFormatState);
     const formatters = { values: formatter };
 
     // Build a parallel formatters array for the multi-column `info` binding.
