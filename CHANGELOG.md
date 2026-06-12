@@ -2,6 +2,20 @@
 All notable changes to this template will be documented in this file.
 
 
+## [Unreleased]
+
+### Changed
+- Default categorical palette swapped for a colourblind-safe set (`#242bba` blue, `#278463` teal-green, `#8f7226` ochre, `#733226` brick red, `#592179` plum). Every colour is dark enough for legible white labels (WCAG contrast ≥ 4.5:1 against white) and the five stay distinguishable under deuteranopia, protanopia and tritanopia (min CIE76 ΔE ≥ ~22 across all three) (`state.js`)
+- Numeric and datetime columns can now be added to the **Info for popups** binding (it previously accepted string columns only); numbers and dates are formatted using the column's own format (`template.yml`)
+
+### Fixed
+- Cells whose layout polygon degenerates to fewer than 3 vertices (possible when the layout fails to converge) are now dropped instead of producing malformed paths and NaN geometry (`voronoi.js`)
+
+### Internal
+- Centralised the value-formatter construction shared by value labels and popups into `getValueFormatter` so the two paths can't drift (`number_formatting.js`, `popup.js`, `voronoi.js`)
+- Documented that duplicate (firstLevel, secondLevel) rows are treated as a single cell (`GUIDE.md`)
+
+
 ## [v0.8.0] - 2026-06-12
 
 ### Added
