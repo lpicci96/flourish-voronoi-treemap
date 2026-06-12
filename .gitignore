@@ -37,3 +37,5 @@ coverage/
 package-lock.json
 yarn.lock
 /CLAUDE.md
+node_modules
+.claude/

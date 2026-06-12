@@ -1,7 +1,7 @@
 # The 'id' should be a string that uniquely identifies your template
 id: 'voronoi-treemap'
 name: Voronoi Treemap
-description: A hierarchical voronoi treemap.
+description: A hierarchical Voronoi treemap.
 author: Luca Picci
 
 # This template is compatible with SDK version 3
@@ -79,7 +79,7 @@ settings:
       voronoi_settings.chart_height: custom
 
   - property: voronoi_settings.clip_type
-    name: Clipping Type
+    name: Clipping type
     description: The method used to clip the Voronoi polygons. Available options are "rectangle" (takes up all available horizontal space), "square", "circle", "triangle", "rhombus", "pentagon", and "hexagon".
     type: string
     style: buttons
@@ -121,14 +121,22 @@ settings:
 
   # cell gap settings
   - property: voronoi_settings.gap
-    name: Gap
-    description: Gap between cells as a percentage of chart size. Scales proportionally across screen sizes.
+    name: Cell gap
+    description: Gap between sibling cells as a percentage of chart size. Scales proportionally across screen sizes.
     type: number
     min: 0
     max: 0.5
     step: 0.05
     width: full
     new_section: Borders and rounding
+  - property: voronoi_settings.group_gap
+    name: Group gap
+    description: Extra gap between first-level groups, as a percentage of chart size. Only applies when a second-level column is provided. Set larger than the Cell gap to visually separate top-level categories. Defaults to 0.3 (a little larger than the cell gap).
+    type: number
+    min: 0
+    max: 0.5
+    step: 0.05
+    width: full
   - property: voronoi_settings.border_rounding_style
     name: Border rounding style
     description: Controls how cell corners are drawn. "straight" draws sharp corners, "adaptive rounding" smooths corners with quadratic Bézier curves that naturally adapt to each corner's geometry.
@@ -161,31 +169,31 @@ settings:
 
 #  Advanced settings
   - property: voronoi_settings.advanced_settings
-    name: Advanced Settings
-    description: Show advanced settings for the voronoi tesselation algorithm and layout.
+    name: Advanced settings
+    description: Show advanced settings for the Voronoi tessellation algorithm and layout.
     type: boolean
     new_section: Advanced
   - property: voronoi_settings.seed
-    name: Random Seed
+    name: Random seed
     description: The seed for the random number generator, which affects the layout of the Voronoi polygons.
     type: number
     min: 1
     show_if: voronoi_settings.advanced_settings
   - property: voronoi_settings.max_iterations
-    name: Max Iterations
+    name: Max iterations
     description: The maximum number of iterations for the Voronoi layout algorithm. Higher values may produce better layouts but take longer to compute.
     type: number
     min: 1
     show_if: voronoi_settings.advanced_settings
   - property: voronoi_settings.convergence_ratio
-    name: Convergence Ratio
+    name: Convergence ratio
     description: The ratio used to determine when the Voronoi layout algorithm has converged. A lower value may produce better layouts but take longer to compute.
     type: number
     min: 0
     step: 0.001
     show_if: voronoi_settings.advanced_settings
   - property: voronoi_settings.min_weight_ratio
-    name: Min Weight Ratio
+    name: Min weight ratio
     description: Sets a minimum cell weight as a fraction of the largest cell. Small cells below this threshold are inflated to the minimum, which prevents tiny slivers but redistributes space away from larger cells. Set to 0 for pure proportional sizing.
     type: number
     min: 0
@@ -281,23 +289,23 @@ settings:
     width: half
   - property: labels.auto_contrast
     name: Auto contrast
-    description: Automatically set label color to black or white based on the background color of each cell.
+    description: Automatically set label colour to black or white based on the background colour of each cell.
     type: boolean
     show_if: labels.show_labels
   - property: labels.font_color
-    name: Font color
+    name: Font colour
     type: color
     show_if:
       labels.show_labels: true
       labels.auto_contrast: false
   - property: labels.show_outline
     name: Show outline
-    description: Show an outline around the labels, which can help to improve the readability of labels on top of similarly colored polygons.
+    description: Show an outline around the labels, which can help to improve the readability of labels on top of similarly coloured polygons.
     type: boolean
     show_if: labels.show_labels
   - property: labels.outline_color
-    name: Outline color
-    description: The color of the label outline, which can help to improve the readability of labels on top of similarly colored polygons.
+    name: Outline colour
+    description: The colour of the label outline, which can help to improve the readability of labels on top of similarly coloured polygons.
     type: color
     show_if:
       labels.show_labels: true
@@ -305,7 +313,7 @@ settings:
       labels.auto_contrast: false
   - property: labels.outline_size
     name: Outline size
-    description: The size of the label outline, which can help to improve the readability of labels on top of similarly colored polygons (in em).
+    description: The size of the label outline, which can help to improve the readability of labels on top of similarly coloured polygons (in em).
     type: number
     min: 0
     step: 0.1
@@ -373,7 +381,7 @@ settings:
     new_section: Advanced
   - property: colors.jitter_amount
     name: Jitter amount
-    description: The amount by which to jitter the shade of the second level hierarchy. The recommended value is 0.05
+    description: The amount by which to jitter the shade of the second level hierarchy. The default is 0.1; the resulting lightness is clamped to a safe band so it never flattens to near-black or near-white.
     type: number
     min: 0
     max: 0.3
@@ -501,7 +509,7 @@ settings:
 
   - Animations
   - property: animation_duration
-    name: Animation Duration
+    name: Animation duration
     description: The duration of transitions in milliseconds. Setting this to 0 will disable animations.
     type: number
     min: 0
@@ -511,6 +519,7 @@ settings:
 data:
   - key: firstLevel
     name: First level
+    description: The top-level category for each cell (for example continent, sector or parent group). With no second level, each row is its own cell; with a second level, this groups the cells.
     type: column
     dataset: data
     column: "Data::B"
@@ -519,6 +528,7 @@ data:
 
   - key: secondLevel
     name: Second level
+    description: Optional sub-category nested within each first-level group. Provide this to build a two-level hierarchy; leave empty for a single-level treemap.
     type: column
     dataset: data
     column: "Data::A"
@@ -528,6 +538,7 @@ data:
 
   - key: values
     name: Values
+    description: The numeric value for each cell. Cell areas are drawn in proportion to these values. Negative values are treated as 0.
     type: column
     dataset: data
     column: "Data::C"
@@ -536,6 +547,7 @@ data:
 
   - key: filter
     name: Filter
+    description: Optional column whose unique values become a filter control, letting viewers switch between subsets of the data one at a time. Colours stay consistent across all filter values.
     type: column
     dataset: data
     data_type:
@@ -543,8 +555,8 @@ data:
     optional: true
 
   - key: color_category
-    name: Color category
-    description: An optional string column that specifies the category by which to color the Voronoi polygons. If not provided, the first level of the hierarchy will be used for coloring.
+    name: Colour category
+    description: An optional string column that specifies the category by which to colour the Voronoi polygons. If not provided, the first level of the hierarchy will be used for colouring.
     type: column
     dataset: data
     data_type:
@@ -553,6 +565,7 @@ data:
 
   - key: facet
     name: Grid of charts
+    description: Optional column that splits the data into a grid of small multiples — one Voronoi treemap per unique value, drawn side by side for comparison.
     type: column
     dataset: data
     data_type:
@@ -568,6 +581,13 @@ data:
       - string
       - number
     optional: true
+
+  - key: info
+    name: Info for popups
+    description: "Extra columns to include in the popup and panel. Add any number of columns; each appears as a labelled row using its column header. Leave empty to show none."
+    dataset: data
+    type: columns
+    columns: "Data::"
 
   - key: label_override
     name: Label override

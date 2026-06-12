@@ -11,6 +11,7 @@
 import * as d3 from "d3";
 import { voronoiTreemap } from "d3-voronoi-treemap";
 import { clipVoronoi } from "./clip";
+import { insetPolygon } from "./border";
 import { seedrandom } from "./data_formatting";
 import { getCellColor } from "./colors";
 import { configurePopup, getPopupData } from "./popup";
@@ -71,7 +72,7 @@ function getAlignmentOffset(clip, width, alignment) {
  * @param {object} popup - Flourish popup instance.
  * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
  */
-function renderCells(container, leaves, root, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx, radiusPx) {
+function renderCells(container, leaves, root, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx, radiusPx, insetGroupByParent) {
     const sel = d3.select(container);
 
     let g = sel.selectAll("g.cells").data([null]);
@@ -89,6 +90,7 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
         gap: gapPx,
         radiusPx: radiusPx,
         reach: voronoi_settings.border_rounding_reach,
+        insetGroupByParent: insetGroupByParent,
         fillFn: d => getCellColor(d, root, colors, colorSettings),
         applyEvents: sel => {
             sel.on("pointerenter", function(event, d) {
@@ -105,8 +107,11 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
         }
     });
 
-    var isInteractive = popup.mode() !== "none";
-    g.selectAll(".cell-hits path").style("cursor", isInteractive ? "pointer" : "default");
+    // Only "panel" and "both" modes open a clickable panel on click; "popup"
+    // is hover-only and "none" shows nothing, so neither should use a pointer.
+    var mode = popup.mode();
+    var isClickable = mode === "panel" || mode === "both";
+    g.selectAll(".cell-hits path").style("cursor", isClickable ? "pointer" : "default");
 
     sel.on("click", function() {
         popup.clickout();
@@ -131,12 +136,12 @@ function renderCells(container, leaves, root, voronoi_settings, colors, popup, c
  * @param {Function} number_format - Flourish number_format factory.
  * @param {object} colorSettings - Color settings (jitter_shade, jitter_amount).
  */
-export function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings, number_format_state, dataColumnNames) {
+export function drawVoronoi(container, hierarchy, width, height, voronoi_settings, colors, popup, localization, number_format, colorSettings, animation_duration, labelSettings, number_format_state, dataColumnNames, dataMetadata) {
     if (!hierarchy) return;
 
     // Always compute layout with centered clip so cell shapes stay consistent
     // regardless of alignment setting. Alignment is applied as a translation.
-    const clip = clipVoronoi(voronoi_settings.clip_type, height, width, "center");
+    const clip = clipVoronoi(voronoi_settings.clip_type, height, width);
     computeLayout(hierarchy, voronoi_settings, height, width, clip);
 
     const alignX = getAlignmentOffset(clip, width, voronoi_settings.alignment);
@@ -163,7 +168,7 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
 
     checkConvergence(hierarchy, voronoi_settings.convergence_ratio, voronoi_settings.min_weight_ratio);
 
-    configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames);
+    configurePopup(popup, leaves, localization, number_format, labelSettings, number_format_state, dataColumnNames, dataMetadata);
 
     // Pre-format values on leaves for value labels
     if (labelSettings && labelSettings.show_value_labels) {
@@ -188,6 +193,23 @@ export function drawVoronoi(container, hierarchy, width, height, voronoi_setting
     // Convert proportional border radius (percentage of shorter dimension) to pixels
     var radiusPx = voronoi_settings.border_radius ? voronoi_settings.border_radius / 100 * Math.min(width, height) : 0;
 
-    renderCells(alignNode, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx, radiusPx);
+    // Larger gap between first-level groups (additive: group_gap + gap at group
+    // boundaries, gap within a group). Only applies to two-level data.
+    var groupGapPx = voronoi_settings.group_gap ? voronoi_settings.group_gap / 100 * Math.min(width, height) : 0;
+    var hasGroups = hierarchy.height >= 2;   // single-level: leaves are direct children of root
+
+    // Map each first-level group node to its inset group polygon. A leaf clips
+    // to its parent group's inset polygon before its own gap inset is applied.
+    var insetGroupByParent = null;
+    if (hasGroups && groupGapPx > 0 && hierarchy.children) {
+        insetGroupByParent = new Map();
+        hierarchy.children.forEach(function(g) {
+            if (g.polygon && g.polygon.length >= 3) {
+                insetGroupByParent.set(g, insetPolygon(g.polygon, groupGapPx));
+            }
+        });
+    }
+
+    renderCells(alignNode, leaves, hierarchy, voronoi_settings, colors, popup, colorSettings, animation_duration, gapPx, radiusPx, insetGroupByParent);
     renderLabels(alignNode, leaves, labelSettings, animation_duration, hierarchy, colors, colorSettings);
 }

@@ -336,8 +336,9 @@ export function renderLabels(container, leaves, labelSettings, animation_duratio
     const valueLabelOpacity = labelSettings.value_label_opacity != null ? labelSettings.value_label_opacity : 0.8;
     const valueLabelWeight = labelSettings.value_label_weight || "normal";
 
+    const labelKey = d => d.ancestors().map(n => n.data.name).reverse().join("\0");
     const labels = g.selectAll("text")
-        .data(leaves, d => d.data.name);
+        .data(leaves, labelKey);
 
     // EXIT
     if (duration > 0) {
@@ -367,7 +368,7 @@ export function renderLabels(container, leaves, labelSettings, animation_duratio
             const pole = poleOfInaccessibility(d.polygon, 1);
             const cx = pole.x, cy = pole.y, inscribedRadius = pole.distance;
             const fontSizeEm = sizeProportionally
-                ? minSize + (maxSize - minSize) * Math.sqrt(areas[i] / maxArea)
+                ? minSize + (maxSize - minSize) * Math.sqrt(polygonArea(d.polygon) / maxArea)
                 : (labelSettings.font_size || 0.8);
             const el = d3.select(this);
 

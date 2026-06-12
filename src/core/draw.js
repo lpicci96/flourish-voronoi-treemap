@@ -57,7 +57,16 @@ export default function() {
 
     facets.appendTo(chartGroup);
 
+    // Initial render with animations disabled. On load the layout settles in
+    // stages (fonts, legend measurement, iframe resize), so animating the first
+    // paint — or the settling re-renders that follow — makes the chart visibly
+    // jump/disappear/reappear ("bounce"). Animations are enabled only once the
+    // layout has settled, for genuine user-driven updates.
+    var saved = state.animation_duration;
+    state.animation_duration = 0;
     update();
+    state.animation_duration = saved;
+
     var resizeTimer;
     var settled = false;
     setTimeout(function() { settled = true; }, 500);
@@ -67,10 +76,10 @@ export default function() {
             if (!settled) {
                 // Layout is still settling after initial draw —
                 // re-render instantly (no animation) to correct dimensions
-                var saved = state.animation_duration;
+                var d = state.animation_duration;
                 state.animation_duration = 0;
                 update();
-                state.animation_duration = saved;
+                state.animation_duration = d;
                 settled = true;
             } else {
                 update();
