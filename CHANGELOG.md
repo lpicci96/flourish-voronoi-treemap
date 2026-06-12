@@ -2,10 +2,10 @@
 All notable changes to this template will be documented in this file.
 
 
-## [Unreleased]
+## [v0.8.1] - 2026-06-12
 
 ### Changed
-- Default categorical palette swapped for a colourblind-safe set (`#242bba` blue, `#278463` teal-green, `#8f7226` ochre, `#733226` brick red, `#592179` plum). Every colour is dark enough for legible white labels (WCAG contrast ≥ 4.5:1 against white) and the five stay distinguishable under deuteranopia, protanopia and tritanopia (min CIE76 ΔE ≥ ~22 across all three) (`state.js`)
+- Deepened the default palette's teal (`#0a9e9c` → `#0c7f7d`) and orange (`#f28907` → `#b85800`) so all five categorical colours are legible with the default white labels (WCAG contrast ≥ 4.5:1 against white); blue, red and purple are unchanged. The palette stays distinguishable under red-green colour vision deficiency (min CIE76 ΔE ~24 deuteranopia / ~25 protanopia) (`state.js`)
 - Numeric and datetime columns can now be added to the **Info for popups** binding (it previously accepted string columns only); numbers and dates are formatted using the column's own format (`template.yml`)
 
 ### Fixed

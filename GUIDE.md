@@ -88,6 +88,12 @@ Bug reports and feature requests are welcome on the [GitHub issue tracker](https
 - Enhanced convergence logging for small multiples
 
 
+**v0.8.1 - 2026-06-12**
+- Deepened the default palette's teal and orange so all five colours are legible with the default white labels; blue, red and purple are unchanged, and the palette stays distinguishable under red-green colour vision deficiency
+- The **Info for popups** binding now accepts numeric and date columns, not just text — numbers and dates are formatted using the column's own format
+- Dropped cells whose layout polygon degenerates (fewer than 3 points) instead of drawing a malformed shape
+- Documented that two rows sharing the same first- and second-level name are treated as a single cell
+
 **v0.8.0 - 2026-06-12**
 - Added **Group gap** — set a larger gap between first-level groups than between sibling cells to visually separate top-level categories (two-level data only; default 0.3)
 - Added **Info for popups** — an optional binding for any number of extra columns, each shown as a labelled row in the popup and panel (numbers use the column's own formatting)

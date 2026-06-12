@@ -1,6 +1,6 @@
 {
   "name": "flourish-voronoi-treemap",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "A Voronoi treemap template for Flourish",
   "main": "template.js",
   "author": "Luca Picci",
