@@ -584,10 +584,14 @@ data:
 
   - key: info
     name: Info for popups
-    description: "Extra columns to include in the popup and panel. Add any number of columns; each appears as a labelled row using its column header. Leave empty to show none."
+    description: "Extra columns to include in the popup and panel. Add any number of columns of any type; each appears as a labelled row using its column header, with numbers and dates formatted according to the column. Leave empty to show none."
     dataset: data
     type: columns
     columns: "Data::"
+    data_type:
+      - string
+      - number
+      - datetime
 
   - key: label_override
     name: Label override
