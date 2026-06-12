@@ -28722,6 +28722,25 @@ var template = (function (exports) {
       };
   }
 
+  /**
+   * Resolve the value formatter used for both value labels and popup values:
+   * the adaptive magnitude formatter when adaptive formatting is on, otherwise
+   * the plain Flourish number formatter. Centralised so the two call sites
+   * (labels and popups) can't drift apart.
+   *
+   * @param {object} localization - Flourish localization instance.
+   * @param {Function} number_format - Flourish number_format factory.
+   * @param {object} labelSettings - The state.labels settings object.
+   * @param {object} numberFormatState - The raw state.number_format object.
+   * @returns {function} A function (value) => formatted string.
+   */
+  function getValueFormatter(localization, number_format, labelSettings, numberFormatState) {
+      if (labelSettings && labelSettings.adaptive_format) {
+          return createAdaptiveFormatter(localization, labelSettings, numberFormatState);
+      }
+      return number_format(localization.getFormatterFunction());
+  }
+
   function stripTrailingZeros(s) {
       if (s.indexOf(".") === -1) return s;
       s = s.replace(/0+$/, "");
@@ -28763,12 +28782,7 @@ var template = (function (exports) {
           columnNames[key] = (dataColumnNames && dataColumnNames[key]) || fallbackNames[key] || key;
       });
 
-      var formatter;
-      if (labelSettings && labelSettings.adaptive_format) {
-          formatter = createAdaptiveFormatter(localization, labelSettings, numberFormatState);
-      } else {
-          formatter = number_format(localization.getFormatterFunction());
-      }
+      const formatter = getValueFormatter(localization, number_format, labelSettings, numberFormatState);
       const formatters = { values: formatter };
 
       // Build a parallel formatters array for the multi-column `info` binding.
@@ -29741,9 +29755,12 @@ var template = (function (exports) {
 
       const alignNode = alignGroup.node();
       const allLeaves = hierarchy.leaves();
-      const leaves = allLeaves.filter(d => d.polygon && d.polygon.length > 0);
+      // Require at least 3 vertices: a 1- or 2-point polygon (which can occur when
+      // the layout fails to converge) has no area and would produce a malformed
+      // path and NaN centroids/areas downstream.
+      const leaves = allLeaves.filter(d => d.polygon && d.polygon.length >= 3);
       if (leaves.length < allLeaves.length) {
-          console.warn(`Voronoi: ${allLeaves.length - leaves.length} cell(s) dropped due to missing polygons`);
+          console.warn(`Voronoi: ${allLeaves.length - leaves.length} cell(s) dropped due to missing or degenerate polygons`);
       }
 
       checkConvergence(hierarchy, voronoi_settings.convergence_ratio, voronoi_settings.min_weight_ratio);
@@ -29752,12 +29769,7 @@ var template = (function (exports) {
 
       // Pre-format values on leaves for value labels
       if (labelSettings && labelSettings.show_value_labels) {
-          var formatter;
-          if (labelSettings.adaptive_format) {
-              formatter = createAdaptiveFormatter(localization, labelSettings, number_format_state);
-          } else {
-              formatter = number_format(localization.getFormatterFunction());
-          }
+          var formatter = getValueFormatter(localization, number_format, labelSettings, number_format_state);
           leaves.forEach(function(d) {
               if (d.data._row && d.data._row.value_label_override != null) {
                   d._formattedValue = String(d.data._row.value_label_override);

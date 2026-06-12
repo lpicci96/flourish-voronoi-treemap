@@ -78,6 +78,25 @@ export function createAdaptiveFormatter(localization, labelSettings, numberForma
     };
 }
 
+/**
+ * Resolve the value formatter used for both value labels and popup values:
+ * the adaptive magnitude formatter when adaptive formatting is on, otherwise
+ * the plain Flourish number formatter. Centralised so the two call sites
+ * (labels and popups) can't drift apart.
+ *
+ * @param {object} localization - Flourish localization instance.
+ * @param {Function} number_format - Flourish number_format factory.
+ * @param {object} labelSettings - The state.labels settings object.
+ * @param {object} numberFormatState - The raw state.number_format object.
+ * @returns {function} A function (value) => formatted string.
+ */
+export function getValueFormatter(localization, number_format, labelSettings, numberFormatState) {
+    if (labelSettings && labelSettings.adaptive_format) {
+        return createAdaptiveFormatter(localization, labelSettings, numberFormatState);
+    }
+    return number_format(localization.getFormatterFunction());
+}
+
 function stripTrailingZeros(s) {
     if (s.indexOf(".") === -1) return s;
     s = s.replace(/0+$/, "");

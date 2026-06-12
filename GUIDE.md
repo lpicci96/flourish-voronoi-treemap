@@ -40,6 +40,7 @@ Datasets with extreme value ranges (e.g. populations spanning thousands to billi
 - Precise value comparison is harder than with bar charts — Voronoi treemaps are better for relative size than exact values
 - The layout algorithm is iterative and may produce slightly different results depending on the random seed
 - Very small values can result in tiny, hard-to-read polygons
+- Each row should be a distinct category: if two rows share the same first- and second-level name, they are treated as one cell. Aggregate duplicate categories in your data before charting.
 
 **Border Rounding**
 
