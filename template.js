@@ -28903,12 +28903,18 @@ var template = (function (exports) {
           .attr("d", cellFillPath)
           .attr("fill", fillFn)
           .attr("stroke", "none")
+          .attr("opacity", 1)
           .each(function(d) { this.__polygon = d.polygon; });
 
       // UPDATE
       if (duration > 0) {
           fillJoin.each(function(d) {
               const el = select(this);
+              // Surviving cells are always fully visible: cancel any in-flight
+              // transition (e.g. a fade-out left over from a data-join churn during
+              // load) and snap opacity to 1 synchronously, so a cell can never
+              // animate a fade-in. Only geometry (and fill) is transitioned.
+              el.interrupt().attr("opacity", 1);
               const oldPoly = this.__polygon || d.polygon;
               const newPoly = d.polygon;
               const count = Math.max(oldPoly.length, newPoly.length, 8);
@@ -28931,7 +28937,6 @@ var template = (function (exports) {
                       };
                   })
                   .attr("fill", fillFn)
-                  .attr("opacity", 1)
                   .on("end", function() {
                       this.__polygon = d.polygon;
                       select(this).attr("d", cellFillPath(d));

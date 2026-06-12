@@ -88,6 +88,9 @@ Bug reports and feature requests are welcome on the [GitHub issue tracker](https
 - Enhanced convergence logging for small multiples
 
 
+**Unreleased**
+- Fixed the load "bounce" properly — the chart no longer fades out and back in shortly after it first appears (the earlier fixes only covered the very first paint)
+
 **v0.8.1 - 2026-06-12**
 - Deepened the default palette's teal and orange so all five colours are legible with the default white labels; blue, red and purple are unchanged, and the palette stays distinguishable under red-green colour vision deficiency
 - The **Info for popups** binding now accepts numeric and date columns, not just text — numbers and dates are formatted using the column's own format
