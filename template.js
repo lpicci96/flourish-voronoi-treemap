@@ -29491,7 +29491,9 @@ var template = (function (exports) {
                           .attr("y", startY + lineIndex * lineHeightPx);
                   });
 
-                  // Fade in entering labels
+                  // Updating label whose anchor moved: animate to full opacity
+                  // alongside the position tween (a no-op when already visible;
+                  // entering labels are set visible immediately in the else branch).
                   el.transition()
                       .duration(duration)
                       .ease(cubicInOut)

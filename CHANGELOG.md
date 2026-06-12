@@ -2,10 +2,15 @@
 All notable changes to this template will be documented in this file.
 
 
-## [Unreleased]
+## [v1.0.0] - 2026-06-12
+
+First stable public release. The settings panel and data bindings in `template.yml`
+are now considered a stable contract — existing visualisations won't be broken by
+future minor releases. No functional change from v0.8.1 beyond the fix below; this
+release marks the template as production-ready after the finalisation pass.
 
 ### Fixed
-- Load "bounce" (completes the v0.8.0/v0.8.1 fixes, which only covered the first paint): the chart no longer fades out and back in shortly after it first appears. A second, animated re-render fires during load (Flourish re-applying state / font reflow in the editor) and the cell-fill `opacity` was being animated from 0 → 1 on surviving cells; the update path now snaps surviving cells to full opacity and only transitions geometry, so opacity never dips. Verified with a headless-Chrome capture of the load sequence (opacity and cell-group bounding box constant from first paint onward) (`transitions.js`)
+- Load "bounce" (completes the v0.8.0 fix, which only covered the first paint): the chart no longer fades out and back in shortly after it first appears. A second, animated re-render fires during load (Flourish re-applying state / font reflow in the editor) and the cell-fill `opacity` was being animated from 0 → 1 on surviving cells; the update path now snaps surviving cells to full opacity and only transitions geometry, so opacity never dips. Verified with a headless-Chrome capture of the load sequence (opacity and cell-group bounding box constant from first paint onward) (`transitions.js`)
 
 
 ## [v0.8.1] - 2026-06-12

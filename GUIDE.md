@@ -41,6 +41,8 @@ Datasets with extreme value ranges (e.g. populations spanning thousands to billi
 - The layout algorithm is iterative and may produce slightly different results depending on the random seed
 - Very small values can result in tiny, hard-to-read polygons
 - Each row should be a distinct category: if two rows share the same first- and second-level name, they are treated as one cell. Aggregate duplicate categories in your data before charting.
+- The default palette has five colours. With more than five top-level categories the colours repeat, which makes categories harder to tell apart — consider grouping smaller categories or using a colour category column.
+- Accessibility notes: cell transitions do not currently respond to the operating system's "reduce motion" setting, and popups are mouse/touch-only (not keyboard- or screen-reader-accessible), so don't put essential information only in the popup — keep it in the on-cell labels or a caption.
 
 **Border Rounding**
 
@@ -88,7 +90,8 @@ Bug reports and feature requests are welcome on the [GitHub issue tracker](https
 - Enhanced convergence logging for small multiples
 
 
-**Unreleased**
+**v1.0.0 - 2026-06-12**
+- First stable release — the chart settings and data bindings are now a stable contract
 - Fixed the load "bounce" properly — the chart no longer fades out and back in shortly after it first appears (the earlier fixes only covered the very first paint)
 
 **v0.8.1 - 2026-06-12**
